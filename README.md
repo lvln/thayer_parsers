@@ -1,4 +1,4 @@
-![Thayer School of Engineering at Dartmouth](./logo.png "Thayer School")
+<img src="logo.png" alt="Thayer Scool of Engineering" width="250"/>
 
 # Parser Experimentation Repository
 
