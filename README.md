@@ -42,10 +42,13 @@ above attributes are present.
 
 ## Acknowledgements ##
 
-We thank our collaborators at Lockheed-Martin ATL -- Andrew Holmes,
-Chris Miller, and Chuck Winters -- for their many valuable inputs and
-insights. Thanks also to _Sarah Korb_ for contributing the unicode
-extensions.
+This repository is an active collaboration with a number of Dartmouth
+students: _Ellie Baker_ on **ppxml**; _Sarah Korb_ on unicode
+extensions; _Anthony_ and _Brandon Guzman_ on binary parsers.
+
+We also thank our collaborators at Lockheed-Martin ATL -- Andrew
+Holmes, Chris Miller, and Chuck Winters -- for their many valuable
+inputs and insights.
 
 
 
