@@ -1,0 +1,23 @@
+
+Here are 3 self-contained bug files. However, I believe that they may
+all be the same bug in different guises.
+
+All 3 parsers work with PB_MIN, but fail with PB_LALR.
+See the constant BKEND to change between the two.
+
+bug1.c uses:
+
+  H_RULE(int8range, h_int_range(h_int8(), -1, 1));
+
+
+bug2.c uses:
+
+  /* parse a single int16 between the values of -2 and 1 */
+	H_RULE(bigint16, h_with_endianness(BYTE_BIG_ENDIAN,h_int16()));
+	H_RULE(int16range, h_int_range(bigint16,-2,1));
+
+bug3.c uses:
+
+  /* parse a single int16 between the values of -2 and 1 */
+  H_RULE(littleint16, h_with_endianness(BYTE_LITTLE_ENDIAN,h_int16()));
+	H_RULE(int16range, h_int_range(littleint16,-2,1));

@@ -1,0 +1,6 @@
+%option noyywrap
+
+%%
+.  { return *yytext; }
+%%
+

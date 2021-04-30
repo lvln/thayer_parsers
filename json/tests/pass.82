@@ -1,0 +1,13 @@
+{
+  "data": {
+    "kind": "album",
+    "title": "My Photo Album",
+    "description": "An album in the user's account",
+    "items": [
+      {
+        "kind": "photo",
+        "title": "My First Photo"
+      }
+    ]
+  }
+}

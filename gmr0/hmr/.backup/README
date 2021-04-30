@@ -1,0 +1,17 @@
+The file pp_lalr.c contains the source code for the starter function.
+
+Compile: make
+
+Run:		 make run
+
+Clean:   make clean
+
+Files:
+  hmr.c            -- the hammer version of the grammar
+	tv.[ch]          -- test vector module for testing hammer 
+	pp_lalr.[ch]     -- the pretty printing module
+	pp_lalr_xml.[ch] -- pretty printing xml 
+	hmr.xml          -- the output file we are trying to generate
+	tests            -- a link to test vectors for the bison version of the same code
+
+

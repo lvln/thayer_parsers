@@ -1,0 +1,5 @@
+This directory contains the source code and include for testing parsers and generating xml from hammer.
+
+pp_xml.[ch] -- the source code for printing xml files from hammer
+main.c      -- the source for loading and running test vectors and generating xml
+parser.h    -- header file for a parser, used by main.c

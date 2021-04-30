@@ -1,0 +1,648 @@
+{
+  "meta" : {
+    "view" : {
+      "id" : "wyfi-eudz",
+      "name" : "Unemployment Data",
+      "averageRating" : 0,
+      "createdAt" : 1445634362,
+      "displayType" : "table",
+      "downloadCount" : 1471,
+      "hideFromCatalog" : false,
+      "hideFromDataJson" : false,
+      "indexUpdatedAt" : 1445638518,
+      "newBackend" : true,
+      "numberOfComments" : 0,
+      "oid" : 14226003,
+      "provenance" : "official",
+      "publicationAppendEnabled" : false,
+      "publicationDate" : 1445635985,
+      "publicationGroup" : 5049956,
+      "publicationStage" : "published",
+      "rowsUpdatedAt" : 1445635972,
+      "rowsUpdatedBy" : "wktp-67q4",
+      "tableId" : 5050030,
+      "totalTimesRated" : 0,
+      "viewCount" : 281,
+      "viewLastModified" : 1445635985,
+      "viewType" : "tabular",
+      "approvals" : [ {
+        "reviewedAt" : 1445635985,
+        "reviewedAutomatically" : true,
+        "state" : "approved",
+        "submissionId" : 806991,
+        "submissionObject" : "public_audience_request",
+        "submissionOutcome" : "change_audience",
+        "submittedAt" : 1445635985,
+        "workflowId" : 2182,
+        "submissionDetails" : {
+          "permissionType" : "READ"
+        },
+        "submissionOutcomeApplication" : {
+          "failureCount" : 0,
+          "status" : "success"
+        },
+        "submitter" : {
+          "id" : "wktp-67q4",
+          "displayName" : "karen"
+        }
+      } ],
+      "columns" : [ {
+        "id" : -1,
+        "name" : "sid",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":sid",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "id",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":id",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "position",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":position",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "created_at",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":created_at",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "created_meta",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":created_meta",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "updated_at",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":updated_at",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "updated_meta",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":updated_meta",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "meta",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":meta",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : 227334772,
+        "name" : "Year",
+        "dataTypeName" : "number",
+        "fieldName" : "year",
+        "position" : 2,
+        "renderTypeName" : "number",
+        "tableColumnId" : 32225342,
+        "width" : 148,
+        "cachedContents" : {
+          "non_null" : 50,
+          "average" : "2008.76",
+          "largest" : "2015",
+          "null" : 0,
+          "top" : [ {
+            "item" : "2003",
+            "count" : 20
+          }, {
+            "item" : "2004",
+            "count" : 19
+          }, {
+            "item" : "2005",
+            "count" : 18
+          }, {
+            "item" : "2006",
+            "count" : 17
+          }, {
+            "item" : "2007",
+            "count" : 16
+          }, {
+            "item" : "2008",
+            "count" : 15
+          }, {
+            "item" : "2009",
+            "count" : 14
+          }, {
+            "item" : "2010",
+            "count" : 13
+          }, {
+            "item" : "2011",
+            "count" : 12
+          }, {
+            "item" : "2012",
+            "count" : 11
+          }, {
+            "item" : "2013",
+            "count" : 10
+          }, {
+            "item" : "2014",
+            "count" : 9
+          }, {
+            "item" : "2015",
+            "count" : 8
+          } ],
+          "smallest" : "2003",
+          "sum" : "100438"
+        },
+        "format" : { }
+      }, {
+        "id" : 227334773,
+        "name" : "Qtr",
+        "dataTypeName" : "text",
+        "fieldName" : "qtr",
+        "position" : 3,
+        "renderTypeName" : "text",
+        "tableColumnId" : 32225343,
+        "width" : 136,
+        "cachedContents" : {
+          "non_null" : 50,
+          "largest" : "Oct 2014",
+          "null" : 0,
+          "top" : [ {
+            "item" : "Apr 2013",
+            "count" : 20
+          }, {
+            "item" : "Jul 2013",
+            "count" : 19
+          }, {
+            "item" : "Oct 2013",
+            "count" : 18
+          }, {
+            "item" : "Jan 2014",
+            "count" : 17
+          }, {
+            "item" : "Apr 2014",
+            "count" : 16
+          }, {
+            "item" : "Jul 2014",
+            "count" : 15
+          }, {
+            "item" : "Oct 2014",
+            "count" : 14
+          }, {
+            "item" : "Jan 2015",
+            "count" : 13
+          }, {
+            "item" : "Apr 2015",
+            "count" : 12
+          } ],
+          "smallest" : "Apr 2003"
+        },
+        "format" : { }
+      }, {
+        "id" : 227334774,
+        "name" : "Hawaii County",
+        "dataTypeName" : "number",
+        "fieldName" : "hawaii_county",
+        "position" : 4,
+        "renderTypeName" : "number",
+        "tableColumnId" : 32225344,
+        "width" : 256,
+        "cachedContents" : {
+          "non_null" : 50,
+          "average" : "6.236",
+          "largest" : "10.5",
+          "null" : 0,
+          "top" : [ {
+            "item" : "4.7",
+            "count" : 20
+          }, {
+            "item" : "5.2",
+            "count" : 19
+          }, {
+            "item" : "5.0",
+            "count" : 18
+          }, {
+            "item" : "4.8",
+            "count" : 17
+          }, {
+            "item" : "4.4",
+            "count" : 16
+          }, {
+            "item" : "4.1",
+            "count" : 15
+          }, {
+            "item" : "4.0",
+            "count" : 14
+          }, {
+            "item" : "3.9",
+            "count" : 13
+          }, {
+            "item" : "3.6",
+            "count" : 12
+          }, {
+            "item" : "3.3",
+            "count" : 11
+          }, {
+            "item" : "3.5",
+            "count" : 10
+          }, {
+            "item" : "3.2",
+            "count" : 9
+          }, {
+            "item" : "3.4",
+            "count" : 8
+          }, {
+            "item" : "3.0",
+            "count" : 7
+          }, {
+            "item" : "2.9",
+            "count" : 6
+          }, {
+            "item" : "3.7",
+            "count" : 5
+          }, {
+            "item" : "4.3",
+            "count" : 4
+          }, {
+            "item" : "5.1",
+            "count" : 3
+          }, {
+            "item" : "6.5",
+            "count" : 2
+          }, {
+            "item" : "8.0",
+            "count" : 1
+          } ],
+          "smallest" : "2.9",
+          "sum" : "311.8"
+        },
+        "format" : { }
+      }, {
+        "id" : 227334775,
+        "name" : "Honolulu Countuy",
+        "dataTypeName" : "number",
+        "fieldName" : "honolulu_countuy",
+        "position" : 5,
+        "renderTypeName" : "number",
+        "tableColumnId" : 32225345,
+        "width" : 292,
+        "cachedContents" : {
+          "non_null" : 50,
+          "average" : "4.244",
+          "largest" : "6.2",
+          "null" : 0,
+          "top" : [ {
+            "item" : "3.7",
+            "count" : 20
+          }, {
+            "item" : "4.0",
+            "count" : 19
+          }, {
+            "item" : "4.2",
+            "count" : 18
+          }, {
+            "item" : "3.2",
+            "count" : 17
+          }, {
+            "item" : "3.1",
+            "count" : 16
+          }, {
+            "item" : "3.0",
+            "count" : 15
+          }, {
+            "item" : "2.7",
+            "count" : 14
+          }, {
+            "item" : "2.6",
+            "count" : 13
+          }, {
+            "item" : "2.8",
+            "count" : 12
+          }, {
+            "item" : "2.5",
+            "count" : 11
+          }, {
+            "item" : "2.3",
+            "count" : 10
+          }, {
+            "item" : "4.3",
+            "count" : 9
+          }, {
+            "item" : "3.6",
+            "count" : 8
+          }, {
+            "item" : "4.1",
+            "count" : 7
+          }, {
+            "item" : "4.8",
+            "count" : 6
+          }, {
+            "item" : "5.7",
+            "count" : 5
+          }, {
+            "item" : "6.1",
+            "count" : 4
+          }, {
+            "item" : "6.2",
+            "count" : 3
+          }, {
+            "item" : "6.0",
+            "count" : 2
+          }, {
+            "item" : "5.8",
+            "count" : 1
+          } ],
+          "smallest" : "2.3",
+          "sum" : "212.2"
+        },
+        "format" : { }
+      }, {
+        "id" : 227334776,
+        "name" : "Kauai County",
+        "dataTypeName" : "number",
+        "fieldName" : "kauai_county",
+        "position" : 6,
+        "renderTypeName" : "number",
+        "tableColumnId" : 32225346,
+        "width" : 244,
+        "cachedContents" : {
+          "non_null" : 50,
+          "average" : "5.458",
+          "largest" : "10.2",
+          "null" : 0,
+          "top" : [ {
+            "item" : "4.1",
+            "count" : 20
+          }, {
+            "item" : "4.5",
+            "count" : 19
+          }, {
+            "item" : "4.3",
+            "count" : 18
+          }, {
+            "item" : "4.0",
+            "count" : 17
+          }, {
+            "item" : "3.8",
+            "count" : 16
+          }, {
+            "item" : "3.5",
+            "count" : 15
+          }, {
+            "item" : "3.4",
+            "count" : 14
+          }, {
+            "item" : "3.0",
+            "count" : 13
+          }, {
+            "item" : "2.8",
+            "count" : 12
+          }, {
+            "item" : "2.7",
+            "count" : 11
+          }, {
+            "item" : "2.1",
+            "count" : 10
+          }, {
+            "item" : "2.4",
+            "count" : 9
+          }, {
+            "item" : "2.5",
+            "count" : 8
+          }, {
+            "item" : "3.1",
+            "count" : 7
+          }, {
+            "item" : "3.9",
+            "count" : 6
+          }, {
+            "item" : "4.9",
+            "count" : 5
+          }, {
+            "item" : "7.5",
+            "count" : 4
+          }, {
+            "item" : "9.7",
+            "count" : 3
+          }, {
+            "item" : "10.2",
+            "count" : 2
+          }, {
+            "item" : "9.9",
+            "count" : 1
+          } ],
+          "smallest" : "2.1",
+          "sum" : "272.9"
+        },
+        "format" : { }
+      }, {
+        "id" : 227334777,
+        "name" : "Maui County",
+        "dataTypeName" : "number",
+        "fieldName" : "maui_county",
+        "position" : 7,
+        "renderTypeName" : "number",
+        "tableColumnId" : 32225347,
+        "width" : 232,
+        "cachedContents" : {
+          "non_null" : 50,
+          "average" : "5.136",
+          "largest" : "9.4",
+          "null" : 0,
+          "top" : [ {
+            "item" : "3.7",
+            "count" : 20
+          }, {
+            "item" : "4.0",
+            "count" : 19
+          }, {
+            "item" : "4.2",
+            "count" : 18
+          }, {
+            "item" : "3.9",
+            "count" : 17
+          }, {
+            "item" : "3.5",
+            "count" : 16
+          }, {
+            "item" : "3.4",
+            "count" : 15
+          }, {
+            "item" : "3.1",
+            "count" : 14
+          }, {
+            "item" : "3.0",
+            "count" : 13
+          }, {
+            "item" : "2.8",
+            "count" : 12
+          }, {
+            "item" : "2.7",
+            "count" : 11
+          }, {
+            "item" : "2.6",
+            "count" : 10
+          }, {
+            "item" : "2.4",
+            "count" : 9
+          }, {
+            "item" : "2.1",
+            "count" : 8
+          }, {
+            "item" : "2.3",
+            "count" : 7
+          }, {
+            "item" : "2.5",
+            "count" : 6
+          }, {
+            "item" : "3.2",
+            "count" : 5
+          }, {
+            "item" : "3.6",
+            "count" : 4
+          }, {
+            "item" : "4.3",
+            "count" : 3
+          }, {
+            "item" : "4.1",
+            "count" : 2
+          }, {
+            "item" : "5.1",
+            "count" : 1
+          } ],
+          "smallest" : "2.1",
+          "sum" : "256.8"
+        },
+        "format" : { }
+      } ],
+      "grants" : [ {
+        "inherited" : false,
+        "type" : "viewer",
+        "flags" : [ "public" ]
+      } ],
+      "metadata" : {
+        "custom_fields" : {
+          "Data Reference" : {
+            "Reference for Technical Information" : "",
+            "Frequency" : "",
+            "Date Updated" : "",
+            "Date Released" : "",
+            "Period of Coverage" : "",
+            "Unit of Analysis" : "",
+            "Data dictionary/variable list" : ""
+          },
+          "Hawaii Line of Business" : {
+            "Division name" : "",
+            "Line of Business" : "",
+            "Division shortname, acronym" : "",
+            "Department Agency short name, acronym" : "",
+            "State of Hawaii Data Book Category" : "",
+            "Department/Agency" : ""
+          },
+          "Terms of Use Acknowledgement" : {
+            "I agree by uploading this dataset that it contains no private information, and adheres to the data.hawaii.gov terms of use." : "yes"
+          }
+        },
+        "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+        "rowLabel" : "Row",
+        "renderTypeConfig" : {
+          "visible" : {
+            "table" : true
+          }
+        }
+      },
+      "owner" : {
+        "id" : "wktp-67q4",
+        "displayName" : "karen",
+        "screenName" : "karen",
+        "type" : "interactive",
+        "userSegment" : "site_member",
+        "flags" : [ "mayBeStoriesCoOwner" ]
+      },
+      "query" : { },
+      "rights" : [ "read" ],
+      "tableAuthor" : {
+        "id" : "wktp-67q4",
+        "displayName" : "karen",
+        "screenName" : "karen",
+        "type" : "interactive",
+        "userSegment" : "site_member",
+        "flags" : [ "mayBeStoriesCoOwner" ]
+      },
+      "flags" : [ "default", "restorable", "restorePossibleForType" ]
+    }
+  },
+  "data" : [ [ "row-ptg7.84mh.7n57", "00000000-0000-0000-041F-EF4BC101D184", 0, 1445635997, null, 1445635997, null, "{ }", "2004", "Apr 2004", "4.1", "3.2", "3.5", "3.4" ]
+, [ "row-v4nn.i3tg-w9uk", "00000000-0000-0000-D1B5-DA57732FFDB2", 0, 1445635997, null, 1445635997, null, "{ }", "2005", "Apr 2005", "3.3", "2.7", "2.8", "2.7" ]
+, [ "row-uq4r_nwm9~82nx", "00000000-0000-0000-70FA-8C0213D45182", 0, 1445635997, null, 1445635997, null, "{ }", "2011", "Jul 2011", "9.8", "6", "8.9", "7.8" ]
+, [ "row-t56r~f7sf.f7bs", "00000000-0000-0000-4CBD-635C2D5212A2", 0, 1445635997, null, 1445635997, null, "{ }", "2007", "Apr 2007", "3.3", "2.6", "2.5", "2.5" ]
+, [ "row-uhvx_6biz~gzzw", "00000000-0000-0000-85D4-6D9DE861EAAF", 0, 1445635997, null, 1445635997, null, "{ }", "2014", "Jul 2014", "5.4", "4", "4.8", "4.3" ]
+, [ "row-mj3w-nb89_jt38", "00000000-0000-0000-3FC3-397CB73D79C2", 0, 1445635997, null, 1445635997, null, "{ }", "2015", "Apr 2015", "4.6", "3.7", "4.4", "4.2" ]
+, [ "row-838e-ybgx_k5jn", "00000000-0000-0000-E5AD-5F1A364EDE77", 0, 1445635997, null, 1445635997, null, "{ }", "2005", "Jul 2005", "3.5", "2.7", "2.8", "2.7" ]
+, [ "row-75jk-ysas~cbav", "00000000-0000-0000-DFB3-ED1CE33F9AC3", 0, 1445635997, null, 1445635997, null, "{ }", "2009", "Jul 2009", "10.5", "6.2", "9.9", "9.4" ]
+, [ "row-dp34-mdyx~jipp", "00000000-0000-0000-EA9E-3E7696E0D6F7", 0, 1445635997, null, 1445635997, null, "{ }", "2012", "Jan 2012", "9.3", "5.9", "8.2", "7.2" ]
+, [ "row-5bsu_ep5x~wg97", "00000000-0000-0000-5FB7-DB028F7499B7", 0, 1445635997, null, 1445635997, null, "{ }", "2010", "Oct 2010", "9.9", "5.8", "8.7", "8.3" ]
+, [ "row-3juq~xmrk.s2gb", "00000000-0000-0000-9C81-DB917174457F", 0, 1445635997, null, 1445635997, null, "{ }", "2003", "Jan 2003", "4.7", "3.7", "4.1", "3.7" ]
+, [ "row-3tep~3dvm~ew2p", "00000000-0000-0000-7F4E-FA7AEA1F341C", 0, 1445635997, null, 1445635997, null, "{ }", "2011", "Oct 2011", "9.7", "6", "8.5", "7.7" ]
+, [ "row-dst5_z8gs-qzs3", "00000000-0000-0000-8718-56A58DF49FF2", 0, 1445635997, null, 1445635997, null, "{ }", "2003", "Oct 2003", "4.8", "4", "4", "3.9" ]
+, [ "row-hw9m.45e2~vwdf", "00000000-0000-0000-0C15-EDC031D1730F", 0, 1445635997, null, 1445635997, null, "{ }", "2015", "Jan 2015", "5.2", "3.9", "4.6", "4.4" ]
+, [ "row-4vzy~9qmj_vv4y", "00000000-0000-0000-10C1-944917A27224", 0, 1445635997, null, 1445635997, null, "{ }", "2007", "Jan 2007", "3.2", "2.5", "2.4", "2.3" ]
+, [ "row-wht5-jjz3~bm9q", "00000000-0000-0000-1BD0-7984EE424C32", 0, 1445635997, null, 1445635997, null, "{ }", "2008", "Jan 2008", "4.3", "4.3", "4.3", "4.3" ]
+, [ "row-vh74~i96v_uz4b", "00000000-0000-0000-B5ED-5FF098B00AB3", 0, 1445635997, null, 1445635997, null, "{ }", "2006", "Jan 2006", "3.2", "2.6", "2.7", "2.6" ]
+, [ "row-cjaa.ua2b_geyk", "00000000-0000-0000-9D18-8C09ACF675A9", 0, 1445635997, null, 1445635997, null, "{ }", "2005", "Jan 2005", "3.6", "3", "3", "2.8" ]
+, [ "row-xnf2-2t55.pnuj", "00000000-0000-0000-CE85-3DD5BFF6173F", 0, 1445635997, null, 1445635997, null, "{ }", "2008", "Oct 2008", "8", "4.8", "7.5", "6.8" ]
+, [ "row-ckyw~wq6j-zbir", "00000000-0000-0000-9024-59FB3B721780", 0, 1445635997, null, 1445635997, null, "{ }", "2013", "Jan 2013", "6.9", "4.5", "5.8", "5.4" ]
+, [ "row-77kh-m3xg-xzik", "00000000-0000-0000-281B-C05B34CA681D", 0, 1445635997, null, 1445635997, null, "{ }", "2012", "Oct 2012", "7.4", "4.8", "6.2", "5.6" ]
+, [ "row-6hqu_6wxn.ad68", "00000000-0000-0000-B485-921C2B8F3B5D", 0, 1445635997, null, 1445635997, null, "{ }", "2010", "Jul 2010", "9.9", "6", "8.9", "8.4" ]
+, [ "row-tw8b.hg9k~rtur", "00000000-0000-0000-457C-18D03622E090", 0, 1445635997, null, 1445635997, null, "{ }", "2014", "Apr 2014", "5.7", "4.2", "4.9", "4.7" ]
+, [ "row-5gvg-2hyq_hzrh", "00000000-0000-0000-D11C-D3B2F3B91E66", 0, 1445635997, null, 1445635997, null, "{ }", "2013", "Oct 2013", "6.4", "4.4", "5.6", "5.1" ]
+, [ "row-shfr-74jk~8vp9", "00000000-0000-0000-C31E-D3F4D7C74014", 0, 1445635997, null, 1445635997, null, "{ }", "2011", "Jan 2011", "9.8", "5.8", "8.6", "8.2" ]
+, [ "row-phc8-z6ew-h9jd", "00000000-0000-0000-A346-5FE370846EF4", 0, 1445635997, null, 1445635997, null, "{ }", "2013", "Jul 2013", "6.4", "4.3", "5.5", "5" ]
+, [ "row-q7cy_8mmw_pxb6", "00000000-0000-0000-DCF5-2C8B0CDAB6EC", 0, 1445635997, null, 1445635997, null, "{ }", "2003", "Jul 2003", "5", "4.2", "4.3", "4.2" ]
+, [ "row-hmxi.7eyw.mpi4", "00000000-0000-0000-FED6-D3C816C54A2D", 0, 1445635997, null, 1445635997, null, "{ }", "2011", "Apr 2011", "10.1", "5.8", "8.8", "7.9" ]
+, [ "row-r36a~67yh_ahcb", "00000000-0000-0000-8A3A-6ED7F87EE0AE", 0, 1445635997, null, 1445635997, null, "{ }", "2012", "Apr 2012", "8.6", "5.7", "7.8", "6.7" ]
+, [ "row-s7p6.zdd2-i7zh", "00000000-0000-0000-EF80-6A1B4B51C9C8", 0, 1445635997, null, 1445635997, null, "{ }", "2004", "Jan 2004", "4.4", "3.7", "3.8", "3.5" ]
+, [ "row-ekhc.kqc7_brmy", "00000000-0000-0000-19F1-32DA6D2CA24D", 0, 1445635997, null, 1445635997, null, "{ }", "2014", "Oct 2014", "5.2", "3.8", "4.6", "4.1" ]
+, [ "row-zypn-nfbq-qx37", "00000000-0000-0000-BE8B-92D709E3CF35", 0, 1445635997, null, 1445635997, null, "{ }", "2006", "Oct 2006", "2.9", "2.3", "2.1", "2.1" ]
+, [ "row-qbug~8368.68se", "00000000-0000-0000-EAD2-23ED6D790379", 0, 1445635997, null, 1445635997, null, "{ }", "2004", "Jul 2004", "4", "3.1", "3.4", "3.1" ]
+, [ "row-thfb_mc7u-57ie", "00000000-0000-0000-0F5A-20BEBDAB40E2", 0, 1445635997, null, 1445635997, null, "{ }", "2012", "Jul 2012", "8", "5.1", "7.1", "6.1" ]
+, [ "row-g3wm_qw8u.83z5", "00000000-0000-0000-65D3-1C28085B65BF", 0, 1445635997, null, 1445635997, null, "{ }", "2009", "Jan 2009", "9.6", "5.7", "9.7", "8.5" ]
+, [ "row-zyk4~d2hh.ked2", "00000000-0000-0000-DDFE-F192754B6947", 0, 1445635997, null, 1445635997, null, "{ }", "2006", "Apr 2006", "3.4", "2.8", "2.7", "2.8" ]
+, [ "row-twyn.c78x_m2jt", "00000000-0000-0000-4BFA-B6BD8027ACA9", 0, 1445635997, null, 1445635997, null, "{ }", "2013", "Apr 2013", "6.6", "4.4", "5.5", "5.1" ]
+, [ "row-xv33.bf2x.47m5", "00000000-0000-0000-AE5F-37212406C6B2", 0, 1445635997, null, 1445635997, null, "{ }", "2005", "Oct 2005", "3.3", "2.7", "2.7", "2.7" ]
+, [ "row-nz9w-2qnd~yhpa", "00000000-0000-0000-3DE7-67902CABBAC7", 0, 1445635997, null, 1445635997, null, "{ }", "2004", "Oct 2004", "3.9", "3.2", "3.4", "3" ]
+, [ "row-tktr-83ez_4ixz", "00000000-0000-0000-E551-BB834D588C30", 0, 1445635997, null, 1445635997, null, "{ }", "2007", "Oct 2007", "4", "2.8", "3.1", "3.6" ]
+, [ "row-iwrt~3cnc.kgr9", "00000000-0000-0000-238E-753039CE0941", 0, 1445635997, null, 1445635997, null, "{ }", "2008", "Apr 2008", "5.1", "3.6", "3.9", "4.1" ]
+, [ "row-baqf.axiy~c4ku", "00000000-0000-0000-110E-E9CC1DC0B5B4", 0, 1445635997, null, 1445635997, null, "{ }", "2003", "Apr 2003", "5.2", "4", "4.5", "4" ]
+, [ "row-yzfn.8bbm_gyu4", "00000000-0000-0000-AE7A-334EB101F87D", 0, 1445635997, null, 1445635997, null, "{ }", "2008", "Jul 2008", "6.5", "4.1", "4.9", "5.1" ]
+, [ "row-agmx.mh8b_w75u", "00000000-0000-0000-71D4-92E593082C28", 0, 1445635997, null, 1445635997, null, "{ }", "2010", "Jan 2010", "9.9", "6", "8.7", "8.9" ]
+, [ "row-dpgw.853q~amv2", "00000000-0000-0000-4BF4-6B3053CE3353", 0, 1445635997, null, 1445635997, null, "{ }", "2009", "Oct 2009", "10.4", "6.1", "9.2", "9.3" ]
+, [ "row-p6z2-pfeh.htrz", "00000000-0000-0000-9964-2514790DDEBC", 0, 1445635997, null, 1445635997, null, "{ }", "2007", "Jul 2007", "3.7", "2.6", "2.8", "3.2" ]
+, [ "row-j3ic_9ug8-8fc8", "00000000-0000-0000-9703-A22481F51604", 0, 1445635997, null, 1445635997, null, "{ }", "2006", "Jul 2006", "3", "2.5", "2.7", "2.4" ]
+, [ "row-cem9-xg47.rfiu", "00000000-0000-0000-BE46-42E7E0197F8E", 0, 1445635997, null, 1445635997, null, "{ }", "2014", "Jan 2014", "6", "4.3", "5.2", "5" ]
+, [ "row-67er_igau.d8vw", "00000000-0000-0000-2426-9512898A8C50", 0, 1445635997, null, 1445635997, null, "{ }", "2009", "Apr 2009", "10.3", "6.1", "10.2", "9.4" ]
+, [ "row-7338~iz2j-qyez", "00000000-0000-0000-97AD-E0B4A55AC4E9", 0, 1445635997, null, 1445635997, null, "{ }", "2010", "Apr 2010", "9.8", "6", "8.7", "8.6" ]
+ ]
+}

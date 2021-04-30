@@ -1,0 +1,14 @@
+[
+  {
+    "key": "value",
+    "otherKey": "otherValue",
+    "aNumber": 38.0,
+    "aBoolean": false,
+    "null": null,
+    "lastKey": "lastValue"
+  },
+  {
+    "testing": "value",
+    "other-test": "otherValue"
+  }
+]

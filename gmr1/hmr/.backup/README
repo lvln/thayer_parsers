@@ -1,0 +1,14 @@
+
+Preliminaries:
+	Copy test_suite.h file into the hammer include directory
+
+Compile:          make
+
+Run test vectors: make run
+
+Clean:            make clean
+
+Files:
+  hmr.c   -- the hammer version of the grammar
+	tv.[ch] -- test vector module
+
