@@ -1,6 +1,6 @@
 ![Thayer School of Engineering at Dartmouth](./logo.png "Thayer School")
 
-# Parser Experimenation Repository
+# Parser Experimentation Repository
 
 This repository explores and compares traditional grammars, described
 with BNF and implemented through
