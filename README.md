@@ -42,9 +42,10 @@ above attributes are present.
 
 ## Acknowledgements ##
 
-We wish to thank our collaborators at Lockheed-Martin ATL -- Andrew
-Holmes, Chris Miller, and Chuck Winters -- for their many valuable
-inputs and insights.
+We thank our collaborators at Lockheed-Martin ATL -- Andrew Holmes,
+Chris Miller, and Chuck Winters -- for their many valuable inputs and
+insights. Thanks also to _Sarah Korb_ for contributing the unicode
+extensions.
 
 
 
