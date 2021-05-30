@@ -28,6 +28,12 @@ make ${MODE} clean
 make ${MODE}
 popd
 
+pushd ./xbnf/bison
+echo [xbnf]
+make ${MODE} clean
+make ${MODE}
+popd
+
 # make the hmr grammars
 for DIR in gmr0 gmr1 jnum jstring json bin0 bin1 bin2 unicode command response json.unicode
 do
@@ -42,6 +48,14 @@ do
 		if [ -d ./${DIR}/hmr ] ; then
 				pushd ./${DIR}/hmr
 				echo [$DIR/hmr]
+				make ${MODE} clean
+				make ${MODE}
+				popd
+		fi
+
+		if [ -d ./${DIR}/xbnf ] ; then
+				pushd ./${DIR}/xbnf
+				echo [$DIR/xbnf]
 				make ${MODE} clean
 				make ${MODE}
 				popd

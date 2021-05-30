@@ -53,3 +53,11 @@ if [ -d ${DIR}/hdcode ]; then
 		popd
 		echo "====="
 fi
+
+if [ -d ${DIR}/xbnf ]; then
+		pushd ./${DIR}/xbnf
+		echo "[xbnf: ${DIR}/xbnf]"
+		make ${MODE} run
+		popd
+		echo "====="
+fi
