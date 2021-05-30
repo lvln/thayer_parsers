@@ -9,7 +9,7 @@ run:			tv
 					./tv
 
 clean:
-				rm -f *~ tv
+				rm -f *~ pass.* fail.* tv
 
 
 
