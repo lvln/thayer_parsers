@@ -1,31 +1,29 @@
 CFLAGS=-Wall -pedantic -std=c11 -I.
-OFILES=gmr.tab.o lexer.o gmr_tb.o
+OFILES=xbnf.tab.o lexer.o xbnf_tb.o
 
-all:				gmr
+all:				xbnf
 
-# bison: generate gmr.tab.[ch]
-gmr.tab.o:  gmr.y
-#						bison -d -t -v --report=all -x gmr.y
-						bison -d -t -v -x gmr.y
-						gcc $(CFLAGS) -c gmr.tab.c
+# bison: generate xbnf.tab.[ch]
+xbnf.tab.o:  xbnf.y
+#						bison -d -t -v --report=all -x xbnf.y
+						bison -d -t -v -x xbnf.y
+						gcc $(CFLAGS) -c xbnf.tab.c
 
-gmr_tb.o:		gmr_tb.c
-						gcc $(CFLAGS) -c gmr_tb.c
+xbnf_tb.o:	xbnf_tb.c
+						gcc $(CFLAGS) -c xbnf_tb.c
 
 lexer.o:		lexer.c
 						gcc $(CFLAGS) -c lexer.c
 
 # combine parser, lexer, and main
-gmr:				$(OFILES)
-						gcc $(CFLAGS) $(OFILES) -o gmr
+xbnf:				$(OFILES)
+						gcc $(CFLAGS) $(OFILES) -o xbnf
 
 run:
-						gmrtest.sh
+						./xbnftest.sh
 
 clean:
-						rm -f *~ *.o gmr.tab.* gmr.output gmr.xml gmr
-
-
+						rm -f *~ *.o xbnf.tab.* *output* gmr.xml xbnf
 
 
 
