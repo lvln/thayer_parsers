@@ -9,9 +9,9 @@ aaa: 'a' 'b' kkk
  * asdfa dfasdf adf 4qr qrq4t 
  */
 aaa : /* empty */
-	  | bbb ccc 'x' eee '\n'
+	  | bbb ccc 'x' eee '\n' /*dfaf */
 		| '\x5b' eee
-		;
+		;  /* asdfadf */
 
 a_a.a : [\x00-\xff] [\x00,\x03,\x04,\xff] [\x00,\xf3] [c-f] [A-Z]
 	  | b_b.b * 'x' eee

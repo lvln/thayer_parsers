@@ -1,0 +1,17 @@
+/*
+ * Response Parser
+ */
+P : IT | WA | FF | CA | ACK | NCK ;
+
+IT : '\x40' * ; /* invalid target */
+
+WA : '\x50' * ; /* weapon away */
+
+FF : '\x60' * ; /* firing fault */
+
+CA : '\x70' * ; /* cyber alert */
+
+ACK : '\x80' * ; /* ack */
+
+NCK : '\x81' * ; /* nack */
+

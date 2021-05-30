@@ -258,10 +258,20 @@ elements :  termval { setrlow(); } '-' termval { setrhigh(); }
 enumeration : termval { setenum0(); } | enumeration ',' termval { setnextenum(); } ;
 
 /* echo comments */
-comment: '/' '*' { fprintf(xout,"/*"); } commentchars '*' '/' { fprintf(xout,"*/"); } ;
+comment: '/' '*' { fprintf(xout,"/*"); } commentchars '*' '/' { fprintf(xout,"*/"); }
+       ;
 commentchars : commentchar | commentchars commentchar ;
 commentchar : alphanumeric      { fprintf(xout,"%c",(char)$1); }
             | '*'               { fprintf(xout,"*"); }
+            | '_'               { fprintf(xout,"_"); }
+            | ','               { fprintf(xout,","); }
+            | '-'               { fprintf(xout,"-"); }
+            | '.'               { fprintf(xout,"."); }
+            | ':'               { fprintf(xout,":"); }
+            | ';'               { fprintf(xout,";"); }
+            | '\''              { fprintf(xout,"\'"); }
+            | '('              { fprintf(xout,"("); }
+            | ')'              { fprintf(xout,")"); }
             | wschar       			/* whitespace already echod */
             ;
 

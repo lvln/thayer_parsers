@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	yydebug=0;
-	strcpy(fn,"output.xbnf");
+	strcpy(fn,"output.y");
 	for(arg=2; arg<argc; arg++) {
 		if(strcmp(argv[arg],"-d")==0)
 			yydebug=1;
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
 	fclose(yyin);
 	fflush(xout);
 	fclose(xout);
-	printf("[PASS]\n");
+	//printf("[PASS]\n");
   exit(EXIT_SUCCESS);
 }
 

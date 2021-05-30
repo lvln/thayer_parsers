@@ -225,9 +225,9 @@ terminal : '\'' termval '\'' ;
 
 termval : charval | hexval ;
 
-charval: alphanumeric       { cval = $1; if(!ranging) fprintf(xout,"%c",(char)$1); }
-       | punct              { cval = $1; if(!ranging) fprintf(xout,"%c",(char)$1); }
-       | '\\' escchar       { cval = $2; if(!ranging) fprintf(xout,"\\%c",(char)$2); }
+charval: alphanumeric       { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
+       | punct              { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
+       | '\\' escchar       { cval = $2; if(!ranging) fprintf(xout,"\'\\%c\'",(char)$2); }
 			 ;
 
 alphanumeric: uchar | lchar | digit ;
