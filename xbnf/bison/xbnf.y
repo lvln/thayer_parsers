@@ -9,6 +9,7 @@
 #define RMIN 0									/* index of min range value  */
 #define RMAX 1									/* index of max range value */
 #define ENUMMAX 10							/* max number of entries in an enumeration */
+#define CHARMAX 50                 /*max number of characters in a string*/
 
 	int yylex(void);
 	void yyerror(char *s);
@@ -28,8 +29,9 @@
 	static int enumeration[MAXENTRY][ENUMMAX]; /* the enumerations */
 	static bool anybyte=false;		/* true if anybytes is used in the grammar */
 	static bool ranging=false;		/* true if insize a range */
-	
-
+	static int strings[MAXENTRY][CHARMAX];   /*any strings that are found within rules*/
+	static int c=0;               /*variable used to hold character value for a string*/
+	static int nstr=0;            /*number of strings */
 
 	static void init() {	/* clear the tables */
 		int i,j;
@@ -47,6 +49,12 @@
 			for(j=0; j<ENUMMAX; j++) 
 				enumeration[i][j] = -1;
 		}
+		for(i=0; i<MAXENTRY; i++) { /* strings */                                                                                             
+      for(j=0; j<CHARMAX; j++)                                                                                                                 
+        strings[i][j] = -1;                                                                                                                
+    } 
+
+		
 		/* generate the preamble */
 		fprintf(xout,"%%{\n");
 		fprintf(xout,"  #define YYDEBUG 1\n");
@@ -145,7 +153,7 @@
 		eindex=0;
 		ranging=false;
 	}
-
+	
 	static void hexout() {
 		if(!ranging) {
 			if(hval==0)
@@ -154,13 +162,13 @@
 				fprintf(xout,"\'\\x%02x\'",hval);
 		}
 	}
-
- static void addrules() {							/* add rules for ranges and enumerations */
+	
+	static void addrules() {							/* add rules for ranges and enumerations */
 		int i,j,k;
-
+		
 		if(anybyte)	i=0;						/* anybyte present, start at 0 */
-		  else i=1;									/* otherwise, dont generate range 0 */
-
+		else i=1;									/* otherwise, dont generate range 0 */
+		
 		if(anybyte || nextrange>1)
 			fprintf(xout,"\n/* Range Expansions */\n");
 		for(; i<nextrange; i++) {		/* for each range -- only valid ranges in table*/
@@ -177,7 +185,7 @@
 				fprintf(xout,"\n  ");
 			fprintf(xout,"\'\\x%02x\' ;\n",j);
 		}
-
+		
 		if(nextenum>0)
 			fprintf(xout,"\n/* Enumeration Expansions */\n");
 		for(i=0; i<nextenum; i++) {		/* for each enumeration */
@@ -201,12 +209,38 @@
 			else
 				fprintf(xout,"\'\\x%02x\' ;\n",enumeration[i][j]);
 		}
+	
+		if (nstr>0)
+			fprintf(xout, "\n // String Expansions \n");
+		for(i=0; i < nstr; i++){
+			fprintf(xout, "s_%d : ", i);
+			j=0;
+			k=0;
+			while (strings[i][j+1] >= 0){
+				if (k%8==0)
+					fprintf(xout, "\n ");
+				if(strings[i][j] == 0)
+					fprintf(xout,"X00 ");
+				if (strings[i][j] == '\\')
+					fprintf(xout, "'\\\\'");
+				else                                                                                                                                    
+					fprintf(xout,"\'%c\' ", strings[i][j]);                                                                                     
+				j++;                                                                                                                                    
+				k++;                                                                                                                                    
+			}                                                                                                                                         
+			if(k%8==0)                                                                                                                                
+				fprintf(xout,"\n  ");                                                                                                                   
+			if(strings[i][j]==0)                                                                                                                  
+				fprintf(xout,"X00 ;\n");                                                                                                                
+			else                                                                                                                                    
+				fprintf(xout,"\'%c\' ;\n", strings[i][j]);
+				}
 	}
-	 
-%}
-
+%}	
+	
+	
 %token X00
-
+		 
 %%
 
 bnf: { init(); } rules ws0 { addrules(); } ;
@@ -219,7 +253,18 @@ rhs : terms ws1 | rhs '|' { fprintf(xout,"|" ); } terms ws1 ;
 
 terms : /* empty */ | terms ws1 term ;
 
-term : terminal | nonterminal | range | comment ;
+term : terminal | nonterminal | range | comment | string;
+
+string : '\"' letters '\"' {c = 0; fprintf(xout,"s_%d", nstr); nstr++;};
+
+letters : c | letters c ;
+
+c : alphanumeric { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}  
+    | punct       { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}
+    | ws          { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}  
+    | '\\' escchar   { cval = $2; strings[nstr][c] = '\\'; strings[nstr][c+1] = cval; c=c+2; cval=-1; }   ;
+
+ws : '\n' | '\t' | '\r' ; /* white space that isn't echoed*/ 
 
 terminal : '\'' termval '\'' ;
 
@@ -251,11 +296,11 @@ range : '[' { rbegin(); } elements ']'
       | '*' { fprintf(xout,"r__0"); anybyte=true; }
       ;
 
-elements :  termval { setrlow(); } '-' termval { setrhigh(); }
+elements : ws0 terminal ws0 { setrlow(); } '-' ws0 terminal ws0 { setrhigh(); }
          |  enumeration { eend(); }
          ;
 
-enumeration : termval { setenum0(); } | enumeration ',' termval { setnextenum(); } ;
+enumeration : ws0 terminal ws0 { setenum0(); } | enumeration ',' ws0 terminal ws0 { setnextenum(); } ;
 
 /* echo comments */
 comment: '/' '*' { fprintf(xout,"/*"); } commentchars '*' '/' { fprintf(xout,"*/"); }
@@ -290,7 +335,7 @@ punct:  ' ' | '!' | '#' | '$' | '%' | '&' | '\'' | '(' | ')' | '*' | '+'
       | ',' | '-' | '.' | '/' | ':' | ';' | '<' | '=' | '>' | '?' | '@'
       | '[' | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~' ;
 
-escchar: 'b' | 'f' | 'n' | 'r' | 't' | '"' | '\\' | '/' ;
+escchar: 'b' | 'f' | 'n' | 'r' | 't' | '"' | '\\' | '/' | 'v' | '?' | 'a' | 'e';
 
 digit: '0' | onenine ;
 onenine: '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' ;
