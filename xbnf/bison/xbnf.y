@@ -211,7 +211,7 @@
 		}
 	
 		if (nstr>0)
-			fprintf(xout, "\n // String Expansions \n");
+			fprintf(xout, "\n/* String Expansions */\n");
 		for(i=0; i < nstr; i++){
 			fprintf(xout, "s_%d : ", i);
 			j=0;
@@ -223,16 +223,16 @@
 					fprintf(xout,"X00 ");
 				if (strings[i][j] == '\\')
 					fprintf(xout, "'\\\\'");
-				else                                                                                                                                    
-					fprintf(xout,"\'%c\' ", strings[i][j]);                                                                                     
-				j++;                                                                                                                                    
-				k++;                                                                                                                                    
-			}                                                                                                                                         
-			if(k%8==0)                                                                                                                                
-				fprintf(xout,"\n  ");                                                                                                                   
-			if(strings[i][j]==0)                                                                                                                  
-				fprintf(xout,"X00 ;\n");                                                                                                                
-			else                                                                                                                                    
+				else                                                                                                               
+					fprintf(xout,"\'%c\' ", strings[i][j]);   
+				j++;              
+				k++;    
+			}                                                                                                                    
+			if(k%8==0)                     
+				fprintf(xout,"\n  ");                                                                                         
+			if(strings[i][j]==0)                                                                               
+				fprintf(xout,"X00 ;\n");                                  
+			else    
 				fprintf(xout,"\'%c\' ;\n", strings[i][j]);
 				}
 	}
@@ -253,18 +253,16 @@ rhs : terms ws1 | rhs '|' { fprintf(xout,"|" ); } terms ws1 ;
 
 terms : /* empty */ | terms ws1 term ;
 
-term : terminal | nonterminal | range | comment | string;
+term : terminal | nonterminal | range | comment | string ;
 
-string : '\"' letters '\"' {c = 0; fprintf(xout,"s_%d", nstr); nstr++;};
+string : '"' letters '"' {c = 0; fprintf(xout,"s_%d", nstr); nstr++;};
 
 letters : c | letters c ;
 
-c : alphanumeric { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}  
-    | punct       { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}
-    | ws          { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}  
-    | '\\' escchar   { cval = $2; strings[nstr][c] = '\\'; strings[nstr][c+1] = cval; c=c+2; cval=-1; }   ;
-
-ws : '\n' | '\t' | '\r' ; /* white space that isn't echoed*/ 
+c : alphanumeric   { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}  
+  | punct          { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}
+  | '\\' escchar   { cval = $2; strings[nstr][c] = '\\'; strings[nstr][c+1] = cval; c=c+2; cval=-1; }
+  ;
 
 terminal : '\'' termval '\'' ;
 
@@ -333,9 +331,9 @@ lhex: 'a'| 'b' | 'c' | 'd' | 'e' | 'f' ;
 
 punct:  ' ' | '!' | '#' | '$' | '%' | '&' | '\'' | '(' | ')' | '*' | '+' 
       | ',' | '-' | '.' | '/' | ':' | ';' | '<' | '=' | '>' | '?' | '@'
-      | '[' | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~' ;
+      | '[' | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~' | '"' ;
 
-escchar: 'b' | 'f' | 'n' | 'r' | 't' | '"' | '\\' | '/' | 'v' | '?' | 'a' | 'e';
+escchar: 'b' | 'f' | 'n' | 'r' | 't' | '\"' | '\\' | '/' | 'v' | '?' | 'a' | 'e';
 
 digit: '0' | onenine ;
 onenine: '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' ;
