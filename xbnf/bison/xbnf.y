@@ -255,7 +255,7 @@ terms : /* empty */ | terms ws1 term ;
 
 term : terminal | nonterminal | range | comment | string ;
 
-string : '"' letters '"' {c = 0; fprintf(xout,"s_%d", nstr); nstr++;};
+string : '\"' letters '\"' {c = 0; fprintf(xout,"s_%d", nstr); nstr++;};
 
 letters : c | letters c ;
 
@@ -331,7 +331,7 @@ lhex: 'a'| 'b' | 'c' | 'd' | 'e' | 'f' ;
 
 punct:  ' ' | '!' | '#' | '$' | '%' | '&' | '\'' | '(' | ')' | '*' | '+' 
       | ',' | '-' | '.' | '/' | ':' | ';' | '<' | '=' | '>' | '?' | '@'
-      | '[' | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~' | '"' ;
+      | '[' | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~' ;
 
 escchar: 'b' | 'f' | 'n' | 'r' | 't' | '\"' | '\\' | '/' | 'v' | '?' | 'a' | 'e';
 
