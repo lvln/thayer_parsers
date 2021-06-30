@@ -255,7 +255,7 @@ terms : /* empty */ | terms ws1 term ;
 
 term : terminal | nonterminal | range | comment | string ;
 
-string : '\"' letters '\"' {c = 0; fprintf(xout,"s_%d", nstr); nstr++;};
+string : '"' letters '"' {c = 0; fprintf(xout,"s_%d", nstr); nstr++;};
 
 letters : c | letters c ;
 
@@ -270,6 +270,7 @@ termval : charval | hexval ;
 
 charval: alphanumeric       { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
        | punct              { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
+       | '"'                { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
        | '\\' escchar       { cval = $2; if(!ranging) fprintf(xout,"\'\\%c\'",(char)$2); }
 			 ;
 
@@ -305,17 +306,11 @@ comment: '/' '*' { fprintf(xout,"/*"); } commentchars '*' '/' { fprintf(xout,"*/
        ;
 commentchars : commentchar | commentchars commentchar ;
 commentchar : alphanumeric      { fprintf(xout,"%c",(char)$1); }
-            | '*'               { fprintf(xout,"*"); }
-            | '_'               { fprintf(xout,"_"); }
-            | ','               { fprintf(xout,","); }
-            | '-'               { fprintf(xout,"-"); }
-            | '.'               { fprintf(xout,"."); }
-            | ':'               { fprintf(xout,":"); }
-            | ';'               { fprintf(xout,";"); }
-            | '\''              { fprintf(xout,"\'"); }
-            | '('              { fprintf(xout,"("); }
-            | ')'              { fprintf(xout,")"); }
-            | wschar       			/* whitespace already echod */
+            | '*' { fprintf(xout,"%c",(char)$1); }
+            | '(' { fprintf(xout,"%c",(char)$1); }
+            | ')' { fprintf(xout,"%c",(char)$1); }
+            | '-' { fprintf(xout,"%c",(char)$1); }
+            | wschar /* already output */
             ;
 
 uchar: uhex | 'G' | 'H' | 'I' | 'J' 
