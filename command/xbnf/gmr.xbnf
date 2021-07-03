@@ -13,29 +13,12 @@ W : '\x01' | '\x02' ;   /* wpnid */
 
 C : LAT D D LONG D D ;  /* lat min sec long min sec */
 
-D : [\x00-\x3c] ;       /* any uint8 0-60, represents min and sec in degrees */
+D : [ 'uint8(0)' - 'uint8(60)' ] ;       /* any uint8 0-60, represents min and sec in degrees */
 
-/*
- * latitude parser
- */
-LAT : u2_90 | fr_a6 ;   /* lat -90 to 90 , using 2's complement*/
+LAT : [ 'int8(-90)'-'int8(90)' ] ;   /* from 0 to 90 */	
 
-u2_90 : [\x00-\x5a] ;   /* from 0 to 90 */	
+LONG : ['int16(-180)' - 'int16(180)' ] ;      /* long -180 to 180 */
 
-fr_a6 : [\xa6-\xff] ;   /* starting from -90 to -1 using 2's complement ( 166 to 255 ) */
-
-/*
- * longitude parser
- */
-LONG : NEG | POS ;      /* long -180 to 180 */
-
-POS : u2_180 X00 ;      /* 0 to 180 positive */	
-
-NEG : fr_76 '\xff' ;    /* -180 to -1 negative */	
-
-fr_76 : [\x4c-\xff] ;   /* starting from -180 to -1 using 2's complement (76 to 255) */	
-
-u2_180 : [\x00-\xb4] ;  /* up to 180 */
 
 	
 

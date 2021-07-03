@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
+#include <netinet/in.h>
 	
 #define YYDEBUG 1
 #define MAXENTRY 100						/* max number of separate ranges */
@@ -33,6 +36,19 @@
 	static int c=0;               /*variable used to hold character value for a string*/
 	static int nstr=0;            /*number of strings */
 
+	/* for uint & int16 ranges and enums*/
+	static int STrange=0;
+	static int nextSTenum;
+  static int STeindex=0;
+	static int sixteen_range[MAXENTRY][2];
+	static int sixteen_enum[MAXENTRY][ENUMMAX];
+	
+	static int decimal=0; /*number to hold decimal in fwi*/
+	static int size=8;
+	static bool neg=false;
+	static bool unsign=true; /*default variable for fwi, intially unsigned*/
+	static bool fixedW = false;
+	
 	static void init() {	/* clear the tables */
 		int i,j;
 		linenum=1;
@@ -45,13 +61,21 @@
 			range[i][RMIN] = -1;
 			range[i][RMAX] = -1 ;
 		}
+		for(i=1; i<MAXENTRY; i++) { /* ranges */
+      sixteen_range[i][RMIN] = -1;
+      sixteen_range[i][RMAX] = -1 ;
+    } 
 		for(i=0; i<MAXENTRY; i++) {	/* enumerations */
 			for(j=0; j<ENUMMAX; j++) 
 				enumeration[i][j] = -1;
 		}
-		for(i=0; i<MAXENTRY; i++) { /* strings */                                                                                             
-      for(j=0; j<CHARMAX; j++)                                                                                                                 
-        strings[i][j] = -1;                                                                                                                
+		for(i=0; i<MAXENTRY; i++) { /* enumerations */   
+      for(j=0; j<ENUMMAX; j++)
+        enumeration[i][j] = -1;                                                                                  
+    } 
+		for(i=0; i<MAXENTRY; i++) { /* strings */      
+      for(j=0; j<CHARMAX; j++)                    
+        strings[i][j] = -1;   
     } 
 
 		
@@ -75,18 +99,20 @@
 	}
 
 	static void setrlow() {
-		if(hval<0 && cval<0) {
+		if(hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid range start\n",linenum);
 			exit(EXIT_FAILURE);
 		}
 		if(hval>=0) rlow=hval;
   		else rlow=cval;
+		
+		if (fixedW) rlow = hval;
 		hval=-1;										/* reset for next value */
 		cval=-1;
 	}
 	
 	static void setrhigh() {
-		if(hval<0 && cval<0) {
+		if (hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid range end\n",linenum);
 			exit(EXIT_FAILURE);
 		}
@@ -94,6 +120,7 @@
 			rhigh=hval;
 		else
 			rhigh=cval;
+		if (fixedW) rhigh = hval; 
 		hval=-1;										/* reset for next value */
 		cval=-1;
 
@@ -106,6 +133,12 @@
 			fprintf(xout,"r__0");											/* r__0 is anybyte */
 			anybyte=true;													/* at least one use */
 		}
+		else if (size==16 && fixedW){
+			sixteen_range[STrange][RMIN] = rlow;        /* store it */     
+      sixteen_range[STrange][RMAX] = rhigh;    
+      fprintf(xout,"rr__%d",STrange); /* generate a symbol */        
+      STrange++;
+		}
 		else {
 			range[nextrange][RMIN] = rlow;				/* store it */
 			range[nextrange][RMAX] = rhigh;
@@ -113,45 +146,115 @@
 			nextrange++;
 		}
 		ranging=false;
+		fixedW=false;
+	}
+
+
+	static void STenum0(){
+		sixteen_enum[nextSTenum][0]=hval;
+		hval =-1;
+		STeindex=1;
 	}
 	
 	static void setenum0() {
-		if(hval<0 && cval<0) {
+		if(hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid enumeration\n",linenum);
 			exit(EXIT_FAILURE);
 		}
+		if (size ==16 && fixedW) {STenum0(); return;}
+		
 		if(hval>=0)
 			enumeration[nextenum][0]=hval;
 		else
 			enumeration[nextenum][0]=cval;
+
+		if (fixedW) enumeration[nextenum][0]=hval;
+		
 		hval=-1;
 		cval=-1;
 		eindex=1;
 	}
 
+	static void setSTenum(){
+		sixteen_enum[nextSTenum][STeindex]=hval;
+		hval =-1;
+		STeindex++;
+	}
+
 	static void setnextenum() {
-		if(hval<0 && cval<0) {
+		if(hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid enumeration\n",linenum);
 			exit(EXIT_FAILURE);
 		}
+		if (size ==16 && fixedW) {setSTenum(); return;}
+		
 		if(hval>=0)
 			enumeration[nextenum][eindex]=hval;
 		else
 			enumeration[nextenum][eindex]=cval;
+		
+		if (fixedW) enumeration[nextenum][eindex]=hval;
 		hval=-1;
 		cval=-1;
 		eindex++;																 
 	}
 
 	static void eend() {
-		if(eindex==1) {
+		if(eindex==1 && size!= 16) {
 			printf("error: line %d - single entry enumeration invalid\n",linenum);
 			exit(EXIT_FAILURE);
 		}
-		fprintf(xout,"e__%d",nextenum);
-		nextenum++;
-		eindex=0;
+		if (size==16 && fixedW){
+			fprintf(xout,"ee__%d",nextSTenum);   
+			nextSTenum++;      
+			STeindex=0;
+		}
+		else{
+			fprintf(xout,"e__%d",nextenum);
+			nextenum++; 
+			eindex=0; 
+		}
 		ranging=false;
+		fixedW=false;
+	}
+	
+	static void fixed_width(){
+		if (size==8){
+			if (decimal==0 && !ranging) fprintf(xout, "X00 ");
+			else{			
+				if (!unsign && (decimal < -128 || decimal > 127) ){
+					printf("error: invalid entry for int8\n");
+					exit(EXIT_FAILURE);
+				}
+				if(unsign && (decimal < 0 || decimal > 255) ){
+					printf("error: invalid entry for uint8\n");                  
+					exit(EXIT_FAILURE);
+				}
+				if (!ranging) fprintf(xout, "\'\\x%02x\'", (uint8_t)decimal);			
+			}
+		}
+		if (size==16){
+			if (decimal==0 && !ranging) fprintf(xout, "X00 X00 ");
+			else{                                                                                                   
+				if (!unsign && (decimal < -32768 || decimal > 32767) ){  
+					printf("error: invalid entry for int16\n");                                          
+					exit(EXIT_FAILURE);                              
+				}                                      
+				if(unsign && (decimal < 0 || decimal > 65535) ){                                            
+					printf("error: invalid entry for uint16\n");
+					exit(EXIT_FAILURE);          
+				}
+				if (!ranging){
+					uint8_t bytes[2] = {0,0};  
+					memcpy(bytes, &decimal, 2);
+					if (bytes[1] == 0)					fprintf(xout, "X00 \'\\x%02x\'", bytes[0]);
+					else
+						fprintf(xout, "\'\\x%02x\' \'\\x%02x\'", bytes[1], bytes[0]);
+				}
+			}
+		}
+		hval =decimal;        
+		decimal=0;
 	}
 	
 	static void hexout() {
@@ -179,11 +282,11 @@
 				if(j==0)
 					fprintf(xout,"X00 | ");
 				else
-					fprintf(xout,"\'\\x%02x\' | ",j);
+					fprintf(xout,"\'\\x%02x\' | ", (uint8_t) j);
 			}
 			if(k%8==0)
 				fprintf(xout,"\n  ");
-			fprintf(xout,"\'\\x%02x\' ;\n",j);
+			fprintf(xout,"\'\\x%02x\' ;\n", (uint8_t) j);
 		}
 		
 		if(nextenum>0)
@@ -213,7 +316,7 @@
 		if (nstr>0)
 			fprintf(xout, "\n/* String Expansions */\n");
 		for(i=0; i < nstr; i++){
-			fprintf(xout, "s_%d : ", i);
+			fprintf(xout, "s__%d : ", i);
 			j=0;
 			k=0;
 			while (strings[i][j+1] >= 0){
@@ -223,21 +326,80 @@
 					fprintf(xout,"X00 ");
 				if (strings[i][j] == '\\')
 					fprintf(xout, "'\\\\'");
-				else                                                                                                               
+				else                         
 					fprintf(xout,"\'%c\' ", strings[i][j]);   
 				j++;              
 				k++;    
-			}                                                                                                                    
+			}              
 			if(k%8==0)                     
-				fprintf(xout,"\n  ");                                                                                         
+				fprintf(xout,"\n  ");    
 			if(strings[i][j]==0)                                                                               
 				fprintf(xout,"X00 ;\n");                                  
 			else    
 				fprintf(xout,"\'%c\' ;\n", strings[i][j]);
 				}
+
+		uint8_t bytes[2] = {0,0};
+		
+		if(STrange> 0)
+      fprintf(xout,"\n/* 16 Range Expansions */\n");
+		for(i=0; i<STrange; i++) {   /* for each range -- only valid ranges in table*/    
+      fprintf(xout,"rr__%d : ",i);         
+      for(k=0,j=sixteen_range[i][RMIN]; j<sixteen_range[i][RMAX]; k++,j++) { 
+        if(k%8==0)                                                              
+          fprintf(xout,"\n  ");                             
+        if(j==0)                             
+          fprintf(xout,"X00 X00 | ");  
+        else{
+					memcpy(bytes, &j, 2); 
+          if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 | ", bytes[0]);                            
+					else   
+						fprintf(xout, "\'\\x%02x\' \'\\x%02x\' | ", bytes[0], bytes[1]);
+				}                                                
+      }
+			
+      if(k%8==0)          
+        fprintf(xout,"\n  ");
+			memcpy(bytes, &j, 2);                                                  
+			if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 ;\n", bytes[0]);     
+			else                   
+				fprintf(xout, "\'\\x%02x\' \'\\x%02x\' ;\n", bytes[0], bytes[1]);
+		}
+		
+		if(nextSTenum>0) 
+      fprintf(xout,"\n/* 16 Enumeration Expansions */\n");
+    for(i=0; i<nextSTenum; i++) {   /* for each enumeration */   
+      fprintf(xout,"ee__%d : ",i);    
+      j=0;
+      k=0;             
+      while(sixteen_enum[i][j+1]>=0) { /* next element present */    
+        if(k%8==0)   
+          fprintf(xout,"\n  ");     
+        if(sixteen_enum[i][j]==0)             
+          fprintf(xout,"X00 X00 | ");      
+        else{                                                            
+          memcpy(bytes, &j, 2);      
+          if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 | ", bytes[0]);     
+          else   
+            fprintf(xout, "\'\\x%02x\' \'\\x%02x\' | ", bytes[0], bytes[1]);
+				}
+				j++;     
+        k++;          
+      }    
+      if(k%8==0)           
+        fprintf(xout,"\n  ");    
+      if(sixteen_enum[i][j]==0)         
+        fprintf(xout,"X00 X00 ;\n");  
+      else{         
+				memcpy(bytes, &j, 2);                                                                                   
+				if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 | ", bytes[0]); 
+				else 
+					fprintf(xout, "\'\\x%02x\' \'\\x%02x\' | ", bytes[0], bytes[1]);
+			}   
+		}	
 	}
 %}	
-	
+
 	
 %token X00
 		 
@@ -255,18 +417,38 @@ terms : /* empty */ | terms ws1 term ;
 
 term : terminal | nonterminal | range | comment | string ;
 
-string : '"' letters '"' {c = 0; fprintf(xout,"s_%d", nstr); nstr++;};
+string : '"' letters '"' {c = 0; fprintf(xout,"s__%d", nstr); nstr++;};
 
 letters : c | letters c ;
 
 c : alphanumeric   { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}  
   | punct          { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}
+  | ws             { cval = $1; strings[nstr][c] = cval; c++; cval = -1;} 
   | '\\' escchar   { cval = $2; strings[nstr][c] = '\\'; strings[nstr][c+1] = cval; c=c+2; cval=-1; }
   ;
 
+ws: '\t' '\n' '\r' ;
+
 terminal : '\'' termval '\'' ;
 
-termval : charval | hexval ;
+fwi : type size '(' sign number ')' {if (neg) decimal = 0-decimal; fixed_width(); fixedW=true;};
+
+type: 'u' 'i' 'n' 't'    {unsign=true;}
+    | 'i' 'n' 't'        {unsign=false;}
+    ;
+
+size: '8'     {size=8;}
+    | '1' '6' {size=16;}
+    ;
+
+sign: '-'       {neg=true;}
+    |/*empty */ {neg=false;};
+
+number: digit        {decimal += $1 - '0' ;}
+      | number digit {decimal*= 10; decimal += $2 - '0' ;}
+      ;
+
+termval : charval | hexval | fwi ;
 
 charval: alphanumeric       { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
        | punct              { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
@@ -310,6 +492,9 @@ commentchar : alphanumeric      { fprintf(xout,"%c",(char)$1); }
             | '(' { fprintf(xout,"%c",(char)$1); }
             | ')' { fprintf(xout,"%c",(char)$1); }
             | '-' { fprintf(xout,"%c",(char)$1); }
+            | ',' { fprintf(xout,"%c",(char)$1); } 
+            | '\''{ fprintf(xout,"%c",(char)$1); }
+            | '_' { fprintf(xout,"%c",(char)$1); } 
             | wschar /* already output */
             ;
 
