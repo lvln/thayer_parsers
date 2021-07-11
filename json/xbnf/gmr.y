@@ -11,9 +11,9 @@ value: object
      | array
      | STRING
      | number
-     | s_0
-     | s_1
-     | s_2
+     | s__0
+     | s__1
+     | s__2
      ;
 
 object: '{' ws '}'
@@ -106,9 +106,9 @@ r__9 :
   '\x61' | '\x62' | '\x63' | '\x64' | '\x65' | '\x66' ;
 
 /* String Expansions */
-s_0 : 
+s__0 : 
  't' 'r' 'u' 'e' ;
-s_1 : 
+s__1 : 
  'f' 'a' 'l' 's' 'e' ;
-s_2 : 
+s__2 : 
  'n' 'u' 'l' 'l' ;

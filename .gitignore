@@ -1,0 +1,17 @@
+*.o
+*~
+*.a
+.backup/*
+\#*\#
+*.log
+*.jou
+*.str
+*.tab.*
+*output*
+*.xml
+unused
+.DS_Store
+.logindata
+*/xbnf/gmr.y
+gmr
+RESULTS/*
