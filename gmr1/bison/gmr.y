@@ -10,16 +10,11 @@
 
 /* Here is the grammar */
 
-L : L ';' E
-  | E
-;
-E : E ',' P
-  | P
-;
-P : 'a'
-  | '(' M ')'
-;
-M : /* nothing */
-  | L
-;
+L : L ';' E  | E ;
+
+E : E ',' P  | P ;
+
+P : 'a'  | '(' M ')' ;
+
+M : /* nothing */  | L ;
 %%

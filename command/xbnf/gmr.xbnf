@@ -12,7 +12,7 @@ T : '\x30' C W * ;      /* target coord, wpnid msgid*/
 W : '\x01' | '\x02' ;   /* wpnid */
 
 C : LAT D D LONG D D ;  /* lat min sec long min sec */
-
+ 
 D : [ 'uint8(0)' - 'uint8(60)' ] ;       /* any uint8 0-60, represents min and sec in degrees */
 
 LAT : [ 'int8(-90)'-'int8(90)' ] ;   /* from 0 to 90 */	

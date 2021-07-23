@@ -10,10 +10,7 @@
 
 /* Here is the grammar */
 
-P : 'a'
-  | '(' M ')'
-;
-M : /* nothing */
-  | P
-;
+P : 'a'  | '(' M ')' ;
+
+M : /* nothing */   | P ;
 %%

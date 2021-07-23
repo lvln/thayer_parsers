@@ -36,8 +36,8 @@ twobyte: c2d | eight2b ;
 
 c2d: xc | xd ;
 
-threebyte: xe eight2b eight2b ;                                                                                                                         
-                                                                                                                                                         
+threebyte: xe eight2b eight2b ;
+
 fourbyte: xf eight2b eight2b ;
 
 eight2b: x8 | x9 | xa | xb ; //range x80 -> xBF 
@@ -62,7 +62,9 @@ ws: /* empty */ | ws ' ' | ws '\n' | ws '\t' | ws '\r' ;
                                                                                                                      
 escchar: 'b' | 'f' | 'n' | 'r' | 't' | '"' | '\\' | '/' | 'u' hex hex hex hex ;
 
-punct:  ' ' | '!' | '#' | '$' | '%' | '&' | '\''|'(' | ')' | '*' | '+' | ',' | '-' | '.' | ':' | ';' | '<' | '=' | '>' | '?' | '@' | '[' | '/' | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~' | '\x7f' ;
+punct:  ' ' | '!' | '#' | '$' | '%' | '&' | '\''|'(' | ')' | '*' | '+'
+      | ',' | '-' | '.' | ':' | ';' | '<' | '=' | '>' | '?' | '@'
+      | '[' | '/' | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~' | '\x7f' ;
 
 lchar: lhex | 'g' | 'h' | 'i' | 'j'                                                                                    
       | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't'                                                    

@@ -9,19 +9,19 @@
 %%
 
  /*Here is the parser*/
-P : IT | WA | FF | CA | ACK | NACK;
+P : IT | WA | FF | CA | ACK | NACK ;
 
-IT : '\x40' M; //invalid target
+IT : '\x40' M ; //invalid target
 
 WA : '\x50' M ; //weapon away
 
-FF : '\x60' M; //firing fault 
+FF : '\x60' M ; //firing fault 
 
-CA : '\x70' M; //cyber alert
+CA : '\x70' M ; //cyber alert
 
-ACK : '\x80' M; //ack
+ACK : '\x80' M ; //ack
 
-NACK : '\x81' M; //nack
+NACK : '\x81' M ; //nack
 
 //msg id 
 M : x0 | x1 | x2 | x3 | x4 | x5 | x6 | x7 | x8 | x9 | xa | xb | xc | xd | xe | xf ;

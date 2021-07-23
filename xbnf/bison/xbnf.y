@@ -48,6 +48,16 @@
 	static bool neg=false;
 	static bool unsign=true; /*default variable for fwi, intially unsigned*/
 	static bool fixedW = false;
+
+	static FILE* counts;
+	static int Xrules=0;
+	static int Xterminals=0;
+	static int Xnonterminals=0;
+
+	static int Brules=0;
+	static int Bterminals=0;  
+  static int Bnonterminals=0;
+
 	
 	static void init() {	/* clear the tables */
 		int i,j;
@@ -271,12 +281,14 @@
 		
 		if(anybyte)	i=0;						/* anybyte present, start at 0 */
 		else i=1;									/* otherwise, dont generate range 0 */
-		
+
 		if(anybyte || nextrange>1)
 			fprintf(xout,"\n/* Range Expansions */\n");
 		for(; i<nextrange; i++) {		/* for each range -- only valid ranges in table*/
 			fprintf(xout,"r__%d : ",i);
+			Bnonterminals++; 
 			for(k=0,j=range[i][RMIN]; j<range[i][RMAX]; k++,j++) {
+				Brules++; Bterminals++;
 				if(k%8==0)
 					fprintf(xout,"\n  ");
 				if(j==0)
@@ -286,7 +298,7 @@
 			}
 			if(k%8==0)
 				fprintf(xout,"\n  ");
-			fprintf(xout,"\'\\x%02x\' ;\n", (uint8_t) j);
+			fprintf(xout,"\'\\x%02x\' ;\n", (uint8_t) j); Brules++; Bterminals++;
 		}
 		
 		if(nextenum>0)
@@ -295,6 +307,8 @@
 			fprintf(xout,"e__%d : ",i);
 			j=0;
 			k=0;
+			Bnonterminals++;
+			Brules++;
 		  while(enumeration[i][j+1]>=0) {	/* next element present */
 				if(k%8==0)
 					fprintf(xout,"\n  ");
@@ -319,7 +333,10 @@
 			fprintf(xout, "s__%d : ", i);
 			j=0;
 			k=0;
+			Bnonterminals++;
+			Brules++;
 			while (strings[i][j+1] >= 0){
+				Bterminals++;
 				if (k%8==0)
 					fprintf(xout, "\n ");
 				if(strings[i][j] == 0)
@@ -330,13 +347,14 @@
 					fprintf(xout,"\'%c\' ", strings[i][j]);   
 				j++;              
 				k++;    
-			}              
+			}
+			Bterminals++;
 			if(k%8==0)                     
 				fprintf(xout,"\n  ");    
 			if(strings[i][j]==0)                                                                               
 				fprintf(xout,"X00 ;\n");                                  
 			else    
-				fprintf(xout,"\'%c\' ;\n", strings[i][j]);
+				fprintf(xout,"\'%c\' ;\n", strings[i][j]); 
 				}
 
 		uint8_t bytes[2] = {0,0};
@@ -344,14 +362,16 @@
 		if(STrange> 0)
       fprintf(xout,"\n/* 16 Range Expansions */\n");
 		for(i=0; i<STrange; i++) {   /* for each range -- only valid ranges in table*/    
-      fprintf(xout,"rr__%d : ",i);         
-      for(k=0,j=sixteen_range[i][RMIN]; j<sixteen_range[i][RMAX]; k++,j++) { 
+      fprintf(xout,"rr__%d : ",i);
+			Bnonterminals++;
+      for(k=0,j=sixteen_range[i][RMIN]; j<sixteen_range[i][RMAX]; k++,j++) {
+				Brules++; Bterminals++;
         if(k%8==0)                                                              
           fprintf(xout,"\n  ");                             
         if(j==0)                             
-          fprintf(xout,"X00 X00 | ");  
+          fprintf(xout,"X00 X00 | "); 
         else{
-					memcpy(bytes, &j, 2); 
+					memcpy(bytes, &j, 2);
           if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 | ", bytes[0]);                            
 					else   
 						fprintf(xout, "\'\\x%02x\' \'\\x%02x\' | ", bytes[0], bytes[1]);
@@ -360,7 +380,8 @@
 			
       if(k%8==0)          
         fprintf(xout,"\n  ");
-			memcpy(bytes, &j, 2);                                                  
+			memcpy(bytes, &j, 2);
+			Brules++; Bterminals++;
 			if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 ;\n", bytes[0]);     
 			else                   
 				fprintf(xout, "\'\\x%02x\' \'\\x%02x\' ;\n", bytes[0], bytes[1]);
@@ -371,7 +392,9 @@
     for(i=0; i<nextSTenum; i++) {   /* for each enumeration */   
       fprintf(xout,"ee__%d : ",i);    
       j=0;
-      k=0;             
+      k=0;
+			Bnonterminals++; 
+      Brules++; 
       while(sixteen_enum[i][j+1]>=0) { /* next element present */    
         if(k%8==0)   
           fprintf(xout,"\n  ");     
@@ -398,6 +421,14 @@
 			}   
 		}	
 	}
+	
+	static void print_counts(){
+		counts = fopen("gmr_counts", "w");
+		fprintf(counts,"XBNF %d %d %d ", Xrules, Xterminals, Xnonterminals);    
+		fprintf(counts,"Bison %d %d %d\n", Brules, Bterminals, Bnonterminals);
+		fclose(counts);	
+	}
+	
 %}	
 
 	
@@ -405,19 +436,19 @@
 		 
 %%
 
-bnf: { init(); } rules ws0 { addrules(); } ;
-
+bnf: { init(); } rules ws0 { addrules(); print_counts();}
+ 
 rules: rule | rules rule ;
 
 rule : ws0 nonterminal ws0 ':' { fprintf(xout,":"); } rhs ';' { fprintf(xout,";"); } | ws0 comment ;
 
-rhs : terms ws1 | rhs '|' { fprintf(xout,"|" ); } terms ws1 ;
+rhs : terms ws1 {Xrules++; Brules++; } | rhs '|' { fprintf(xout,"|" ); } terms ws1 {Xrules++; Brules++;};
 
 terms : /* empty */ | terms ws1 term ;
 
 term : terminal | nonterminal | range | comment | string ;
 
-string : '"' letters '"' {c = 0; fprintf(xout,"s__%d", nstr); nstr++;};
+string : '"' letters '"' {c = 0; fprintf(xout,"s__%d", nstr); nstr++; Xnonterminals++; Bnonterminals++;};
 
 letters : c | letters c ;
 
@@ -429,7 +460,7 @@ c : alphanumeric   { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}
 
 ws: '\t' '\n' '\r' ;
 
-terminal : '\'' termval '\'' ;
+terminal : '\'' termval '\''{Xterminals++; Bterminals++;} ;
 
 fwi : type size '(' sign number ')' {if (neg) decimal = 0-decimal; fixed_width(); fixedW=true;};
 
@@ -465,7 +496,7 @@ hexdigit: digit             { hval += $1 - '0'; }
         | lhex              { hval += $1 - 'a' + 10; }
         ;
 
-nonterminal : symbolchars ;
+nonterminal : symbolchars {Xnonterminals++; Bnonterminals++;};
 symbolchars : symbolchar | symbolchars symbolchar ;
 
 symbolchar : alphanumeric   { fprintf(xout,"%c",(char)$1); }
@@ -473,8 +504,8 @@ symbolchar : alphanumeric   { fprintf(xout,"%c",(char)$1); }
 					 | '.'            { fprintf(xout,"."); }
 					 ;
 
-range : '[' { rbegin(); } elements ']' 
-      | '*' { fprintf(xout,"r__0"); anybyte=true; }
+range : '[' { rbegin(); } elements ']' {Bnonterminals++;} 
+      | '*' { fprintf(xout,"r__0"); anybyte=true; Xnonterminals++;Bnonterminals++;}
       ;
 
 elements : ws0 terminal ws0 { setrlow(); } '-' ws0 terminal ws0 { setrhigh(); }
