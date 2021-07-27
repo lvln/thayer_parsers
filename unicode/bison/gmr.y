@@ -8,7 +8,7 @@
 
 %%
 
-P : one | two | three | four // 1, 2, 3, or 4 byte
+P : one | two | three | four ;// 1, 2, 3, or 4 byte
 
 one : x0 | x1 | x2 | x3 | x4 | x5 | x6 | x7 ; // h_ch_range(0x00,0x7F)
 
@@ -16,11 +16,11 @@ two : c2d r ; //h_ch_range(0xC2,0xDF),h_ch_range(0x80,0xBF),
 
 three : xe r r ; //h_ch_range(0xE0,0xEF),h_ch_range(0x80,0xBF),h_ch_range(0x80,0xBF)
 
-four : xf r r r;
+four : xf r r r ;
 
 c2d : xc | xd ; //h_ch_range(0xC2,0xDF)
 
-r : x8 | x9 | xa | xb; // h_ch_range(0x80,0xBF)
+r : x8 | x9 | xa | xb ; // h_ch_range(0x80,0xBF)
 
 x0 : X00|'\x01'|'\x02'|'\x03'|'\x04'|'\x05'|'\x06'|'\x07'|'\x08'|'\x09'|'\x0a'|'\x0b'|'\x0c'|'\x0d'|'\x0e'|'\x0f' ;
 

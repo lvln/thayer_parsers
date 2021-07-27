@@ -11,44 +11,25 @@
 
 json: element ;
 
-value: object
-     | array
-     | STRING
-     | number
-     | TRUE
-     | FALSE
-     | NULL
-     ;
+value: object | array | STRING | number | TRUE | FALSE | NULL ;
 
-object: '{' ws '}'
-      | '{' members '}'
-      ;
+object: '{' ws '}' | '{' members '}' ;
 
-members: member
-       | members ',' member
-       ;
+members: member | members ',' member ;
 
-member: ws STRING ws ':' element
-      ;
+member: ws STRING ws ':' element ;
 
-array: '[' ws ']'
-     | '[' elements ']'
-     ;
+array: '[' ws ']' | '[' elements ']' ;
 
-elements: element
-      | elements ',' element
-      ;
+elements: element | elements ',' element ;
 
 element: ws value ws ;
 
 STRING: '"' chars '"' ;
 
-chars: /* empty */
-      | chars CHAR
-			;
+chars: /* empty */ | chars CHAR ;
 
 CHAR: uchar | lchar | digit | punct | '\\' escchar ;
-
 
 number: integer fraction exponent ;
 
@@ -87,7 +68,6 @@ uhex: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;
 lhex: 'a'| 'b' | 'c' | 'd' | 'e' | 'f' ;
 
 hex: digit | uhex | lhex ;
-
 
 TRUE: 't' 'r' 'u' 'e' ;
 
