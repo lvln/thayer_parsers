@@ -3,22 +3,46 @@
  */
 P : AOR | EZ | T ;			/* three tyes of command */
 	
-AOR : '\x10' C C * ;    /* aor, coord, coord, msgid*/
+AOR : '\x10' C C any ;    /* aor, coord, coord, msgid*/
 
-EZ : '\x20' C C * ;     /* ez, coord, coord , msgid */
+EZ : '\x20' C C any ;     /* ez, coord, coord , msgid */
 
-T : '\x30' C W * ;      /* target coord, wpnid msgid*/
+T : '\x30' C W any ;      /* target coord, wpnid msgid*/
 
 W : '\x01' | '\x02' ;   /* wpnid */
 
 C : LAT D D LONG D D ;  /* lat min sec long min sec */
  
-D : [ 'uint8(0)' - 'uint8(60)' ] ;       /* any uint8 0-60, represents min and sec in degrees */
+D : fr0_60 ;       /* any uint8 0-60, represents min and sec in degrees */
 
-LAT : [ 'int8(-90)'-'int8(90)' ] ;   /* from 0 to 90 */	
+LAT : fr166_255 | fr0_90 ;   /* from -90 to 90 */	
 
-LONG : ['int16(-180)' - 'int16(180)' ] ;      /* long -180 to 180 */
+LONG : NEG | POS ;              /* long -180 to 180 */
+
+POS: fr0_180 X00 ;      /* equivalent to int16 0 to 180 */
+
+NEG:  fr76_255 '\xff' ; /* -180 to -1 using 2's complement */
 
 
-	
+any: fr0_60 | fr61_75 | fr76_255 ;
 
+fr0_180: fr0_90 | fr91_165 | fr166_180 ; /* uint8 0-180*/
+
+fr0_90: fr0_60 | fr61_75 | fr76_90 ;
+
+fr76_255: fr76_90 | fr91_165 | fr166_255 ; /*2's complement of -180 to -1 */
+
+fr166_255: fr166_180 | fr181_255 ; /*2's complement of -90 to -1 */
+
+
+fr181_255: ['uint8(181)'-'uint8(255)'] ;
+
+fr166_180: ['uint8(166)'-'uint8(180)'] ;
+
+fr91_165: ['uint8(91)'-'uint8(165)'] ;
+
+fr76_90: ['uint8(76)'-'uint8(90)'] ;
+
+fr61_75: ['uint8(61)' - 'uint8(75)' ] ;
+
+fr0_60: ['uint8(0)' - 'uint8(60)' ] ; 

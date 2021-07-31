@@ -32,13 +32,13 @@ CHAR: uchar | lchar | digit | unicodechar | punct | '\\' escchar ;
 
 unicodechar: twobyte | threebyte | fourbyte ;
 
-twobyte: c2d | eight2b ;
+twobyte: c2d eight2b ;
 
 c2d: xc | xd ;
 
 threebyte: xe eight2b eight2b ;
 
-fourbyte: xf eight2b eight2b ;
+fourbyte: xf eight2b eight2b eight2b ;
 
 eight2b: x8 | x9 | xa | xb ; //range x80 -> xBF 
 
@@ -86,7 +86,6 @@ FALSE: 'f' 'a' 'l' 's' 'e' ;
 
 NULL: 'n' 'u' 'l' 'l' ;  
 
-
 x8 : '\x80'|'\x81'|'\x82'|'\x83'|'\x84'|'\x85'|'\x86'|'\x87'|'\x88'|'\x89'|'\x8a'|'\x8b'|'\x8c'|'\x8d'|'\x8e'|'\x8f' ;
 
 x9 : '\x90'|'\x91'|'\x92'|'\x93'|'\x94'|'\x95'|'\x96'|'\x97'|'\x98'|'\x99'|'\x9a'|'\x9b'|'\x9c'|'\x9d'|'\x9e'|'\x9f' ;
@@ -101,6 +100,7 @@ xd : '\xd0'|'\xd1'|'\xd2'|'\xd3'|'\xd4'|'\xd5'|'\xd6'|'\xd7'|'\xd8'|'\xd9'|'\xda
 
 xe : '\xe0'|'\xe1'|'\xe2'|'\xe3'|'\xe4'|'\xe5'|'\xe6'|'\xe7'|'\xe8'|'\xe9'|'\xea'|'\xeb'|'\xec'|'\xed'|'\xee'|'\xef' ;
 
-xf : '\xf0'|'\xf1'|'\xf2'|'\xf3'|'\xf4'|'\xf5'|'\xf6'|'\xf7'|'\xf8'|'\xf9'|'\xfa'|'\xfb'|'\xfc'|'\xfd'|'\xfe'|'\xff' ; 
+xf : '\xf0'|'\xf1'|'\xf2'|'\xf3'|'\xf4'|'\xf5'|'\xf6'|'\xf7'|'\xf8'|'\xf9'|'\xfa'|'\xfb'|'\xfc'|'\xfd'|'\xfe'|'\xff' ;
+
 
 %%

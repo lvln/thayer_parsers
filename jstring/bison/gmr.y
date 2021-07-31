@@ -8,45 +8,12 @@
 
 %% /* The JSON Grammar definition -- no actions are performed */
 
-json: element ;
-
-value: object | array | STRING | number | TRUE | FALSE | NULL ;
-
-object: '{' ws '}' | '{' members '}' ;
-
-members: member | members ',' member ;
-
-member: ws STRING ws ':' element ;
-
-array: '[' ws ']' | '[' elements ']' ;
-
-elements: element | elements ',' element ;
-
-element: ws value ws ;
 
 STRING: '"' chars '"' ;
 
 chars: /* empty */ | chars CHAR ;
 
 CHAR: uchar | lchar | digit | punct | '\\' escchar ;
-
-number: integer fraction exponent ;
-
-integer: digit | onenine digits | '-' digit | '-' onenine digits ;
-
-fraction: /* empty */ | '.' digits ;
-
-exponent: /* empty */ | 'E' sign digits | 'e' sign digits ;
-
-sign: /* empty */ | '+' | '-' ;
-
-digits: digit | digits digit ;
-
-digit: '0' | onenine ;
-
-onenine: '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' ;
-
-ws: /* empty */	| ws ' ' | ws '\n' | ws '\t' | ws '\r' ;
 
 escchar: 'b' | 'f' | 'n' | 'r' | 't' | '"' | '\\' | '/' | 'u' hex hex hex hex ;
 
@@ -68,11 +35,8 @@ lhex: 'a'| 'b' | 'c' | 'd' | 'e' | 'f' ;
 
 hex: digit | uhex | lhex ;
 
+digit: '0' | onenine ;
 
-TRUE: 't' 'r' 'u' 'e' ;
-
-FALSE: 'f' 'a' 'l' 's' 'e' ;
-
-NULL: 'n' 'u' 'l' 'l' ;
+onenine: '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' ;   
 
 %% /* C-Code */
