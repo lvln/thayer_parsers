@@ -88,8 +88,12 @@ int main(){
 	fwrite(&tp2, sizeof(uint8_t), 1, fp);
 	p1->lat = 90;
 	p1->lon = 0;
+	p1->min = 1;
+	p1->sec = 59;
 	p2->lat = -90;
 	p2->lon = 180;
+	p2->min = 15;
+	p2->sec = 45;
   write_coord(fp, p1);
 	write_coord(fp, p2);
   fwrite(&ID, sizeof(uint8_t), 1, fp);                                        
@@ -102,19 +106,43 @@ int main(){
 	p1->lon = -1;
   write_coord(fp, p1);
   fwrite(&WPN, sizeof(uint8_t),1,fp);
-  fwrite(&ID, sizeof(uint8_t), 1, fp);                                                                                                                
+  fwrite(&ID, sizeof(uint8_t), 1, fp);
   fclose(fp);
 
+
+	fp = fopen("./pass.4", "wb");
+  ID = 0;
+	WPN = 1;
+  fwrite(&tp3, sizeof(uint8_t), 1, fp);
+  p1->lat = 1;
+  p1->lon = -180;
+  write_coord(fp, p1);
+  fwrite(&WPN, sizeof(uint8_t),1,fp);
+  fwrite(&ID, sizeof(uint8_t), 1, fp);
+  fclose(fp);
+
+	fp = fopen("./pass.5", "wb"); 
+	ID = 127;
+  fwrite(&tp1, sizeof(uint8_t), 1, fp);
+  p1->lat = -45;
+  p1->lon = 127;
+	p2->lat = 89;
+  p2->lon = -128;
+	write_coord(fp, p1);
+  write_coord(fp, p2);
+  fwrite(&ID, sizeof(uint8_t), 1, fp);
+  fclose(fp); 
+
 	//only one coordinate for cmd 1
-	fp = fopen("./fail.1", "wb");                                                                                                                       
-  fwrite(&tp1, sizeof(uint8_t), 1, fp);                                                                                                               
-  write_coord(fp, p1);                                                                                                                                
-  fwrite(&ID, sizeof(uint8_t), 1, fp);                                                                                                                
+	fp = fopen("./fail.1", "wb");
+  fwrite(&tp1, sizeof(uint8_t), 1, fp);
+  write_coord(fp, p1);
+  fwrite(&ID, sizeof(uint8_t), 1, fp);
   fclose(fp);
 
 	//missing msg ID
-	fp = fopen("./fail.2", "wb");                                                                                                                       
-  fwrite(&tp1, sizeof(uint8_t), 1, fp);                                                                                                               
+	fp = fopen("./fail.2", "wb");
+  fwrite(&tp1, sizeof(uint8_t), 1, fp);
   write_coord(fp, p1);
 	write_coord(fp, p2); 
   fclose(fp);
@@ -122,53 +150,52 @@ int main(){
 	//weapon id that is not 1 or 2
 	fp = fopen("./fail.3", "wb");
 	WPN = 3;
-  fwrite(&tp3, sizeof(uint8_t), 1, fp);                                                                                                               
-  write_coord(fp, p1);                                                                                                                                
+  fwrite(&tp3, sizeof(uint8_t), 1, fp);
+  write_coord(fp, p1);
   fwrite(&WPN, sizeof(uint8_t),1,fp);
 	fwrite(&ID, sizeof(uint8_t), 1, fp); 
   fclose(fp);
 
 	WPN = 2;
 	//incorrect type
-	fp = fopen("./fail.4", "wb");                                                                                                                       
+	fp = fopen("./fail.4", "wb");
 	uint8_t tp4 = 4;
-  fwrite(&tp4, sizeof(uint8_t), 1, fp);                                                                                                               
-  write_coord(fp, p1);                                                                                                                                
+  fwrite(&tp4, sizeof(uint8_t), 1, fp);
+  write_coord(fp, p1);
   fwrite(&WPN, sizeof(uint8_t),1,fp);
 	fwrite(&ID, sizeof(uint8_t), 1, fp); 
   fclose(fp);
 	
 
 	//invalid lat
-	fp = fopen("./fail.5", "wb");                                                                                                                       
+	fp = fopen("./fail.5", "wb");
   fwrite(&tp3, sizeof(uint8_t), 1, fp);
 	p1->lat = 91;
-  write_coord(fp, p1);                                                                                                                                
-  fwrite(&WPN, sizeof(uint8_t),1,fp);                                                                                                                 
-  fwrite(&ID, sizeof(uint8_t), 1, fp);                                                                                                                
+  write_coord(fp, p1);
+  fwrite(&WPN, sizeof(uint8_t),1,fp);
+  fwrite(&ID, sizeof(uint8_t), 1, fp);
   fclose(fp);
 
 
 	//invalid long
-	fp = fopen("./fail.6","wb");                                                                                                                        
+	fp = fopen("./fail.6","wb");
   fwrite(&tp2, sizeof(uint8_t), 1, fp);
 	p1->lat = 56;
-  p1->lon = -200;                                                                                                                                     
-  write_coord(fp, p1);                                                                                                                                
-  write_coord(fp, p2);                                                                                                                                
-  fwrite(&ID, sizeof(uint8_t), 1, fp);                                                                                                                
+  p1->lon = -200;
+  write_coord(fp, p1);
+  write_coord(fp, p2);
+  fwrite(&ID, sizeof(uint8_t), 1, fp);
   fclose(fp);
 
 	//invalid minute
-	fp = fopen("./fail.7","wb");                                                                                                                        
-  fwrite(&tp2, sizeof(uint8_t), 1, fp);                                                                                                               
+	fp = fopen("./fail.7","wb");
+  fwrite(&tp2, sizeof(uint8_t), 1, fp);
   p1->lon = -75;
 	p1->min = 90;
-  write_coord(fp, p1);                                                                                                                                
-  write_coord(fp, p2);                                                                                                                                
-  fwrite(&ID, sizeof(uint8_t), 1, fp);                                                                                                                
+  write_coord(fp, p1);
+  write_coord(fp, p2);
+  fwrite(&ID, sizeof(uint8_t), 1, fp);
   fclose(fp);
-
 	
 	free(p1);
 	free(p2);
