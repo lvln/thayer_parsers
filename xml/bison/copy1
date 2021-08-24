@@ -13,8 +13,30 @@ document: prolog | inside ;
 
 prolog: XMLDecl inside | XMLDecl doctypedecl inside | doctypedecl inside ;  
 
-doctypedecl: '<' '!' 'D' 'O' 'C' 'T' 'Y' 'P' 'E' space Name   '>' ws ;
+doctypedecl: '<' '!' 'D' 'O' 'C' 'T' 'Y' 'P' 'E' space Name ExternalID   '>' ws ;
 
+/*subset: '[' intSubset']' ws | ;
+intSubset: sub | intSubset sub ;
+sub: markupdecl | DeclSep ;
+
+markupdecl: elementdecl ;// AttlistDecl | EntityDecl | NotationDecl ;
+DeclSep: '%' Name ';' | s ;
+elementdecl: '<' '!' 'E' 'L' 'M' 'E' 'N' 'T' space Name space contentspec ws '>' ;
+contentspec: 'E' 'M' 'P' 'T' 'Y' | 'A' 'N' 'Y' | Mixed | children ;
+Mixed: '(' ws PCData mix ws ')' '*' | '(' ws PCData ws ')' ;
+mix: m | mix m ;
+m : ws '|' ws Name ;
+
+PCData: '#' 'P' 'C' 'D' 'A' 'T' 'A' ;
+children: choice end ;
+end: '?' | '*' | '+' ;
+choice: '(' ws cp seq ws ')' ;
+*/
+ExternalID: space 'S' 'Y' 'S' 'T' 'E' 'M' space Literal
+					| space 'P' 'U' 'B' 'L' 'I' 'C' space Literal space Literal
+          | /*empty*/ ;
+
+Literal: quotes any quotes ;
 
 XMLDecl: '<' '?' 'x' 'm' 'l' VersionInfo EncodingDecl SDDecl'?' '>' ws ;
 
