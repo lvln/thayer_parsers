@@ -1,0 +1,90 @@
+document: prolog | inside ;
+
+prolog: XMLDecl inside | XMLDecl doctypedecl inside | doctypedecl inside ;  
+
+doctypedecl: "<!DOCTYPE" space Name   '>' ws ;
+
+XMLDecl: "<?xml" VersionInfo EncodingDecl SDDecl "?>" ws ;
+
+VersionInfo: " version" ws '=' ws quotes VersionNum quotes ws ;
+
+VersionNum:  "1.0" ;
+
+EncodingDecl: /*empty*/  | "encoding" ws '=' ws quotes  Encname quotes ws ;
+
+Encname: Enc | Encname Enc ;
+
+Enc: letter | '-' | digit ;
+
+SDDecl: /*empty */ | "standalone" ws '=' ws quotes yn quotes ws ;  
+
+yn: "yes" | "no" ; 
+
+inside: block  | inside block ;
+
+block: Stag content Etag | EmptyElemTag | Stag Etag ;
+
+content: Reference   | block ;
+
+EmptyElemTag: '<' Name At '/' '>' ;
+
+Stag: '<' Name At '>' ;  
+
+Etag: '<' '/' Name  ws '>' ;
+
+At: Atts | /*empty */ | space ;
+
+Atts:  Attrib  | Atts Attrib  ;
+
+Attrib: space Name ws '=' ws AttValue  ;
+
+AttValue: '"' Reference '"'  ;
+
+Reference: EntityRef | CharRef | any ; 
+
+any: r | any r ;
+
+r: letter | digit  | punct | s | '\\' escchar ;
+
+EntityRef: '&' Name ';' ;
+
+CharRef: "&#" digits ';' | "&#x" dol ';' ;
+
+Name: letters ;
+
+dol: digits | letters ;
+
+letters: letter | letters letter ;
+
+letter: lchar | uchar ;
+
+lchar: 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j'       
+      | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't'                        
+      | 'u' | 'v' | 'w' | 'x' | 'y' | 'z' ;                                              
+                                                                                         
+uchar: 'A' | 'B' | 'C' | 'D' | 'E' | 'F'  | 'G' | 'H' | 'I' | 'J'  
+      | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T'                        
+      | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' ;                                              
+                                                                                         
+
+digits: digit | digits digit ;                                                           
+                                                                                         
+digit: '0' | onenine ;                                                                   
+                                                                                         
+onenine: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' ;   
+
+ws: /* empty */ | ws ' ' | ws '\n' | ws '\t' | ws '\r' ; 
+
+space: s | space s ;
+
+s: ' ' | '\r' | '\t' | '\n' ;
+
+punct: '!' | '#' | '$' | '%' | '(' | ')' | '*' | '+'  
+      | ',' | '-' | '.' | '/' | ':' | ';' | '=' | '?' | '@'
+      | '^' | '_' | '`' | '{' | '|' | '}' | '~' ;
+
+
+escchar: 'b' | 'f' | 'n' | 'r' | 't' | '\\' | '/' ;
+
+quotes: " \'" | '"' ; 
+
