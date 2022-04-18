@@ -12,6 +12,8 @@
 unused
 .DS_Store
 .logindata
+*/bison/gmr
+*/hmr/hmr
+*/xbnf/gmr
 */xbnf/gmr.y
-gmr
 RESULTS/*
