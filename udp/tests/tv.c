@@ -13,78 +13,32 @@
 
 #include <stdio.h>
 #include <stdint.h>
-
-#define MAXDATA 1600
-
-void putbytes(uint16_t val,uint8_t *bp) {
-	*bp++ = (uint8_t)(val>>8);
-	*bp =  (uint8_t)(0x00&val);
-}
-
+#include <inttypes.h>
 
 int main(int argc, char *argv[]) {
-
-	//first test with 0
 	FILE *fp;
 
-	uint8_t num1, num2,num3;
-
 	uint16_t srcport, dstport;
-	uint16_t len;
-	unit16_t chksum;
-	uint16_t data[MAXDATA];
-	bool little_endian;
-
+	uint16_t datalen, pktlen;
+	uint16_t chksum;
+	int i;
+	uint8_t byte;
 	
-	big_endian = true;						/* network byte order */
 	srcport = 9000;
 	dstport = 1000;
 	datalen = 10;
-	pktlen = datalen+(4*sizeof(uint16_t));
+	pktlen = (4*sizeof(uint16_t)) + datalen;
 	chksum = 0;
 
-	num1 = 0;
-	num2 = 34;
-	num3 = 93;
 	fp = fopen("./pass.1", "wb");
-
-	fwrite(&num1, sizeof(uint8_t),1 ,fp);
-	fwrite(&num2, sizeof(uint8_t), 1, fp);
-	fwrite(&num3,sizeof(uint8_t), 1, fp);
+	fwrite(&srcport,sizeof(uint16_t),1 ,fp);
+	fwrite(&dstport,sizeof(uint16_t), 1, fp);
+	fwrite(&pktlen,sizeof(uint16_t), 1, fp);
+	fwrite(&chksum,sizeof(uint16_t), 1, fp);
+	for(i=0; i<datalen; i++) {
+		byte = (uint8_t)(i%256);
+		fwrite(&byte,sizeof(uint8_t), 1, fp);
+	}
 	fclose(fp);
-
-	//empty file test
-	fp = fopen("./fail.1","wb");
-	fclose(fp);
-
-	//only 0 test
-	fp = fopen("./fail.2","wb");
-	fwrite(&num1, sizeof(uint8_t),1 ,fp);
-	fclose(fp);
-
-	//no 34 value in middle
-	
-	fp = fopen("./fail.3","wb");
-	num2 = 45;
-  fwrite(&num1, sizeof(uint8_t),1 ,fp);                                 
-  fwrite(&num2, sizeof(uint8_t), 1, fp);                                
-  fwrite(&num3,sizeof(uint8_t), 1, fp);
-	fclose(fp);
-
-	num2 = 34;
-	
-	//more then the 3 values
-	fp = fopen("./fail.4","wb");
-	uint8_t num4 = 2;
-  fwrite(&num1, sizeof(uint8_t),1 ,fp);                                 
-  fwrite(&num2, sizeof(uint8_t), 1, fp);                                
-  fwrite(&num3,sizeof(uint8_t), 1, fp);
-	fwrite(&num4, sizeof(uint8_t), 1, fp);
-                                                                    
-  fclose(fp); 
-
-	
- 
 	return 0;
-
 }
