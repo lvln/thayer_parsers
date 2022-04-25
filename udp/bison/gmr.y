@@ -1,14 +1,20 @@
+
 %{
-	#define YYDEBUG 1
-	int yylex(void);
-	void yyerror(char *s);
+#include <stdio.h>
+#include <inttypes.h>
+
+#define YYDEBUG 1
+	int dlen;
+  int yylex(void);
+  void yyerror(char *s);
+
 %}
 
 %token X00
 
 %%
 
-udpmsg : port port len chksum data ;
+udpmsg : { dlen=0; } port port len chksum data { printf("dlen: %d\n",dlen); };
 
 port : anybyte anybyte ;
 
@@ -16,11 +22,11 @@ len : anybyte anybyte ;
 
 chksum : anybyte anybyte ;
 
-data : /* empty */ | anybyte data ;
+data : /* empty */  | anybyte data { dlen++; };
 
 anybyte : x0 | x1 | x2 | x3 | x4 | x5 | x6 | x7 | x8 | x9 | xa | xb | xc | xd | xe | xf ;
 
-x0 : X00 '\x01' | '\x02' | '\x03' | '\x04' | '\x05' | '\x06' | '\x07' | '\x08' | '\x09' | '\x0a' | '\x0b' | '\x0c' | '\x0d' | '\x0e' | '\x0f' ;
+x0 : X00 | '\x01' | '\x02' | '\x03' | '\x04' | '\x05' | '\x06' | '\x07' | '\x08' | '\x09' | '\x0a' | '\x0b' | '\x0c' | '\x0d' | '\x0e' | '\x0f' ;
 
 x1 : '\x10' | '\x11' | '\x12' | '\x13' | '\x14' | '\x15' | '\x16' | '\x17' | '\x18' | '\x19' | '\x1a' | '\x1b' | '\x1c' | '\x1d' | '\x1e' | '\x1f' ;
 
