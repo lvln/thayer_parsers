@@ -19,8 +19,11 @@ int yylex (void) {
 
 	if(fread(&c,sizeof(uint8_t),1,yyin) != 1)
 		return 0;
-	else if(c==0x00)
+	else if(c==0x00) {
+		yylval = 0;
 		return X00;
+	}
+	yylval = c;
 	return c;
 }
 
