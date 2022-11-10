@@ -21,7 +21,7 @@ do
 done
 # copy everything to .backup
 shopt -s nullglob
-for f in *.[ch] *.[ly] *.sh *.xbnf *.xml Makefile README
+for f in *.[ch] *.[ly] *.sh *.xbnf *.xml *.cpp *.hpp Makefile README README.md
 do
 		if [ -f $f ] ; then
 				echo "[saving $f]"

@@ -16,5 +16,6 @@ unused
 */hmr/hmr
 */xbnf/gmr
 */xbnf/gmr.y
+xbnf/bison/xbnf
 */*/gmr_counts
 RESULTS/*

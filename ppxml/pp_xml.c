@@ -34,7 +34,8 @@
 #include <inttypes.h>
 #include "pp_xml.h"
 
-#define MAXLINE 256
+#define MAXLINE 1024
+#define MAXSTR 512
 #define MAXRHS 10
 #define MAXTABLE 1000
 /* structure of a rule */
@@ -802,7 +803,7 @@ static void print_shift(FILE *f, const HStringMap *map,bool *pp) {
 
 
 static void print_goto(FILE *f, const HCFGrammar *g, const HCFChoice *symbol, const HLRAction *action,bool *pp) {
-  char line[MAXLINE],statestr[MAXLINE], *p;
+  char line[MAXLINE],statestr[MAXSTR], *p;
   
 	if(!(*pp))
 		putline(f, "<transitions>\n",4);

@@ -4,15 +4,17 @@
 
 This repository explores and compares traditional grammars, described
 with BNF and implemented through
-[Bison](https://www.gnu.org/software/bison), with equivalent
-grammars expressed and implemented through
+[Bison](https://www.gnu.org/software/bison), with equivalent grammars
+expressed and implemented through
 [Hammer](https://gitlab.special-circumstanc.es/hammer/hammer), a
-parser combinator framework under development through the 
-[DARPA SafeDocs](https://www.darpa.mil/program/safe-documents) 
-program.
+parser combinator framework under development through the [DARPA
+SafeDocs](https://www.darpa.mil/program/safe-documents) program. In
+addition, an extended version of BNF -- xBNF -- is also explored that
+captures core concepts from Hammer. It is implemented as a
+preprocessor, written in BNF, implemented with Bison.
 
 All parsers provided are operational; A set of test vectors is
-provided for each. 
+provided for each. In general test vectors are generated automatically where possible.
 
 The exploration restricts attention based on the following high-value
 attributes:
@@ -83,6 +85,10 @@ The regression testing scripts, contained in the _scripts_ directory,
 must be copied into some directory present in the users PATH
 (e.g. _~/bin_).
 
+Add the following entries to your .bashrc file:  
+export PATH=.:~/bin:$PATH  
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
 
 ## Regression Testing:
 
@@ -139,6 +145,12 @@ make clean -- clean the old files
 make -- make the bison parser  
 make run -- run it on the foo test vector files  
 
+**In foo/xbnf:**  
+edit gmr.xbnf -- implement the xbnf grammar  
+make clean -- clean the old files  
+make -- make the xbnf parser  
+make run -- run it on the foo test vector files  
+
 **In foo/hmr:**  
 edit hmr.c -- implement the hammer grammar  
 make clean -- clean out old files  
@@ -147,7 +159,7 @@ make run -- run hammer paser on the test vector files
 make xml -- generate xml  
 
 **In Repo Directory:**  
-Add entries to the _makeall_ and _runall_ scripts.  
+Add entries to the _clearall_, _makeall_, _run_and _runall_ scripts.  
 
 
 
