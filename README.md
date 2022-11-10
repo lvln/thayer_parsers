@@ -92,9 +92,10 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 ## Regression Testing:
 
+**./cleanall.sh** -- clean out all the parsers  
 **./makeall.sh** -- build all the parsers  
 **./runall.sh** -- run all the parsers (results in RESULTS directory)  
-**./run.sh <parser>** -- run one parser  
+**./run.sh <parser>** -- run one parser (e.g. run.sh jnum)  
 
 
 ## Parser Directories:
@@ -119,6 +120,7 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 Each parser directory may contain subdirectories:  
 
 **bison** -- the working bison version of the grammar  
+**xbnf** -- the working xbnf version of the grammar  
 **hmr** -- the hammer verion of the grammar  
 **tests** -- test vectors (pass.N for valid inputs; fail.N for invalid inputs)  
 **tests.src** -- a directory for generating and installing test vectors in tests  
@@ -127,8 +129,9 @@ Each parser directory may contain subdirectories:
 ## Other Directories
 
 **ppxml** -- a routine to generate an xml description of a Hammer parser  
+**xbnf** -- the xbnf pre-processor, written in BNF for Bison  
 **scripts** -- useful bash scripts -- copy them to ~/bin and place in your path  
-
+**RESULTS** -- each time _runall.sh_ is executed, it places a results file here  
 
 ## Building a new Grammar (e.g. foo)
 
@@ -159,7 +162,7 @@ make run -- run hammer paser on the test vector files
 make xml -- generate xml  
 
 **In Repo Directory:**  
-Add entries to the _clearall_, _makeall_, _run_and _runall_ scripts.  
+Add entries to the _clearall_, _makeall_, _run_, and _runall_ scripts.  
 
 
 
