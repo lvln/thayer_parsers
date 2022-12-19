@@ -11,8 +11,9 @@
 #include <hammer/test_suite.h>
 #include <glib.h>
 
+#ifndef BKEND
 #define BKEND PB_LALR
-//#define BKEND PB_MIN
+#endif
 
 const HParser *pp; /* the parser */
 
