@@ -1,0 +1,353 @@
+{
+  "meta" : {
+    "view" : {
+      "id" : "xmxa-2sr6",
+      "name" : "Foster Care Placements - Children Served (For Fiscal Years 2006-2013)",
+      "assetType" : "dataset",
+      "attribution" : "Office of Juvenile Justice",
+      "attributionLink" : "https://dshs.wa.gov/ra/office-juvenile-justice/washington-state-juvenile-justice-annual-report",
+      "averageRating" : 0,
+      "category" : "Public Safety",
+      "createdAt" : 1450105177,
+      "displayType" : "table",
+      "downloadCount" : 2531,
+      "hideFromCatalog" : false,
+      "hideFromDataJson" : false,
+      "indexUpdatedAt" : 1453265195,
+      "licenseId" : "PUBLIC_DOMAIN",
+      "newBackend" : true,
+      "numberOfComments" : 0,
+      "oid" : 15425904,
+      "provenance" : "official",
+      "publicationAppendEnabled" : false,
+      "publicationDate" : 1453265084,
+      "publicationGroup" : 6026793,
+      "publicationStage" : "published",
+      "rowClass" : "",
+      "rowsUpdatedAt" : 1450105183,
+      "rowsUpdatedBy" : "6p7r-jviv",
+      "tableId" : 6026793,
+      "totalTimesRated" : 0,
+      "viewCount" : 194,
+      "viewLastModified" : 1453265084,
+      "viewType" : "tabular",
+      "approvals" : [ {
+        "reviewedAt" : 1453265084,
+        "reviewedAutomatically" : true,
+        "state" : "approved",
+        "submissionId" : 744192,
+        "submissionObject" : "public_audience_request",
+        "submissionOutcome" : "change_audience",
+        "submittedAt" : 1453265084,
+        "workflowId" : 2106,
+        "submissionDetails" : {
+          "permissionType" : "READ"
+        },
+        "submissionOutcomeApplication" : {
+          "failureCount" : 0,
+          "status" : "success"
+        },
+        "submitter" : {
+          "id" : "6p7r-jviv",
+          "displayName" : "Alysa Kipersztok"
+        }
+      } ],
+      "columns" : [ {
+        "id" : -1,
+        "name" : "sid",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":sid",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "id",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":id",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "position",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":position",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "created_at",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":created_at",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "created_meta",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":created_meta",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "updated_at",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":updated_at",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "updated_meta",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":updated_meta",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : -1,
+        "name" : "meta",
+        "dataTypeName" : "meta_data",
+        "fieldName" : ":meta",
+        "position" : 0,
+        "renderTypeName" : "meta_data",
+        "format" : { },
+        "flags" : [ "hidden" ]
+      }, {
+        "id" : 233686318,
+        "name" : "Year",
+        "dataTypeName" : "text",
+        "fieldName" : "year",
+        "position" : 1,
+        "renderTypeName" : "text",
+        "tableColumnId" : 33257799,
+        "width" : 76,
+        "cachedContents" : {
+          "non_null" : 7,
+          "largest" : "SFY 2012",
+          "null" : 0,
+          "top" : [ {
+            "item" : "SFY 2012",
+            "count" : 20
+          }, {
+            "item" : "SFY 2011",
+            "count" : 19
+          }, {
+            "item" : "SFY 2010",
+            "count" : 18
+          }, {
+            "item" : "SFY 2009",
+            "count" : 17
+          }, {
+            "item" : "SFY 2008",
+            "count" : 16
+          }, {
+            "item" : "SFY 2007",
+            "count" : 15
+          }, {
+            "item" : "SFY 2006",
+            "count" : 14
+          } ],
+          "smallest" : "SFY 2006"
+        },
+        "format" : { }
+      }, {
+        "id" : 233686319,
+        "name" : "Youth Served Age 0-17 *",
+        "dataTypeName" : "number",
+        "fieldName" : "youth_served_age_0_17",
+        "position" : 2,
+        "renderTypeName" : "number",
+        "tableColumnId" : 33257800,
+        "width" : 152,
+        "cachedContents" : {
+          "non_null" : 7,
+          "average" : "10109.85714285714",
+          "largest" : "10975",
+          "null" : 0,
+          "top" : [ {
+            "item" : "8948",
+            "count" : 20
+          }, {
+            "item" : "9398",
+            "count" : 19
+          }, {
+            "item" : "9795",
+            "count" : 18
+          }, {
+            "item" : "10130",
+            "count" : 17
+          }, {
+            "item" : "10568",
+            "count" : 16
+          }, {
+            "item" : "10975",
+            "count" : 15
+          }, {
+            "item" : "10955",
+            "count" : 14
+          } ],
+          "smallest" : "8948",
+          "sum" : "70769"
+        },
+        "format" : { }
+      }, {
+        "id" : 233686320,
+        "name" : "White (Non-Hispanic) Only",
+        "dataTypeName" : "number",
+        "fieldName" : "white_non_hispanic_only",
+        "position" : 3,
+        "renderTypeName" : "number",
+        "tableColumnId" : 33257801,
+        "width" : 190,
+        "cachedContents" : {
+          "non_null" : 7,
+          "average" : "45.85714285714286",
+          "largest" : "49.0",
+          "null" : 0,
+          "top" : [ {
+            "item" : "44.1",
+            "count" : 20
+          }, {
+            "item" : "43.9",
+            "count" : 19
+          }, {
+            "item" : "44.3",
+            "count" : 18
+          }, {
+            "item" : "45.3",
+            "count" : 17
+          }, {
+            "item" : "46.5",
+            "count" : 16
+          }, {
+            "item" : "47.9",
+            "count" : 15
+          }, {
+            "item" : "49.0",
+            "count" : 14
+          } ],
+          "smallest" : "43.9",
+          "sum" : "321.0"
+        },
+        "format" : {
+          "precisionStyle" : "percentage",
+          "percentScale" : "100",
+          "view" : "percent_bar_and_text"
+        }
+      }, {
+        "id" : 233686321,
+        "name" : "Any Minority Total",
+        "dataTypeName" : "number",
+        "fieldName" : "any_minority_total",
+        "position" : 4,
+        "renderTypeName" : "number",
+        "tableColumnId" : 33257802,
+        "width" : 141,
+        "cachedContents" : {
+          "non_null" : 7,
+          "average" : "53.77142857142857",
+          "largest" : "55.6",
+          "null" : 0,
+          "top" : [ {
+            "item" : "55.5",
+            "count" : 20
+          }, {
+            "item" : "55.6",
+            "count" : 19
+          }, {
+            "item" : "55.2",
+            "count" : 18
+          }, {
+            "item" : "54.1",
+            "count" : 17
+          }, {
+            "item" : "53.2",
+            "count" : 16
+          }, {
+            "item" : "52.0",
+            "count" : 15
+          }, {
+            "item" : "50.8",
+            "count" : 14
+          } ],
+          "smallest" : "50.8",
+          "sum" : "376.4"
+        },
+        "format" : {
+          "precisionStyle" : "percentage",
+          "percentScale" : "100",
+          "view" : "percent_bar_and_text"
+        }
+      } ],
+      "grants" : [ {
+        "inherited" : false,
+        "type" : "viewer",
+        "flags" : [ "public" ]
+      } ],
+      "license" : {
+        "name" : "Public Domain"
+      },
+      "metadata" : {
+        "rdfSubject" : "0",
+        "rdfClass" : "",
+        "custom_fields" : {
+          "Notes" : {
+            "1. " : "Source of data:   Childrens Administration, DSHS, updated May 2014.  "
+          }
+        },
+        "rowIdentifier" : "0",
+        "availableDisplayTypes" : [ "table", "fatrow", "page" ],
+        "rowLabel" : "Row",
+        "renderTypeConfig" : {
+          "visible" : {
+            "table" : true
+          }
+        }
+      },
+      "owner" : {
+        "id" : "6p7r-jviv",
+        "disabledAt" : 1542822118,
+        "displayName" : "Alysa Kipersztok",
+        "profileImageUrlLarge" : "/api/users/6p7r-jviv/profile_images/LARGE",
+        "profileImageUrlMedium" : "/api/users/6p7r-jviv/profile_images/THUMB",
+        "profileImageUrlSmall" : "/api/users/6p7r-jviv/profile_images/TINY",
+        "screenName" : "Alysa Kipersztok",
+        "type" : "interactive"
+      },
+      "query" : { },
+      "rights" : [ "read" ],
+      "tableAuthor" : {
+        "id" : "6p7r-jviv",
+        "disabledAt" : 1542822118,
+        "displayName" : "Alysa Kipersztok",
+        "profileImageUrlLarge" : "/api/users/6p7r-jviv/profile_images/LARGE",
+        "profileImageUrlMedium" : "/api/users/6p7r-jviv/profile_images/THUMB",
+        "profileImageUrlSmall" : "/api/users/6p7r-jviv/profile_images/TINY",
+        "screenName" : "Alysa Kipersztok",
+        "type" : "interactive"
+      },
+      "tags" : [ "juvenile justice", "annual report", "wa-pcjj report", "office of juvenile justice", "dshs", "foster care", "youth" ],
+      "flags" : [ "default", "restorable", "restorePossibleForType" ]
+    }
+  },
+  "data" : [ [ "row-xqaj~257q~j36n", "00000000-0000-0000-0F85-AFD0A61FB3E7", 0, 1542308551, null, 1542308551, null, "{ }", "SFY 2012", "8948", "44.1", "55.5" ]
+, [ "row-7zia_jy9q-grwt", "00000000-0000-0000-0A66-48792B65D9C0", 0, 1542308551, null, 1542308551, null, "{ }", "SFY 2011", "9398", "43.9", "55.6" ]
+, [ "row-pu9r.95bg~36bi", "00000000-0000-0000-4D46-D3E8F0C7C935", 0, 1542308551, null, 1542308551, null, "{ }", "SFY 2010", "9795", "44.3", "55.2" ]
+, [ "row-tujf-stet~tkhh", "00000000-0000-0000-5CFF-CFB30E3ABFEA", 0, 1542308551, null, 1542308551, null, "{ }", "SFY 2009", "10130", "45.3", "54.1" ]
+, [ "row-cbht~k8hq-uzd9", "00000000-0000-0000-616F-AB86F84D4381", 0, 1542308551, null, 1542308551, null, "{ }", "SFY 2008", "10568", "46.5", "53.2" ]
+, [ "row-22ya-ehec-xyqu", "00000000-0000-0000-9C56-8A73E1FB6BFC", 0, 1542308551, null, 1542308551, null, "{ }", "SFY 2007", "10975", "47.9", "52.0" ]
+, [ "row-6wq7~xywx_8khf", "00000000-0000-0000-7C94-22989F256236", 0, 1542308551, null, 1542308551, null, "{ }", "SFY 2006", "10955", "49.0", "50.8" ]
+ ]
+}
