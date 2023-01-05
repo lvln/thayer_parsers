@@ -8,6 +8,7 @@ all:				gmr
 gmr.tab.o:  gmr.xbnf
 						$(XBNFDIR)/xbnf gmr.xbnf -o gmr.y
 #						bison -d -t -v --report=all -x gmr.y
+						cp gmr.new.y gmr.y                    # FOR TESTING ONLY! Remove in production
 						bison -d -t -v -x gmr.y
 						gcc $(CFLAGS) -c gmr.tab.c
 
