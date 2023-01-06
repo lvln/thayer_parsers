@@ -21,40 +21,50 @@ uint8_t input[1024]; /* the input is a buff of bytes */
 
 /* The Parser */
 void init_parser() {
-	/* Check if byte is of hex value 0xA5, consume byte if h_and passes */
-	H_RULE(AND, h_sequence(h_and(h_ch('\xA5')),h_ch('\xA5'),NULL));
+	/* Check if string is hex value "0xA5", consume string if h_and passes */
+	H_RULE(AND, h_sequence(h_and(h_token((const uint8_t*)"0x", 2)),h_token((const uint8_t*)"0xA5", 4),NULL));
 	pp = h_sequence(AND,h_end_p(),NULL);
 }
 
-/* Passing Tests: 0xA5 */
-static void test_val() {
-	input[0] = 0xA5;
-	g_check_parse_ok(pp, BKEND, input, 1);
+/* Passing Tests: "0xA5" */
+static void test_1() {
+	input[0] = '0';
+	input[1] = 'x';
+	input[2] = 'A';
+	input[3] = '5';
+	g_check_parse_ok(pp, BKEND, input, 4);
 }
 
-/* Failing Tests: 0xFE,0x02,0x01 0x01 */
-static void test_m2() {
-	input[0] = 0xFE; // -2
-	g_check_parse_failed(pp, BKEND, input, 1);
+/* Failing Tests: "0xa5", "0x5A", "0A5" */
+static void test_lowCaseA() {
+	input[0] = '0';
+	input[1] = 'x';
+	input[2] = 'a';
+	input[3] = '5';
+	g_check_parse_failed(pp, BKEND, input, 4);
 }
 
-static void test_p2() {
-	input[0] = 0x02; // +2
-	g_check_parse_failed(pp, BKEND, input, 1);
+static void test_2() {
+	input[0] = '0';
+	input[1] = 'x';
+	input[2] = '5';
+	input[3] = 'A';
+	g_check_parse_failed(pp, BKEND, input, 4);
 }
 
-static void test_2val() {
-	input[0] = 0x01; // +1
-	input[1] = 0x01; // +1
-	g_check_parse_failed(pp, BKEND, input, 2);
+static void test_badval() {
+	input[0] = '0';
+	input[2] = 'A';
+	input[3] = '5';
+	g_check_parse_failed(pp, BKEND, input, 3);
 }
 
 
 void register_bug_tests() {
-	g_test_add_func("/pass/val",test_val);
-	g_test_add_func("/fail/neg2",test_m2);
-	g_test_add_func("/fail/pos2",test_p2);
-	g_test_add_func("/fail/2val",test_2val);
+	g_test_add_func("/pass/test1",test_1);
+	g_test_add_func("/fail/lowercaseA",test_lowCaseA);
+	g_test_add_func("/fail/test2",test_2);
+	g_test_add_func("/fail/badval",test_badval);
 }
 
 int main(int argc, char *argv[]) {

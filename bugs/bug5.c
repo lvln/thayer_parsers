@@ -21,29 +21,29 @@ uint8_t input[1024]; /* the input is a buff of bytes */
 
 /* The Parser */
 void init_parser() {
-	/* parse a single int8 and XOR check if within first(0-6) or second(5-14) range */
-	H_RULE(XOR, h_xor(h_ch_range('\x00', '\x06'), h_ch_range('\x05', '\x0E')));
+	/* parse a single byte and XOR check if within string "012" or "134" */
+	H_RULE(XOR, h_xor(h_in((const uint8_t*)"012", 3), h_in((const uint8_t*)"134", 3)));
 	pp = h_sequence(XOR,h_end_p(),NULL);
 }
 
-/* Passing Tests: 0x0,0x9 */
+/* Passing Tests: '0', '3' */
 static void test_1() {
-	input[0] = 0x0; // 0
+	input[0] = '0';
 	g_check_parse_ok(pp, BKEND, input, 1);
 }
 static void test_2() {
-	input[0] = 0x9; // 9
+	input[0] = '3';
 	g_check_parse_ok(pp, BKEND, input, 1);
 }
 
-/* Failing Tests: 0x5,0xF */
+/* Failing Tests: '1', '5' */
 static void test_3() {
-	input[0] = 0x5; // 5
+	input[0] = '1';
 	g_check_parse_failed(pp, BKEND, input, 1);
 }
 
 static void test_4() {
-	input[0] = 0xF; // 15
+	input[0] = '5';
 	g_check_parse_failed(pp, BKEND, input, 1);
 }
 

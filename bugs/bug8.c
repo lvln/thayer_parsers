@@ -44,7 +44,6 @@ static void test_c1() {
 }
 
 /* Failing Tests: */
-
 static void test_1val() {
 	input[0] = 0x2F; // 0010 1111
 	g_check_parse_failed(pp, BKEND, input, 1);
