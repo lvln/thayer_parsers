@@ -1,0 +1,3 @@
+gmr : first | second ;
+first : [ 'a' - 'f' ]  | 'f' 'o' 'o' ;
+second : ['1'-'9'] | "012" ;
