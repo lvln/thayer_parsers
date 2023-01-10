@@ -74,6 +74,7 @@ for rule in rule_list:
       print(f"symbol: {symbol}")
       print(f"symbol.text: {symbol.text}")
       ranges[rang]['symbols'].append(symbol.text)
+      ranges[rang]['used'].append(0) # these get set to 1 later on.
 
 
   rhs = rule.find('rhs')
@@ -96,6 +97,9 @@ print(f"Ranges:  {ranges}")
 
 automaton = root[2]
 for state in automaton.findall('state'):
+  hasTransitions = False
+  hasReduction   = False
+
   print('state: ', state)
   itemset = state.findall('itemset')
   print('state.itemset: ', itemset)
@@ -110,6 +114,34 @@ for state in automaton.findall('state'):
   statenum = state.get('number')
   print('State: ', statenum)
 
+  # if (state[1][0] is not None and
+  #     len(state[1][2]) is not None): # transitions & reductions
+  #   print('Remove state')
+  # else:
+  #   print('Keep state')
+
+  transitions = state[1][0]
+  reductions  = state[1][2]
+
+  if (len(transitions) > 0 and 
+      len(reductions) > 0 ):
+      print('Keep state')
+
+      # remove the terminal from the used list
+      ## find the reduction['rule']
+      ## if rule in ranges, marke as unused.
+
+      keep_rule = reductions[0].get('rule')
+      print('Keep rule', keep_rule)
+
+      for rkey in ranges.keys():
+        for (i, rule) in enumerate(ranges[rkey]['rules']):
+          if rule == keep_rule:
+            ranges[rkey]['used'][i] = 1
+      # matches = [i for i, x in enumerate(ranges[range]['rules']) if x == keep_rule] 
+      # print('Matches: ', matches)
+
+  print('Ranges: ', ranges)
   for tran in state[1][0]:
     print('transion: ', tran)
 
