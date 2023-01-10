@@ -10,7 +10,7 @@
  */
 #include <stdio.h>
 #include <stdint.h>
-#include "xbnf.tab.h"
+#include "abnf.tab.h"
 
 extern FILE *yyin;
 extern int yylval;
