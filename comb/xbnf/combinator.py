@@ -65,6 +65,7 @@ for rule in rule_list:
       ranges[rang] = {}
       ranges[rang]['symbols'] = []
       ranges[rang]['rules'] = []
+      ranges[rang]['used'] = []
 
     ranges[rang]['rules'].append(rule.get('number'))
     rhs = rule.find('rhs')
@@ -87,7 +88,35 @@ for rule in rule_list:
 # Step 1: Discover all the ranges
 print(f"Ranges:  {ranges}")
 
-# Step 2: Discover which rules have  
+# Step 2: Iterate over the states. 
+# Determine which states have:
+#    1. a transition with type="shift"
+#    2. a reduction with a rule equal to a ranges.rang.rules 
+# If found, mark as unused in range
+
+automaton = root[2]
+for state in automaton.findall('state'):
+  print('state: ', state)
+  itemset = state.findall('itemset')
+  print('state.itemset: ', itemset)
+
+  # for actions in state.findall('actions'):
+  #   for trans in actions.findall('transitions'):
+  #     for tran in trans.find('transition'):
+
+  #       print('transion: ', tran)
+
+  print()
+  statenum = state.get('number')
+  print('State: ', statenum)
+
+  for tran in state[1][0]:
+    print('transion: ', tran)
+
+  
+  for reductions in state[1][2]:
+    print('reductions: ', reductions)
+
 ## automaton
 print()
 print("Automaton Section: ", root[2])
