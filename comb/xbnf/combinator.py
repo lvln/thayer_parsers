@@ -62,17 +62,19 @@ for rule in rule_list:
   rang = lhs.text
   if 'r__' in rang:
     if rang not in ranges.keys():
-      ranges[rang] = []
+      ranges[rang] = {}
+      ranges[rang]['symbols'] = []
+      ranges[rang]['rules'] = []
 
+    ranges[rang]['rules'].append(rule.get('number'))
     rhs = rule.find('rhs')
     symbols = rhs.findall('symbol')
     for symbol in symbols:
       print(f"symbol: {symbol}")
       print(f"symbol.text: {symbol.text}")
-      ranges[rang].append(symbol.text)
+      ranges[rang]['symbols'].append(symbol.text)
 
 
-  print(f"Ranges:  {ranges}")
   rhs = rule.find('rhs')
   print(f"lhs: {lhs}")
   print(f"lhs.text: {lhs.text}")
@@ -82,7 +84,10 @@ for rule in rule_list:
     print(f"symbol: {symbol}")
     print(f"symbol.text: {symbol.text}")
 
-  
+# Step 1: Discover all the ranges
+print(f"Ranges:  {ranges}")
+
+# Step 2: Discover which rules have  
 ## automaton
 print()
 print("Automaton Section: ", root[2])
