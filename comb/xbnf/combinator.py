@@ -12,7 +12,6 @@ tree = ET.parse('gmr.xml')
 root = tree.getroot()
 
 
-
 # Discovery
 print(f"len(root): {len(root)}")
 # 3
@@ -201,7 +200,7 @@ for term in terminals:
       print(ranges[r]['subranges'][key])
       if tname in ranges[r]['subranges'][key]:
         print('Removing: ', tname)
-        terminals_to_remove.append(term)
+        terminals_to_remove.append(term) # note: don't remove terminals within the loop!
 
 # remove the terminals outside of the iterator
 for term in terminals_to_remove:
@@ -210,8 +209,33 @@ for term in terminals_to_remove:
 for term in terminals:
   print('term: ', term.get('name'))
 
-# add in new terminals
+# determine the final set of ranges for the combinator 
+new_tnames = []
+franges = {} # final ranges
+range_token_num = 500
 
+for r in ranges.keys():
+  for sub in ranges[r]['subranges'].keys():
+    low = ranges[r]['subranges'][sub][0]
+    replace_symbol = low
+    high= ranges[r]['subranges'][sub][-1]
+    low = int(format(ord(low[1:-1]))) # turn "'a'" into int 97
+    high = int(format(ord(high[1:-1])))
+    rname = f"r_{low}_{high}"
+    print(f"{sub}={rname}")
+
+    franges[rname] = {}
+    franges[rname]['range'] = [low, high]
+    franges[rname]['token-number'] = range_token_num
+    franges[rname]['usefuleness'] = 'useful' 
+    range_token_num += 1
+
+print(franges)
+
+# add in new terminals for the ranges
+terminals = root[1].find('terminals') 
+ET.SubElement(terminals, 'terminal', {'symbol-number': "500", 'token-number': "500", 'name': 'r_97_101', 'usefulness': 'useful'})
+tree.write('gmr.combinator.xml') 
 # remove the unused states
 
 # create a unique terminal for each subrange
