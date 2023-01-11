@@ -225,16 +225,23 @@ for r in ranges.keys():
     print(f"{sub}={rname}")
 
     franges[rname] = {}
-    franges[rname]['range'] = [low, high]
-    franges[rname]['token-number'] = range_token_num
+    franges[rname]['symbol-number'] = str(range_token_num) # arbitrary for now. will be reassigned later
+    franges[rname]['token-number'] = str(range_token_num)
+    franges[rname]['name'] = rname
     franges[rname]['usefuleness'] = 'useful' 
+    franges[rname]['range'] = [str(low), str(high)]
     range_token_num += 1
 
 print(franges)
 
 # add in new terminals for the ranges
+
 terminals = root[1].find('terminals') 
-ET.SubElement(terminals, 'terminal', {'symbol-number': "500", 'token-number': "500", 'name': 'r_97_101', 'usefulness': 'useful'})
+for rang in franges.keys():
+  ET.SubElement(terminals, 'terminal', franges[rang])
+
+ET.dump(terminals)
+
 tree.write('gmr.combinator.xml') 
 # remove the unused states
 
