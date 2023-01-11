@@ -6,6 +6,7 @@
     output: gmr.cmb.xml
 """
 import xml.etree.ElementTree as ET
+import json
 import pdb
 tree = ET.parse('gmr.xml')
 root = tree.getroot()
@@ -55,6 +56,9 @@ print(rule_list)
 
 # find the ranges in the grammar
 ranges = {}
+
+def print_ranges():
+  print(json.dumps(ranges, indent=4))
 
 for rule in rule_list:
   print(f"Rulenum: {rule.get('number')}")
@@ -183,55 +187,38 @@ for r in ranges.keys():
 
       x += 1
 
-print('Ranges: ', ranges)
 
+print_ranges()
 
-# Determine the min and max ranges
-  # for (i, val) in enumerate(diff):
-  #   if val >= 0:
-  #     consec += 1
-  #     if consec == 2: # if two in a row, count it as a sequence
-  #       curr_range += 1 
-  #       ranges[r]['final_ranges'][i-1] = curr_range
-  #       ranges[r]['final_ranges'][i] = curr_range
-  #     elif consec > 2:
-  #       ranges[r]['final_ranges'][i-1] = curr_range
-  #       ranges[r]['final_ranges'][i] = curr_range
-  #     else:
-  #       pass
+# now, remove the unused terminals
+terminals = root[1].find('terminals') 
+terminals_to_remove = []
+for term in terminals:
+  for r in ranges:
+    for key in ranges[r]['subranges'].keys():
+      tname = term.get('name')
+      print(tname)
+      print(ranges[r]['subranges'][key])
+      if tname in ranges[r]['subranges'][key]:
+        print('Removing: ', tname)
+        terminals_to_remove.append(term)
 
-  #   else:
-  #     consec = 0
-  #     if i == 1:
-  #       ranges[r]['final_ranges'][i-1] = 0
-  #       ranges[r]['final_ranges'][i] = 0 
-  #     else:
+# remove the terminals outside of the iterator
+for term in terminals_to_remove:
+  terminals.remove(term)
 
+for term in terminals:
+  print('term: ', term.get('name'))
 
+# add in new terminals
 
+# remove the unused states
 
-   
-  # sym = ranges[r]['in_range'][0]
-  # for i in range(len(ranges[r]['in_range'])-1):
-  #   inRange = 0
+# create a unique terminal for each subrange
 
-  #   print(ranges[r]['in_range'][i])
-  #   if i == 0:
-  #     if ranges[r]['in_range'][i+1] == 0:
-  #       ranges[r]['in_range'][i] = 0
-  #     else:
-  #       ranges[r]['in_range'][i] = 1
-  #   elif (ranges[r]['in_range'][i] == 1):
+# print out a module in C for the pda combinator
 
-  #     if ( ranges[r]['in_range'][i+1] == 0):
-  #       ranges[r]['in_range'][i] = 1
-  #   else:
-  #     pass
-
-
-print('Ranges: ', ranges)
-
-
+# 
 
 if __name__ == "__main__":
   print('The Sequence Combinator')
