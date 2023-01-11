@@ -65,7 +65,7 @@ for rule in rule_list:
       ranges[rang] = {}
       ranges[rang]['symbols'] = []
       ranges[rang]['rules'] = []
-      ranges[rang]['used'] = []
+      ranges[rang]['in_range'] = []
 
     ranges[rang]['rules'].append(rule.get('number'))
     rhs = rule.find('rhs')
@@ -74,7 +74,7 @@ for rule in rule_list:
       print(f"symbol: {symbol}")
       print(f"symbol.text: {symbol.text}")
       ranges[rang]['symbols'].append(symbol.text)
-      ranges[rang]['used'].append(0) # these get set to 1 later on.
+      ranges[rang]['in_range'].append(1) # these get set to 0 if not withing continuous range 
 
 
   rhs = rule.find('rhs')
@@ -104,21 +104,9 @@ for state in automaton.findall('state'):
   itemset = state.findall('itemset')
   print('state.itemset: ', itemset)
 
-  # for actions in state.findall('actions'):
-  #   for trans in actions.findall('transitions'):
-  #     for tran in trans.find('transition'):
-
-  #       print('transion: ', tran)
-
   print()
   statenum = state.get('number')
   print('State: ', statenum)
-
-  # if (state[1][0] is not None and
-  #     len(state[1][2]) is not None): # transitions & reductions
-  #   print('Remove state')
-  # else:
-  #   print('Keep state')
 
   transitions = state[1][0]
   reductions  = state[1][2]
@@ -137,39 +125,113 @@ for state in automaton.findall('state'):
       for rkey in ranges.keys():
         for (i, rule) in enumerate(ranges[rkey]['rules']):
           if rule == keep_rule:
-            ranges[rkey]['used'][i] = 1
+            ranges[rkey]['in_range'][i] = 0
       # matches = [i for i, x in enumerate(ranges[range]['rules']) if x == keep_rule] 
       # print('Matches: ', matches)
 
   print('Ranges: ', ranges)
-  for tran in state[1][0]:
-    print('transion: ', tran)
+
+  # for tran in state[1][0]:
+  #   print('transion: ', tran)
 
   
-  for reductions in state[1][2]:
-    print('reductions: ', reductions)
-
-## automaton
-print()
-print("Automaton Section: ", root[2])
-
-## grammar
-#### rule.number & .usefulness
-##### lhs
-##### rhs
-## automaton
-
-# for rule in root[1].find('rules').iter():
-#   rulenum = rule.get('number')
-#   if rulenum is not None: 
-#     print(f"Rulenumber: {rulenum}")
+  # for reductions in state[1][2]:
+  #   print('reductions: ', reductions)
 
 
+# for each range, find the continuous symbols to remove 
+for r in ranges.keys():
+  diff = [0] # the backwards difference
+
+  for i in range(len(ranges[r]['in_range']))[:-1]:
+    diff.append(ranges[r]['in_range'][i+1] - ranges[r]['in_range'][i]) 
+
+  print('diff: ', diff)
+  consec = 0
+  curr_range = 0
+  ranges[r]['final_ranges'] = []
+  for i in range(len(diff)):
+    if diff[i] >= 0: 
+      consec += 1
+      if consec == 2:
+        curr_range += 1
+        ranges[r]['final_ranges'][i-1] = curr_range
+        ranges[r]['final_ranges'].append(curr_range)
+      else:
+        ranges[r]['final_ranges'].append(curr_range)
+    else:
+      consec = 0
+      ranges[r]['final_ranges'].append(0)
+
+print('Ranges: ', ranges)
+
+for r in ranges.keys():
+  rmax = max(ranges[r]['final_ranges'])
+
+  ranges[r]['subranges'] = {}
+  print('subrange count: ', rmax)
+  if (rmax >= 1):
+    x = 1
+    print('Subranges:') 
+    while(x <= rmax):
+      ranges[r]['subranges'][f"sr__{x}"] = []
+
+      for (i, val) in enumerate (ranges[r]['final_ranges']):
+        if val == x:
+          print('val', val)
+          ranges[r]['subranges'][f"sr__{x}"].append(ranges[r]['symbols'][i])
+
+      x += 1
+
+print('Ranges: ', ranges)
 
 
-# pdb.set_trace()
-for child in root:
-  print(child.tag, child.attrib) 
+# Determine the min and max ranges
+  # for (i, val) in enumerate(diff):
+  #   if val >= 0:
+  #     consec += 1
+  #     if consec == 2: # if two in a row, count it as a sequence
+  #       curr_range += 1 
+  #       ranges[r]['final_ranges'][i-1] = curr_range
+  #       ranges[r]['final_ranges'][i] = curr_range
+  #     elif consec > 2:
+  #       ranges[r]['final_ranges'][i-1] = curr_range
+  #       ranges[r]['final_ranges'][i] = curr_range
+  #     else:
+  #       pass
+
+  #   else:
+  #     consec = 0
+  #     if i == 1:
+  #       ranges[r]['final_ranges'][i-1] = 0
+  #       ranges[r]['final_ranges'][i] = 0 
+  #     else:
+
+
+
+
+   
+  # sym = ranges[r]['in_range'][0]
+  # for i in range(len(ranges[r]['in_range'])-1):
+  #   inRange = 0
+
+  #   print(ranges[r]['in_range'][i])
+  #   if i == 0:
+  #     if ranges[r]['in_range'][i+1] == 0:
+  #       ranges[r]['in_range'][i] = 0
+  #     else:
+  #       ranges[r]['in_range'][i] = 1
+  #   elif (ranges[r]['in_range'][i] == 1):
+
+  #     if ( ranges[r]['in_range'][i+1] == 0):
+  #       ranges[r]['in_range'][i] = 1
+  #   else:
+  #     pass
+
+
+print('Ranges: ', ranges)
+
+
 
 if __name__ == "__main__":
   print('The Sequence Combinator')
