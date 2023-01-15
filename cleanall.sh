@@ -33,7 +33,7 @@ make ${MODE} clean
 popd
 
 # make the hmr grammars
-for DIR in gmr0 gmr1 jnum jstring json bin0 bin1 bin2 unicode command response json.unicode
+for DIR in gmr0 gmr1 jnum jstring json bin0 bin1 bin2 unicode command response json.unicode abnf
 do
 		if [ -d ./${DIR}/bison ] ; then
 				pushd ./${DIR}/bison

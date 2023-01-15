@@ -19,7 +19,7 @@ rm -f ./RESULTS/run.${TODAY}
 touch ./RESULTS/run.${TODAY}
 
 # 34 runs -- first 5 are hmr and bison, rest are hmr only
-for DIR in gmr0 gmr1 jnum jstring json bin0 bin1 bin2 unicode command response json.unicode
+for DIR in gmr0 gmr1 jnum jstring json bin0 bin1 bin2 unicode command response json.unicode abnf
 do
 		echo "[${DIR}]"
 		run.sh ${DIR} >> ./RESULTS/run.${TODAY}
