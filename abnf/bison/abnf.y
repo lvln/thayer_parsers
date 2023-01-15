@@ -8,6 +8,51 @@
 
 %% /* The ABNF Grammar */
 
+/* Add Rules To Grammar
+rulelist:	 1*( rule | (*c-wsp c-nl) ) ;
+
+rule: rulename defined-as elements c-nl ;
+
+rulename: ALPHA *(ALPHA | DIGIT | "-") ;
+
+defined-as: *c-wsp (": " | ": /") *c-wsp ;
+
+elements: alternation *c-wsp ;
+
+c-wsp: WSP | (c-nl WSP) ;
+
+c-nl: comment | CRLF ;
+
+comment: ";" *(WSP | VCHAR) CRLF ;
+
+alternation: concatenation *(*c-wsp "/" *c-wsp concatenation) ;
+
+concatenation: repetition *(1*c-wsp repetition) ;
+
+repetition: [repeat] element ;
+
+repeat: 1*DIGIT | (*DIGIT "*" *DIGIT) ;
+
+element: rulename | group | option | char-val | num-val | prose-val ;
+
+group: "(" *c-wsp alternation *c-wsp ")" ;
+
+option: "[" *c-wsp alternation *c-wsp "]" ;
+
+char-val: DQUOTE *(%x20-21 | %x23-7E) DQUOTE ;
+
+num-val: "%" (bin-val | dec-val | hex-val) ;
+
+bin-val: "b" 1*BIT [ 1*("." 1*BIT) | ("-" 1*BIT) ] ;
+
+dec-val: "d" 1*DIGIT [ 1*("." 1*DIGIT) | ("-" 1*DIGIT) ] ;
+
+hex-val: "x" 1*HEXDIG [ 1*("." 1*HEXDIG) | ("-" 1*HEXDIG) ] ;
+
+prose-val: "<" *(%x20-3D | %x3F-7E) ">" ;
+*/
+
+
 ALPHA: '\x41' | '\x42' | '\x43' | '\x44' | '\x45' | '\x46' | '\x47' | '\x48' | '\x49' | '\x4A' | '\x4B' | '\x4C' | '\x4D' | '\x4E' | '\x4F' | '\x50' | '\x51' | '\x52' | '\x53' | '\x54' | '\x55' | '\x56' | '\x57' | '\x58' | '\x59' | '\x5A' | '\x61' | '\x62' | '\x63' | '\x64' | '\x65' | '\x66' | '\x67' | '\x68' | '\x69' | '\x6A' | '\x6B' | '\x6C' | '\x6D' | '\x6E' | '\x6F' | '\x70' | '\x71' | '\x72' | '\x73' | '\x74' | '\x75' | '\x76' | '\x77' | '\x78' | '\x79' | '\x7A' ;
 
 BIT: '0' | '1' ;
