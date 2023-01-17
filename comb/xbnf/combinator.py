@@ -231,7 +231,7 @@ for r in ranges.keys():
     franges[rname]['token-number'] = str(range_token_num)
     franges[rname]['name'] = rname
     franges[rname]['usefuleness'] = 'useful' 
-    franges[rname]['range'] = [str(low), str(high)]
+    franges[rname]['range'] = [int(low), int(high)]
     range_token_num += 1
 
 print('The final ranges:')
@@ -248,14 +248,9 @@ ET.dump(terminals)
 
 tree.write('gmr.combinator.xml') 
 
-# find and replace the first rule of a range with the new range terminal symbol
-for key in franges.keys():
-  replace = True
-  print(key)
-
-  # find the starting value of the range.
-  first = franges[key]['range'][0]
-  last  = franges[key]['range'][1]
+####################################
+def get_range_rules(first: int, last: int)->list:  
+  matching_rules = []
 
   # iterate over all the rules and find the matching symbol to first
   for rule in rule_list:
@@ -267,17 +262,29 @@ for key in franges.keys():
 
     # print('symbol: ', type(symbol))
     if len(symbol) == 1:
-      if ord(symbol) == int(first): # 97 = int('a')
+      if ord(symbol) >= first and ord(symbol) <= last: # 97 = int('a')
         print('Match: ', symbol)
+        matching_rules.append(rule.get('number'))
 
-        if replace:
-          # replace the symbol name ('a') with the range key ('r_97_105')
+  return matching_rules
+# find and replace the first rule of a range with the new range terminal symbol
+for key in franges.keys():
+  replace = True
+  print(key)
 
-          replace = False
+  # find the starting value of the range.
+  first = franges[key]['range'][0]
+  last  = franges[key]['range'][1]
+  franges[key]['old_rules'] = get_range_rules(first, last)
 
-        elif ord(symbol) >= int(first) and ord(symbol) <= int(last):
-          print('Removing symbol: ', symbol)
-          # remove all remaining rules being replace by the range key 
+print('franges: ', franges)
+# create a new rule for the range
+
+# map pointers to old rules to new rule
+
+# remove unused rules
+
+
 
 
 #   # pdb.set_trace()
