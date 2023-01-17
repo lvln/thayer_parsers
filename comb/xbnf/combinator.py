@@ -11,6 +11,8 @@ import pdb
 tree = ET.parse('gmr.xml')
 root = tree.getroot()
 
+def sym2int(sym):
+  return int(format(ord(sym)))
 
 # Discovery
 print(f"len(root): {len(root)}")
@@ -232,6 +234,7 @@ for r in ranges.keys():
     franges[rname]['range'] = [str(low), str(high)]
     range_token_num += 1
 
+print('The final ranges:')
 print(franges)
 
 # add in new terminals for the ranges
@@ -241,8 +244,34 @@ for rang in franges.keys():
   ET.SubElement(terminals, 'terminal', franges[rang])
 
 ET.dump(terminals)
+ET.dump(rules)
 
 tree.write('gmr.combinator.xml') 
+
+# find and replace the first rule of a range with the new range terminal symbol
+for key in franges.keys():
+  print(key)
+
+  # find the starting value of the range.
+  first = franges[key]['range'][0]
+
+  # iterate over all the rules and find the matching symbol to first
+  inherit = True
+  for rule in rule_list:
+    # print(f"Rulenum: {rule.get('number')}")
+    rhs = rule.find('rhs')
+    symbol = rhs.find('symbol').text.strip("'")
+    # print(f"symbol: {symbol}, len: {len(symbol)}")
+    # pdb.set_trace()
+
+    # print('symbol: ', type(symbol))
+    if len(symbol) == 1:
+      if ord(symbol) == int(first): # 'a' = chr(int('97'))
+        print('Match: ', symbol)
+#   # pdb.set_trace()
+#   if symbol == 'a':
+#     print('match "a"')
+
 # remove the unused states
 
 # create a unique terminal for each subrange
