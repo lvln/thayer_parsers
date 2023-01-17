@@ -11,6 +11,22 @@ import pdb
 tree = ET.parse('gmr.xml')
 root = tree.getroot()
 
+def remove_old_rules():
+  rules_to_remove = []
+  rules = root[1].find('rules')
+  for rg in franges.keys():
+    for rnum in franges[rg]['old_rules']:
+      for rule in rules: 
+        num = rule.get('number')
+        print('num: ', num)
+        if rule.get('number') == rnum:
+          rules_to_remove.append(rule)
+
+  for rule_rm in rules_to_remove:
+    rules.remove(rule_rm)
+
+
+
 # create a new rule for the range
 def create_new_range_rules():
   """ Replace the first element in a range with the new range token."""
@@ -297,27 +313,12 @@ for key in franges.keys():
 print('franges: ', franges)
 
 create_new_range_rules()
-
-
-def remove_old_rules():
-  rules_to_remove = []
-  rules = root[1].find('rules')
-  for rg in franges.keys():
-    for rnum in franges[rg]['old_rules']:
-      for rule in rules: 
-        num = rule.get('number')
-        print('num: ', num)
-        if rule.get('number') == rnum:
-          rules_to_remove.append(rule)
-
-  for rule_rm in rules_to_remove:
-    rules.remove(rule_rm)
-
-
 remove_old_rules()
+
+# def map_old_rules_to_new_rules():
+
 print('franges: ', franges)
 ET.dump(rules)
-# def map_old_rules_to_new_rules():
 
 # def renumber_rules():
 
