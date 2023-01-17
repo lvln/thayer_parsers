@@ -198,10 +198,10 @@ for term in terminals:
   for r in ranges:
     for key in ranges[r]['subranges'].keys():
       tname = term.get('name')
-      print(tname)
-      print(ranges[r]['subranges'][key])
+      # print(tname)
+      # print(ranges[r]['subranges'][key])
       if tname in ranges[r]['subranges'][key]:
-        print('Removing: ', tname)
+        # print('Removing: ', tname)
         terminals_to_remove.append(term) # note: don't remove terminals within the loop!
 
 # remove the terminals outside of the iterator
@@ -244,19 +244,20 @@ for rang in franges.keys():
   ET.SubElement(terminals, 'terminal', franges[rang])
 
 ET.dump(terminals)
-ET.dump(rules)
+# ET.dump(rules)
 
 tree.write('gmr.combinator.xml') 
 
 # find and replace the first rule of a range with the new range terminal symbol
 for key in franges.keys():
+  replace = True
   print(key)
 
   # find the starting value of the range.
   first = franges[key]['range'][0]
+  last  = franges[key]['range'][1]
 
   # iterate over all the rules and find the matching symbol to first
-  inherit = True
   for rule in rule_list:
     # print(f"Rulenum: {rule.get('number')}")
     rhs = rule.find('rhs')
@@ -266,8 +267,19 @@ for key in franges.keys():
 
     # print('symbol: ', type(symbol))
     if len(symbol) == 1:
-      if ord(symbol) == int(first): # 'a' = chr(int('97'))
+      if ord(symbol) == int(first): # 97 = int('a')
         print('Match: ', symbol)
+
+        if replace:
+          # replace the symbol name ('a') with the range key ('r_97_105')
+
+          replace = False
+
+        elif ord(symbol) >= int(first) and ord(symbol) <= int(last):
+          print('Removing symbol: ', symbol)
+          # remove all remaining rules being replace by the range key 
+
+
 #   # pdb.set_trace()
 #   if symbol == 'a':
 #     print('match "a"')
