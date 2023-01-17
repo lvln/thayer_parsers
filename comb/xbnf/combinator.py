@@ -11,6 +11,40 @@ import pdb
 tree = ET.parse('gmr.xml')
 root = tree.getroot()
 
+# create a new rule for the range
+def create_new_range_rules():
+  """ Replace the first element in a range with the new range token."""
+
+  for rg in franges.keys():
+    new_rule = franges[rg]['old_rules'].pop(0) # the first element becomes the new rule
+    franges[rg]['new_rule'] = new_rule         # all pointers to old rules need to map to this rule
+    print(new_rule)
+
+
+    for rule in rules.findall('rule'):
+      if rule.get('number') == new_rule:
+        rule.find('rhs').find('symbol').text = rg
+
+
+def get_range_rules(first: int, last: int)->list:  
+  """ Get a list of all the old rules covering range between first and last."""
+  matching_rules = []
+
+  # iterate over all the rules and find the matching symbol to first
+  for rule in rules.findall('rule'):
+    # print(f"Rulenum: {rule.get('number')}")
+    rhs = rule.find('rhs')
+    symbol = rhs.find('symbol').text.strip("'")
+    # print(f"symbol: {symbol}, len: {len(symbol)}")
+    # pdb.set_trace()
+
+    # print('symbol: ', type(symbol))
+    if len(symbol) == 1:
+      if ord(symbol) >= first and ord(symbol) <= last: # 97 = int('a')
+        print('Match: ', symbol)
+        matching_rules.append(rule.get('number'))
+
+  return matching_rules
 def sym2int(sym):
   return int(format(ord(sym)))
 
@@ -249,25 +283,8 @@ ET.dump(terminals)
 tree.write('gmr.combinator.xml') 
 
 ####################################
-def get_range_rules(first: int, last: int)->list:  
-  matching_rules = []
 
-  # iterate over all the rules and find the matching symbol to first
-  for rule in rule_list:
-    # print(f"Rulenum: {rule.get('number')}")
-    rhs = rule.find('rhs')
-    symbol = rhs.find('symbol').text.strip("'")
-    # print(f"symbol: {symbol}, len: {len(symbol)}")
-    # pdb.set_trace()
-
-    # print('symbol: ', type(symbol))
-    if len(symbol) == 1:
-      if ord(symbol) >= first and ord(symbol) <= last: # 97 = int('a')
-        print('Match: ', symbol)
-        matching_rules.append(rule.get('number'))
-
-  return matching_rules
-# find and replace the first rule of a range with the new range terminal symbol
+# find all 'old' rules related to a given range 
 for key in franges.keys():
   replace = True
   print(key)
@@ -278,7 +295,22 @@ for key in franges.keys():
   franges[key]['old_rules'] = get_range_rules(first, last)
 
 print('franges: ', franges)
-# create a new rule for the range
+
+
+
+
+create_new_range_rules()
+# ET.dump(rules)
+
+print('franges: ', franges)
+# def remove_old_rules():
+
+# def map_old_rules_to_new_rules():
+
+# def renumber_rules():
+
+
+
 
 # map pointers to old rules to new rule
 
