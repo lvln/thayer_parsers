@@ -379,13 +379,28 @@ def renumber_rules():
 
   ET.dump(root[1].find('rules'))
 
-#     rhs = rule.find('rhs')
+#     rhs lrule.find('rhs')
 #     print(f"rhs: {rhs}")
 #     symbols = rhs.findall('symbol')
 #     for symbol in symbols:
 #       print(f"symbol.text: {symbol.text}")
       
-
+def map_states_to_rules():
+  """ for each state:
+      - if the itemset has one item AND that item.rule-number is not in old_rules, then mark the state to be deleted.
+      - if the item.rule-number is in old_rules, remap the rule-number and reduction.rule
+      - remove the unused states
+      - remove unused transitions to old states
+      - 
+      1) Find the root state for each range (the first symbol in the range)
+      2) For each state with an (old) itemset.item.rule-number, add the state to the states_to_remove list
+      3) 
+      2) update the transition table
+        2.1) remove old symbols
+        2.2l 
+remap the rulenumber for each item in itemset
+  """
+  pass
 
 def main():
 
@@ -397,10 +412,9 @@ def main():
   find_old_rules()               # step 5:
   create_new_range_rules()       # step 6:
   remove_old_rules()             # step 7:
-
-
-  print('franges: ', franges)
   renumber_rules()               # step 8:
+  map_states_to_rules()          # step 9:
+
   print('franges: ', franges)
   # map_old_rules_to_new_rules()
 
