@@ -15,6 +15,9 @@ root = tree.getroot()
 ranges = {} # the high-level ranges defined in the grammar. These are discovered from the .xml
 franges = {} # final ranges used in the combinator
 
+def save_xml():
+  tree.write('gmr.combinator.xml') 
+
 def print_ranges():
   print(json.dumps(ranges, indent=4))
 
@@ -145,9 +148,11 @@ def discover_ranges():
                 print(f"symbol: {symbol}")
                 print(f"symbol.text: {symbol.text}")
 
-discover_ranges()
+    
+    print(f"Ranges:  {ranges}")
+
+# discover_ranges()
 # Step 1: Discover all the ranges
-print(f"Ranges:  {ranges}")
 
 def find_dependent_states():
   # Step 2: Iterate over the states. 
@@ -247,7 +252,7 @@ def find_dependent_states():
   
   print_ranges()
 
-find_dependent_states()
+# find_dependent_states()
 
 def remove_unused_terminals():
   # now, remove the unused terminals
@@ -270,7 +275,8 @@ def remove_unused_terminals():
   for term in terminals:
     print('term: ', term.get('name'))
 
-remove_unused_terminals()
+# remove_unused_terminals()
+
 
 def add_new_terminal_symbols():
   # determine the final set of ranges for the combinator 
@@ -304,57 +310,96 @@ def add_new_terminal_symbols():
   
   ET.dump(terminals)
 
-add_new_terminal_symbols()
+# add_new_terminal_symbols()
 # ET.dump(rules)
-
-tree.write('gmr.combinator.xml') 
 
 ####################################
 
-# find all 'old' rules related to a given range 
-for key in franges.keys():
-  replace = True
-  print(key)
+def find_old_rules():
+  # find all 'old' rules related to a given range 
+  for key in franges.keys():
+    replace = True
+    print(key)
+  
+    # find the starting value of the range.
+    first = franges[key]['range'][0]
+    last  = franges[key]['range'][1]
+    franges[key]['old_rules'] = get_range_rules(first, last)
+  
+  print('franges: ', franges)
 
-  # find the starting value of the range.
-  first = franges[key]['range'][0]
-  last  = franges[key]['range'][1]
-  franges[key]['old_rules'] = get_range_rules(first, last)
-
-print('franges: ', franges)
-
-create_new_range_rules()
-remove_old_rules()
-
-# iterate over the states, map old rules to new rules
 # def map_old_rules_to_new_rules():
+#   """ Map any pointers to old rules (removed rules) to the new rule of a given range 
+# 	OLD:
+#    <automaton ...>
+#     <state number="3">
+#       <itemset>
+#         <item rule-number="10" point="1" />
+#       </itemset>
+#   NEW:
+#      <state number="3">
+#       <itemset>
+#         <item rule-number="9" point="1" />
+#       </itemset>
+#  
+#   """
+#   # the old rules are listed in the ranges   
+  
 
-print('franges: ', franges)
-ET.dump(rules)
+def renumber_rules():
+  """ Reorder the rules and create a mapping of old rules to new rules.
+      Each combinator has >1 rules. Find the mapping of rules-to-rule for each range
+      r__1 = ['a' - 'e'] == [97:101]
+      franges:  {'r_97_101': {...}, 'range': [97, 101], 'old_rules': ['10', '11', '12', '13'], 'new_rule': '9'}
+      
+  """
+  old_rules = []
+  new_rules = []
+  rule_count = 0
+  print('Renumbering rules...')
+  for rule in root[1].find('rules'):
+    old_rules.append(rule.get('number'))
+    new_rules.append(str(rule_count))
+    rule_count += 1
 
-# def renumber_rules():
+  print('old rules: ', old_rules)
+  print('new rules: ', new_rules)
+
+#     rhs = rule.find('rhs')
+#     print(f"rhs: {rhs}")
+#     symbols = rhs.findall('symbol')
+#     for symbol in symbols:
+#       print(f"symbol.text: {symbol.text}")
+      
 
 
+def main():
 
+	# these operations must be run in the defined order.  
+  discover_ranges()              # step 1: Discover all the ranges
+  find_dependent_states()        # step 2:
+  remove_unused_terminals()      # step 3:
+  add_new_terminal_symbols()     # step 4:
+  find_old_rules()               # step 5:
+  create_new_range_rules()       # step 6:
+  remove_old_rules()             # step 7:
+  renumber_rules()               # step 8:
+  # map_old_rules_to_new_rules()
 
-# map pointers to old rules to new rule
+  # remove unused items from automaton.itemset <item rule-number="10" point="0" />
+  
+  # map dead states to new states <transition type="shift" symbol="'4'" state="10" />
 
-# remove unused rules
+  # renumber terminal symbols
+  # iterate over the states, map old rules to new rules
+  # remove_unused_states()
+  # print out a module in C for the pda combinator
 
+  # print('franges: ', franges)
+  # ET.dump(rules)
+  save_xml()
 
-
-
-#   # pdb.set_trace()
-#   if symbol == 'a':
-#     print('match "a"')
-
-# remove the unused states
-
-# create a unique terminal for each subrange
-
-# print out a module in C for the pda combinator
-
-# 
 
 if __name__ == "__main__":
   print('The Sequence Combinator')
+  main() # run the main application
