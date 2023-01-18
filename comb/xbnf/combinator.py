@@ -365,6 +365,20 @@ def renumber_rules():
   print('old rules: ', old_rules)
   print('new rules: ', new_rules)
 
+  # old rules:  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '14', '15', '16', '17', '18', '19', '21', '22', '24', '25', '26']
+  # new rules:  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
+
+  for rg in franges:
+    franges[rg]['old_rules'].append(franges[rg]['new_rule'])
+    franges[rg]['new_rule'] = new_rules[ old_rules.index(franges[rg]['new_rule']) ]  # Creates a mapping: { 'old_rules': ['20', '19'], 'new_rule': '15'}
+
+
+	# now that we have a mapping of old rules to the new rule numbering system, renumber the rules to the new mapping.
+  for (i, rule) in zip(new_rules, root[1].find('rules')):
+    rule.set('number', str(i))
+
+  ET.dump(root[1].find('rules'))
+
 #     rhs = rule.find('rhs')
 #     print(f"rhs: {rhs}")
 #     symbols = rhs.findall('symbol')
@@ -383,7 +397,11 @@ def main():
   find_old_rules()               # step 5:
   create_new_range_rules()       # step 6:
   remove_old_rules()             # step 7:
+
+
+  print('franges: ', franges)
   renumber_rules()               # step 8:
+  print('franges: ', franges)
   # map_old_rules_to_new_rules()
 
   # remove unused items from automaton.itemset <item rule-number="10" point="0" />
@@ -396,7 +414,7 @@ def main():
   # print out a module in C for the pda combinator
 
   # print('franges: ', franges)
-  # ET.dump(rules)
+  # ET.dump(root[1].find('rules'))
   save_xml()
 
 
