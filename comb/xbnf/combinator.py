@@ -14,6 +14,8 @@ root = tree.getroot()
 
 ranges = {} # the high-level ranges defined in the grammar. These are discovered from the .xml
 franges = {} # final ranges used in the combinator
+rule_mapping = [] # a list holding the mapping of (old_rules, new_rules) 
+rule_map = {}
 
 def save_xml():
   tree.write('gmr.combinator.xml') 
@@ -49,7 +51,6 @@ def create_new_range_rules():
     for rule in rules.findall('rule'):
       if rule.get('number') == new_rule:
         rule.find('rhs').find('symbol').text = rg
-
 
 def get_range_rules(first: int, last: int)->list:  
   """ Get a list of all the old rules covering range between first and last."""
@@ -368,6 +369,10 @@ def renumber_rules():
   # old rules:  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '14', '15', '16', '17', '18', '19', '21', '22', '24', '25', '26']
   # new rules:  ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
 
+  for (old, new) in zip(old_rules, new_rules):
+    rule_mapping.append( (old, new) )  # Rule_mapping [('0', '0'), ('1', '1'), ..., ('14', '10'), ('15', '11') ]
+    rule_map[old] = new
+
   for rg in franges:
     franges[rg]['old_rules'].append(franges[rg]['new_rule'])
     franges[rg]['new_rule'] = new_rules[ old_rules.index(franges[rg]['new_rule']) ]  # Creates a mapping: { 'old_rules': ['20', '19'], 'new_rule': '15'}
@@ -386,21 +391,53 @@ def renumber_rules():
 #       print(f"symbol.text: {symbol.text}")
       
 def map_states_to_rules():
-  """ for each state:
-      - if the itemset has one item AND that item.rule-number is not in old_rules, then mark the state to be deleted.
-      - if the item.rule-number is in old_rules, remap the rule-number and reduction.rule
-      - remove the unused states
-      - remove unused transitions to old states
-      - 
-      1) Find the root state for each range (the first symbol in the range)
-      2) For each state with an (old) itemset.item.rule-number, add the state to the states_to_remove list
-      3) 
-      2) update the transition table
-        2.1) remove old symbols
-        2.2l 
-remap the rulenumber for each item in itemset
+  """ 
+  - for each range:
+    - Determine which state is the root of the range. Create a mapping (i.e. "'a'" -> "r_97_101")
+    - 
+franges:  {'r_97_101': {'symbol-number': '500', 'token-number': '500', 'name': 'r_97_101', 'usefuleness': 'useful', 'range': [97, 101], 'old_rules': ['10', '11', '12', '13', '9'], 'new_rule': '9'}
+
+  for each state:
+        - for each item in ruleset 
+          - remove old item.rule-numbers
+          - if item.rule-number is valid, map it to the new rule number
+        - for each transition
+          - map the old symbol to new range symbol
+        - for each transition
+          - if symbol is valid, map the old state to the new state.
+          - else, remove unused symbols
+        - for each reduction 
+          - map the old rule to new rule 
+
   """
-  pass
+  for rg in franges:
+    # determine the root of the range
+    franges[rg]['root'] = str(chr(franges[rg]['range'][0]))
+
+  old_rules = list(map(lambda x: x[0], rule_mapping))
+  valid_rules = list(map(lambda x: x[1], rule_mapping))
+  print('Rule_mapping', rule_mapping)
+  print('valid_rules', valid_rules) 
+  print('rule_map', rule_map)
+
+  states_to_remove = []
+  automaton = root[2]
+  for state in automaton.findall('state'):
+    items_to_remove = []
+    for itemset in state.findall('itemset'):
+      for item in itemset.findall('item'):
+        old_rule = item.get('rule-number')
+        # pdb.set_trace()
+        if old_rule in rule_map.keys():
+          item.set('rule-number', rule_map[old_rule]) 
+        else:
+          # map the old rule-number to the new rule-number
+          items_to_remove.append(item)
+
+    for rm_item in items_to_remove:
+      itemset.remove(rm_item)
+
+    # ET.dump(state)
 
 def main():
 
