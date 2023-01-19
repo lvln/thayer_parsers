@@ -1,1 +1,0 @@
-house-num = 1*8(DIGIT / ALPHA)

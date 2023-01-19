@@ -1,1 +1,0 @@
-bin-val: "b" 1BIT [ 1("." 1BIT) | ("-" 1BIT) ]

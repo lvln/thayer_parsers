@@ -1,1 +1,0 @@
-hex-val: "x" 1HEXDIG [ 1("." 1HEXDIG) | ("-" 1HEXDIG) ]

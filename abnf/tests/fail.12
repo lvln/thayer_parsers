@@ -1,1 +1,0 @@
-zip-part: town-name "," SP state 12SP zip-code CRLF

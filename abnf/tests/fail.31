@@ -1,1 +1,0 @@
-char-val: DQUOTE (%x20-21 | %x23-7E) DQUOTE
