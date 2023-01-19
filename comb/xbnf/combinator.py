@@ -422,13 +422,15 @@ franges:  {'r_97_101': {'symbol-number': '500', 'token-number': '500', 'name': '
   print('Rule_mapping', rule_mapping)
   print('valid_rules', valid_rules) 
   print('rule_map', rule_map)
+  snum_to_remove = []   # state-numbers to remove
+  states_to_remove = [] # state elements to remove
 
-  states_to_remove = []
   automaton = root[2]
   for state in automaton.findall('state'):
     # remove old rules and remap valid rules to new rule numbers
     items_to_remove = []
     trans_to_remove = []
+    states_to_remove = []
 
     # Updating automaton.state.itemset...
     for itemset in state.findall('itemset'):
@@ -456,22 +458,38 @@ franges:  {'r_97_101': {'symbol-number': '500', 'token-number': '500', 'name': '
           print(f"symbol replaced: {rg}")
      
       # if transition.symbol is not valid, add state to removal list, remove transition from transitions list
-      if transition.get('symbol') not in get_terminal_symbol_list():
+      tlist = get_terminal_symbol_list()
+      if not transition.get('symbol') in tlist:
         trans_to_remove.append(transition)
+        snum_to_remove.append(transition.get('state'))
 
     for trans in trans_to_remove:
       state.find('actions').find('transitions').remove(trans)
 
-    # for each state in state_removals, remove the state
+
+     
+
+ 
+  # for each state in state_removals, remove the state
+  for state in automaton.findall('state'):
+    if state.get('number') in snum_to_remove:
+      states_to_remove.append(state)
+  
+  print('State Numbers to remove: ', snum_to_remove) 
+  # print('States to remove: ', states_to_remove) 
+  for state in states_to_remove:
+    automaton.remove(state)
+
+  # for state in automaton.findall('state'):
+  ET.dump(automaton)
 
     # create a new order list of the remaining states
 
     # create a mapping of old states to new states
 
     # reorder the states          
-      
-  
-    ET.dump(state)
+ 
+ 
 
 def main():
 
