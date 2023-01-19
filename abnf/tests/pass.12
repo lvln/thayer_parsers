@@ -1,0 +1,1 @@
+zip-part = town-name "," SP state 1*2SP zip-code CRLF

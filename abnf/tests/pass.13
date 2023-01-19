@@ -1,0 +1,1 @@
+own-name = 1*(ALPHA / SP)
