@@ -17,6 +17,9 @@ franges = {} # final ranges used in the combinator
 rule_mapping = [] # a list holding the mapping of (old_rules, new_rules) 
 rule_map = {}
 
+def get_terminal_symbol_list():
+  return [ sym.get('name') for sym in root[1].find('terminals').findall('terminal') ]
+
 def save_xml():
   tree.write('gmr.combinator.xml') 
 
@@ -423,7 +426,11 @@ franges:  {'r_97_101': {'symbol-number': '500', 'token-number': '500', 'name': '
   states_to_remove = []
   automaton = root[2]
   for state in automaton.findall('state'):
+    # remove old rules and remap valid rules to new rule numbers
     items_to_remove = []
+    trans_to_remove = []
+
+    # Updating automaton.state.itemset...
     for itemset in state.findall('itemset'):
       for item in itemset.findall('item'):
         old_rule = item.get('rule-number')
@@ -437,7 +444,34 @@ franges:  {'r_97_101': {'symbol-number': '500', 'token-number': '500', 'name': '
     for rm_item in items_to_remove:
       itemset.remove(rm_item)
 
-    # ET.dump(state)
+
+    # Updating automaton.state.actions.transitions...
+    # for each transition, map the old symbol to new range symbols
+    for transition in state.find('actions').find('transitions').findall('transition'):
+      # map the old symbols to new symbols
+      for rg in franges:
+        val = franges[rg]['root']
+        if transition.get('symbol') == f"\'{val}\'":
+          transition.set('symbol', rg)
+          print(f"symbol replaced: {rg}")
+     
+      # if transition.symbol is not valid, add state to removal list, remove transition from transitions list
+      if transition.get('symbol') not in get_terminal_symbol_list():
+        trans_to_remove.append(transition)
+
+    for trans in trans_to_remove:
+      state.find('actions').find('transitions').remove(trans)
+
+    # for each state in state_removals, remove the state
+
+    # create a new order list of the remaining states
+
+    # create a mapping of old states to new states
+
+    # reorder the states          
+      
+  
+    ET.dump(state)
 
 def main():
 
