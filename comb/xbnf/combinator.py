@@ -492,6 +492,12 @@ franges:  {'r_97_101': {'symbol-number': '500', 'token-number': '500', 'name': '
   print(f"New state mapping: {new_state_map}")
 
   # iterate over all other state references and remap the state
+  # transitions
+  
+  for state in automaton.findall('state'): 
+    for transition in state.find('actions').find('transitions').findall('transition'):
+      old_state = transition.get('state')
+      transition.set('state', new_state_map[old_state])
    
     # reorder the states          
  
