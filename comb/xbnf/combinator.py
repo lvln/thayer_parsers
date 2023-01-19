@@ -480,15 +480,22 @@ franges:  {'r_97_101': {'symbol-number': '500', 'token-number': '500', 'name': '
   for state in states_to_remove:
     automaton.remove(state)
 
-  # for state in automaton.findall('state'):
-  ET.dump(automaton)
+  # create a mapping of old states to new states; reorder the states
+  new_state_map = {}
+  state_count = 0
+  for state in automaton.findall('state'):
+    new_state = str(state_count)
+    new_state_map[state.get('number')] = new_state 
+    state.set('number', new_state)
+    state_count += 1
 
-    # create a new order list of the remaining states
+  print(f"New state mapping: {new_state_map}")
 
-    # create a mapping of old states to new states
-
+  # iterate over all other state references and remap the state
+   
     # reorder the states          
  
+  ET.dump(automaton)
  
 
 def main():
