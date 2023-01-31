@@ -1,0 +1,3 @@
+bin-val = "b" 1*BIT [ 1*("." 1*BIT) / ("-" 1*BIT) ] 
+	; series of concatenated bit values 
+	; or single ONEOF range

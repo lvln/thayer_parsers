@@ -1,0 +1,5 @@
+prose-val = "<" *(020-3D / 03F-7E) ">" 
+	; bracketed string of SP and VCHAR 
+	; without angles 
+	; prose description, to be used as 
+	; last resort

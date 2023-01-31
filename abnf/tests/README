@@ -1,1 +1,3 @@
+//for ((i=0; i<75; i++)); do printf "${arr[$i]}" > pass.$i done
+
 printf 'b' > pass.6
