@@ -21,46 +21,59 @@ uint8_t input[1024]; /* the input is a buff of bytes */
 
 /* The Parser */
 void init_parser() {
-	/* parse a single int8 between the values of 1 and 15, if h_not succeeds then consume byte */
-	H_RULE(NOT, h_sequence(h_not(h_ch_range('\x01','\x0F')),h_uint8(),NULL));
-	pp = h_sequence(NOT,h_end_p(),NULL);
+	/* parse a string to differentiate between two strings "a++b" and "a+b" */
+	H_RULE(NOT, h_choice(h_sequence(h_ch('+'), h_not(h_ch('+')), NULL), h_token((const uint8_t*)"++", 2), NULL));
+	pp = h_sequence(h_ch('a'), NOT, h_ch('b'),h_end_p(),NULL);
 }
 
-/* Passing Tests: 0, 165 */
+/* Passing Tests: "a++b", "a+b" */
 static void test_1() {
-	input[0] = 0x00;
-	g_check_parse_ok(pp, BKEND, input, 1);
+	input[0] = 'a';
+	input[1] = '+';
+	input[2] = '+';
+	input[3] = 'b';
+	g_check_parse_ok(pp, BKEND, input, 4);
 }
 
 static void test_2() {
-	input[0] = 0xA5;
-	g_check_parse_ok(pp, BKEND, input, 1);
+	input[0] = 'a';
+	input[1] = '+';
+	input[2] = 'b';
+	g_check_parse_ok(pp, BKEND, input, 3);
 }
 
-/* Failing Tests: +15,+2,0 +1 */
-static void test_m2() {
-	input[0] = 0x0F; // +15
-	g_check_parse_failed(pp, BKEND, input, 1);
+/* Failing Tests: "a+-b", "A++b", "a+Ab" */
+static void test_3() {
+	input[0] = 'a';
+	input[1] = '+';
+	input[2] = '-';
+	input[3] = 'b';
+	g_check_parse_failed(pp, BKEND, input, 4);
 }
 
-static void test_p2() {
-	input[0] = 0x02; // +2
-	g_check_parse_failed(pp, BKEND, input, 1);
+static void test_4() {
+	input[0] = 'A';
+	input[1] = '+';
+	input[2] = '+';
+	input[3] = 'b';
+	g_check_parse_failed(pp, BKEND, input, 4);
 }
 
-static void test_2val() {
-	input[0] = 0x00; // 0
-	input[1] = 0x01; // +1
-	g_check_parse_failed(pp, BKEND, input, 2);
+static void test_5() {
+	input[0] = 'a';
+	input[1] = '+';
+	input[2] = 'A';
+	input[3] = 'b';
+	g_check_parse_failed(pp, BKEND, input, 4);
 }
 
 
 void register_bug_tests() {
 	g_test_add_func("/pass/test1",test_1);
 	g_test_add_func("/pass/test2",test_2);
-	g_test_add_func("/fail/neg2",test_m2);
-	g_test_add_func("/fail/pos2",test_p2);
-	g_test_add_func("/fail/2val",test_2val);
+	g_test_add_func("/fail/test3",test_3);
+	g_test_add_func("/fail/test4",test_4);
+	g_test_add_func("/fail/test5",test_5);
 }
 
 int main(int argc, char *argv[]) {

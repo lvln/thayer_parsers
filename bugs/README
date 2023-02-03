@@ -33,21 +33,21 @@ bug3.c uses:
 	
 bug4.c uses:
 
-  /* Check if byte is of hex value 0xA5, consume byte if h_and passes */
-	H_RULE(AND, h_sequence(h_and(h_ch('\xA5')),h_ch('\xA5'),NULL));
+  /* Check if string is hex value "0xA5", consume string if h_and passes */
+	H_RULE(AND, h_sequence(h_and(h_token((const uint8_t*)"0x", 2)),h_token((const uint8_t*)"0xA5", 4),NULL));
 	pp = h_sequence(AND,h_end_p(),NULL);
 
 bug5.c uses:
 
-  /* parse a single int8 and XOR check if within first(0-6) or second(5-14) range */
-	H_RULE(XOR, h_xor(h_ch_range('\x00', '\x06'), h_ch_range('\x05', '\x0E')));
+  /* parse a single byte and XOR check if within string "012" or "134" */
+	H_RULE(XOR, h_xor(h_in((const uint8_t*)"012", 3), h_in((const uint8_t*)"134", 3)));
 	pp = h_sequence(XOR,h_end_p(),NULL);
 
 bug6.c uses:
 
-  /* parse a single int8 between the values of 1 and 15, if h_not succeeds then consume byte */
-	H_RULE(NOT, h_sequence(h_not(h_ch_range('\x01','\x0F')),h_uint8(),NULL));
-	pp = h_sequence(NOT,h_end_p(),NULL);
+  /* parse a string to differentiate between two strings "a++b" and "a+b" */
+	H_RULE(NOT, h_choice(h_sequence(h_ch('+'), h_not(h_ch('+')), NULL), h_token((const uint8_t*)"++", 2), NULL));
+	pp = h_sequence(h_ch('a'), NOT, h_ch('b'),h_end_p(),NULL);
 
 bug7.c uses:
 

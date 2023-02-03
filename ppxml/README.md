@@ -6,4 +6,5 @@ main.c      -- the source for loading and running test vectors and generating xm
 parser.h    -- header file for a parser, used by main.c
 
 libppxml.a -- an archive containing the above files used to simplify building Hammer parsers.
+libppxml_pr.a -- an archive containing the above files used to simplify building Hammer parsers for PackRat backend.
 

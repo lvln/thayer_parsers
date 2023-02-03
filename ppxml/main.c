@@ -4,8 +4,10 @@
 #include "parser.h"
 #include "pp_xml.h"
 
-/* Set the backend */
+ /* Set the backend */
+#ifndef BKEND
 #define BKEND PB_LALR /* or PB_LALR, PB_MIN */
+#endif
 /* set location of tests */
 #define TESTPATH "../tests/"
 /* largest input */
