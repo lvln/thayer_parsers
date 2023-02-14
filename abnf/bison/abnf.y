@@ -23,7 +23,7 @@ rulelis:
 	;
 
 rulelists:
-	/* empty */
+	/*empty*/
 	| rulelists c_wsp
 	;
 
@@ -36,7 +36,7 @@ rulename:
 	;
 
 rulenames:
-	/* empty */
+	/*empty*/
 	| rulenames rulenam
 	;
 
@@ -52,7 +52,7 @@ defined_as:
 
 defined_a:
 	'=' defined_ass
-	| '=' '/' defined_ass
+	| "=/" defined_ass
 	;
 
 defined_ass:
@@ -84,7 +84,7 @@ comment:
 	;
 
 comments:
-	/* empty */
+	/*empty*/
 	| comments commen
 	;
 
@@ -116,7 +116,7 @@ concatenation:
     ;
 
 concatenations:
-    /* empty */
+    /*empty*/
 	| concatenations concatenatio
 	;
 
@@ -134,7 +134,7 @@ repetition:
 	;
 
 repetitions:
-	/* empty */
+	/*empty*/
 	| repeat
 	;
 
@@ -162,7 +162,7 @@ group:
 	;
 
 groups:
-	/* empty */
+	/*empty*/
 	| groups c_wsp
 	;
 
@@ -171,7 +171,7 @@ option:
 	;
 
 options:
-	/* empty */
+	/*empty*/
 	| options c_wsp
 	;
 
@@ -180,7 +180,7 @@ char_val:
 	;
 
 char_vals:
-	/* empty */
+	/*empty*/
 	| char_vals char_va
 	;
 
@@ -208,7 +208,7 @@ bin_val:
 	;
 
 bin_valsss:
-	/* empty */
+	/*empty*/
 	| bin_valssss
 	;
 
@@ -232,7 +232,7 @@ dec_val:
 	;
 
 dec_valsss:
-	/* empty */
+	/*empty*/
 	| dec_valssss
 	;
 
@@ -256,7 +256,7 @@ hex_val:
 	;
 
 hex_valsss:
-	/* empty */
+	/*empty*/
 	| hex_valssss
 	;
 
@@ -280,7 +280,7 @@ prose_val:
 	;
 
 prose_vals:
-	/* empty */
+	/*empty*/
 	| prose_vals prose_va
 	;
 
@@ -297,7 +297,6 @@ prose_va:
 	'\x7B' | '\x7C' | '\x7D' | '\x7E'
 	;
 
-// Error Section
 CRLF:
 	CR LF
 	;
@@ -309,7 +308,6 @@ CR:
 LF:
 	'\x0A'
 	;
-// END
 
 HEXDIG:
 	DIGIT | 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
@@ -329,7 +327,6 @@ BIT:
 	| '1'
 	;
 
-// Error Section
 WSP:
 	SP
 	| HTAB
@@ -342,7 +339,6 @@ SP:
 HTAB:
 	'\x09'
 	;
-// END
 
 DIGIT:
 	'\x30' | '\x31' | '\x32' | '\x33' | '\x34' | '\x35' | '\x36' | '\x37' | '\x38' | '\x39'
