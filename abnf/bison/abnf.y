@@ -94,39 +94,39 @@ commen:
 	;
 
 alternation:
-	concatenation alternationss
-	;
-
-alternationss:
-	/* empty */
-	| alternationss alternatio
-	;
-
-alternatio:
-	alternations '/' alternations concatenation
-	;
+    concatenation alternations
+    ;
 
 alternations:
-	/* empty */
-	| alternations c_wsp
-	;
+    /* empty */
+    | alternations alternatio
+    ;
+
+alternatio:
+    alternati '/' alternati concatenation
+    ;
+
+alternati:
+    /* empty */
+    | alternati c_wsp
+    ;
 
 concatenation:
-	repetition concatenations
-	;
+    repetition concatenations
+    ;
 
 concatenations:
-	/* empty */
+    /*empty*/
 	| concatenations concatenatio
 	;
 
 concatenatio:
-	concatenationss repetition
-	;
+    concatenati repetition
+    ;
 
-concatenationss:
-	c_wsp
-	| concatenationss c_wsp
+concatenati:
+    c_wsp
+	| concatenati c_wsp
 	;
 
 repetition:
@@ -140,17 +140,12 @@ repetitions:
 
 repeat:
 	repeats
-	| repeatss '*' repeatss
+	| repeats '*' repeats
 	;
 
 repeats:
 	DIGIT
-	| DIGIT repeats 
-	;
-
-repeatss:
-	/* empty */
-	| DIGIT repeatss 
+	| repeats DIGIT 
 	;
 
 element:
