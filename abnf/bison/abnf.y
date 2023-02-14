@@ -61,13 +61,13 @@ defined_ass:
 	;
 
 elements:
-    alternation elementss
-    ;
+	alternation elementss
+	;
 
 elementss:
-    /* empty */
-    | elementss c_wsp
-    ;
+	/* empty */
+	| elementss c_wsp
+	;
 
 c_wsp:
 	WSP
@@ -112,22 +112,22 @@ alternations:
 	;
 
 concatenation:
-    repetition concatenations
-    ;
+	repetition concatenations
+	;
 
 concatenations:
-    /* empty */
-    | concatenations concatenatio
-    ;
+	/* empty */
+	| concatenations concatenatio
+	;
 
 concatenatio:
-    concatenationss repetition
-    ;
+	concatenationss repetition
+	;
 
 concatenationss:
-    c_wsp
-    | concatenationss c_wsp
-    ;
+	c_wsp
+	| concatenationss c_wsp
+	;
 
 repetition:
 	repetitions element
