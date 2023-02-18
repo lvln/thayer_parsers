@@ -8,18 +8,19 @@
 
 %%
 /* The ABNF Grammar */
-// rulelist = 1*( rule / (*c-wsp c-nl) )
-rulelist:
-    rulelis | rulelist rulelis 
-    ;
-
-rulelis:
-    rule | rulelists c-nl
-    ;
-
-rulelists:
-    /* empty */ | rulelists c-wsp
-    ;
+//// rulelist = 1*( rule / (*c-wsp c-nl) )
+//rulelist:
+//    rulelis | rulelist rulelis 
+//    ;
+//
+//rulelis:
+//    rule | rulelists c-nl
+//    ;
+//
+//rulelists:
+//    /* empty */ | rulelists c-wsp
+//    ;
+//
 
 // rule = rulename defined-as elements c-nl
 rule:
