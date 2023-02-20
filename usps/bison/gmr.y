@@ -7,91 +7,91 @@
 %token X00
 
 %% /* The ABNF USPS Grammar definition -- EDIT */
-rule:
-	recipient-sender CRLF
-	street-address CRLF
-	street-addressss CRLF
-	city-town state zip-code CRLF
-	country
-	;
-
-// Sender
-recipient-sender:
-	name recipient-senders name
-	;
-
-recipient-senders:
-	/* empty */
-	| name
-	;
-
-name:
-	ALPHA WSP
-	;
-
-names:
-	ALPHA | names ALPHA
-	;
-
-// Street Line 1
-street-address:
-	street-addresss street-addressss
-	;
-
-street-addresss:
-	DIGIT | street-addresss DIGIT
-	;
-
-// Street Line 2
-street-addressss:
-	street-addresssss | street-addressss street-addresssss
-	;
-
-street-addresssss:
-	WSP
-	| ALPHA
-	| DIGIT
-	;
-
-// City or Town
-city-town:
-	city-towns WSP | city-town city-towns WSP
-	;
-
-city-towns:
-	ALPHA | city-towns ALPHA
-	;
-
-// state
-state:
-	state-abbreviation
-	| state-full
-	;
-
-state-abbreviation:
-	"AL" | "AK" | "AZ" | "AR" | "AS" | "CA" | "CO" | "CT" | "DE" | "DC" | "FL" | "GA" | "GU" | "HI" | "ID" | "IL" | "IN" | "IA" | "KS" | "KY" | "LA" | "ME" | "MD" | "MA" | "MI"
-	| "MN" | "MS" | "MO" | "MT" | "NE" | "NV" | "NH" | "NJ" | "NM" | "NY" | "NC" | "ND" | "MP" | "OH" | "OK" | "OR" | "PA" | "PR" | "RI" | "SC" | "SD" | "TN" | "TX" | "TT" | "UT"
-	| "VT" | "VA" | "VI" | "WA" | "WV" | "WI" | "WY"
-	;
-
-state-full:
-	"Alabama" | "Alaska" | "Arizona" | "Arkansas" | "California" | "Colorado" | "Connecticut" | "Delaware" | "Florida" | "Georgia" | "Hawaii" | "Idaho"
-	| "Illinois" | "Indiana" | "Iowa" | "Kansas" | "Kentucky" | "Louisiana" | "Maine" | "Maryland" | "Massachusetts" | "Michigan" | "Minnesota"
-	| "Mississippi" | "Missouri" | "Montana" | "Nebraska" | "Nevada" | "New Hampshire" | "New Jersey" | "New Mexico" | "New York" | "North Carolina"
-	| "North Dakota" | "Ohio" | "Oklahoma" | "Oregon" | "Pennsylvania" | "Rhode Island" | "South Carolina" | "South Dakota" | "Tennessee" | "Texas"
-	| "Utah" | "Vermont" | "Virginia" | "Washington" | "West Virginia" | "Wisconsin" | "Wyoming"
-	;
-
-// postal-code
-zip-code:
-	DIGIT | zip-code DIGIT
-	;
-
+//rule:
+//	recipient-sender CRLF
+//	street-address CRLF
+//	street-addressss CRLF
+//	city-town state zip-code CRLF
+//	country
+//	;
+//
+//// Sender
+//recipient-sender:
+//	name recipient-senders name
+//	;
+//
+//recipient-senders:
+//	/* empty */
+//	| name
+//	;
+//
+//name:
+//	ALPHA WSP
+//	;
+//
+//names:
+//	ALPHA | names ALPHA
+//	;
+//
+//// Street Line 1
+//street-address:
+//	street-addresss street-addressss
+//	;
+//
+//street-addresss:
+//	DIGIT | street-addresss DIGIT
+//	;
+//
+//// Street Line 2
+//street-addressss:
+//	street-addresssss | street-addressss street-addresssss
+//	;
+//
+//street-addresssss:
+//	WSP
+//	| ALPHA
+//	| DIGIT
+//	;
+//
+//// City or Town
+//city-town:
+//	city-towns WSP | city-town city-towns WSP
+//	;
+//
+//city-towns:
+//	ALPHA | city-towns ALPHA
+//	;
+//
+//// state
+//state:
+//	state-abbreviation
+//	| state-full
+//	;
+//
+//state-abbreviation:
+//	"AL" | "AK" | "AZ" | "AR" | "AS" | "CA" | "CO" | "CT" | "DE" | "DC" | "FL" | "GA" | "GU" | "HI" | "ID" | "IL" | "IN" | "IA" | "KS" | "KY" | "LA" | "ME" | "MD" | "MA" | "MI"
+//	| "MN" | "MS" | "MO" | "MT" | "NE" | "NV" | "NH" | "NJ" | "NM" | "NY" | "NC" | "ND" | "MP" | "OH" | "OK" | "OR" | "PA" | "PR" | "RI" | "SC" | "SD" | "TN" | "TX" | "TT" | "UT"
+//	| "VT" | "VA" | "VI" | "WA" | "WV" | "WI" | "WY"
+//	;
+//
+//state-full:
+//	"Alabama" | "Alaska" | "Arizona" | "Arkansas" | "California" | "Colorado" | "Connecticut" | "Delaware" | "Florida" | "Georgia" | "Hawaii" | "Idaho"
+//	| "Illinois" | "Indiana" | "Iowa" | "Kansas" | "Kentucky" | "Louisiana" | "Maine" | "Maryland" | "Massachusetts" | "Michigan" | "Minnesota"
+//	| "Mississippi" | "Missouri" | "Montana" | "Nebraska" | "Nevada" | "New Hampshire" | "New Jersey" | "New Mexico" | "New York" | "North Carolina"
+//	| "North Dakota" | "Ohio" | "Oklahoma" | "Oregon" | "Pennsylvania" | "Rhode Island" | "South Carolina" | "South Dakota" | "Tennessee" | "Texas"
+//	| "Utah" | "Vermont" | "Virginia" | "Washington" | "West Virginia" | "Wisconsin" | "Wyoming"
+//	;
+//
+//// postal-code
+//zip-code:
+//	DIGIT | zip-code DIGIT
+//	;
+//
 // country
 country:
 	country-ab
-	| country-abbreviation
-	| country-full
+//	| country-abbreviation
+//	| country-full
 	;
 
 country-ab:
@@ -104,7 +104,6 @@ country-ab:
 	| "SR" | "SJ" | "SZ" | "SE" | "CH" | "SY" | "TW" | "TJ" | "TZ" | "TH" | "TL" | "TG" | "TK" | "TO" | "TT" | "TN" | "TR" | "TM" | "TC" | "TV" | "UG" | "UA" | "AE" | "GB" | "US" | "UM" | "UY" | "UZ" | "VU" | "VE" | "VN" | "VI" | "WF" | "EH" | "YE"
 	| "ZM" | "ZW"
 	;
-
 
 country-abbreviation:
 	"AFG" | "ALA" | "ALB" | "DZA" | "ASM" | "AND" | "AGO" | "AIA" | "ATA" | "ATG" | "ARG" | "ARM" | "ABW" | "AUS" | "AUT" | "AZE" | "BHS" | "BHR" | "BGD" | "BRB" | "BLR" | "BEL"
@@ -148,50 +147,50 @@ country-full:
 	| "Bolivarian Republic of Venezuela" | "Viet Nam" | "Yemen" | "Zambia" | "Zimbabwe"
 	;
 
-ALPHA:
-	'\x41' | '\x42' | '\x43' | '\x44' | '\x45' | '\x46' | '\x47' | '\x48' | '\x49' | '\x4A' |
-	'\x4B' | '\x4C' | '\x4D' | '\x4E' | '\x4F' | '\x50' | '\x51' | '\x52' | '\x53' | '\x54' |
-	'\x55' | '\x56' | '\x57' | '\x58' | '\x59' | '\x5A' | '\x61' | '\x62' | '\x63' | '\x64' |
-	'\x65' | '\x66' | '\x67' | '\x68' | '\x69' | '\x6A' | '\x6B' | '\x6C' | '\x6D' | '\x6E' |
-	'\x6F' | '\x70' | '\x71' | '\x72' | '\x73' | '\x74' | '\x75' | '\x76' | '\x77' | '\x78' |
-	'\x79' | '\x7A'
-	;
-
-DIGIT:
-	'\x30' | '\x31' | '\x32' | '\x33' | '\x34' | '\x35' | '\x36' | '\x37' | '\x38' | '\x39'
-	;
-
-WSP:
-	WSPS | WSP WSPS
-
-WSPS:
-    SP | HTAB
-    ;
-
-HTAB:
-	'\x09'
-	;
-
-SP:
-	'\x20'
-	;
-
-CRLF:
-	/* empty */
-	| CRLF CRLFS
-	;
-
-CRLFS:
-    CR
-	| LF
-    ;
-
-CR:
-	'\x0D'
-	;
-
-LF:
-	'\x0A'
-	;
-
+//ALPHA:
+//	'\x41' | '\x42' | '\x43' | '\x44' | '\x45' | '\x46' | '\x47' | '\x48' | '\x49' | '\x4A' |
+//	'\x4B' | '\x4C' | '\x4D' | '\x4E' | '\x4F' | '\x50' | '\x51' | '\x52' | '\x53' | '\x54' |
+//	'\x55' | '\x56' | '\x57' | '\x58' | '\x59' | '\x5A' | '\x61' | '\x62' | '\x63' | '\x64' |
+//	'\x65' | '\x66' | '\x67' | '\x68' | '\x69' | '\x6A' | '\x6B' | '\x6C' | '\x6D' | '\x6E' |
+//	'\x6F' | '\x70' | '\x71' | '\x72' | '\x73' | '\x74' | '\x75' | '\x76' | '\x77' | '\x78' |
+//	'\x79' | '\x7A'
+//	;
+//
+//DIGIT:
+//	'\x30' | '\x31' | '\x32' | '\x33' | '\x34' | '\x35' | '\x36' | '\x37' | '\x38' | '\x39'
+//	;
+//
+//WSP:
+//	WSPS | WSP WSPS
+//
+//WSPS:
+//    SP | HTAB
+//    ;
+//
+//HTAB:
+//	'\x09'
+//	;
+//
+//SP:
+//	'\x20'
+//	;
+//
+//CRLF:
+//	/* empty */
+//	| CRLF CRLFS
+//	;
+//
+//CRLFS:
+//    CR
+//	| LF
+//    ;
+//
+//CR:
+//	'\x0D'
+//	;
+//
+//LF:
+//	'\x0A'
+//	;
+//
 %% /* C-Code */
