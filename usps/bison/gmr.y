@@ -7,30 +7,17 @@
 %token X00
 
 %% /* The ABNF USPS Grammar definition -- EDIT */
-// full-address
+// https://pe.usps.com/text/pub28/28c2_003.htm
 rule:
-	// sentence CRLF address CRLF sentence '\x2C' WSP sentence WSP multi-digit rules // domestic
-	// | sentence CRLF units CRLF sentence CRLF sentence '\x2C' WSP sentence WSP multi-digit CRLF sentence rules // military
-	sentence CRLF sentence CRLF address// buisness
-	;
-
-rules:
-	/* empty */
-	| rules CRLF
-	;
-
-unit:
+	sentence CRLF
+	address CRLF
 	sentence multi-digits
 	;
-
-units:
-	unit
-	| units WSP unit
-        ;
 
 // address
 address:
 	multi-digits sentence multi-digits
+	| multi-digits sentence SP '\x23' multi-digits
 	;
 
 multi-digits:
@@ -52,6 +39,7 @@ multi-digit:
 sentence:
 	word
 	| sentence WSP word
+	;
 
 word:
 	ALPHA
