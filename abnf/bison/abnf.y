@@ -126,8 +126,12 @@ repetition:
 repetitions:
     /* empty */ | repeat
     ;
-
+// Note:
+// Rule change FROM
+// repeat = 1*DIGIT / (*DIGIT "*" *DIGIT)
+// TO
 // repeat = *DIGIT / (*DIGIT "*" *DIGIT)
+// resolves 50 shift/reduce errors
 repeat:
     repeatss | repeatss '*' repeatss
     ;

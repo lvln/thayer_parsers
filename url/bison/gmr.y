@@ -8,6 +8,7 @@
 
 
 %% /* The ABNF URI Grammar definition -- TODO */
+// https://www.rfc-editor.org/rfc/rfc3986
 
 // URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 URI:

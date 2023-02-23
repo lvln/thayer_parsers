@@ -9,13 +9,24 @@
 %% /* The ABNF USPS Grammar definition -- EDIT */
 // full-address
 rule:
-	sentence CRLF address CRLF sentence '\x2C' WSP sentence WSP multi-digit rules
+	// sentence CRLF address CRLF sentence '\x2C' WSP sentence WSP multi-digit rules // domestic
+	// | sentence CRLF units CRLF sentence CRLF sentence '\x2C' WSP sentence WSP multi-digit CRLF sentence rules // military
+	sentence CRLF sentence CRLF address// buisness
 	;
 
 rules:
 	/* empty */
-	| CRLF rules
+	| rules CRLF
 	;
+
+unit:
+	sentence multi-digits
+	;
+
+units:
+	unit
+	| units WSP unit
+        ;
 
 // address
 address:
