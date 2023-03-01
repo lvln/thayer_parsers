@@ -11,7 +11,7 @@ __[t1-t2]__ -- A range of values between terminal t1 and t2, where t2>t1.
 
 __[t1,t2,...,tn]__ -- An enumerated set of terminal values t1 to tn, where n>1.
 
-__"<string>"__ -- A string value.
+__"\<string\>"__ -- A string value.
 
 __\*__ -- Signifying any byte '\x00' to '\xFF'.
 
