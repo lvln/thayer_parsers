@@ -16,11 +16,11 @@ __"\<string\>"__ -- A string value.
 __\*__ -- Signifying any byte '\x00' to '\xFF'.
 
 
-## Usage: xbnf <infile> [ -h -d -o <outfile>]
+## Usage: xbnf \<infile\> [ -h -d -o \<outfile\>]
 
-Parses the input grammer in _<infile>_ and produces a Bison grammar in
-_<outfile>_ (default: _output.y_). The output of xbnf is a Bison parser
-that can be fed to Bison directly.
+Parses the input grammer in _\<infile\>_ and produces a Bison grammar in
+_\<outfile\>_ (default: _output.y_). The output of xbnf is a Bison grammar
+that can be fed to Bison directly. Flags: -h provides usage, -d passed on to bison.
 
 
 ## Examples
