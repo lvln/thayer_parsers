@@ -1,18 +1,17 @@
 
 
-# xbnf -- A BNF parser for binary formats.
+# xbnf -- A preprocessor, written in Bison, that extends Bison BNF.
 
 **xbnf** is a Bison parser that extends Bison's BNF to include
-notations for parsing binary formats.
-
-The following notations are provided:
-
+notations for parsing ascii and binary formats. The following notations are provided:
 
 __'\x00'__ -- The terminal symbol for zero in hexadecimal.
 
-__[t1-t2]__ -- A range of binary values between terminal t1 and t2, where t2>t1.
+__[t1-t2]__ -- A range of values between terminal t1 and t2, where t2>t1.
 
 __[t1,t2,...,tn]__ -- An enumerated set of terminal values t1 to tn, where n>1.
+
+__"<string>"__ -- A string value.
 
 __\*__ -- Signifying any byte '\x00' to '\xFF'.
 
@@ -31,6 +30,8 @@ __P : [ '\x05' - '\x1c' ] ;__ -- accepts any binary value between
   _x05_ and _x1c_.
 
 __P : ['a'-'f'] ;__ -- accepts the characters between _a_ and  _f_.
+
+__P : "true" | "false" | "null" ;__ -- accepts the string _true_, or _false_, or _null_.
 
 __P : ['\x1f', '\x00', 'a', ']', '\0xfe'] ;__ -- accepts the hexadecimal
   values _x1f_, _x00_, _xfe_ and the characters _a_ and _]_.
