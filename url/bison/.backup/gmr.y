@@ -6,89 +6,148 @@
 
 %token X00
 
+%% /* The URI Grammar */
+// scheme ':' hier-part queries fragments
+URI:
+    scheme ':' options
+    ;
 
-%% /* The ABNF URI Grammar definition -- TODO */
+/*
+URI:
+    scheme ':' hier-part queries fragments
+    ;
+*/
 
-URI: scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+options:
+    /* empty */
+    | options option
 
-hier-part: "//" authority path-abempty
-				| path-absolute
-				| path-rootless
-				| path-empty
+option:
+    ALPHA
+    | DIGIT
+    | '/'
+    | '#'
+    | '.'
+    | '?'
+    | ';'
+    | ':'
+    | '='
+    | '%'
+    | '~'
+    ;
 
-URI-reference: URI | relative-ref
+scheme:
+    ALPHA schemes
+    ;
 
-absolute-URI: scheme ":" hier-part [ "?" query ]
+schemes:
+    /* empty */
+    | schemes schemess
+    ;
 
-relative-ref: relative-part [ "?" query ] [ "#" fragment ]
+schemess:
+    ALPHA | DIGIT | '+' | '-' | '.'
+    ;
 
-relative-part: "//" authority path-abempty
-				| path-absolute
-				| path-noscheme
-				| path-empty
+hier-part:
+    authority path
+    ;
 
-scheme: ALPHA *( ALPHA | DIGIT | "+" | "-" | "." )
+authority:
+    host ports
+    ;
 
-authority: [ userinfo "@" ] host [ ":" port ]
-userinfo: *( unreserved | pct-encoded | sub-delims | ":" )
-host: IP-literal | IPv4address | reg-name
-port: *DIGIT
+host:
+    unreserved
+    | host unreserved
+    ;
 
-IP-literal: "[" ( IPv6address | IPvFuture  ) "]"
+ports:
+    /* empty */
+    | ':' port
+    ;
 
-IPvFuture: "v" 1*HEXDIG "." 1*( unreserved | sub-delims | ":" )
+port:
+    DIGIT
+    | port DIGIT
+    ;
 
-IPv6address:                            6( h16 ":" ) ls32
-				|                       "::" 5( h16 ":" ) ls32
-				| [               h16 ] "::" 4( h16 ":" ) ls32
-				| [ *1( h16 ":" ) h16 ] "::" 3( h16 ":" ) ls32
-				| [ *2( h16 ":" ) h16 ] "::" 2( h16 ":" ) ls32
-				| [ *3( h16 ":" ) h16 ] "::"    h16 ":"   ls32
-				| [ *4( h16 ":" ) h16 ] "::"              ls32
-				| [ *5( h16 ":" ) h16 ] "::"              h16
-				| [ *6( h16 ":" ) h16 ] "::"
+path:
+    /* empty */
+    | path '/' segment
+    ;
 
-h16: 1*4HEXDIG
-ls32: ( h16 ":" h16 ) | IPv4address
-IPv4address: dec-octet "." dec-octet "." dec-octet "." dec-octet
+segment:
+    /* empty */
+    | segment pchar
+    ;
 
-dec-octet: DIGIT                 ; 0-9
-				| %x31-39 DIGIT         ; 10-99
-				| "1" 2DIGIT            ; 100-199
-				| "2" %x30-34 DIGIT     ; 200-249
-				| "25" %x30-35          ; 250-255
+queries:
+    /* empty */
+    | '?' query
+    ;
 
-reg-name: *( unreserved | pct-encoded | sub-delims )
+query:
+    /* empty */
+    | queriess
+    ;
+    
+queriess:
+    pchar
+    | '/'
+    | '?'
+    ;
 
-path: path-abempty    ; begins with "/" or is empty
-				| path-absolute   ; begins with "/" but not "//"
-				| path-noscheme   ; begins with a non-colon segment
-				| path-rootless   ; begins with a segment
-				| path-empty      ; zero characters
+fragments:
+    /* empty */
+    | '#' fragment
+    ;
 
-path-abempty: *( "/" segment )
-path-absolute: "/" [ segment-nz *( "/" segment ) ]
-path-noscheme: segment-nz-nc *( "/" segment )
-path-rootless: segment-nz *( "/" segment )
-path-empty: 0<pchar>
+fragment:
+    /* empty */
+    | fragmentss
+    ;
 
-segment: *pchar
-segment-nz: 1*pchar
-segment-nz-nc: 1*( unreserved | pct-encoded | sub-delims | "@" )
-				; non-zero-length segment without any colon ":"
+fragmentss:
+    pchar
+    | '/'
+    | '?'
+    ;
 
-pchar: unreserved | pct-encoded | sub-delims | ":" | "@"
+pchar:
+    unreserved
+    | pct-encoded
+    | sub-delims
+    | ':'
+    | '@'
+    ;
 
-query: *( pchar | "/" | "?" )
+pct-encoded:
+    '%' HEXDIG HEXDIG
+    ;
 
-fragment: *( pchar | "/" | "?" )
+unreserved:
+    ALPHA | DIGIT | '-' | '.' | '_' | '~'
+    ;
 
-pct-encoded: "%" HEXDIG HEXDIG
+sub-delims:
+    '\x21' | '\x24' | '\x26' | '\x27' | '\x28' | '\x29' | '\x2A' | '\x2B' | '\x2C' | '\x3B' | '\x3D'
+    ;
 
-unreserved: ALPHA | DIGIT | "-" | "." | "_" | "~"
-reserved: gen-delims | sub-delims
-gen-delims: ":" | "/" | "?" | "#" | "[" | "]" | "@"
-sub-delims: "!" | "$" | "&" | "'" | "(" | ")"
-				| "*" | "+" | "," | ";" | "="
+ALPHA:
+	'\x41' | '\x42' | '\x43' | '\x44' | '\x45' | '\x46' | '\x47' | '\x48' | '\x49' | '\x4A' |
+	'\x4B' | '\x4C' | '\x4D' | '\x4E' | '\x4F' | '\x50' | '\x51' | '\x52' | '\x53' | '\x54' |
+	'\x55' | '\x56' | '\x57' | '\x58' | '\x59' | '\x5A' | '\x61' | '\x62' | '\x63' | '\x64' |
+	'\x65' | '\x66' | '\x67' | '\x68' | '\x69' | '\x6A' | '\x6B' | '\x6C' | '\x6D' | '\x6E' |
+	'\x6F' | '\x70' | '\x71' | '\x72' | '\x73' | '\x74' | '\x75' | '\x76' | '\x77' | '\x78' |
+	'\x79' | '\x7A'
+	;
 
-%% /* C-Code */
+HEXDIG:
+    DIGIT | 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
+    ;
+
+DIGIT:
+	'\x30' | '\x31' | '\x32' | '\x33' | '\x34' | '\x35' | '\x36' | '\x37' | '\x38' | '\x39'
+	;
+%%

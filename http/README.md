@@ -1,1 +1,0 @@
-A parser that accepts the HTTP Protocol.
