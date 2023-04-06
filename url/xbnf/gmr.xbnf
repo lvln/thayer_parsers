@@ -1,123 +1,49 @@
-URI:
-    scheme ':' double_slashes hier-part queries fragments
-    ;
+URI: scheme ':' double_slashes hier-part queries fragments ;
 
-double_slashes:
-    /* empty */
-    | '/' '/'
-    ;
+double_slashes: /* empty */ | '/' '/' ;
 
-scheme:
-    ALPHA schemes
-    ;
+scheme: ALPHA schemes ;
 
-schemes:
-    /* empty */
-    | schemes schemess
-    ;
+schemes: /* empty */ | schemes schemess ;
 
-schemess:
-    ALPHA | DIGIT | '+' | '-' | '.'
-    ;
+schemess: ALPHA | DIGIT | '+' | '-' | '.' ;
 
-hier-part:
-    authority path
-    ;
+hier-part: authority path ;
 
-authority:
-    host ports
-    ;
+authority: host ports ;
 
-host:
-    unreserved
-    | host unreserved
-    ;
+host: unreserved | host unreserved ;
 
-ports:
-    /* empty */
-    | ':' port
-    ;
+ports: /* empty */ | ':' port ;
 
-port:
-    DIGIT
-    | port DIGIT
-    ;
+port: DIGIT | port DIGIT ;
 
-path:
-    /* empty */
-    | path '/' segment
-    ;
+path: /* empty */ | path '/' segment ;
 
-segment:
-    /* empty */
-    | segment pchar
-    ;
+segment: /* empty */ | segment pchar ;
 
-queries:
-    /* empty */
-    | '?' query
-    ;
+queries: /* empty */ | '?' query ;
 
-query:
-    /* empty */
-    | queriess
-    ;
-    
-queriess:
-    pchar
-    | '/'
-    | '?'
-    ;
+query: /* empty */ | queriess ;
 
-fragments:
-    /* empty */
-    | '#' fragment
-    ;
+queriess: pchar | '/' | '?' ;
 
-fragment:
-    /* empty */
-    | fragmentss
-    ;
+fragments: /* empty */ | '#' fragment ;
 
-fragmentss:
-    pchar
-    | '/'
-    | '?'
-    ;
+fragment: /* empty */ | fragmentss ;
 
-pchar:
-    unreserved
-    | pct-encoded
-    | sub-delims
-    | ':'
-    | '@'
-    ;
+fragmentss: pchar | '/' | '?' ;
 
-pct-encoded:
-    '%' HEXDIG HEXDIG
-    ;
+pchar: unreserved | pct-encoded | sub-delims | ':' | '@' ;
 
-unreserved:
-    ALPHA | DIGIT | '-' | '.' | '_' | '~'
-    ;
+pct-encoded: '%' HEXDIG HEXDIG ;
 
-sub-delims:
-    '\x21' | '\x24' | '\x26' | '\x27' | '\x28' | '\x29' | '\x2A' | '\x2B' | '\x2C' | '\x3B' | '\x3D'
-    ;
+unreserved: ALPHA | DIGIT | '-' | '.' | '_' | '~' ;
 
-ALPHA:
-	'\x41' | '\x42' | '\x43' | '\x44' | '\x45' | '\x46' | '\x47' | '\x48' | '\x49' | '\x4A' |
-	'\x4B' | '\x4C' | '\x4D' | '\x4E' | '\x4F' | '\x50' | '\x51' | '\x52' | '\x53' | '\x54' |
-	'\x55' | '\x56' | '\x57' | '\x58' | '\x59' | '\x5A' | '\x61' | '\x62' | '\x63' | '\x64' |
-	'\x65' | '\x66' | '\x67' | '\x68' | '\x69' | '\x6A' | '\x6B' | '\x6C' | '\x6D' | '\x6E' |
-	'\x6F' | '\x70' | '\x71' | '\x72' | '\x73' | '\x74' | '\x75' | '\x76' | '\x77' | '\x78' |
-	'\x79' | '\x7A'
-	;
+sub-delims: '!' | '$' | '&' | ''' | '(' | ')' | '*' | '+' | ',' | ';' | '=' ;
 
-HEXDIG:
-    DIGIT | 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
-    ;
+ALPHA: [ 'a' - 'z' ] | [ 'A' - 'Z' ] ;
 
-DIGIT:
-	'\x30' | '\x31' | '\x32' | '\x33' | '\x34' | '\x35' | '\x36' | '\x37' | '\x38' | '\x39'
-	;
+HEXDIG: DIGIT | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;
+
+DIGIT: [ '0' - '9' ] ;
