@@ -1,4 +1,4 @@
-URI: scheme ':' double_slashes hier-part queries fragments ;
+URI: scheme ':' double_slashes hier_part queries fragments ;
 
 double_slashes: /* empty */ | '/' '/' ;
 
@@ -8,7 +8,7 @@ schemes: /* empty */ | schemes schemess ;
 
 schemess: ALPHA | DIGIT | '+' | '-' | '.' ;
 
-hier-part: authority path ;
+hier_part: authority path ;
 
 authority: host ports ;
 
@@ -34,16 +34,16 @@ fragment: /* empty */ | fragmentss ;
 
 fragmentss: pchar | '/' | '?' ;
 
-pchar: unreserved | pct-encoded | sub-delims | ':' | '@' ;
+pchar: unreserved | pct_encoded | sub_delims | ':' | '@' ;
 
-pct-encoded: '%' HEXDIG HEXDIG ;
+pct_encoded: '%' HEXDIG HEXDIG ;
 
 unreserved: ALPHA | DIGIT | '-' | '.' | '_' | '~' ;
 
-sub-delims: '!' | '$' | '&' | ''' | '(' | ')' | '*' | '+' | ',' | ';' | '=' ;
+sub_delims: '!' | '$' | [ '&' - ',' ] | ';' | '=' ;
 
 ALPHA: [ 'a' - 'z' ] | [ 'A' - 'Z' ] ;
 
-HEXDIG: DIGIT | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;
+HEXDIG: DIGIT | [ 'A' - 'F' ] ;
 
 DIGIT: [ '0' - '9' ] ;

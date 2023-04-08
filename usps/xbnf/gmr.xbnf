@@ -1,10 +1,10 @@
-rule: sentence CRLF address CRLF sentence multi-digits ;
+rule: sentence CRLF address CRLF sentence multi_digits ;
 
-address: multi-digits sentence multi-digits | multi-digits sentence SP '#' multi-digits ;
+address: multi_digits sentence multi_digits | multi_digits sentence SP '#' multi_digits ;
 
-multi-digits: /* empty */ | multi-digit WSP | WSP multi-digit ;
+multi_digits: /* empty */ | multi_digit WSP | WSP multi_digit ;
 
-multi-digit: DIGIT | multi-digit DIGIT ;
+multi_digit: DIGIT | multi_digit DIGIT ;
 
 sentence: word | sentence WSP word ;
 
@@ -20,7 +20,7 @@ WSPS: SP | HTAB ;
 
 HTAB: '\t' ;
 
-SP: '\s' ;
+SP: ' ' ;
 
 CRLF: CR | LF ;
 
