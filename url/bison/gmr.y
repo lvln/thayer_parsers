@@ -7,7 +7,7 @@
 %token X00
 
 %% /* The URI Grammar */
-// scheme ':' hier-part queries fragments
+// URI = scheme ':' hier-part queries fragments
 URI:
     scheme ':' double_slashes hier-part queries fragments
     ;

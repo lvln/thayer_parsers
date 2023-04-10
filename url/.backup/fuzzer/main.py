@@ -33,12 +33,15 @@ def random_uri():
 
 # Send a request
 def send_request(uri):
+    
+    f = open("output.txt", "a")
     try:
         response = requests.get(uri)
-        print("{} - {}".format(response.status_code, uri))
+        print("{}".format(uri), file=f)
     except requests.exceptions.RequestException as e:
-        print("Error: {}".format(e))
-
+        print("{}".format(e), file=f)
+    f.close()
+    
 # Fuzz URI
 while True:
     uri = random_uri()

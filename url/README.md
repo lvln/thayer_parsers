@@ -1,1 +1,1 @@
-A parser that accepts the URI Protocol.
+Backup of Simple URL Fuzzer
