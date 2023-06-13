@@ -1,0 +1,21 @@
+can :		canSTD | canEXT ;
+canSTD :	'\x00' any_11bit '\x00' '\x00' '\x00' DLC_4b_data any_15bit '\x01' '\x01' '\x01' '\x7F' ;
+canEXT :	'\x00' any_11bit '\x01' '\x01' any_18bit '\x00' '\x01' '\x01' DLC_4b_data any_15bit '\x01' low_OR_high '\x01' '\x7F' ;
+
+DLC_4b_data :	'\x00' | 
+		'\x01' any_byte | 
+		'\x02' any_byte any_byte | 
+		'\x03' any_byte any_byte any_byte | 
+		'\x04' any_byte any_byte any_byte any_byte | 
+		'\x05' any_byte any_byte any_byte any_byte any_byte | 
+		'\x06' any_byte any_byte any_byte any_byte any_byte any_byte | 
+		'\x07' any_byte any_byte any_byte any_byte any_byte any_byte any_byte | 
+		'\x08' any_byte any_byte any_byte any_byte any_byte any_byte any_byte any_byte ;
+
+any_18bit :	[ '\x00' - '\x03' ] any_byte any_byte ;
+any_15bit :	any_7bit any_byte ;
+any_11bit :	[ '\x00' - '\x07' ] any_byte ;
+
+any_byte :	[ '\x00' - '\xFF' ] ;
+any_7bit :	[ '\x00' - '\x7F' ] ;
+low_OR_high :	'\x00' | '\x01' ;

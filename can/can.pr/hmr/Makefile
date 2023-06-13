@@ -1,7 +1,7 @@
 CFLAGS= -Wall -pedantic -std=c11 \
 				-I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include\
 				-I/usr/local/include -L/usr/local/lib\
-				-I../../ppxml -L../../ppxml
+				-I../../../ppxml -L../../../ppxml
 LIBS= -lppxml_pr -lhammer -lglib-2.0 
 
 all:		
