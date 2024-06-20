@@ -24,13 +24,13 @@ segment: /* empty */ | segment pchar ;
 
 queries: /* empty */ | '?' query ;
 
-query: /* empty */ | queriess ;
+query: /* empty */ | query queriess ;
 
 queriess: pchar | '/' | '?' ;
 
 fragments: /* empty */ | '#' fragment ;
 
-fragment: /* empty */ | fragmentss ;
+fragment: /* empty */ | fragment fragmentss ;
 
 fragmentss: pchar | '/' | '?' ;
 
