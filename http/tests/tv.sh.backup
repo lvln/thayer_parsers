@@ -4,7 +4,7 @@ rm -f ./pass.* ./fail.*
 # [PASSING TESTS]
 echo -en "GET /where?q=now HTTP/1.1\r\n\r\nMessage\r\n" > ./pass.1
 echo -en "PUT * HTTP/1.0\r\n\r\n" > ./pass.2
-echo -en "TRACE http://www.example.org/pub/WWW/TheProject.html HTTP/1.2\r\nHost: localhost8000\r\n\r\nMessage\r\n" > ./pass.3
+echo -en "TRACE http://www.example.org/pub/WWW/TheProject.html HTTP/1.2\r\nHost: localhost:8000\r\n\r\nMessage\r\n" > ./pass.3
 echo -en "CONNECT www.example.com:80 HTTP/1.1\r\nHost:loalhost:8000\r\nHost: localhost:8000\r\n\r\n" > ./pass.4
 echo -en "GET / HTTP/1.1\r\nHost: developer.mozilla.org\r\nAccept-Language: fr\r\n\r\n" > ./pass.5
 echo -en "GET /background.png HTTP/1.0\r\nImage: requested\r\n\r\nMessage" > ./pass.6
@@ -18,7 +18,6 @@ echo -en "HTTP/1.1 201 Created\r\n\r\nHost: server side\r\n\r\nMessage\r\n" > ./
 echo -en "HTTP/1.1 303 Moved permanently\r\nServer: Apache/2.4.37 (Red Hat)\r\nontent-Type: text/html; charset=utf-8\r\nDate: Thu, 06 Dec 2018 17:33:08 GMT\r\n\r\nThis is a message\r\n" > ./pass.14
 echo -en "HTTP/1.1 503 Service Unavailable\r\n\r\n<!DOCTYPE html>… (contains a site-customized page helping the user to find the missing resource)" > ./pass.15
 echo -en "CONNECT www.example.com:80 HTTP/1.1\r\nNo-field-value:\r\n\r\n" > ./pass.17
-echo -en "CONNECT www.example.com:80 HTTP/1.1\r\nField-name:Multi-lined field\r\n value\r\n\r\n" > ./pass.17
 
 # [FAILING TESTS]
 echo -en "GET /where?q=now HTTP/1.1\r\nMessage\r\n" > ./fail.1
@@ -42,7 +41,6 @@ echo -en "HTTP/1.1  Continue\r\n\r\n" > ./fail.18
 echo -en "GET /where?q=now \r\nMessage\r\n" > ./fail.19
 echo -en " /where?q=now HTTP/1.1\r\nMessage\r\n" > ./fail.20
 echo -en "GET HTTP/1.1\r\nMessage\r\n" > ./fail.21
-echo -en "CONNECT www.example.com:80 HTTP/1.1\r\nField-name:Multi-lined field\r\nvalue with no space\r\n\r\n" > ./fail.22
 
 # generate a file with the number of pass and fail tests
 #NUMPASS=(pass.*)

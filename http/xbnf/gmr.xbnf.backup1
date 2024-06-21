@@ -16,15 +16,13 @@ headerField : fieldName ':' OWS fieldValue CRLF ;
 
 fieldValue : /* empty */ | fieldValue fieldValueSS ;
 
-fieldValueSS : fieldContent | obsFold ; 
+fieldValueSS : fieldContent ; 
 
 fieldContent : fieldVChar optFieldContent ;
 
 optFieldContent : /* empty */ | RWS fieldVChar ;
 
 fieldVChar : obsText | VCHAR ;
-
-obsFold : CRLF RWS ;
 
 fieldName : token ;
 

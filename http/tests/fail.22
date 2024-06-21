@@ -1,4 +1,4 @@
 CONNECT www.example.com:80 HTTP/1.1
 Field-name:Multi-lined field
- value
+value with no space
 

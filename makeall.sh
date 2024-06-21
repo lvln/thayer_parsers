@@ -35,7 +35,7 @@ make ${MODE}
 popd
 
 # make the hmr grammars
-for DIR in abnf gmr0 gmr1 jnum jstring json bin0 bin1 bin2 unicode command response json.unicode url usps can can/can.pr J1939
+for DIR in abnf gmr0 gmr1 jnum jstring json bin0 bin1 bin2 unicode command response json.unicode url usps can can/can.pr J1939 http
 do
 		if [ -d ./${DIR}/bison ] ; then
 				pushd ./${DIR}/bison
