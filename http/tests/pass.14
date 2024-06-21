@@ -1,0 +1,6 @@
+HTTP/1.1 303 Moved permanently
+Server: Apache/2.4.37 (Red Hat)
+ontent-Type: text/html; charset=utf-8
+Date: Thu, 06 Dec 2018 17:33:08 GMT
+
+This is a message

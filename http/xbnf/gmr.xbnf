@@ -1,0 +1,134 @@
+/* Josh Meise */
+/* June 17, 2024 */
+/* Parser for HTTP messages */
+/* Reference - RFC 7230 */
+
+/* HTTP message definition */
+HTTPMessage : startLine optHeaderField CRLF messageBody ;
+
+/* Message is any repition of characters */
+messageBody : /* empty */ | messageBody OCTET ;
+
+/* Header field is optional and contains a field name followed by a colon, optional white space and followed by a field value */
+optHeaderField : /* empty */ | optHeaderField headerField ;
+
+headerField : fieldName ':' OWS fieldValue CRLF ;
+
+fieldValue : /* empty */ | fieldValue fieldValueSS ;
+
+fieldValueSS : fieldContent ; 
+
+fieldContent : fieldVChar optFieldContent ;
+
+optFieldContent : /* empty */ | RWS fieldVChar ;
+
+fieldVChar : obsText | VCHAR ;
+
+fieldName : token ;
+
+token : tChar | token tChar ;
+
+tChar : '!' | '#' | '$' | '%' | '&' | '\x27' | '*' | '+' | '-' | '.' | '^' | '_' | '`' | '|' | '~' | DIGIT | ALPHA ;
+
+/* HTTP messages may either be requests or status messages */
+startLine : statusLine CRLF | requestLine CRLF ;
+
+/* A status message is a status message, followed by a status code, followed by a reason phrase */
+statusLine : HTTPVersion SP statusCode SP reasonPhrase ;
+
+statusCode : '1' DIGIT DIGIT | '2' DIGIT DIGIT | '3' DIGIT DIGIT | '4' DIGIT DIGIT | '5' DIGIT DIGIT ;
+
+reasonPhrase : reasonPhraseSS | reasonPhrase reasonPhraseSS ;
+
+reasonPhraseSS : HTAB | SP | VCHAR | obsText ;
+
+obsText : [ '\x80' - '\xFF' ] ;
+
+/* A request message is a method, followed by a target (URI), followed by an HTTP version */
+requestLine : method SP requestTarget SP HTTPVersion ;
+
+requestTarget : originForm | absoluteForm | asteriskFrom ;
+
+originForm : absolutePath queries ;
+
+absoluteForm : absoluteURI ;
+
+asteriskFrom : '*' ;
+
+absolutePath : '/' segment | absolutePath '/' segment ;
+
+absoluteURI : scheme ':' relativePart queries ;
+
+relativePart : doubleSlashes hierPart ;
+
+doubleSlashes: /* empty */ | '/' '/' ;
+
+scheme: ALPHA schemes ;
+
+schemes: /* empty */ | schemes schemess ;
+
+schemess: ALPHA | DIGIT | '+' | '-' | '.' ;
+
+hierPart: authority path ;
+
+authority: host ports ;
+
+host: unreserved | host unreserved ;
+
+ports: /* empty */ | ':' port ;
+
+port: DIGIT | port DIGIT ;
+
+path: /* empty */ | path '/' segment ;
+
+segment: /* empty */ | segment pchar ;
+
+queries: /* empty */ | '?' query ;
+
+query: /* empty */ | query queriess ;
+
+queriess: pchar | '/' | '?' ;
+
+pchar: unreserved | pct_encoded | sub_delims | ':' | '@' ;
+
+pct_encoded: '%' HEXDIG HEXDIG ;
+
+unreserved: ALPHA | DIGIT | '-' | '.' | '_' | '~' ;
+
+sub_delims: '!' | '$' | [ '&' - ',' ] | ';' | '=' ;
+
+/* HTTP version is the string HTTP followed by major-minor digit scheme */
+HTTPVersion : "HTTP" '/' DIGIT '.' DIGIT ;
+
+/* Tokens */
+ALPHA : LOALPHA | UPALPHA ;
+
+LOALPHA : [ 'a' - 'z' ] ;
+
+UPALPHA : [ 'A' - 'Z' ] ;
+
+DIGIT : [ '0' - '9' ] ;
+
+HEXDIG : DIGIT | [ 'A' - 'Z' ] ;
+
+SP : '\x20' ;
+
+HTAB : '\x09' ;
+
+WS : SP | HTAB ;
+
+OWS : /* empty */ | OWS WS ;
+
+RWS : WS | RWS WS ;
+
+VCHAR : [ '\x21' - '\x7E' ] ;
+
+LF : '\x0A' ;
+
+CR : '\x0D' ;
+
+CRLF : CR LF ;
+
+OCTET : [ '\x00' - '\xFF' ] ;
+
+method : "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "CONNECT" | "OPTIONS" | "TRACE" ;
