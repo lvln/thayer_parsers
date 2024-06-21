@@ -26,8 +26,3 @@ run:
 
 clean:
 						rm -f *~ *.o gmr.tab.* gmr.output gmr.xml gmr.y gmr gmr_counts
-
-
-
-
-

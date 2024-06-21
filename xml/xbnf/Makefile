@@ -25,9 +25,4 @@ run:
 						gmrtest.sh
 
 clean:
-						rm -f *~ *.o gmr.tab.* gmr.output gmr.xml gmr.y gmr
-
-
-
-
-
+						rm -f *~ *.o gmr.tab.* gmr.output gmr.xml gmr.y gmr gmr_counts
