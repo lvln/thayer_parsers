@@ -78,7 +78,6 @@ int main(int argc, char **argv) {
 			if (i < 48) mess.header[i] = buf;
 			else if (i == 48) {
 				len = toInt(&mess.header[44], 2) - 8;
-				printf("%d\n", len);
 				mess.body = (unsigned char *)malloc(sizeof(unsigned char)*len + 16);
 				mess.body[i - 48] = buf;
 			} else if (i < len + 48) mess.body[i - 48] = buf;

@@ -189,9 +189,9 @@ int main(int argc, char **argv) {
 		else {
 			// Allocate space for the header field.
 			if (i == 0)
-				if ((mess.header = (unsigned char *)malloc(sizeof(unsigned char)*MAVLEN)) == NULL)
+				if ((mess.header = (unsigned char *)malloc(sizeof(unsigned char)*100)) == NULL)
 					printf("Memory allocation unsuccessful.\n");
-
+	 
 			// Readthe first 48 bytes into the header field
 			if (i < MAVLEN) mess.header[i] = buf;
 			// Find the length of the message body and allocate memory for the body based on the length.
@@ -221,18 +221,19 @@ int main(int argc, char **argv) {
 			else if (mess.body[0] == 0xfd && argc == 3 && currMessage == messageNum)
 				writeMessageToFile(mess, len + MAVLEN, ofile);
 
-			// Reset all variables and free memory.
+			// Reset all variables
 			i = 0;
 			prevLen = len;
 			len = 0;
-			free(mess.header);
-			free(mess.body);
 			currMessage++;
 			
 			// Check the IP protocol (should be 2) and the previous length to determine if the next message to follow is MDNS of varying format
 			if (mess.header[16] == 0x02 && (prevLen == 1366 || prevLen == 148 || prevLen == 1440)) prevMDNS = true;
 			else prevMDNS = false;
 
+			// Free memory.
+			free(mess.header);
+			free(mess.body);
 		}
 
 	}
