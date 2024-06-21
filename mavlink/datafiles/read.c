@@ -14,7 +14,7 @@
 #include <stdbool.h>
 
 typedef struct message {
-	unsigned char header[50];
+	unsigned char header[68];
 	unsigned char *body;
 } message_t;
 
@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
 	i = 0;
 
 	printf("Header: ");
-	while(i < 40) {
+	while(i < 24) {
 		bytesRead = fread(&buf, 1, sizeof(buf), ifile);
 		printf("%02x ", buf);
 		i++;
@@ -68,31 +68,31 @@ int main(int argc, char **argv) {
 	
 	while ((bytesRead = fread(&buf, 1, sizeof(buf), ifile)) > 0) {
 		if ((prevLen == 1366 || prevLen == 148 || prevLen == 1440) && prevMDNS == true) {
-			if (i < 52) mess.header[i] = buf;
-			else if (i == 52) {
+			if (i < 68) mess.header[i] = buf;
+			else if (i == 68) {
 				len = prevLen;
 				mess.body = (unsigned char *)malloc(sizeof(unsigned char)*len);
-				mess.body[i - 48] = buf;
-			} else if (i < len + 52) mess.body[i - 52] = buf;
+				mess.body[i - 68] = buf;
+			} else if (i < len + 68) mess.body[i - 68] = buf;
 		} else {
-			if (i < 32) mess.header[i] = buf;
-			else if (i == 32) {
-				len = toInt(&mess.header[28], 2) - 8;
+			if (i < 48) mess.header[i] = buf;
+			else if (i == 48) {
+				len = toInt(&mess.header[44], 2) - 8;
 				printf("%d\n", len);
 				mess.body = (unsigned char *)malloc(sizeof(unsigned char)*len + 16);
-				mess.body[i - 32] = buf;
-			} else if (i < len + 48) mess.body[i - 32] = buf;
+				mess.body[i - 48] = buf;
+			} else if (i < len + 48) mess.body[i - 48] = buf;
 		}
 		
 		i++;
 		if (((i == (48 + len) && prevMDNS == false) || (i == (68 + len) && prevMDNS == true)) && len != 0) {
-			printMessage(mess, len + 48);
+			printMessage(mess, len + 32);
 			i = 0;
 			prevLen = len;
 			len = 0;
 			free(mess.body);
 
-			if (mess.header[0] == 0x02 && (prevLen == 1366 || prevLen == 148 || prevLen == 1440)) prevMDNS = true;
+			if (mess.header[16] == 0x02 && (prevLen == 1366 || prevLen == 148 || prevLen == 1440)) prevMDNS = true;
 			else prevMDNS = false;
 		}
 

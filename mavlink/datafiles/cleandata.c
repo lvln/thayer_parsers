@@ -1,11 +1,9 @@
 /* 
- * read.c --- 
+ * cleandata.c --- cleans a .pcap file such that it only contains MAVLink messages; optional second argument allows selection of a single message
  * 
  * Author: Joshua M. Meise
- * Created: 06-20-2024
+ * Created: 06-21-2024
  * Version: 1.0
- * 
- * Description: 
  * 
  */
 
@@ -14,16 +12,19 @@
 #include <stdbool.h>
 #include <string.h>
 
+// Each message contains a header and a body.
 typedef struct message {
 	unsigned char header[50];
 	unsigned char *body;
 } message_t;
 
-int toInt(unsigned char *len, int numBytes) {
+// Converts a 32 bit hexadecimal number (stored in an array to an integer.
+static int toInt(unsigned char *len, int numBytes) {
 	return (int)len[0]*256 + (int)len[1];
 }
 
-void printMessage(message_t mess, int len) {
+// For debugging; prints the message to the screen.
+static void printMessage(message_t mess, int len) {
 	int i;
 
 	printf("Message: ");
@@ -41,8 +42,8 @@ void writeMessageToFile(message_t mess, int len, FILE *ofile) {
 	printf("Length to write = %d\n\n", len);
 	for (i = 0; i < len; i++) {
 		
-		if (i < 32) buf = mess.header[i];
-		else buf = mess.body[i - 32];
+		if (i < 48) buf = mess.header[i];
+		else buf = mess.body[i - 48];
 
 		if (fwrite(&buf, sizeof(buf), 1, ofile) != 1)
 			printf("Message write failed.\n");
@@ -81,7 +82,7 @@ int main(int argc, char **argv) {
 	i = 0;
 
 	printf("Header: ");
-	while(i < 40) {
+	while(i < 24) {
 		bytesRead = fread(&buf, sizeof(buf), 1, ifile);
 		printf("%02x ", buf);
 		i++;
@@ -96,23 +97,23 @@ int main(int argc, char **argv) {
 	len = 0;
 	prevLen = 0;
 	prevMDNS = false;
-	
+
 	while ((bytesRead = fread(&buf, sizeof(buf), 1, ifile)) > 0) {
 		if ((prevLen == 1366 || prevLen == 148 || prevLen == 1440) && prevMDNS == true) {
-			if (i < 52) mess.header[i] = buf;
-			else if (i == 52) {
+			if (i < 68) mess.header[i] = buf;
+			else if (i == 68) {
 				len = prevLen;
 				mess.body = (unsigned char *)malloc(sizeof(unsigned char)*len);
-				mess.body[i - 48] = buf;
-			} else if (i < len + 52) mess.body[i - 52] = buf;
+				mess.body[i - 68] = buf;
+			} else if (i < len + 68) mess.body[i - 68] = buf;
 		} else {
-			if (i < 32) mess.header[i] = buf;
-			else if (i == 32) {
-				len = toInt(&mess.header[28], 2) - 8;
+			if (i < 48) mess.header[i] = buf;
+			else if (i == 48) {
+				len = toInt(&mess.header[44], 2) - 8;
 				printf("%d\n", len);
-				mess.body = (unsigned char *)malloc(sizeof(unsigned char)*len + 16);
-				mess.body[i - 32] = buf;
-			} else if (i < len + 48) mess.body[i - 32] = buf;
+				mess.body = (unsigned char *)malloc(sizeof(unsigned char)*len);
+				mess.body[i - 48] = buf;
+			} else if (i < len + 48) mess.body[i - 48] = buf;
 		}
 		
 		i++;
@@ -127,8 +128,9 @@ int main(int argc, char **argv) {
 			len = 0;
 			free(mess.body);
 
-			if (mess.header[0] == 0x02 && (prevLen == 1366 || prevLen == 148 || prevLen == 1440)) prevMDNS = true;
+			if (mess.header[16] == 0x02 && (prevLen == 1366 || prevLen == 148 || prevLen == 1440)) prevMDNS = true;
 			else prevMDNS = false;
+
 		}
 
 	}
