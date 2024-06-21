@@ -12,17 +12,20 @@ messageBody : /* empty */ | messageBody OCTET ;
 /* Header field is optional and contains a field name followed by a colon, optional white space and followed by a field value */
 optHeaderField : /* empty */ | optHeaderField headerField ;
 
-headerField : fieldName ':' OWS fieldValue CRLF ;
+headerField : fieldName ':' OWS fieldValue OWS CRLF ;
 
 fieldValue : /* empty */ | fieldValue fieldValueSS ;
 
-fieldValueSS : fieldContent ; 
+fieldValueSS : fieldContent | obsFold ; 
 
 fieldContent : fieldVChar optFieldContent ;
 
 optFieldContent : /* empty */ | RWS fieldVChar ;
 
 fieldVChar : obsText | VCHAR ;
+
+/* Even though this line fold is obsolete still account for it for consistency with the RFC */
+obsFold : CRLF RWS ;
 
 fieldName : token ;
 

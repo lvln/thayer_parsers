@@ -24,6 +24,7 @@ optFieldContent : /* empty */ | RWS fieldVChar ;
 
 fieldVChar : obsText | VCHAR ;
 
+/* Even though this line fold is obsolete still account for it for consistency with the RFC */
 obsFold : CRLF RWS ;
 
 fieldName : token ;
