@@ -12,7 +12,7 @@ cleandata.o: cleandata.c
 				gcc $(CFLAGS) -c cleandata.c
 
 cleandata: cleandata.o
-		  gcc $(CFLAGS) cleandata.o -o cleandata
+		  gcc $(CFLAGS) cleandata.o -lm -o cleandata
 
 clean:
 			rm -f *.o read cleandata
