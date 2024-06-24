@@ -36,19 +36,19 @@ static int toInt(unsigned char *len, int numBytes) {
  * Inputs: message to be printed, number of bytes in the message.
  * Outputs: none.
  */
-/*
+
 static void printMessage(message_t mess, int len) {
 	int i;
 
 	printf("Message: ");
 	for (i = 0; i < len; i++) {
-		if (i < 32) printf("%02x ", mess.header[i]);
-		else printf("%02x ", mess.body[i - 32]);
+		if (i < 48) printf("%02x ", mess.header[i]);
+		else printf("%02x ", mess.body[i - 48]);
 	}
 
 	printf("\n");
 }
-*/
+
 
 /*
  * Write a message to a file in binary.
@@ -105,16 +105,21 @@ int main(int argc, char **argv) {
     printf("File not opened successfully\n");
 	
 	i = 0;
+
+	printf("Header:");
 	
 	// Read the first 24 bytes of the .pcap file into the pcap header and write to the output file
 	while(i < 24) {
 		bytesRead = fread(&buf, sizeof(buf), 1, ifile);
 		i++;
-
+		printf("%02x ", buf);
+		
 		if (fwrite(&buf, sizeof(buf), 1, ofile) != 1)
 			printf("Not successfully written");
 		
 	}
+
+	printf("\n");
 	
 	i = 0;
 	len = 0;
@@ -151,7 +156,7 @@ int main(int argc, char **argv) {
 		else {
 			// Allocate space for the header field.
 			if (i == 0)
-				if ((mess.header = (unsigned char *)malloc(sizeof(unsigned char)*100)) == NULL)
+				if ((mess.header = (unsigned char *)malloc(sizeof(unsigned char)*MAVLEN)) == NULL)
 					printf("Memory allocation unsuccessful.\n");
 	 
 			// Readthe first 48 bytes into the header field
@@ -177,8 +182,10 @@ int main(int argc, char **argv) {
 		// If the end of a message has been reached.
 		if (((i == (MAVLEN + len) && prevMDNS == false) || (i == (MDNSLEN + len) && prevMDNS == true)) && len != 0) {
 			// Only write all  MAVLink messages into the file if 2 arguments
-			if (mess.body[0] == 0xfd && argc == 3)
+			if (mess.body[0] == 0xfd && argc == 3) {
 				writeMessageToFile(mess, len + MAVLEN, ofile);
+				printMessage(mess, len + MAVLEN);
+			}
 			// Write only the specific message into the file if 3 arguments are provided.
 			else if (mess.body[0] == 0xfd && argc == 4 && currMessage == messageNum)
 				writeMessageToFile(mess, len + MAVLEN, ofile);
