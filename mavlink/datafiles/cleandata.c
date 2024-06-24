@@ -72,14 +72,13 @@ int main(int argc, char **argv) {
 	// Variable declarations
 	FILE *ifile, *ofile;
 	unsigned char buf;
-	int bytesRead, i, len, prevLen, messageNum, currMessage, numChar;
+	int bytesRead, i, len, prevLen, messageNum, currMessage;
 	message_t mess;
 	bool prevMDNS;
-	char *fname, *messNumStr;
 
 	// Check arguments
-	if (argc != 2 && argc != 3) {
-    printf("usage: read fileToRead [message number]\n");
+	if (argc != 3 && argc != 4) {
+    printf("usage: read inputFile outputFile [messageNumber]\n");
     exit(EXIT_FAILURE);
 	}
 
@@ -90,57 +89,20 @@ int main(int argc, char **argv) {
 	}
 
 	// If there is a thrid argument, check that it is of valid format and convert it to an integer.
-	if (argc == 3) {
+	if (argc == 4) {
 		// Convert to integer
-		messageNum = atoi(argv[2]);
+		messageNum = atoi(argv[3]);
 
 		// Check argument		
 		if (messageNum < 1) {
-			printf("usage: read fileToRead [message number]\n");
+			printf("usage: read inputFile outputFile [messageNumber]\n");
 			exit(EXIT_FAILURE);
 		}
 	}
 
-	// If no thrid argument, data is being cleaned
-	if (argc == 2) {
-		// Allocate space for output file name
-		if((fname = (char *)malloc(sizeof(char)*(strlen(argv[1]) + 1 + strlen("clean")))) == NULL)
-			printf("Memory allocation failed.\n");
-
-		// Create output file name as cleanInputFileName
-		sprintf(fname, "clean%s", argv[1]);
-		fname[5] -= 32;
-	}
-	// If there is a third argument, a secific message is being selected to be written.
-	else if (argc == 3) {
-		// Find the number of characters in the message number string
-		numChar = ceil(log10(messageNum));
-		
-		// Allocate memory for the message number string
-		if ((messNumStr = (char *)malloc(sizeof(char)*(numChar + 1))) == NULL)
-			printf("Memory allocation unsucessful.\n");
-		
-		// Write the message number as a string
-		sprintf(messNumStr, "%d", messageNum);
-		
-		// Allocate space for output file name
-		if((fname = (char *)malloc(sizeof(char)*(strlen(argv[1]) + 1 + strlen("message") + strlen(messNumStr)))) == NULL)
-			printf("Memory allocation failed.\n");
-
-		// Create output file name as cleanInputFileName
-		sprintf(fname, "message%d%s", messageNum, argv[1]);
-
-		fname[strlen("message") + strlen(messNumStr)] -= 32;
-
-		free(messNumStr);
-	}
-	
 	// Open output file for binary writing
-	if ((ofile = fopen(fname, "wb")) == NULL)
+	if ((ofile = fopen(argv[2], "wb")) == NULL)
     printf("File not opened successfully\n");
-	
-	// Clean up memory associated with file name.
-	free(fname);
 	
 	i = 0;
 	
@@ -215,10 +177,10 @@ int main(int argc, char **argv) {
 		// If the end of a message has been reached.
 		if (((i == (MAVLEN + len) && prevMDNS == false) || (i == (MDNSLEN + len) && prevMDNS == true)) && len != 0) {
 			// Only write all  MAVLink messages into the file if 2 arguments
-			if (mess.body[0] == 0xfd && argc == 2)
+			if (mess.body[0] == 0xfd && argc == 3)
 				writeMessageToFile(mess, len + MAVLEN, ofile);
 			// Write only the specific message into the file if 3 arguments are provided.
-			else if (mess.body[0] == 0xfd && argc == 3 && currMessage == messageNum)
+			else if (mess.body[0] == 0xfd && argc == 4 && currMessage == messageNum)
 				writeMessageToFile(mess, len + MAVLEN, ofile);
 
 			// Reset all variables
