@@ -50,5 +50,16 @@ The format of MAVLink messages is defined in the `common.xml` file and can be fo
   * Bytes 68 - 69: *hdg*; vehicle heading (yaw angle); *cdeg*; `uint16_t`.
   
   ![GLOBAL_POSITION_INT](./.images/GPIImage.jpg)
-	
+  
+* **ATTITUDE**: The attitude in the aeronautical frame (right-handed, Z-down, Y-right, X-front, ZYX, intrinsic)
+  * Bytes 42 - 45: *time_boot_ms*: the timestamp representing the time since system boot in ms; *ms*; `uint32_t`.
+  * Bytes 46 - 49: *roll*; roll angle (-pi..+pi); *rad*; `float`.
+  * Bytes 50 - 53: *pitch*; pitch angle (-pi..+pi); *rad*; `float`.
+  * Bytes 54 - 57: *yaw*; yaw angle (-pi..+pi); *rad*; `float`.
+  * Bytes 58 - 61: *rollspeed*; roll angular speed; *rad/s*; `float`.
+  * Bytes 62 - 65: *pitchspeed*; pitch angular speed; *rad/s*; `float`.
+  * Bytes 66 - 69: *yawspeed*; yaw angular speed; *rad/s*; `float`.
+  
+  ![GLOBAL_POSITION_INT](./.images/AttitudeImage.jpg)
+  
 All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum.
