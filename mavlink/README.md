@@ -49,6 +49,6 @@ The format of MAVLink messages is defined in the `common.xml` file and can be fo
   * Bytes 66 - 67: *vz*; ground z speed (altitude, positive down); *cm/s*; `int16_t`.
   * Bytes 68 - 69: *hdg*; vehicle heading (yaw angle); *cdeg*; `uint16_t`.
   
-  ![GLOBAL_POSITION_INT](./.images/GPSImage.jpg)
+  ![GLOBAL_POSITION_INT](./.images/GPIImage.jpg)
 	
 All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum.
