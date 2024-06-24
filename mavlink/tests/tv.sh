@@ -5,6 +5,7 @@ make clean > /dev/null
 make > /dev/null
 
 cp ../mavlink_source_files/pass.* .
+cp ../mavlink_source_files/fail.* .
 
 ./tv
 

@@ -1,6 +1,6 @@
 CFLAGS=-Wall -pedantic -std=c11
 
-all: read cleandata
+all: read cleandata extractdata
 
 read.o: read.c
 				gcc $(CFLAGS) -c read.c
@@ -14,5 +14,11 @@ cleandata.o: cleandata.c
 cleandata: cleandata.o
 		  gcc $(CFLAGS) cleandata.o -lm -o cleandata
 
+extractdata.o: extractdata.c
+				gcc $(CFLAGS) -c extractdata.c
+
+extractdata: extractdata.o
+		  gcc $(CFLAGS) extractdata.o -lm -o extractdata
+
 clean:
-			rm -f *.o read cleandata
+			rm -f *.o read cleandata extractdata

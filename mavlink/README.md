@@ -48,7 +48,7 @@ The data packets are found in packet capture, `.pcap`, files.
 
 **This is followed by a message-specific header which is 10 bytes in length**
 
-* Byte 32: Magic value/version (always 0xfd for MAVLink 2.2).
+* Byte 32: Magic value/version (always 0xfd for MAVLink 2.0).
 * Byte 33: Payload length.
 * Byte 34: Incompatibility flag.
 * Byte 35: Compatibility flag.
