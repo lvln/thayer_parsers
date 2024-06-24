@@ -15,48 +15,82 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define LEN 24
+static int countEntries(FILE *fp) {
+	int i = 0;
+	uint8_t buf;
+	
+	while (fread(&buf, sizeof(uint8_t), 1, fp) > 0)
+		i++;
+
+	return i;
+}
 
 int main(void) {
 	FILE *fp;
-	uint8_t nums[LEN];
-	int i;
+	uint8_t *nums;
+	int len, i;
+
+	if ((fp = fopen("./pass.1", "rb")) == NULL)
+		exit(EXIT_FAILURE);
 	
-	nums[0] = 0xD4;
-	nums[1] = 0xC3;
-	nums[2] = 0xB2;
-	nums[3] = 0xA1;
-	nums[4] = 0x02;
-	nums[5] = 0x00;
-	nums[6] = 0x04;
-	nums[7] = 0x00;
-	nums[8] = 0x00;
-	nums[9] = 0x00;
-	nums[10] = 0x00;
-	nums[11] = 0x00;
-	nums[12] = 0x00;
-	nums[13] = 0x00;
-	nums[14] = 0x00;
-	nums[15] = 0x00;
-	nums[16] = 0x32;
-	nums[17] = 0x08;
-	nums[18] = 0x00;
-	nums[19] = 0x00;
-	nums[20] = 0x00;
-	nums[21] = 0x00;
-	nums[22] = 0x00;
-	nums[23] = 0x00;
-	
-	if ((fp = fopen("./pass.1", "wb")) == NULL)
+	len = countEntries(fp);
+
+	fclose(fp);
+
+	if ((nums = (uint8_t *)malloc(sizeof(uint8_t)*len)) == NULL)
 		exit(EXIT_FAILURE);
 
-	for (i = 0; i < LEN; i++)
+	if ((fp = fopen("./pass.1", "rb")) == NULL)
+		exit(EXIT_FAILURE);
+
+	for (i = 0; i < len; i++) 
+		fread(nums + i, sizeof(uint8_t), 1, fp);
+
+	fclose(fp);
+
+	if ((fp = fopen("./pass.3", "wb")) == NULL)
+		exit(EXIT_FAILURE);
+
+
+	for (i = 0; i < len; i++)
 		fwrite(nums + i, sizeof(uint8_t), 1 ,fp);
 
 	fclose(fp);
 
 	nums[0] = 0x4D;
 	nums[1] = 0x3C;
+	
+	if ((fp = fopen("./pass.4", "wb")) == NULL)
+		exit(EXIT_FAILURE);
+
+
+	for (i = 0; i < len; i++)
+		fwrite(nums + i, sizeof(uint8_t), 1 ,fp);
+
+	fclose(fp);
+	
+	if ((fp = fopen("./fail.1", "wb")) == NULL)
+		exit(EXIT_FAILURE);
+
+
+	for (i = 0; i < len - 1; i++)
+		fwrite(nums + i, sizeof(uint8_t), 1 ,fp);
+
+	fclose(fp);
+
+	nums[0] = 0x0D;
+	
+	if ((fp = fopen("./fail.2", "wb")) == NULL)
+		exit(EXIT_FAILURE);
+
+
+	for (i = 0; i < len; i++)
+		fwrite(nums + i, sizeof(uint8_t), 1 ,fp);
+
+	fclose(fp);
+	
+	
+	/*
 	
 	if ((fp = fopen("./pass.2", "wb")) == NULL)
 		exit(EXIT_FAILURE);
@@ -90,7 +124,7 @@ int main(void) {
 		exit(EXIT_FAILURE);
 
 	fclose(fp);
-
+	*/
 	exit(EXIT_SUCCESS);
 
 }
