@@ -1,0 +1,20 @@
+
+P : pcapHeader ;
+
+pcapHeader : magicNumber majorVersion minorVersion reserved snapLen linkType fcs ;
+
+/* timestamp is seconds and either microseconds or nanoseconds depending on magic number */
+magicNumber : '\xD4' '\xC3' '\xB2' '\xA1' | '\x4D' '\x3C' '\xB2' '\xA1' ; 
+
+majorVersion : '\x02' '\x00' ;
+
+minorVersion : '\x04' '\x00' ;
+
+reserved : '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' ;
+
+snapLen : * * * * ;
+
+/* loopback link */
+linkType : '\x00' '\x00' ;
+
+fcs : * * ;
