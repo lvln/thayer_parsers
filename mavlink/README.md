@@ -38,7 +38,7 @@ The format of MAVLink messages is defined in the `common.xml` file and can be fo
 * Bytes 39 - 41: Message id (big endian).
 
 **A few messages in the MAVLink `common.xml` dialect:**
-* GLOBAL_POSITION_INT: The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame (right-handed, Z-up).
+* **GLOBAL_POSITION_INT**: The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame (right-handed, Z-up).
   * Bytes 42 - 45: *time_boot_ms*: the timestamp representing the time since system boot in ms; *ms*; `uint32_t`.
   * Bytes 46 - 49: *lat*: latitude; *degE7*; `int32_t`.
   * Bytes 50 - 53: *lon*: longitude; *degE7*; `int32_t`.
@@ -48,5 +48,7 @@ The format of MAVLink messages is defined in the `common.xml` file and can be fo
   * Bytes 64 - 65: *vy*; ground y speed (longitude, positive east); *cm/s*; `int16_t`.
   * Bytes 66 - 67: *vz*; ground z speed (altitude, positive down); *cm/s*; `int16_t`.
   * Bytes 68 - 69: *hdg*; vehicle heading (yaw angle); *cdeg*; `uint16_t`.
-
+  
+  ![GLOBAL_POSITION_INT](./.images/GPSImage.jpg)
+	
 All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum.
