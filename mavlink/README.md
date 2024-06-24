@@ -10,7 +10,7 @@ The format of MAVLink messages is defined in the `common.xml` file and can be fo
 
 **The header for all MAVLink messages follows a standard format and is comprised of the first 32 bytes of the message**
 
-* Bytes 0 - 3: Message family.
+* Bytes 0 - 3: Message family (big endian).
 * Byte 4: 4 MSB are IP version; 4 LSB are header length.
 * Byte 5: Differentiated service field.
 * Bytes 6 - 7: Total length.
@@ -26,8 +26,21 @@ The format of MAVLink messages is defined in the `common.xml` file and can be fo
 * Bytes 28 - 29: Length.
 * Bytes 30 - 31: Checksum.
 
-**A few common messages in the MAVLink `common.xml` dialect:**
-* GLOBAL\_POSITION\_INT:
-	The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame (right-handed, Z-up).
+**This is followed by a message-specific header which is 10 bytes in length**
+
+* Byte 32: Magic value/version (always 0xfd for MAVLink 2.2).
+* Byte 33: Payload length.
+* Byte 34: Incompatibility flag.
+* Byte 35: Compatibility flag.
+* Byte 36: Packet sequence.
+* Byte 37: System id.
+* Byte 38: Component id.
+* Bytes 39 - 41: Message id (big endian).
+
+**A few messages in the MAVLink `common.xml` dialect:**
+* GLOBAL\_POSITION\_INT: The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame (right-handed, Z-up).
+  * Bytes 42 - 45: *time_boot_ms*: the timestamp representing the time since system boot in ms; *ms*; `uint32_t`.
+  * Bytes 46 - 49: *lat*: latitude; *degE7*; `int32_t`.
+  * Bytes 50 - 53: *lon*: longitude; *degE7*; `int32_t`.
 	
 
