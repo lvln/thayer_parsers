@@ -36,7 +36,7 @@ __P : "true" | "false" | "null" ;__ -- accepts the string _true_, or _false_, or
 __P : ['\x1f', '\x00', 'a', ']', '\0xfe'] ;__ -- accepts the hexadecimal
   values _x1f_, _x00_, _xfe_ and the characters _a_ and _]_.
 
-__P : ['a' - 'f'] * '\00' ;__ -- accepts a sequence: any value in the range
+__P : ['a' - 'f'] * '\x00' ;__ -- accepts a sequence: any value in the range
   _a_ and _f_, followed by anybyte (_x00_ to _xff_), followed by a
   zero byte (_x00_).
 
