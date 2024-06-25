@@ -1,6 +1,7 @@
 
-P : pcapHeader message ;
+P : pcapHeader optMessage ;
 
+optMessage : /* empty */ | optMessage message ;
 
 /* PCAP file header */
 pcapHeader : magicNumber majorVersion minorVersion reserved snapLen linkType fcs ;
@@ -27,8 +28,9 @@ linkType : '\x00' '\x00' ;
 fcs : * * ;
 
 
-message : packetRecordHeader mavHeader attitude * * ;
+message : packetRecordHeader mavHeader messageOption * * ;
 
+messageOption : attitude | GPI ;
 
 /* packet record header */
 packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
@@ -44,6 +46,7 @@ prhCPL : * * * * ;
 
 /* original packet length */
 prhOPL : * * * * ;
+
 
 
 /* MAVLink header */
@@ -95,10 +98,10 @@ length : * * ;
 checksum : * * ;
 
 
+
+
 /* Attitude message */
 attitude : attitudeMH timeBoot roll pitch yaw rollSpeed pitchSpeed yawSpeed ;
-
-timeBoot : * * * * ;
 
 roll : * * * * ;
 
@@ -113,11 +116,49 @@ pitchSpeed : * * * * ;
 yawSpeed : * * * * ;
 
 
+/* header starter for message length of 32, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
+ml32 : MAVCODE LEN32 incompFlag compFlag packetSequence sysID compID ;
+
+
 /* Attitude message header */
-attitudeMH : MAVCODE ATTITUDELEN incmopFlag compFlag packetSequence sysID compID ATTITUDECODE ;
+attitudeMH : ml32 ATTITUDECODE ;
+
+
+/* GPI message */
+GPI : GPIMH timeBoot lat lon alt relAlt vx vy vz hdg ;
+
+lat : * * * * ;
+
+lon : * * * * ;
+
+alt : * * * * ;
+
+relAlt : * * * * ;
+
+vx : * * ;
+
+vy : * * ;
+
+vz : * * ;
+
+hdg : * * ;
+
+
+/* GPI message header */
+GPIMH : ml32 GPICODE ;
+
+
+/* tokens */
+MAVCODE : '\xFD' ;
+
+GPICODE : '\x21' '\x00' '\x00' ;
+
+ATTITUDECODE : '\x1e' '\x00' '\x00' ;
+
+LEN32 : '\x1C' ;
 
 /* incompatibility flag */
-incmopFlag : '\x00' ;
+incompFlag : '\x00' ;
 
 /* compatibility flag */
 compFlag : '\x00' ;
@@ -131,9 +172,4 @@ sysID : '\x01' ;
 /* component ID - always 0x01 */
 compID : '\x01' ;
 
-/* tokens */
-MAVCODE : '\xfd' ;
-
-ATTITUDECODE : '\x1E' '\x00' '\x00' ;
-
-ATTITUDELEN : '\x1C' ;
+timeBoot : * * * * ;

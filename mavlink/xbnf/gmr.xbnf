@@ -30,7 +30,7 @@ fcs : * * ;
 
 message : packetRecordHeader mavHeader messageOption * * ;
 
-messageOption : attitude | GPI ;
+messageOption : attitude | GPI | RCChannels | localPosNed | attQuar ;
 
 /* packet record header */
 packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
@@ -98,6 +98,94 @@ length : * * ;
 checksum : * * ;
 
 
+/* ATTITUDE_QUATERNION */
+attQuar : attQuarMH timeBoot attQuarQ1 attQuarQ2 attQuarQ3 attQuarQ4 attQuarRollSpeed attQuarPitchSpeed attQuarYawSpeed ;
+
+attQuarQ1 : * * * * ;
+
+attQuarQ2 : * * * * ;
+
+attQuarQ3 : * * * * ;
+
+attQuarQ4 : * * * * ;
+
+attQuarRollSpeed : * * * * ;
+
+attQuarPitchSpeed : * * * * ;
+
+attQuarYawSpeed : * * * * ;
+
+/* Header for attitude quaternion */
+attQuarMH : MAVCODE AQLEN incompFlag compFlag packetSequence sysID compID AQCODE ;
+
+
+
+/* Local position north-east-down convention */
+localPosNed : LPNMH timeBoot LPNx LPNy LPNz LPNvx LPNvy LPNvz ;
+
+LPNx : * * * * ;
+
+LPNy : * * * * ;
+
+LPNz : * * * * ;
+
+LPNvx : * * * * ;
+
+LPNvy : * * * * ;
+
+LPNvz : * * * * ;
+
+
+/* Local position north-east-down convention message header */
+LPNMH : ml28 LPNCODE ;
+
+/* RC channels message */
+RCChannels : RCMH timeBoot chan1Raw chan2Raw chan3Raw chan4Raw chan5Raw chan6Raw chan7Raw chan8Raw chan9Raw chan10Raw chan11Raw chan12Raw chan13Raw chan14Raw chan15Raw chan16Raw chan17Raw chan18Raw chanCount rssi ;
+
+chan1Raw : * * ;
+
+chan2Raw : * * ;
+
+chan3Raw : * * ;
+
+chan4Raw : * * ;
+
+chan5Raw : * * ;
+
+chan6Raw : * * ;
+
+chan7Raw : * * ;
+
+chan8Raw : * * ;
+
+chan9Raw : * * ;
+
+chan10Raw : * * ;
+
+chan11Raw : * * ;
+
+chan12Raw : * * ;
+
+chan13Raw : * * ;
+
+chan14Raw : * * ;
+
+chan15Raw : * * ;
+
+chan16Raw : * * ;
+
+chan17Raw : * * ;
+
+chan18Raw : * * ;
+
+chanCount : '\x12' ;
+
+rssi : * ;
+
+
+/* RC channels message header */
+RCMH : MAVCODE RCLEN incompFlag compFlag packetSequence sysID compID RCCODE ;
+
 
 
 /* Attitude message */
@@ -116,12 +204,8 @@ pitchSpeed : * * * * ;
 yawSpeed : * * * * ;
 
 
-/* header starter for message length of 32, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
-ml32 : MAVCODE LEN32 incompFlag compFlag packetSequence sysID compID ;
-
-
 /* Attitude message header */
-attitudeMH : ml32 ATTITUDECODE ;
+attitudeMH : ml28 ATTITUDECODE ;
 
 
 /* GPI message */
@@ -145,7 +229,11 @@ hdg : * * ;
 
 
 /* GPI message header */
-GPIMH : ml32 GPICODE ;
+GPIMH : ml28 GPICODE ;
+
+
+/* header starter for message length of 28, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
+ml28 : MAVCODE LEN28 incompFlag compFlag packetSequence sysID compID ;
 
 
 /* tokens */
@@ -155,7 +243,17 @@ GPICODE : '\x21' '\x00' '\x00' ;
 
 ATTITUDECODE : '\x1e' '\x00' '\x00' ;
 
-LEN32 : '\x1C' ;
+RCCODE : '\x41' '\x00' '\x00' ;
+
+LPNCODE : '\x20' '\x00' '\x00' ;
+
+AQCODE : '\x1F' '\x00' '\x00' ;
+
+RCLEN : '\x2A' ;
+
+AQLEN : '\x20' ;
+
+LEN28 : '\x1C' ;
 
 /* incompatibility flag */
 incompFlag : '\x00' ;
