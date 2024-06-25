@@ -30,7 +30,7 @@ fcs : * * ;
 
 message : packetRecordHeader mavHeader messageOption * * ;
 
-messageOption : att | gpi | RCChannels | lpn | attQuar | rs | hb | odis | odil | sp | ugp | ces | alt | ess | ss | tett | es | ptln ;
+messageOption : att | gpi | RCChannels | lpn | attQuar | rs | hb | odis | odil | sp | ugp | ces | alt | ess | ss | tett | es | ptln | ping | hp ;
 
 /* packet record header */
 packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
@@ -130,10 +130,32 @@ ssOBSensorsPresentExt : * * * * ;
 ssOBSensorsEnabledExt : * * * * ;
 ssOBSensorsHealthExt : * ; /* truncated */
 
+/* PING */
+ping : pingMH timeUS pingSeq ;
+pingMH : ml09 PINGCODE ;
+pingSeq : * ; /* truncated */
+
+/* HOME_POSITION */
+hp : hpMH hpLat hpLon hpAlt hpX hpY hpZ hpQ0 hpQ1 hpQ2 hpQ3 hpAppX hpAppY hpAppZ hpTime ;
+hpMH : MAVCODE HPLEN incompFlag compFlag packetSequence sysID compID HPCODE ;
+hpLat : * * * * ;
+hpLon : * * * * ;
+hpAlt : * * * * ;
+hpX : * * * * ;
+hpY : * * * * ;
+hpZ : * * * * ;
+hpQ0 : * * * * ;
+hpQ1 : * * * * ;
+hpQ2 : * * * * ;
+hpQ3 : * * * * ;
+hpAppX : * * * * ;
+hpAppY : * * * * ;
+hpAppZ : * * * * ;
+hpTime : * * * * ;
+
 /* ESTIMATOR_STATUS */
-es : esMH esTimeUS esVelRat esPosHRat esPosVRat esMagRat esHaglRat esTasRat esPosHAcc esPosVAcc esFlags ;
+es : esMH timeUS esVelRat esPosHRat esPosVRat esMagRat esHaglRat esTasRat esPosHAcc esPosVAcc esFlags ;
 esMH : ml42 ESCODE ;
-esTimeUS : * * * * * * * * ;
 esVelRat : * * * * ;
 esPosHRat : * * * * ;
 esPosVRat : * * * * ;
@@ -281,14 +303,14 @@ ptlnCoordFrame : '\x01' | [ '\x07' - '\x09' ] ;
 
 
 /* LOCAL_POSITION_NED */
-lpn : lpnMH timeBoot lpnx lpny lpnz lpnvx lpnvy lpnvz ;
+lpn : lpnMH timeBoot lpnX lpnY lpnZ lpnVX lpnVY lpnVZ ;
 lpnMH : ml28 LPNCODE ;
-lpnx : * * * * ;
-lpny : * * * * ;
-lpnz : * * * * ;
-lpnvx : * * * * ;
-lpnvy : * * * * ;
-lpnvz : * * * * ;
+lpnX : * * * * ;
+lpnY : * * * * ;
+lpnZ : * * * * ;
+lpnVX : * * * * ;
+lpnVY : * * * * ;
+lpnVZ : * * * * ;
 
 
 /* RC_CHANNELS */
@@ -365,6 +387,8 @@ SSCODE : '\x01' '\x00' '\x00' ;
 TETTCODE : '\x7C' '\x01' '\x00' ; 
 ESCODE : '\xE6' '\x00' '\x00' ;
 PTLNCODE : '\x55' '\x00' '\x00' ;
+PINGCODE : '\x04' '\x00' '\x00' ;
+HPCODE : '\xF2' '\x00' '\x00' ;
 
 ODISLEN : '\x19' ;
 ODILLEN : '\x3B' ;
@@ -373,6 +397,7 @@ UGPLEN : '\x46' ;
 SSLEN : '\x28' ;
 TETTLEN : '\x14' ;
 PTLNLEN : '\x33' ;
+HPLEN : '\x38' ;
 
 LEN02 : '\x02' ;
 LEN09 : '\x09' ;
@@ -397,3 +422,4 @@ compID : '\x01' | '\x44' | '\xBE' ;
 
 /* time since system boot */
 timeBoot : * * * * ;
+timeUS : * * * * * * * * ;
