@@ -30,7 +30,7 @@ fcs : * * ;
 
 message : packetRecordHeader mavHeader messageOption * * ;
 
-messageOption : att | gpi | RCChannels | lpn | attQuar | rs | hb | odis | odil | sp | ugp | ces | alt | ess | ss | tett | es ;
+messageOption : att | gpi | RCChannels | lpn | attQuar | rs | hb | odis | odil | sp | ugp | ces | alt | ess | ss | tett | es | ptln ;
 
 /* packet record header */
 packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
@@ -262,6 +262,23 @@ attQuarRollSpeed : * * * * ;
 attQuarPitchSpeed : * * * * ;
 attQuarYawSpeed : * * * * ;
 
+/* POSITION_TARGET_LOCAL_NED */
+ptln : ptlnMH timeBoot ptlnX ptlnY ptlnZ ptlnVX ptlnVY ptlnVZ pltnAFX pltnAFY pltnAFZ ptlnYaw ptlnYawRate ptlnTypeMask ptlnCoordFrame ;
+ptlnMH : MAVCODE PTLNLEN incompFlag compFlag packetSequence sysID compID PTLNCODE ;
+ptlnX : * * * * ;
+ptlnY : * * * * ;
+ptlnZ : * * * * ;
+ptlnVX : * * * * ;
+ptlnVY : * * * * ;
+ptlnVZ : * * * * ;
+pltnAFX : * * * * ;
+pltnAFY : * * * * ;
+pltnAFZ : * * * * ;
+ptlnYaw : * * * * ;
+ptlnYawRate : * * * * ;
+ptlnTypeMask : * * ;
+ptlnCoordFrame : '\x01' | [ '\x07' - '\x09' ] ;
+
 
 /* LOCAL_POSITION_NED */
 lpn : lpnMH timeBoot lpnx lpny lpnz lpnvx lpnvy lpnvz ;
@@ -347,6 +364,7 @@ ESSCODE : '\xF5' '\x00' '\x00' ;
 SSCODE : '\x01' '\x00' '\x00' ;
 TETTCODE : '\x7C' '\x01' '\x00' ; 
 ESCODE : '\xE6' '\x00' '\x00' ;
+PTLNCODE : '\x55' '\x00' '\x00' ;
 
 ODISLEN : '\x19' ;
 ODILLEN : '\x3B' ;
@@ -354,6 +372,7 @@ SPLEN : '\x0E' ;
 UGPLEN : '\x46' ;
 SSLEN : '\x28' ;
 TETTLEN : '\x14' ;
+PTLNLEN : '\x33' ;
 
 LEN02 : '\x02' ;
 LEN09 : '\x09' ;
