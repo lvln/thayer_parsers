@@ -1,5 +1,5 @@
 /* 
- * extractmessages.c --- extracts all messages of a given code or codes from a .pcap file and writen them to a new file; assumes input file has already been cleaned with cleandata.c
+ * extractdata.c --- extracts all messages of a given code or codes from a .pcap file and writen them to a new file; assumes input file has already been cleaned with cleandata.c
  * 
  * Author: Joshua M. Meise
  * Created: 06-21-2024
@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
 
 	// Check arguments
 	if (argc < 4) {
-    printf("usage: extractmessages inputFile outputFile messageCodes\n");
+    printf("usage: extractdata inputFile outputFile messageCodes\n");
     exit(EXIT_FAILURE);
 	}
 
@@ -128,8 +128,8 @@ int main(int argc, char **argv) {
 	
 	// ensure that codes are psoitive integers.
 	for (i = 0; i < numCodes; i++) {
-		if (atoi(argv[i + 3]) < 1) {
-			printf("usage: extractmessages inputFile outputFile messageCodes\n");
+		if (atoi(argv[i + 3]) < 0) {
+			printf("usage: extractdata inputFile outputFile messageCodes\n");
 			exit(EXIT_FAILURE);
 		}
 	}

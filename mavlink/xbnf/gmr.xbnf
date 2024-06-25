@@ -30,7 +30,7 @@ fcs : * * ;
 
 message : packetRecordHeader mavHeader messageOption * * ;
 
-messageOption : attitude | GPI | RCChannels | localPosNed | attQuar ;
+messageOption : att | gpi | RCChannels | lpn | attQuar | rs | hb | odis | odil | sp | ugp | ces | alt | ess | ss | tett | es ;
 
 /* packet record header */
 packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
@@ -98,162 +98,268 @@ length : * * ;
 checksum : * * ;
 
 
+
+
+/* HEARTBEAT */
+hb : hbMH hbCustomMode hbType hbAutoPilot hbBaseMode hbSysStatus hbMavVersion ;
+hbMH : ml09 HBCODE ;
+hbCustomMode : * * * * ;
+hbType : * ;
+hbAutoPilot : * ;
+hbBaseMode : * ;
+hbSysStatus : * ;
+hbMavVersion : * ;
+
+/* SYSTEM_STATUS */
+ss : ssMH ssOBSensorsPresent ssOBSensorsEnabled ssOBSensorsHealth ssLoad ssVolBatt ssCurrBatt ssDropRateComm ssErrComm ssErrCnt1 ssErrCnt2 ssErrCnt3 ssErrCnt4 ssBattRem ssOBSensorsPresentExt ssOBSensorsEnabledExt ssOBSensorsHealthExt ;
+ssMH : MAVCODE SSLEN incompFlag compFlag packetSequence sysID compID SSCODE ;
+ssOBSensorsPresent : * * * * ;
+ssOBSensorsEnabled : * * * * ;
+ssOBSensorsHealth : * * * * ;
+ssLoad : * * ;
+ssVolBatt : * * ;
+ssCurrBatt : * * ;
+ssDropRateComm : * * ;
+ssErrComm : * * ;
+ssErrCnt1 : * * ;
+ssErrCnt2 : * * ;
+ssErrCnt3 : * * ;
+ssErrCnt4 : * * ;
+ssBattRem : * ;
+ssOBSensorsPresentExt : * * * * ;
+ssOBSensorsEnabledExt : * * * * ;
+ssOBSensorsHealthExt : * ; /* truncated */
+
+/* ESTIMATOR_STATUS */
+es : esMH esTimeUS esVelRat esPosHRat esPosVRat esMagRat esHaglRat esTasRat esPosHAcc esPosVAcc esFlags ;
+esMH : ml42 ESCODE ;
+esTimeUS : * * * * * * * * ;
+esVelRat : * * * * ;
+esPosHRat : * * * * ;
+esPosVRat : * * * * ;
+esMagRat : * * * * ;
+esHaglRat : * * * * ;
+esTasRat : * * * * ;
+esPosHAcc : * * * * ;
+esPosVAcc : * * * * ;
+esFlags : * * ;
+
+/* TIME_ESTIMATE_TO_TARGET */
+tett : tettMH tettSafeReturn tettLand tettMissNxtItem tettMissEnd tettCommAct ;
+tettMH : MAVCODE TETTLEN incompFlag compFlag packetSequence sysID compID TETTCODE ;
+tettSafeReturn : * * * * ;
+tettLand : * * * * ;
+tettMissNxtItem : * * * * ;
+tettMissEnd : * * * * ;
+tettCommAct : * * * * ;
+
+/* ALTITUDE */
+alt : altMH altTimeUsec altAltMono altAltAmsl altAltLocal altAltRel altAltTerain altBottomClearance ;
+altMH : ml32 ALTCODE ;
+altTimeUsec : * * * * * * * * ;
+altAltMono : * * * * ;
+altAltAmsl : * * * * ;
+altAltLocal : * * * * ;
+altAltRel : * * * * ;
+altAltTerain : * * * * ;
+altBottomClearance : * * * * ;
+
+/* EXTENDED_SYS_STATE */
+ess : essMH essVtolState essLandedState ;
+essMH : ml02 ESSCODE ;
+essVtolState : [ '\x00' - '\x04' ] ;
+essLandedState : [ '\x00' - '\x04' ] ;
+
+/* UTM_GLOBAL_POSITION */
+ugp : ugpMH ugpTime ugpLat ugpLon ugpAlt ugpRelAlt ugpNextLat ugpNextLon ugpNextAlt ugpvx ugpvy ugpvz ugphacc ugpvacc ugpVelAcc ugpUpdateRate ugpUASID ugpFlightState ugpFlags ;
+ugpMH : MAVCODE UGPLEN incompFlag compFlag packetSequence sysID compID UGPCODE ;
+ugpTime : * * * * * * * * ;
+ugpLat : * * * * ;
+ugpLon : * * * * ;
+ugpAlt : * * * * ;
+ugpRelAlt : * * * * ;
+ugpNextLat : * * * * ;
+ugpNextLon : * * * * ;
+ugpNextAlt : * * * * ;
+ugpvx : * * ;
+ugpvy : * * ;
+ugpvz : * * ;
+ugphacc : * * ;
+ugpvacc : * * ;
+ugpVelAcc : * * ;
+ugpUpdateRate : * * ;
+ugpUASID : * * * * * * * * * * * * * * * * * * ;
+ugpFlightState : * ;
+ugpFlags : * ;
+
+/* CURRENT_EVENT_SEQUENCE */
+ces : cesMH cesSeq ;
+cesMH : ml02 CESCODE ;
+cesSeq : * * ;
+
+/* SCALED_PRESSURE */
+sp : spMH timeBoot spPressAb spPressDiff spTemp ;
+spMH : MAVCODE SPLEN incompFlag compFlag packetSequence sysID compID SPCODE ;
+spPressAb : * * * * ;
+spPressDiff : * * * * ;
+spTemp : * * ;
+
+
+/* OPEN_DRONE_ID_SYSTEM */
+odis : odisMH odisOpLat odisOpLon odisAreaCeiling odisAreaFloor odisOpAltGeo odisTimeStamp odisAreaCode ;
+odisMH : MAVCODE ODISLEN incompFlag compFlag packetSequence sysID compID ODISCODE ; 
+odisOpLat : * * * * ;
+odisOpLon : * * * * ;
+odisAreaCeiling : * * * * ;
+odisAreaFloor : * * * * ;
+odisOpAltGeo : * * * * ;
+odisTimeStamp : * * * * ;
+odisAreaCode : * ;
+
+/* OPEN_DRONE_ID_LOCATION */
+odil : odilMH odilLat odilLon odilAltbar odilAltGeo odilHeight odilTime odilDirection odilSpeedHor odilSpeedVert odilTargSys odilTargComp odilIdOrMac odilStatus odilHeightRef odilHorAcc odilVertAcc odilBarAcc odilSpeedAcc odilTimeAcc ;
+odilMH : MAVCODE ODILLEN incompFlag compFlag packetSequence sysID compID ODILCODE ;
+odilLat : * * * * ;
+odilLon : * * * * ;
+odilAltbar : * * * * ;
+odilAltGeo : * * * * ;
+odilHeight : * * * * ;
+odilTime : * * * * ;
+odilDirection : * * ;
+odilSpeedHor : * * ;
+odilSpeedVert : * * ;
+odilTargSys : * ;
+odilTargComp : * ;
+odilIdOrMac : * * * * * * * * * * * * * * * * * * * * ;
+odilStatus : * ;
+odilHeightRef : * ;
+odilHorAcc : * ;
+odilVertAcc : * ;
+odilBarAcc : * ;
+odilSpeedAcc : * ;
+odilTimeAcc : * ;
+
+/* RADIO_STATUS */
+rs : rsMH rsRXErrors rsFixed rsRSSI rsRemRSSI rsTXBuf rsNoise rsRemNoise ;
+rsMH : ml09 RSCODE ;
+rsRXErrors : * * ;
+rsFixed : * * ;
+rsRSSI : * ;
+rsRemRSSI : * ;
+rsTXBuf : * ;
+rsNoise : * ;
+rsRemNoise : * ;
+
+
 /* ATTITUDE_QUATERNION */
 attQuar : attQuarMH timeBoot attQuarQ1 attQuarQ2 attQuarQ3 attQuarQ4 attQuarRollSpeed attQuarPitchSpeed attQuarYawSpeed ;
-
+attQuarMH : ml32 AQCODE ;
 attQuarQ1 : * * * * ;
-
 attQuarQ2 : * * * * ;
-
 attQuarQ3 : * * * * ;
-
 attQuarQ4 : * * * * ;
-
 attQuarRollSpeed : * * * * ;
-
 attQuarPitchSpeed : * * * * ;
-
 attQuarYawSpeed : * * * * ;
 
-/* Header for attitude quaternion */
-attQuarMH : MAVCODE AQLEN incompFlag compFlag packetSequence sysID compID AQCODE ;
+
+/* LOCAL_POSITION_NED */
+lpn : lpnMH timeBoot lpnx lpny lpnz lpnvx lpnvy lpnvz ;
+lpnMH : ml28 LPNCODE ;
+lpnx : * * * * ;
+lpny : * * * * ;
+lpnz : * * * * ;
+lpnvx : * * * * ;
+lpnvy : * * * * ;
+lpnvz : * * * * ;
 
 
-
-/* Local position north-east-down convention */
-localPosNed : LPNMH timeBoot LPNx LPNy LPNz LPNvx LPNvy LPNvz ;
-
-LPNx : * * * * ;
-
-LPNy : * * * * ;
-
-LPNz : * * * * ;
-
-LPNvx : * * * * ;
-
-LPNvy : * * * * ;
-
-LPNvz : * * * * ;
-
-
-/* Local position north-east-down convention message header */
-LPNMH : ml28 LPNCODE ;
-
-/* RC channels message */
+/* RC_CHANNELS */
 RCChannels : RCMH timeBoot chan1Raw chan2Raw chan3Raw chan4Raw chan5Raw chan6Raw chan7Raw chan8Raw chan9Raw chan10Raw chan11Raw chan12Raw chan13Raw chan14Raw chan15Raw chan16Raw chan17Raw chan18Raw chanCount rssi ;
-
+RCMH : ml42 RCCODE ;
 chan1Raw : * * ;
-
 chan2Raw : * * ;
-
 chan3Raw : * * ;
-
 chan4Raw : * * ;
-
 chan5Raw : * * ;
-
 chan6Raw : * * ;
-
 chan7Raw : * * ;
-
 chan8Raw : * * ;
-
 chan9Raw : * * ;
-
 chan10Raw : * * ;
-
 chan11Raw : * * ;
-
 chan12Raw : * * ;
-
 chan13Raw : * * ;
-
 chan14Raw : * * ;
-
 chan15Raw : * * ;
-
 chan16Raw : * * ;
-
 chan17Raw : * * ;
-
 chan18Raw : * * ;
-
 chanCount : '\x12' ;
-
 rssi : * ;
 
+/* ATTITUDE */
+att : attMH timeBoot attRoll attPitch attYaw attRollSpeed attPitchSpeed attYawSpeed ;
+attMH : ml28 ATTCODE ;
+attRoll : * * * * ;
+attPitch : * * * * ;
+attYaw : * * * * ;
+attRollSpeed : * * * * ;
+attPitchSpeed : * * * * ;
+attYawSpeed : * * * * ;
 
-/* RC channels message header */
-RCMH : MAVCODE RCLEN incompFlag compFlag packetSequence sysID compID RCCODE ;
-
-
-
-/* Attitude message */
-attitude : attitudeMH timeBoot roll pitch yaw rollSpeed pitchSpeed yawSpeed ;
-
-roll : * * * * ;
-
-pitch : * * * * ;
-
-yaw : * * * * ;
-
-rollSpeed : * * * * ;
-
-pitchSpeed : * * * * ;
-
-yawSpeed : * * * * ;
-
-
-/* Attitude message header */
-attitudeMH : ml28 ATTITUDECODE ;
+/* GLOBAL_POSITION_INT */
+gpi : gpiMH timeBoot gpiLat gpiLon gpiAlt gpiRelAlt gpivx gpivy gpivz gpihdg ;
+gpiMH : ml28 GPICODE ;
+gpiLat : * * * * ;
+gpiLon : * * * * ;
+gpiAlt : * * * * ;
+gpiRelAlt : * * * * ;
+gpivx : * * ;
+gpivy : * * ;
+gpivz : * * ;
+gpihdg : * * ;
 
 
-/* GPI message */
-GPI : GPIMH timeBoot lat lon alt relAlt vx vy vz hdg ;
-
-lat : * * * * ;
-
-lon : * * * * ;
-
-alt : * * * * ;
-
-relAlt : * * * * ;
-
-vx : * * ;
-
-vy : * * ;
-
-vz : * * ;
-
-hdg : * * ;
-
-
-/* GPI message header */
-GPIMH : ml28 GPICODE ;
-
-
-/* header starter for message length of 28, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
+/* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
+ml02 : MAVCODE LEN02 incompFlag compFlag packetSequence sysID compID ;
+ml09 : MAVCODE LEN09 incompFlag compFlag packetSequence sysID compID ;
 ml28 : MAVCODE LEN28 incompFlag compFlag packetSequence sysID compID ;
-
+ml32 : MAVCODE LEN32 incompFlag compFlag packetSequence sysID compID ;
+ml42 : MAVCODE LEN42 incompFlag compFlag packetSequence sysID compID ;
 
 /* tokens */
 MAVCODE : '\xFD' ;
-
 GPICODE : '\x21' '\x00' '\x00' ;
-
-ATTITUDECODE : '\x1e' '\x00' '\x00' ;
-
+ATTCODE : '\x1e' '\x00' '\x00' ;
 RCCODE : '\x41' '\x00' '\x00' ;
-
 LPNCODE : '\x20' '\x00' '\x00' ;
-
 AQCODE : '\x1F' '\x00' '\x00' ;
+RSCODE : '\x6D' '\x00' '\x00' ;
+HBCODE : '\x00' '\x00' '\x00' ;
+ODISCODE : '\x68' '\x32' '\x00' ;
+ODILCODE : '\x65' '\x32' '\x00' ;
+SPCODE : '\x1D' '\x00' '\x00' ;
+UGPCODE : '\x54' '\x01' '\x00' ;
+CESCODE : '\x9B' '\x01' '\x00' ;
+ALTCODE : '\x8D' '\x00' '\x00' ;
+ESSCODE : '\xF5' '\x00' '\x00' ;
+SSCODE : '\x01' '\x00' '\x00' ;
+TETTCODE : '\x7C' '\x01' '\x00' ; 
+ESCODE : '\xE6' '\x00' '\x00' ;
 
-RCLEN : '\x2A' ;
+ODISLEN : '\x19' ;
+ODILLEN : '\x3B' ;
+SPLEN : '\x0E' ;
+UGPLEN : '\x46' ;
+SSLEN : '\x28' ;
+TETTLEN : '\x14' ;
 
-AQLEN : '\x20' ;
-
+LEN02 : '\x02' ;
+LEN09 : '\x09' ;
 LEN28 : '\x1C' ;
+LEN32 : '\x20' ;
+LEN42 : '\x2A' ;
 
 /* incompatibility flag */
 incompFlag : '\x00' ;
@@ -264,10 +370,11 @@ compFlag : '\x00' ;
 /* packet sequence */
 packetSequence : * ;
 
-/* system ID - always 0x01 */
-sysID : '\x01' ;
+/* system ID  */
+sysID : '\x01' | '\x33' | '\xFF' ;
 
-/* component ID - always 0x01 */
-compID : '\x01' ;
+/* component ID */
+compID : '\x01' | '\x44' | '\xBE' ;
 
+/* time since system boot */
 timeBoot : * * * * ;
