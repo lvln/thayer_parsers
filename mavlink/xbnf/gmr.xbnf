@@ -453,7 +453,7 @@ ml28 : MAVCODE LEN28 incompFlag compFlag packetSequence sysID compID ;
 ml32 : MAVCODE LEN32 incompFlag compFlag packetSequence sysID compID ;
 ml42 : MAVCODE LEN42 incompFlag compFlag packetSequence sysID compID ;
 
-/* tokens */
+/* Tokens */
 MAVCODE : '\xFD' ;
 
 HBCODE : '\x00' '\x00' '\x00' ;
@@ -511,21 +511,10 @@ LEN28 : '\x1C' ;
 LEN32 : '\x20' ;
 LEN42 : '\x2A' ;
 
-/* incompatibility flag */
-incompFlag : '\x00' ;
-
-/* compatibility flag */
-compFlag : '\x00' ;
-
-/* packet sequence */
+incompFlag : '\x00' ;  /* incompatibility flag */
+compFlag : '\x00' ; /* compatibility flag */
 packetSequence : * ;
-
-/* system ID  */
-sysID : '\x01' | '\x33' | '\xFF' ;
-
-/* component ID */
-compID : '\x01' | '\x44' | '\xBE' ;
-
-/* time since system boot */
+sysID : '\x01' | '\x33' | '\xFF' ; /* system ID  */
+compID : '\x01' | '\x44' | '\xBE' ; /* component ID */
 timeBoot : * * * * ;
 timeUS : * * * * * * * * ;
