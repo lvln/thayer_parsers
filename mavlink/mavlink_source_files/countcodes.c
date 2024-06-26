@@ -50,24 +50,25 @@ static int toInt(uint8_t *arr) {
  * Inputs: pointer to the array into which to insert, pointer to number of elements in array, code to insert.
  * Outputs: None.
  */
-static int insert(int **arr, int num, int code) {
-	printf("IN FUNC\n");
+static void insert(int **arr, int *num, int code) {
 	// Create new array if array does not exist, otherwise, just grow it by 1.
-	if (num == 0) {
-		//		if ((*arr = (int *)malloc(sizeof(int))) == NULL)
-		//printf("Memory allocation failed.\n");
+	if (*num == 0) {
+		if ((*arr = (int *)malloc(sizeof(int))) == NULL)
+			printf("Memory allocation failed.\n");
 
-		//		(*arr)[*num] = code;
-		num++;
-	} else {
-		//		if ((*arr = (int *)realloc(*arr, *num + 1)) == NULL)
-		//			printf("Memory allocation failed.\n");
+		(*arr)[*num] = code;
+		(*num)++;
+	}
+	// Increase size of array and insert element at end.
+	else {
+		if ((*arr = (int *)realloc(*arr, sizeof(int)*(*num + 1))) == NULL)
+			printf("Memory allocation failed.\n");
 
-		//(*arr)[*num] = code;
-		num++;
+		(*arr)[*num] = code;
+		(*num)++;
+		
 	}
 
-	return num;
 }
 
 /* 
@@ -78,7 +79,8 @@ static int insert(int **arr, int num, int code) {
 bool contains(int *codesArr, int num, int searchCode) {
 	// Variable declarations.
 	int i;
-	
+
+	// Check to see if there is a matching code in the array.
 	for (i = 0; i < num; i++)
 		if (codesArr[i] == searchCode)
 			return true;
@@ -151,11 +153,13 @@ int main(int argc, char **argv) {
 		// If the end of a message has been reached.
 		if (i == (MAVLEN + payload + 12) && payload != 0) {
 			// If array does not yet exist create one and insert code.
-			//			if (numCodes == 0)
-				//				numCodes = insert(&codesArr, numCodes, toInt(mess.body.messageID));
+			if (numCodes == 0) {
+				insert(&codesArr, &numCodes, toInt(mess.body.messageID));
+			}
 			// Otherwise search array and insert if it does not contain code.
-			//	else if (contains(codesArr, numCodes, toInt(mess.body.messageID)) == false)
-			//				numCodes = insert(&codesArr, numCodes, toInt(mess.body.messageID));
+			else if (contains(codesArr, numCodes, toInt(mess.body.messageID)) == false) {
+				insert(&codesArr, &numCodes, toInt(mess.body.messageID));
+			}
 			
 			// Reset all variables
 			i = 0;
@@ -170,7 +174,7 @@ int main(int argc, char **argv) {
 
 	printf("unique codes = %d\n", numCodes);
 	
-	//	free(codesArr);
+	free(codesArr);
 	fclose(ifile);
 	exit(EXIT_SUCCESS);
 }
