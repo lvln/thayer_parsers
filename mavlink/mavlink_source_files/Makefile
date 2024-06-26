@@ -1,6 +1,6 @@
 CFLAGS=-Wall -pedantic -std=c11
 
-all: read cleandata extractdata countcodes
+all: read cleandata extractdata countcodes echo
 
 read.o: read.c
 				gcc $(CFLAGS) -c read.c
@@ -26,5 +26,11 @@ countcodes.o: countcodes.c
 countcodes: countcodes.o
 		  gcc $(CFLAGS) countcodes.o -o countcodes
 
+echo.o: echo.c
+				gcc $(CFLAGS) -c echo.c
+
+echo: echo.o
+		  gcc $(CFLAGS) echo.o -o echo
+
 clean:
-			rm -f *.o read cleandata extractdata countcodes
+			rm -f *.o read cleandata extractdata countcodes echo

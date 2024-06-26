@@ -1,4 +1,4 @@
-/* Truncated messages - 24 */
+/* Truncated messages - 1, 8, 4, 24, 29, 31, 74, 83, 147, 241, 242, 253, 410, 411, 12904 */
 /* Variable length messages - 24, 74, 410 */
 P : pcapHeader optMessage ;
 
@@ -104,10 +104,10 @@ checksum : * * ;
 hb : hbMH hbCustomMode hbType hbAutoPilot hbBaseMode hbSysStatus hbMavVersion ;
 hbMH : ml09 HBCODE ;
 hbCustomMode : * * * * ;
-hbType : * ;
-hbAutoPilot : * ;
+hbType : [ '\x00' - '\x2C' ] ;
+hbAutoPilot : [ '\x00' - '\x14' ] ;
 hbBaseMode : * ;
-hbSysStatus : * ;
+hbSysStatus : [ '\x00' - '\x08' ] ;
 hbMavVersion : * ;
 
 /* SYSTEM_STATUS (1) */
@@ -128,12 +128,14 @@ ssErrCnt4 : * * ;
 ssBattRem : * ;
 ssOBSensorsPresentExt : * * * * ;
 ssOBSensorsEnabledExt : * * * * ;
-ssOBSensorsHealthExt : * ; /* truncated */
+ssOBSensorsHealthExt : * ;
+/* truncated */
 
 /* PING (4) */
 ping : pingMH timeUS pingSeq ;
 pingMH : ml09 PINGCODE ;
-pingSeq : * ; /* truncated */
+pingSeq : * ;
+/* truncated */
 
 /* LINK_NODE_STATUS (8) */
 lns : lnsMH lnsTime lnsTxRate lnsRxRate lnsMessSent lnsMessRec lnsMessLost ;
@@ -143,7 +145,8 @@ lnsTxRate : * * * * ;
 lnsRxRate : * * * * ;
 lnsMessSent : * * * * ;
 lnsMessRec : * * * * ;
-lnsMessLost : * ; /* truncated */
+lnsMessLost : * ;
+/* truncated */
 
 /* PARAM_VALUE (22) */
 pv : pvMH pvPV pvCnt pvInd pvID pvType ;
@@ -152,7 +155,7 @@ pvPV : * * * * ;
 pvCnt : * * ;
 pvInd : * * ;
 pvID : * * * * * * * * * * * * * * * * ;
-pvType : * ;
+pvType : [ '\x01' - '\x0A' ] ;
 
 /* GPS_RAW_INT (24) */
 gri : gri1 | gri2 ;
@@ -182,6 +185,7 @@ spMH : ml14 SPCODE ;
 spPressAb : * * * * ;
 spPressDiff : * * * * ;
 spTemp : * * ;
+/* truncated */
 
 /* ATTITUDE (30) */
 att : attMH timeBoot attRoll attPitch attYaw attRollSpeed attPitchSpeed attYawSpeed ;
@@ -203,6 +207,7 @@ aqQ4 : * * * * ;
 aqRollSpeed : * * * * ;
 aqPitchSpeed : * * * * ;
 aqYawSpeed : * * * * ;
+/* truncated */
 
 /* LOCAL_POSITION_NED (32) */
 lpn : lpnMH timeBoot lpnX lpnY lpnZ lpnVX lpnVY lpnVZ ;
@@ -384,6 +389,7 @@ hpAppX : * * * * ;
 hpAppY : * * * * ;
 hpAppZ : * * * * ;
 hpTime : * * * * ;
+/* truncated */
 
 /* EXTENDED_SYS_STATE (245) */
 ess : essMH essVtolState essLandedState ;
@@ -397,7 +403,7 @@ stMH : MAVCODE STLEN incompFlag compFlag packetSequence sysID compID STCODE ;
 stSeverity : [ '\x00' - '\x07' ] ;
 stText : * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ;
 stID : * ;
-/* id and chunkSeq truncated*/
+/* id and chunkSeq truncated */
 
 /* UTM_GLOBAL_POSITION (340) */
 ugp : ugpMH ugpTime ugpLat ugpLon ugpAlt ugpRelAlt ugpNextLat ugpNextLon ugpNextAlt ugpvx ugpvy ugpvz ugphacc ugpvacc ugpVelAcc ugpUpdateRate ugpUASID ugpFlightState ugpFlags ;
@@ -418,7 +424,7 @@ ugpvacc : * * ;
 ugpVelAcc : * * ;
 ugpUpdateRate : * * ;
 ugpUASID : * * * * * * * * * * * * * * * * * * ;
-ugpFlightState : * ;
+ugpFlightState : [ '\x01' - '\x03' ] | '\x10' | '\x20' ;
 ugpFlags : * ;
 
 /* TIME_ESTIMATE_TO_TARGET (380) */
@@ -451,11 +457,13 @@ evArg3 : * ;
 evArg4 : * ;
 evArg5 : * ;
 evArg6 : * ;
+/* truncated */
 
 /* CURRENT_EVENT_SEQUENCE (411) */
 ces : cesMH cesSeq ;
 cesMH : ml02 CESCODE ;
 cesSeq : * * ;
+/* truncated */
 
 /* OPEN_DRONE_ID_LOCATION (12901) */
 odil : odilMH odilLat odilLon odilAltbar odilAltGeo odilHeight odilTime odilDirection odilSpeedHor odilSpeedVert odilTargSys odilTargComp odilIdOrMac odilStatus odilHeightRef odilHorAcc odilVertAcc odilBarAcc odilSpeedAcc odilTimeAcc ;
@@ -472,13 +480,13 @@ odilSpeedVert : * * ;
 odilTargSys : * ;
 odilTargComp : * ;
 odilIdOrMac : * * * * * * * * * * * * * * * * * * * * ;
-odilStatus : * ;
-odilHeightRef : * ;
-odilHorAcc : * ;
-odilVertAcc : * ;
-odilBarAcc : * ;
-odilSpeedAcc : * ;
-odilTimeAcc : * ;
+odilStatus : [ '\x00' - '\x04' ] ;
+odilHeightRef : [ '\x00' - '\x01' ] ;
+odilHorAcc : [ '\x00' - '\x0C' ] ;
+odilVertAcc : [ '\x00' - '\x06' ] ;
+odilBarAcc : [ '\x00' - '\x06' ] ;
+odilSpeedAcc : [ '\x00' - '\x04' ] ;
+odilTimeAcc : [ '\x00' - '\x0E' ] ;
 
 /* OPEN_DRONE_ID_SYSTEM (12904) */
 odis : odisMH odisOpLat odisOpLon odisAreaCeiling odisAreaFloor odisOpAltGeo odisTimeStamp odisAreaCode ;
@@ -490,6 +498,7 @@ odisAreaFloor : * * * * ;
 odisOpAltGeo : * * * * ;
 odisTimeStamp : * * * * ;
 odisAreaCode : * ;
+/* truncated */
 
 /* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
 ml02 : MAVCODE LEN02 incompFlag compFlag packetSequence sysID compID ;
