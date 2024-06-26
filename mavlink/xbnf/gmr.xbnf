@@ -1,4 +1,5 @@
-
+/* Truncated messages - 24 */
+/* Variable length messages - 24, 74, 410 */
 P : pcapHeader optMessage ;
 
 optMessage : /* empty */ | optMessage message ;
@@ -29,7 +30,7 @@ fcs : * * ;
 
 
 message : packetRecordHeader mavHeader messageOption * * ;
-messageOption : hb | ss | ping | lns | sp | att | aq | lpn | gpi | rc | at | ptln | rs | alt | bs | es | hp | ess | ugp | tett | ces | odil | odis ;
+messageOption : hb | ss | ping | lns | gri | sp | att | aq | lpn | gpi | rc | vh | at | ptln | rs | alt | bs | es | vb | hp | ess | ugp | st | tett | ev | ces | odil | odis ;
 
 /* packet record header */
 packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
@@ -144,9 +145,31 @@ lnsMessSent : * * * * ;
 lnsMessRec : * * * * ;
 lnsMessLost : * ; /* truncated */
 
+/* GPS_RAW_INT (24) */
+gri : gri1 | gri2 ;
+gri1 : gri1MH timeUS griLat griLon griAlt griEqh griEpv griVel griCog grifixType griSatVis griAltEll griHAcc griVAcc gri1VelAcc ;
+gri2 : gri2MH timeUS griLat griLon griAlt griEqh griEpv griVel griCog grifixType griSatVis griAltEll griHAcc griVAcc gri2VelAcc ;
+gri1MH : MAVCODE GRILEN1 incompFlag compFlag packetSequence sysID compID GRICODE ;
+gri2MH : MAVCODE GRILEN2 incompFlag compFlag packetSequence sysID compID GRICODE ;
+griLat : * * * * ;
+griLon : * * * * ;
+griAlt : * * * * ;
+griEqh : * * ;
+griEpv : * * ;
+griVel : * * ;
+griCog : * * ;
+grifixType : [ '\x00' - '\x08' ] ;
+griSatVis : * ;
+griAltEll : * * * * ;
+griHAcc : * * * * ;
+griVAcc : * * * * ;
+gri1VelAcc : * ;
+gri2VelAcc : * * ;
+/* truncated */
+
 /* SCALED_PRESSURE (29) */
 sp : spMH timeBoot spPressAb spPressDiff spTemp ;
-spMH : MAVCODE SPLEN incompFlag compFlag packetSequence sysID compID SPCODE ;
+spMH : ml14 SPCODE ;
 spPressAb : * * * * ;
 spPressDiff : * * * * ;
 spTemp : * * ;
@@ -217,6 +240,21 @@ rcC17Raw : * * ;
 rcC18Raw : * * ;
 rcCCount : '\x12' ;
 rcRssi : * ;
+
+/* VFR_HUD (74) */
+vh : vh1 | vh2 ;
+vh1 : vh1MH vhAS vhGS vhAlt vhClimb vh1Heading ;
+vh2 : vh2MH vhAS vhGS vhAlt vhClimb vh2Heading vh2Throttle ;
+vh1MH : MAVCODE VHLEN1 incompFlag compFlag packetSequence sysID compID VHCODE ;
+vh2MH : MAVCODE VHLEN2 incompFlag compFlag packetSequence sysID compID VHCODE ;
+vhAS : * * * * ;
+vhGS : * * * * ;
+vhAlt : * * * * ;
+vhClimb : * * * * ;
+vh1Heading : * ;
+vh2Heading : * * ;
+vh2Throttle : * ;
+/* truncated */
 
 /* ATTITUDE_TARGET (83) */
 at : atMH timeBoot atQ0 atQ1 atQ2 atQ3 atBodyRollRate atBodyPitchRate atBodyYawRate atThrust ;
@@ -308,7 +346,17 @@ esPosHAcc : * * * * ;
 esPosVAcc : * * * * ;
 esFlags : * * ;
 
-/* HOME_POSITION */
+/* VIBRATION (241) */
+vb : vbMH timeUS vbX vbY vbZ vbClip0 vbClip1 ;
+vbMH : MAVCODE VBLEN incompFlag compFlag packetSequence sysID compID VBCODE ;
+vbX : * * * * ;
+vbY : * * * * ;
+vbZ : * * * * ;
+vbClip0 : * * * * ;
+vbClip1 : * * ;
+/* clipping 1 and clipping2 truncated */
+
+/* HOME_POSITION (242) */
 hp : hpMH hpLat hpLon hpAlt hpX hpY hpZ hpQ0 hpQ1 hpQ2 hpQ3 hpAppX hpAppY hpAppZ hpTime ;
 hpMH : MAVCODE HPLEN incompFlag compFlag packetSequence sysID compID HPCODE ;
 hpLat : * * * * ;
@@ -326,13 +374,21 @@ hpAppY : * * * * ;
 hpAppZ : * * * * ;
 hpTime : * * * * ;
 
-/* EXTENDED_SYS_STATE */
+/* EXTENDED_SYS_STATE (245) */
 ess : essMH essVtolState essLandedState ;
 essMH : ml02 ESSCODE ;
 essVtolState : [ '\x00' - '\x04' ] ;
 essLandedState : [ '\x00' - '\x04' ] ;
 
-/* UTM_GLOBAL_POSITION */
+/* STATUSTEXT (253) */
+st : stMH stSeverity stText stID ;
+stMH : MAVCODE STLEN incompFlag compFlag packetSequence sysID compID STCODE ;
+stSeverity : [ '\x00' - '\x07' ] ;
+stText : * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ;
+stID : * ;
+/* id and chunkSeq truncated*/
+
+/* UTM_GLOBAL_POSITION (340) */
 ugp : ugpMH ugpTime ugpLat ugpLon ugpAlt ugpRelAlt ugpNextLat ugpNextLon ugpNextAlt ugpvx ugpvy ugpvz ugphacc ugpvacc ugpVelAcc ugpUpdateRate ugpUASID ugpFlightState ugpFlags ;
 ugpMH : MAVCODE UGPLEN incompFlag compFlag packetSequence sysID compID UGPCODE ;
 ugpTime : * * * * * * * * ;
@@ -354,21 +410,43 @@ ugpUASID : * * * * * * * * * * * * * * * * * * ;
 ugpFlightState : * ;
 ugpFlags : * ;
 
-/* TIME_ESTIMATE_TO_TARGET */
+/* TIME_ESTIMATE_TO_TARGET (380) */
 tett : tettMH tettSafeReturn tettLand tettMissNxtItem tettMissEnd tettCommAct ;
-tettMH : MAVCODE TETTLEN incompFlag compFlag packetSequence sysID compID TETTCODE ;
+tettMH : ml20 TETTCODE ;
 tettSafeReturn : * * * * ;
 tettLand : * * * * ;
 tettMissNxtItem : * * * * ;
 tettMissEnd : * * * * ;
 tettCommAct : * * * * ;
 
-/* CURRENT_EVENT_SEQUENCE */
+/* EVENT (410) */
+ev : ev1 | ev2 | ev3 ;
+ev1 : ev1MH evID evTimebootMS evSeq evDestComp evDestSys evLogLevels ;
+ev2 : ev2MH evID evTimebootMS evSeq evDestComp evDestSys evLogLevels evArg0 ;
+ev3 : ev3MH evID evTimebootMS evSeq evDestComp evDestSys evLogLevels evArg0 evArg1 evArg2 evArg3 evArg4 evArg5 evArg6 ;
+ev1MH : MAVCODE EVLEN1 incompFlag compFlag packetSequence sysID compID EVCODE ;
+ev2MH : ml14 EVCODE ;
+ev3MH : ml20 EVCODE ;
+evID : * * * * ;
+evTimebootMS : * * * * ;
+evSeq : * * ;
+evDestComp : * ;
+evDestSys : * ;
+evLogLevels : * ;
+evArg0 : * ;
+evArg1 : * ;
+evArg2 : * ;
+evArg3 : * ;
+evArg4 : * ;
+evArg5 : * ;
+evArg6 : * ;
+
+/* CURRENT_EVENT_SEQUENCE (411) */
 ces : cesMH cesSeq ;
 cesMH : ml02 CESCODE ;
 cesSeq : * * ;
 
-/* OPEN_DRONE_ID_LOCATION */
+/* OPEN_DRONE_ID_LOCATION (12901) */
 odil : odilMH odilLat odilLon odilAltbar odilAltGeo odilHeight odilTime odilDirection odilSpeedHor odilSpeedVert odilTargSys odilTargComp odilIdOrMac odilStatus odilHeightRef odilHorAcc odilVertAcc odilBarAcc odilSpeedAcc odilTimeAcc ;
 odilMH : MAVCODE ODILLEN incompFlag compFlag packetSequence sysID compID ODILCODE ;
 odilLat : * * * * ;
@@ -391,7 +469,7 @@ odilBarAcc : * ;
 odilSpeedAcc : * ;
 odilTimeAcc : * ;
 
-/* OPEN_DRONE_ID_SYSTEM */
+/* OPEN_DRONE_ID_SYSTEM (12904) */
 odis : odisMH odisOpLat odisOpLon odisAreaCeiling odisAreaFloor odisOpAltGeo odisTimeStamp odisAreaCode ;
 odisMH : ml37 ODISCODE ;
 odisOpLat : * * * * ;
@@ -405,6 +483,8 @@ odisAreaCode : * ;
 /* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
 ml02 : MAVCODE LEN02 incompFlag compFlag packetSequence sysID compID ;
 ml09 : MAVCODE LEN09 incompFlag compFlag packetSequence sysID compID ;
+ml14 : MAVCODE LEN14 incompFlag compFlag packetSequence sysID compID ;
+ml20 : MAVCODE LEN20 incompFlag compFlag packetSequence sysID compID ;
 ml28 : MAVCODE LEN28 incompFlag compFlag packetSequence sysID compID ;
 ml32 : MAVCODE LEN32 incompFlag compFlag packetSequence sysID compID ;
 ml37 : MAVCODE LEN37 incompFlag compFlag packetSequence sysID compID ;
@@ -417,38 +497,50 @@ HBCODE : '\x00' '\x00' '\x00' ;
 SSCODE : '\x01' '\x00' '\x00' ;
 PINGCODE : '\x04' '\x00' '\x00' ;
 LNSCODE : '\x08' '\x00' '\x00' ;
+GRICODE : '\x18' '\x00' '\x00' ;
 SPCODE : '\x1D' '\x00' '\x00' ;
 ATTCODE : '\x1E' '\x00' '\x00' ;
 AQCODE : '\x1F' '\x00' '\x00' ;
 LPNCODE : '\x20' '\x00' '\x00' ;
 GPICODE : '\x21' '\x00' '\x00' ;
 RCCODE : '\x41' '\x00' '\x00' ;
+VHCODE : '\x4A' '\x00' '\x00' ;
 ATCODE : '\x53' '\x00' '\x00' ;
 PTLNCODE : '\x55' '\x00' '\x00' ;
 RSCODE : '\x6D' '\x00' '\x00' ;
 ALTCODE : '\x8D' '\x00' '\x00' ;
 BSCODE : '\x93' '\x00' '\x00' ;
 ESCODE : '\xE6' '\x00' '\x00' ;
+VBCODE : '\xF1' '\x00' '\x00' ;
 HPCODE : '\xF2' '\x00' '\x00' ;
+STCODE : '\xFD' '\x00' '\x00' ;
 ESSCODE : '\xF5' '\x00' '\x00' ;
 UGPCODE : '\x54' '\x01' '\x00' ;
-TETTCODE : '\x7C' '\x01' '\x00' ; 
+TETTCODE : '\x7C' '\x01' '\x00' ;
+EVCODE : '\x9A' '\x01' '\x00' ;
 CESCODE : '\x9B' '\x01' '\x00' ;
 ODILCODE : '\x65' '\x32' '\x00' ;
 ODISCODE : '\x68' '\x32' '\x00' ;
 
-SPLEN : '\x0E' ;
-TETTLEN : '\x14' ;
+EVLEN1 : '\x0D' ;
+VHLEN1 : '\x11' ;
+VHLEN2 : '\x13' ;
+VBLEN : '\x1A' ;
 ATLEN : '\x24' ;
 SSLEN : '\x28' ;
 BSLEN : '\x29' ;
+GRILEN1 : '\x2B' ;
+GRILEN2 : '\x2C' ;
 PTLNLEN : '\x33' ;
+STLEN : '\x34' ;
 HPLEN : '\x38' ;
 ODILLEN : '\x3B' ;
 UGPLEN : '\x46' ;
 
 LEN02 : '\x02' ;
 LEN09 : '\x09' ;
+LEN14 : '\x0E' ;
+LEN20 : '\x14' ;
 LEN28 : '\x1C' ;
 LEN32 : '\x20' ;
 LEN37 : '\x19' ;

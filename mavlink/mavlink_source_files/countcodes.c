@@ -93,7 +93,7 @@ static bool contains(int *codesArr, int num, int searchCode) {
  * Outputs: none.
  */
 static void printCode(message_t mess) {
-	printf("Code: 0x%02x%02x%02x = %d\n", mess.body.messageID[2], mess.body.messageID[1], mess.body.messageID[0], toInt(mess.body.messageID));
+	printf("Code: %02x %02x %02x = %d\n", mess.body.messageID[2], mess.body.messageID[1], mess.body.messageID[0], toInt(mess.body.messageID));
 }
 
 int main(int argc, char **argv) {
