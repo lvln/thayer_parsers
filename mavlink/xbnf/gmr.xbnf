@@ -1,104 +1,47 @@
 /* Truncated messages - 1, 8, 4, 24, 29, 31, 74, 83, 147, 241, 242, 253, 410, 411, 12904 */
 /* Variable length messages - 24, 74, 410 */
-P : pcapHeader optMessage ;
 
+P : pcapHeader optMessage ;
 optMessage : /* empty */ | optMessage message ;
 
 /* PCAP file header */
 pcapHeader : magicNumber majorVersion minorVersion reserved snapLen linkType fcs ;
-
-/* timestamp is seconds and either microseconds or nanoseconds depending on magic number */
-magicNumber : '\xD4' '\xC3' '\xB2' '\xA1' | '\x4D' '\x3C' '\xB2' '\xA1' ; 
-
-/* major version */
+magicNumber : '\xD4' '\xC3' '\xB2' '\xA1' | '\x4D' '\x3C' '\xB2' '\xA1' ; /* timestamp is seconds and either microseconds or nanoseconds depending on magic number */
 majorVersion : '\x02' '\x00' ;
-
-/* minor version */
 minorVersion : '\x04' '\x00' ;
-
-/* 8 bytes are reserved and have values of 0 */
 reserved : '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' ;
-
-/* maximum number of octets captured from each packet */
 snapLen : * * * * ;
-
-/* loopback link */
 linkType : '\x00' '\x00' ;
+fcs : * * ; /* frame check sequence */
 
-/* frame check sequence */
-fcs : * * ;
-
-
+/* Messsages contain header for each packet followed by the MAVLink specific header then the message and finally a checkusm */
 message : packetRecordHeader mavHeader messageOption * * ;
 messageOption : hb | ss | ping | lns | pv | gri | sp | att | aq | lpn | gpi | rc | vh | at | ptln | rs | alt | bs | es | vb | hp | ess | ugp | st | tett | ev | ces | odil | odis ;
 
-/* packet record header */
+/* Header for each captured packet */
 packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
-
-/* timestamp seconds part */
 prhTimestampSec : * * * * ;
-
-/* micro- or nanoseconds timestamp */
 prhTimestampUSNS : * * * * ;
+prhCPL : * * * * ; /* captured packet length */
+prhOPL : * * * * ; /* original packet length */
 
-/* captured packet length */
-prhCPL : * * * * ;
-
-/* original packet length */
-prhOPL : * * * * ;
-
-
-
-/* MAVLink header */
+/* MAVLink header for each message */
 mavHeader : family ipvhl dsf totalLen id ffo ttl protocol headerChecksum sourceAddr destAddr sourcePort destPort length checksum ;
-
-/* family - always 2 for MAVLINK */
-family : '\x02' '\x00' '\x00' '\x00' ;
-
-/* ip version and header length  - always ip version 4 and 5 as header length for MAVLink */
-ipvhl : '\x45' ;
-
-/* differentiated services field - not sure */
-dsf : * ;
-
-/* total length of the message */
+family : '\x02' '\x00' '\x00' '\x00' ; /* Always 2 for MAVLink */
+ipvhl : '\x45' ; /* ip version and header length  - always ip version 4 and 5 as header length for MAVLink */
+dsf : * ; /* differentiated services field - not sure */
 totalLen : * * ;
-
-/* identification - not sure */
 id : * * ;
-
-/* flags and fragment offset - not sure*/
 ffo : * * ;
-
-/* time to live - seemingly always 0x40 for MAVLink - not sure */
-ttl : '\x40' ;
-
-/* protocol - always 0x11 for MAVLink because it is UDP */
-protocol : '\x11' ;
-
-/* header checksum - not sure */
-headerChecksum : * * ;
-
-/* source address - not sure */
+ttl : '\x40' ; /* time to live - seemingly always 0x40 for MAVLink - not sure */
+protocol : '\x11' ; /* protocol - always 0x11 for MAVLink because it is UDP */
+headerChecksum : * * ; /* header checksum - not sure */
 sourceAddr : * * * * ;
-
-/* destination address - not sure */
 destAddr : * * * * ;
-
-/* source port - always 14550 for MAVLink */
 sourcePort : '\x38' '\xD6' ;
-
-/* destination port - always 14580 for MAVLink */
 destPort : '\x38' '\xF4' ;
-
-/* length */
 length : * * ;
-
-/* checksum */
 checksum : * * ;
-
-
-
 
 /* HEARTBEAT (0) */
 hb : hbMH hbCustomMode hbType hbAutoPilot hbBaseMode hbSysStatus hbMavVersion ;
