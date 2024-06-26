@@ -30,7 +30,7 @@ fcs : * * ;
 
 message : packetRecordHeader mavHeader messageOption * * ;
 
-messageOption : att | gpi | RCChannels | lpn | attQuar | rs | hb | odis | odil | sp | ugp | ces | alt | ess | ss | tett | es | ptln | ping | hp ;
+messageOption : att | gpi | RCChannels | lpn | attQuar | rs | hb | odis | odil | sp | ugp | ces | alt | ess | ss | tett | es | ptln | ping | hp | at ;
 
 /* packet record header */
 packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
@@ -214,6 +214,19 @@ ugpUASID : * * * * * * * * * * * * * * * * * * ;
 ugpFlightState : * ;
 ugpFlags : * ;
 
+/* ATTITUDE_TARGET */
+at : atMH timeBoot atQ0 atQ1 atQ2 atQ3 atBodyRollRate atBodyPitchRate atBodyYawRate atThrust ;
+atMH : MAVCODE ATLEN incompFlag compFlag packetSequence sysID compID ATCODE ;
+atQ0 : * * * * ;
+atQ1 : * * * * ;
+atQ2 : * * * * ;
+atQ3 : * * * * ;
+atBodyRollRate : * * * * ;
+atBodyPitchRate : * * * * ;
+atBodyYawRate : * * * * ;
+atThrust : * * * * ;
+/* flags truncated */
+
 /* CURRENT_EVENT_SEQUENCE */
 ces : cesMH cesSeq ;
 cesMH : ml02 CESCODE ;
@@ -389,6 +402,7 @@ ESCODE : '\xE6' '\x00' '\x00' ;
 PTLNCODE : '\x55' '\x00' '\x00' ;
 PINGCODE : '\x04' '\x00' '\x00' ;
 HPCODE : '\xF2' '\x00' '\x00' ;
+ATCODE : '\x53' '\x00' '\x00' ;
 
 ODISLEN : '\x19' ;
 ODILLEN : '\x3B' ;
@@ -398,6 +412,7 @@ SSLEN : '\x28' ;
 TETTLEN : '\x14' ;
 PTLNLEN : '\x33' ;
 HPLEN : '\x38' ;
+ATLEN : '\x24' ;
 
 LEN02 : '\x02' ;
 LEN09 : '\x09' ;

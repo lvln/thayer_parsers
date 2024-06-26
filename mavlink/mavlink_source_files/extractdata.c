@@ -189,9 +189,8 @@ int main(int argc, char **argv) {
 		else if (i < MAVLEN + 10) mess.body.messageID[i - MAVLEN - 7] = buf;		
 		else if (i < MAVLEN + payload + 10) mess.body.payload[i - MAVLEN - 10] = buf;
 		else mess.body.crc[i - MAVLEN - payload - 10] = buf;		
-		
 		i++;
-
+		
 		// If the end of a message has been reached.
 		if (i == (MAVLEN + payload + 12) && payload != 0) {
 			for (i = 0; i < numCodes; i++) {

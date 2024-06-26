@@ -68,7 +68,6 @@ static void insert(int **arr, int *num, int code) {
 		(*num)++;
 		
 	}
-
 }
 
 /* 
@@ -76,7 +75,7 @@ static void insert(int **arr, int *num, int code) {
  * Inputs: array of codes, length of array of codes, code to search for.
  * Outputs: true if found, false otherwise.
  */
-bool contains(int *codesArr, int num, int searchCode) {
+static bool contains(int *codesArr, int num, int searchCode) {
 	// Variable declarations.
 	int i;
 
@@ -86,6 +85,15 @@ bool contains(int *codesArr, int num, int searchCode) {
 			return true;
 
 	return false;
+}
+
+/*
+ * Prints out all of the unique codes (hexadecimal values and decimal values).
+ * Inputs: message.
+ * Outputs: none.
+ */
+static void printCode(message_t mess) {
+	printf("Code: 0x%02x%02x%02x = %d\n", mess.body.messageID[2], mess.body.messageID[1], mess.body.messageID[0], toInt(mess.body.messageID));
 }
 
 int main(int argc, char **argv) {
@@ -155,10 +163,12 @@ int main(int argc, char **argv) {
 			// If array does not yet exist create one and insert code.
 			if (numCodes == 0) {
 				insert(&codesArr, &numCodes, toInt(mess.body.messageID));
+				printCode(mess);
 			}
 			// Otherwise search array and insert if it does not contain code.
 			else if (contains(codesArr, numCodes, toInt(mess.body.messageID)) == false) {
 				insert(&codesArr, &numCodes, toInt(mess.body.messageID));
+				printCode(mess);
 			}
 			
 			// Reset all variables
