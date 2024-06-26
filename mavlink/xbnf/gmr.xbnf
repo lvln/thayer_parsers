@@ -30,7 +30,7 @@ fcs : * * ;
 
 
 message : packetRecordHeader mavHeader messageOption * * ;
-messageOption : hb | ss | ping | lns | gri | sp | att | aq | lpn | gpi | rc | vh | at | ptln | rs | alt | bs | es | vb | hp | ess | ugp | st | tett | ev | ces | odil | odis ;
+messageOption : hb | ss | ping | lns | pv | gri | sp | att | aq | lpn | gpi | rc | vh | at | ptln | rs | alt | bs | es | vb | hp | ess | ugp | st | tett | ev | ces | odil | odis ;
 
 /* packet record header */
 packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
@@ -137,13 +137,22 @@ pingSeq : * ; /* truncated */
 
 /* LINK_NODE_STATUS (8) */
 lns : lnsMH lnsTime lnsTxRate lnsRxRate lnsMessSent lnsMessRec lnsMessLost ;
-lnsMH : ml37 LNSCODE ;
+lnsMH : ml25 LNSCODE ;
 lnsTime : * * * * * * * * ;
 lnsTxRate : * * * * ;
 lnsRxRate : * * * * ;
 lnsMessSent : * * * * ;
 lnsMessRec : * * * * ;
 lnsMessLost : * ; /* truncated */
+
+/* PARAM_VALUE (22) */
+pv : pvMH pvPV pvCnt pvInd pvID pvType ;
+pvMH : ml25 PVCODE ;
+pvPV : * * * * ;
+pvCnt : * * ;
+pvInd : * * ;
+pvID : * * * * * * * * * * * * * * * * ;
+pvType : * ;
 
 /* GPS_RAW_INT (24) */
 gri : gri1 | gri2 ;
@@ -242,18 +251,20 @@ rcCCount : '\x12' ;
 rcRssi : * ;
 
 /* VFR_HUD (74) */
-vh : vh1 | vh2 ;
+vh : vh1 | vh2 | vh3 ;
 vh1 : vh1MH vhAS vhGS vhAlt vhClimb vh1Heading ;
-vh2 : vh2MH vhAS vhGS vhAlt vhClimb vh2Heading vh2Throttle ;
+vh2 : vh2MH vhAS vhGS vhAlt vhClimb vh23Heading ;
+vh3 : vh3MH vhAS vhGS vhAlt vhClimb vh23Heading vh3Throttle ;
 vh1MH : MAVCODE VHLEN1 incompFlag compFlag packetSequence sysID compID VHCODE ;
 vh2MH : MAVCODE VHLEN2 incompFlag compFlag packetSequence sysID compID VHCODE ;
+vh3MH : MAVCODE VHLEN3 incompFlag compFlag packetSequence sysID compID VHCODE ;
 vhAS : * * * * ;
 vhGS : * * * * ;
 vhAlt : * * * * ;
 vhClimb : * * * * ;
 vh1Heading : * ;
-vh2Heading : * * ;
-vh2Throttle : * ;
+vh23Heading : * * ;
+vh3Throttle : * ;
 /* truncated */
 
 /* ATTITUDE_TARGET (83) */
@@ -471,7 +482,7 @@ odilTimeAcc : * ;
 
 /* OPEN_DRONE_ID_SYSTEM (12904) */
 odis : odisMH odisOpLat odisOpLon odisAreaCeiling odisAreaFloor odisOpAltGeo odisTimeStamp odisAreaCode ;
-odisMH : ml37 ODISCODE ;
+odisMH : ml25 ODISCODE ;
 odisOpLat : * * * * ;
 odisOpLon : * * * * ;
 odisAreaCeiling : * * * * ;
@@ -485,9 +496,9 @@ ml02 : MAVCODE LEN02 incompFlag compFlag packetSequence sysID compID ;
 ml09 : MAVCODE LEN09 incompFlag compFlag packetSequence sysID compID ;
 ml14 : MAVCODE LEN14 incompFlag compFlag packetSequence sysID compID ;
 ml20 : MAVCODE LEN20 incompFlag compFlag packetSequence sysID compID ;
+ml25 : MAVCODE LEN25 incompFlag compFlag packetSequence sysID compID ;
 ml28 : MAVCODE LEN28 incompFlag compFlag packetSequence sysID compID ;
 ml32 : MAVCODE LEN32 incompFlag compFlag packetSequence sysID compID ;
-ml37 : MAVCODE LEN37 incompFlag compFlag packetSequence sysID compID ;
 ml42 : MAVCODE LEN42 incompFlag compFlag packetSequence sysID compID ;
 
 /* tokens */
@@ -498,6 +509,7 @@ SSCODE : '\x01' '\x00' '\x00' ;
 PINGCODE : '\x04' '\x00' '\x00' ;
 LNSCODE : '\x08' '\x00' '\x00' ;
 GRICODE : '\x18' '\x00' '\x00' ;
+PVCODE : '\x16' '\x00' '\x00' ;
 SPCODE : '\x1D' '\x00' '\x00' ;
 ATTCODE : '\x1E' '\x00' '\x00' ;
 AQCODE : '\x1F' '\x00' '\x00' ;
@@ -524,7 +536,8 @@ ODISCODE : '\x68' '\x32' '\x00' ;
 
 EVLEN1 : '\x0D' ;
 VHLEN1 : '\x11' ;
-VHLEN2 : '\x13' ;
+VHLEN2 : '\x12' ;
+VHLEN3 : '\x13' ;
 VBLEN : '\x1A' ;
 ATLEN : '\x24' ;
 SSLEN : '\x28' ;
@@ -541,9 +554,9 @@ LEN02 : '\x02' ;
 LEN09 : '\x09' ;
 LEN14 : '\x0E' ;
 LEN20 : '\x14' ;
+LEN25 : '\x19' ;
 LEN28 : '\x1C' ;
 LEN32 : '\x20' ;
-LEN37 : '\x19' ;
 LEN42 : '\x2A' ;
 
 /* incompatibility flag */
