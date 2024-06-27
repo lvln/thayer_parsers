@@ -4,8 +4,10 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
 
 ## Directory structure
 
-* **mavlink\_source\_files** holds 2 datafiles (*shortRun.pcap* and *longerRun.pcap*) containing data messages from 2 flights with a Holybro X500 V2 drone. These files were collected using Wireshark. This directory also holds C-code which can be used to clean the data as well as extract individual messages from the original files (`cleandata.c`).
-	
+* **mavlink\_source\_files** holds 2 datafiles (*shortRun.pcap* and *longerRun.pcap*) containing data messages from 2 flights with a Holybro X500 V2 drone. These files were collected using Wireshark. This directory also holds C-code which can be used to clean the data as well as extract individual messages from the original files (`cleandata.c`); `countcodes.c` counts the number of unique message codes in a file containing MAVLink messages
+* **xbnf** contains a working parser written in xbnf for the 2 captured datasets
+* **tests** contains a full set of tests for the MAVLink parser, including the cleaned datasets from the shorter and longer runs
+
 ## Data packet structure
 MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding gorund control stations.
 The format of MAVLink messages is defined in the `common.xml` file and can be found [here](https://mavlink.io/en/messages/common.html).

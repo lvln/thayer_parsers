@@ -53,7 +53,7 @@ hbBaseMode : * ;
 hbSysStatus : [ '\x00' - '\x08' ] ;
 hbMavVersion : * ;
 
-/* SYSTEM_STATUS (1) */
+/* SYS_STATUS (1) */
 ss : ssMH ssOBSensorsPresent ssOBSensorsEnabled ssOBSensorsHealth ssLoad ssVolBatt ssCurrBatt ssDropRateComm ssErrComm ssErrCnt1 ssErrCnt2 ssErrCnt3 ssErrCnt4 ssBattRem ssOBSensorsPresentExt ssOBSensorsEnabledExt ssOBSensorsHealthExt ;
 ssMH : MAVCODE SSLEN incompFlag compFlag packetSequence sysID compID SSCODE ;
 ssOBSensorsPresent : * * * * ;
@@ -71,29 +71,33 @@ ssErrCnt4 : * * ;
 ssBattRem : * ;
 ssOBSensorsPresentExt : * * * * ;
 ssOBSensorsEnabledExt : * * * * ;
-ssOBSensorsHealthExt : * ;
-/* truncated */
+ssOBSensorsHealthExt : * * * * ;
 
 /* PING (4) */
-ping : pingMH timeUS pingSeq ;
-pingMH : ml09 PINGCODE ;
-pingSeq : * ;
-/* truncated */
+ping : pingMH timeUS pingSeq pingTargSys pingTargComp ;
+pingMH : MAVCODE PINGLEN incompFlag compFlag packetSequence sysID compID PINGCODE ;
+pingSeq : * * * * ;
+pingTargSys : * ;
+pingTargComp : * ;
 
 /* LINK_NODE_STATUS (8) */
-lns : lnsMH lnsTime lnsTxRate lnsRxRate lnsMessSent lnsMessRec lnsMessLost ;
-lnsMH : ml25 LNSCODE ;
+lns : lnsMH lnsTime lnsTxRate lnsRxRate lnsMessSent lnsMessRec lnsMessLost lnsRxParseErr lnsTxOfs lnsRxOfs lnsTxBuf lnsRxBuf ;
+lnsMH : MAVCODE LNSLEN incompFlag compFlag packetSequence sysID compID LNSCODE ;
 lnsTime : * * * * * * * * ;
 lnsTxRate : * * * * ;
 lnsRxRate : * * * * ;
 lnsMessSent : * * * * ;
 lnsMessRec : * * * * ;
-lnsMessLost : * ;
-/* truncated */
+lnsMessLost : * * * * ;
+lnsRxParseErr : * * ;
+lnsTxOfs : * * ;
+lnsRxOfs : * * ;
+lnsTxBuf : * ;
+lnsRxBuf : * ;
 
 /* PARAM_VALUE (22) */
 pv : pvMH pvPV pvCnt pvInd pvID pvType ;
-pvMH : ml25 PVCODE ;
+pvMH : MAVCODE PVLEN incompFlag compFlag packetSequence sysID compID PVCODE ;
 pvPV : * * * * ;
 pvCnt : * * ;
 pvInd : * * ;
@@ -101,11 +105,8 @@ pvID : * * * * * * * * * * * * * * * * ;
 pvType : [ '\x01' - '\x0A' ] ;
 
 /* GPS_RAW_INT (24) */
-gri : gri1 | gri2 ;
-gri1 : gri1MH timeUS griLat griLon griAlt griEqh griEpv griVel griCog grifixType griSatVis griAltEll griHAcc griVAcc gri1VelAcc ;
-gri2 : gri2MH timeUS griLat griLon griAlt griEqh griEpv griVel griCog grifixType griSatVis griAltEll griHAcc griVAcc gri2VelAcc ;
-gri1MH : MAVCODE GRILEN1 incompFlag compFlag packetSequence sysID compID GRICODE ;
-gri2MH : MAVCODE GRILEN2 incompFlag compFlag packetSequence sysID compID GRICODE ;
+gri : griMH timeUS griLat griLon griAlt griEqh griEpv griVel griCog grifixType griSatVis griAltEll griHAcc griVAcc griVelAcc griHdgAcc griYaw ;
+griMH : MAVCODE GRILEN incompFlag compFlag packetSequence sysID compID GRICODE ;
 griLat : * * * * ;
 griLon : * * * * ;
 griAlt : * * * * ;
@@ -118,17 +119,17 @@ griSatVis : * ;
 griAltEll : * * * * ;
 griHAcc : * * * * ;
 griVAcc : * * * * ;
-gri1VelAcc : * ;
-gri2VelAcc : * * ;
-/* truncated */
+griVelAcc : * * * * ;
+griHdgAcc :  * * * * ;
+griYaw : * * ;
 
 /* SCALED_PRESSURE (29) */
-sp : spMH timeBoot spPressAb spPressDiff spTemp ;
-spMH : ml14 SPCODE ;
+sp : spMH timeBoot spPressAb spPressDiff spTemp spTempParseDiff ;
+spMH : MAVCODE SPLEN incompFlag compFlag packetSequence sysID compID SPCODE ;
 spPressAb : * * * * ;
 spPressDiff : * * * * ;
 spTemp : * * ;
-/* truncated */
+spTempParseDiff : * * ;
 
 /* ATTITUDE (30) */
 att : attMH timeBoot attRoll attPitch attYaw attRollSpeed attPitchSpeed attYawSpeed ;
@@ -141,8 +142,8 @@ attPitchSpeed : * * * * ;
 attYawSpeed : * * * * ;
 
 /* ATTITUDE_QUATERNION (31) */
-aq : aqMH timeBoot aqQ1 aqQ2 aqQ3 aqQ4 aqRollSpeed aqPitchSpeed aqYawSpeed ;
-aqMH : ml32 AQCODE ;
+aq : aqMH timeBoot aqQ1 aqQ2 aqQ3 aqQ4 aqRollSpeed aqPitchSpeed aqYawSpeed aqReprOfs0 aqReprOfs1 aqReprOfs2 aqReprOfs3 ;
+aqMH : MAVCODE AQLEN incompFlag compFlag packetSequence sysID compID AQCODE ;
 aqQ1 : * * * * ;
 aqQ2 : * * * * ;
 aqQ3 : * * * * ;
@@ -150,7 +151,10 @@ aqQ4 : * * * * ;
 aqRollSpeed : * * * * ;
 aqPitchSpeed : * * * * ;
 aqYawSpeed : * * * * ;
-/* truncated */
+aqReprOfs0 : * * * * ;
+aqReprOfs1 : * * * * ;
+aqReprOfs2 : * * * * ;
+aqReprOfs3 : * * * * ;
 
 /* LOCAL_POSITION_NED (32) */
 lpn : lpnMH timeBoot lpnX lpnY lpnZ lpnVX lpnVY lpnVZ ;
@@ -199,24 +203,17 @@ rcCCount : '\x12' ;
 rcRssi : * ;
 
 /* VFR_HUD (74) */
-vh : vh1 | vh2 | vh3 ;
-vh1 : vh1MH vhAS vhGS vhAlt vhClimb vh1Heading ;
-vh2 : vh2MH vhAS vhGS vhAlt vhClimb vh23Heading ;
-vh3 : vh3MH vhAS vhGS vhAlt vhClimb vh23Heading vh3Throttle ;
-vh1MH : MAVCODE VHLEN1 incompFlag compFlag packetSequence sysID compID VHCODE ;
-vh2MH : MAVCODE VHLEN2 incompFlag compFlag packetSequence sysID compID VHCODE ;
-vh3MH : MAVCODE VHLEN3 incompFlag compFlag packetSequence sysID compID VHCODE ;
+vh : vhMH vhAS vhGS vhAlt vhClimb vhHeading vhThrottle ;
+vhMH : ml20 VHCODE ;
 vhAS : * * * * ;
 vhGS : * * * * ;
 vhAlt : * * * * ;
 vhClimb : * * * * ;
-vh1Heading : * ;
-vh23Heading : * * ;
-vh3Throttle : * ;
-/* truncated */
+vhHeading : * * ;
+vhThrottle : * * ;
 
 /* ATTITUDE_TARGET (83) */
-at : atMH timeBoot atQ0 atQ1 atQ2 atQ3 atBodyRollRate atBodyPitchRate atBodyYawRate atThrust ;
+at : atMH timeBoot atQ0 atQ1 atQ2 atQ3 atBodyRollRate atBodyPitchRate atBodyYawRate atThrust atTypeMask ;
 atMH : MAVCODE ATLEN incompFlag compFlag packetSequence sysID compID ATCODE ;
 atQ0 : * * * * ;
 atQ1 : * * * * ;
@@ -226,7 +223,7 @@ atBodyRollRate : * * * * ;
 atBodyPitchRate : * * * * ;
 atBodyYawRate : * * * * ;
 atThrust : * * * * ;
-/* flags truncated */
+atTypeMask : * ;
 
 /* POSITION_TARGET_LOCAL_NED (85) */
 ptln : ptlnMH timeBoot ptlnX ptlnY ptlnZ ptlnVX ptlnVY ptlnVZ pltnAFX pltnAFY pltnAFZ ptlnYaw ptlnYawRate ptlnTypeMask ptlnCoordFrame ;
@@ -268,8 +265,8 @@ altAltTerain : * * * * ;
 altBottomClearance : * * * * ;
 
 /* BATTERY_STATUS (147) */
-bs : bsMH bcCC bsEC bsTemp bsV0 bsV1 bsV2 bsV3 bsV4 bsV5 bsV6 bsV7 bsV8 bsV9 bsC bsID bsBF bsBType bsBRem bsTimeRem bsChargeState ;
-bsMH : MAVCODE BSLEN incompFlag compFlag packetSequence sysID compID BSCODE ;
+bs : bsMH bcCC bsEC bsTemp bsV0 bsV1 bsV2 bsV3 bsV4 bsV5 bsV6 bsV7 bsV8 bsV9 bsC bsID bsBF bsBType bsBRem bsTimeRem bsChargeState bsVExt0 bsVExt1 bsVExt2 bsVExt3 bsMode bsFaultBitMask ;
+bsMH : ml54 BSCODE ;
 bcCC : * * * * ;
 bsEC : * * * * ;
 bsTemp : * * ;
@@ -290,14 +287,19 @@ bsBType : [ '\x00' - '\x04' ] ;
 bsBRem : * ;
 bsTimeRem : * * * * ;
 bsChargeState : [ '\x00' - '\x07' ] ;
-/* ext voltages flags and mode truncated */
+bsVExt0 : * * ;
+bsVExt1 : * * ;
+bsVExt2 : * * ;
+bsVExt3 : * * ;
+bsMode : [ '\x00' - '\x02' ] ;
+bsFaultBitMask : * * * * ;
 
 /* ESTIMATOR_STATUS (230) */
 es : esMH timeUS esVelRat esPosHRat esPosVRat esMagRat esHaglRat esTasRat esPosHAcc esPosVAcc esFlags ;
 esMH : ml42 ESCODE ;
 esVelRat : * * * * ;
 esPosHRat : * * * * ;
-esPosVRat : * * * * ;
+esPosVRat: * * * * ;
 esMagRat : * * * * ;
 esHaglRat : * * * * ;
 esTasRat : * * * * ;
@@ -306,14 +308,14 @@ esPosVAcc : * * * * ;
 esFlags : * * ;
 
 /* VIBRATION (241) */
-vb : vbMH timeUS vbX vbY vbZ vbClip0 vbClip1 ;
-vbMH : MAVCODE VBLEN incompFlag compFlag packetSequence sysID compID VBCODE ;
+vb : vbMH timeUS vbX vbY vbZ vbClip0 vbClip1 vbClip2 ;
+vbMH : ml32 VBCODE ;
 vbX : * * * * ;
 vbY : * * * * ;
 vbZ : * * * * ;
 vbClip0 : * * * * ;
-vbClip1 : * * ;
-/* clipping 1 and clipping2 truncated */
+vbClip1 : * * * * ;
+vbClip2 : * * * * ;
 
 /* HOME_POSITION (242) */
 hp : hpMH hpLat hpLon hpAlt hpX hpY hpZ hpQ0 hpQ1 hpQ2 hpQ3 hpAppX hpAppY hpAppZ hpTime ;
@@ -331,22 +333,21 @@ hpQ3 : * * * * ;
 hpAppX : * * * * ;
 hpAppY : * * * * ;
 hpAppZ : * * * * ;
-hpTime : * * * * ;
-/* truncated */
+hpTime : * * * * * * * * ;
 
 /* EXTENDED_SYS_STATE (245) */
 ess : essMH essVtolState essLandedState ;
-essMH : ml02 ESSCODE ;
+essMH : MAVCODE ESSLEN incompFlag compFlag packetSequence sysID compID ESSCODE ;
 essVtolState : [ '\x00' - '\x04' ] ;
 essLandedState : [ '\x00' - '\x04' ] ;
 
 /* STATUSTEXT (253) */
-st : stMH stSeverity stText stID ;
-stMH : MAVCODE STLEN incompFlag compFlag packetSequence sysID compID STCODE ;
+st : stMH stSeverity stText stID stChunkSeq ;
+stMH : ml54 STCODE ;
 stSeverity : [ '\x00' - '\x07' ] ;
 stText : * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ;
-stID : * ;
-/* id and chunkSeq truncated */
+stID : * * ;
+stChunkSeq : * ;
 
 /* UTM_GLOBAL_POSITION (340) */
 ugp : ugpMH ugpTime ugpLat ugpLon ugpAlt ugpRelAlt ugpNextLat ugpNextLon ugpNextAlt ugpvx ugpvy ugpvz ugphacc ugpvacc ugpVelAcc ugpUpdateRate ugpUASID ugpFlightState ugpFlags ;
@@ -380,13 +381,8 @@ tettMissEnd : * * * * ;
 tettCommAct : * * * * ;
 
 /* EVENT (410) */
-ev : ev1 | ev2 | ev3 ;
-ev1 : ev1MH evID evTimebootMS evSeq evDestComp evDestSys evLogLevels ;
-ev2 : ev2MH evID evTimebootMS evSeq evDestComp evDestSys evLogLevels evArg0 ;
-ev3 : ev3MH evID evTimebootMS evSeq evDestComp evDestSys evLogLevels evArg0 evArg1 evArg2 evArg3 evArg4 evArg5 evArg6 ;
-ev1MH : MAVCODE EVLEN1 incompFlag compFlag packetSequence sysID compID EVCODE ;
-ev2MH : ml14 EVCODE ;
-ev3MH : ml20 EVCODE ;
+ev : evMH evID evTimebootMS evSeq evDestComp evDestSys evLogLevels evArg0 evArg1 evArg2 evArg3 evArg4 evArg5 evArg6 evArg7 evArg8 evArg9 evArg10 evArg11 evArg12 evArg13 evArg14 evArg15 evArg16 evArg17 evArg18 evArg19 evArg20 evArg21 evArg22 evArg23 evArg24 evArg25 evArg26 evArg27 evArg28 evArg29 evArg30 evArg31 evArg32 evArg33 evArg34 evArg35 evArg36 evArg37 evArg38 evArg39 ;
+evMH : MAVCODE EVLEN incompFlag compFlag packetSequence sysID compID EVCODE ;
 evID : * * * * ;
 evTimebootMS : * * * * ;
 evSeq : * * ;
@@ -400,13 +396,45 @@ evArg3 : * ;
 evArg4 : * ;
 evArg5 : * ;
 evArg6 : * ;
-/* truncated */
+evArg7 : * ;
+evArg8 : * ;
+evArg9 : * ;
+evArg10 : * ;
+evArg11 : * ;
+evArg12 : * ;
+evArg13 : * ;
+evArg14 : * ;
+evArg15 : * ;
+evArg16 : * ;
+evArg17 : * ;
+evArg18 : * ;
+evArg19 : * ;
+evArg20 : * ;
+evArg21 : * ;
+evArg22 : * ;
+evArg23 : * ;
+evArg24 : * ;
+evArg25 : * ;
+evArg26 : * ;
+evArg27 : * ;
+evArg28 : * ;
+evArg29 : * ;
+evArg30 : * ;
+evArg31 : * ;
+evArg32 : * ;
+evArg33 : * ;
+evArg34 : * ;
+evArg35 : * ;
+evArg36 : * ;
+evArg37 : * ;
+evArg38 : * ;
+evArg39 : * ;
 
 /* CURRENT_EVENT_SEQUENCE (411) */
-ces : cesMH cesSeq ;
-cesMH : ml02 CESCODE ;
+ces : cesMH cesSeq cqFlags ;
+cesMH : MAVCODE CESLEN incompFlag compFlag packetSequence sysID compID CESCODE ;
 cesSeq : * * ;
-/* truncated */
+cqFlags : * ;
 
 /* OPEN_DRONE_ID_LOCATION (12901) */
 odil : odilMH odilLat odilLon odilAltbar odilAltGeo odilHeight odilTime odilDirection odilSpeedHor odilSpeedVert odilTargSys odilTargComp odilIdOrMac odilStatus odilHeightRef odilHorAcc odilVertAcc odilBarAcc odilSpeedAcc odilTimeAcc ;
@@ -432,26 +460,50 @@ odilSpeedAcc : [ '\x00' - '\x04' ] ;
 odilTimeAcc : [ '\x00' - '\x0E' ] ;
 
 /* OPEN_DRONE_ID_SYSTEM (12904) */
-odis : odisMH odisOpLat odisOpLon odisAreaCeiling odisAreaFloor odisOpAltGeo odisTimeStamp odisAreaCode ;
-odisMH : ml25 ODISCODE ;
+odis : odisMH odisOpLat odisOpLon odisAreaCeiling odisAreaFloor odisOpAltGeo odisTimeStamp odisAreaCount odisAreaRad odisTargSys odisTargComp odisIdOrMac0 odisIdOrMac1 odisIdOrMac2 odisIdOrMac3 odisIdOrMac4 odisIdOrMac5 odisIdOrMac6 odisIdOrMac7 odisIdOrMac8 odisIdOrMac9 odisIdOrMac10 odisIdOrMac11 odisIdOrMac12 odisIdOrMac13 odisIdOrMac14 odisIdOrMac15 odisIdOrMac16 odisIdOrMac17 odisIdOrMac18 odisIdOrMac19 odisOpLocType odisClassType odisCatEU odisClassEU ;
+odisMH : ml54 ODISCODE ;
 odisOpLat : * * * * ;
 odisOpLon : * * * * ;
 odisAreaCeiling : * * * * ;
 odisAreaFloor : * * * * ;
 odisOpAltGeo : * * * * ;
 odisTimeStamp : * * * * ;
-odisAreaCode : * ;
-/* truncated */
+odisAreaCount : * * ;
+odisAreaRad : * * ;
+odisTargSys : * ;
+odisTargComp : * ;
+odisIdOrMac0 : * ;
+odisIdOrMac1 : * ;
+odisIdOrMac2 : * ;
+odisIdOrMac3 : * ;
+odisIdOrMac4 : * ;
+odisIdOrMac5 : * ;
+odisIdOrMac6 : * ;
+odisIdOrMac7 : * ;
+odisIdOrMac8 : * ;
+odisIdOrMac9 : * ;
+odisIdOrMac10 : * ;
+odisIdOrMac11 : * ;
+odisIdOrMac12 : * ;
+odisIdOrMac13 : * ;
+odisIdOrMac14 : * ;
+odisIdOrMac15 : * ;
+odisIdOrMac16 : * ;
+odisIdOrMac17 : * ;
+odisIdOrMac18 : * ;
+odisIdOrMac19 : * ;
+odisOpLocType : [ '\x00' - '\x02' ] ;
+odisClassType : [ '\x00' - '\x01' ] ;
+odisCatEU : * ;
+odisClassEU : * ;
 
 /* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
-ml02 : MAVCODE LEN02 incompFlag compFlag packetSequence sysID compID ;
 ml09 : MAVCODE LEN09 incompFlag compFlag packetSequence sysID compID ;
-ml14 : MAVCODE LEN14 incompFlag compFlag packetSequence sysID compID ;
 ml20 : MAVCODE LEN20 incompFlag compFlag packetSequence sysID compID ;
-ml25 : MAVCODE LEN25 incompFlag compFlag packetSequence sysID compID ;
 ml28 : MAVCODE LEN28 incompFlag compFlag packetSequence sysID compID ;
 ml32 : MAVCODE LEN32 incompFlag compFlag packetSequence sysID compID ;
 ml42 : MAVCODE LEN42 incompFlag compFlag packetSequence sysID compID ;
+ml54 : MAVCODE LEN54 incompFlag compFlag packetSequence sysID compID ;
 
 /* Tokens */
 MAVCODE : '\xFD' ;
@@ -486,30 +538,28 @@ CESCODE : '\x9B' '\x01' '\x00' ;
 ODILCODE : '\x65' '\x32' '\x00' ;
 ODISCODE : '\x68' '\x32' '\x00' ;
 
-EVLEN1 : '\x0D' ;
-VHLEN1 : '\x11' ;
-VHLEN2 : '\x12' ;
-VHLEN3 : '\x13' ;
-VBLEN : '\x1A' ;
-ATLEN : '\x24' ;
-SSLEN : '\x28' ;
-BSLEN : '\x29' ;
-GRILEN1 : '\x2B' ;
-GRILEN2 : '\x2C' ;
+ESSLEN : '\x02' ;
+CESLEN : '\x03' ;
+PINGLEN : '\x0E' ;
+SPLEN : '\x10' ;
+PVLEN : '\x19' ;
+LNSLEN : '\x24' ;
+ATLEN : '\x25' ;
+SSLEN : '\x2B' ;
+AQLEN : '\x30' ;
 PTLNLEN : '\x33' ;
-STLEN : '\x34' ;
-HPLEN : '\x38' ;
+GRILEN : '\x34' ;
+EVLEN : '\x35' ;
 ODILLEN : '\x3B' ;
+HPLEN : '\x3C' ;
 UGPLEN : '\x46' ;
 
-LEN02 : '\x02' ;
 LEN09 : '\x09' ;
-LEN14 : '\x0E' ;
 LEN20 : '\x14' ;
-LEN25 : '\x19' ;
 LEN28 : '\x1C' ;
 LEN32 : '\x20' ;
 LEN42 : '\x2A' ;
+LEN54 : '\x36' ;
 
 incompFlag : '\x00' ;  /* incompatibility flag */
 compFlag : '\x00' ; /* compatibility flag */

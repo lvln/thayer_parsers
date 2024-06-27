@@ -1,6 +1,15 @@
-CFLAGS=-Wall -pedantic -std=c11
+CFLAGS=-Wall -pedantic -std=c11 -I.
 
-all: read cleandata extractdata countcodes echo analyze
+all: read cleandata extractdata countcodes echo analyze untruncate
+
+mavlink.o: mavlink.c mavlink.h
+					 gcc $(CFLAGS) -c mavlink.c
+
+untruncate.o: untruncate.c mavlink.h
+							gcc $(CFLAGS) -c  untruncate.c
+
+untruncate: untruncate.o mavlink.o
+						gcc $(CFLAGS) untruncate.o mavlink.o -o untruncate
 
 read.o: read.c
 				gcc $(CFLAGS) -c read.c
@@ -39,4 +48,4 @@ analyze: analyze.o
 					gcc $(CFLAGS) analyze.o -lm -o analyze
 
 clean:
-			rm -f *.o read cleandata extractdata countcodes echo analyze
+			rm -f *.o read cleandata extractdata countcodes echo analyze untruncate
