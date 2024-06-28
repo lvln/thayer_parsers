@@ -1,0 +1,175 @@
+
+P : pcapHeader optMessage ;
+
+optMessage : /* empty */ | optMessage message ;
+
+/* PCAP file header */
+pcapHeader : magicNumber majorVersion minorVersion reserved snapLen linkType fcs ;
+
+/* timestamp is seconds and either microseconds or nanoseconds depending on magic number */
+magicNumber : '\xD4' '\xC3' '\xB2' '\xA1' | '\x4D' '\x3C' '\xB2' '\xA1' ; 
+
+/* major version */
+majorVersion : '\x02' '\x00' ;
+
+/* minor version */
+minorVersion : '\x04' '\x00' ;
+
+/* 8 bytes are reserved and have values of 0 */
+reserved : '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' ;
+
+/* maximum number of octets captured from each packet */
+snapLen : * * * * ;
+
+/* loopback link */
+linkType : '\x00' '\x00' ;
+
+/* frame check sequence */
+fcs : * * ;
+
+
+message : packetRecordHeader mavHeader messageOption * * ;
+
+messageOption : attitude | GPI ;
+
+/* packet record header */
+packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
+
+/* timestamp seconds part */
+prhTimestampSec : * * * * ;
+
+/* micro- or nanoseconds timestamp */
+prhTimestampUSNS : * * * * ;
+
+/* captured packet length */
+prhCPL : * * * * ;
+
+/* original packet length */
+prhOPL : * * * * ;
+
+
+
+/* MAVLink header */
+mavHeader : family ipvhl dsf totalLen id ffo ttl protocol headerChecksum sourceAddr destAddr sourcePort destPort length checksum ;
+
+/* family - always 2 for MAVLINK */
+family : '\x02' '\x00' '\x00' '\x00' ;
+
+/* ip version and header length  - always ip version 4 and 5 as header length for MAVLink */
+ipvhl : '\x45' ;
+
+/* differentiated services field - not sure */
+dsf : * ;
+
+/* total length of the message */
+totalLen : * * ;
+
+/* identification - not sure */
+id : * * ;
+
+/* flags and fragment offset - not sure*/
+ffo : * * ;
+
+/* time to live - seemingly always 0x40 for MAVLink - not sure */
+ttl : '\x40' ;
+
+/* protocol - always 0x11 for MAVLink because it is UDP */
+protocol : '\x11' ;
+
+/* header checksum - not sure */
+headerChecksum : * * ;
+
+/* source address - not sure */
+sourceAddr : * * * * ;
+
+/* destination address - not sure */
+destAddr : * * * * ;
+
+/* source port - always 14550 for MAVLink */
+sourcePort : '\x38' '\xD6' ;
+
+/* destination port - always 14580 for MAVLink */
+destPort : '\x38' '\xF4' ;
+
+/* length */
+length : * * ;
+
+/* checksum */
+checksum : * * ;
+
+
+
+
+/* Attitude message */
+attitude : attitudeMH timeBoot roll pitch yaw rollSpeed pitchSpeed yawSpeed ;
+
+roll : * * * * ;
+
+pitch : * * * * ;
+
+yaw : * * * * ;
+
+rollSpeed : * * * * ;
+
+pitchSpeed : * * * * ;
+
+yawSpeed : * * * * ;
+
+
+/* header starter for message length of 32, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
+ml32 : MAVCODE LEN32 incompFlag compFlag packetSequence sysID compID ;
+
+
+/* Attitude message header */
+attitudeMH : ml32 ATTITUDECODE ;
+
+
+/* GPI message */
+GPI : GPIMH timeBoot lat lon alt relAlt vx vy vz hdg ;
+
+lat : * * * * ;
+
+lon : * * * * ;
+
+alt : * * * * ;
+
+relAlt : * * * * ;
+
+vx : * * ;
+
+vy : * * ;
+
+vz : * * ;
+
+hdg : * * ;
+
+
+/* GPI message header */
+GPIMH : ml32 GPICODE ;
+
+
+/* tokens */
+MAVCODE : '\xFD' ;
+
+GPICODE : '\x21' '\x00' '\x00' ;
+
+ATTITUDECODE : '\x1e' '\x00' '\x00' ;
+
+LEN32 : '\x1C' ;
+
+/* incompatibility flag */
+incompFlag : '\x00' ;
+
+/* compatibility flag */
+compFlag : '\x00' ;
+
+/* packet sequence */
+packetSequence : * ;
+
+/* system ID - always 0x01 */
+sysID : '\x01' ;
+
+/* component ID - always 0x01 */
+compID : '\x01' ;
+
+timeBoot : * * * * ;

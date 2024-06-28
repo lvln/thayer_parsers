@@ -2,15 +2,15 @@ document: prolog | inside ;
 
 prolog: XMLDecl inside | XMLDecl doctypedecl inside | doctypedecl inside ;  
 
-doctypedecl: "<!DOCTYPE" space Name   '>' ws ;
+doctypedecl: "<!DOCTYPE" space Name '>' ws ;
 
 XMLDecl: "<?xml" VersionInfo EncodingDecl SDDecl "?>" ws ;
 
 VersionInfo: " version" ws '=' ws quotes VersionNum quotes ws ;
 
-VersionNum:  "1.0" ;
+VersionNum: "1.0" ;
 
-EncodingDecl: /*empty*/  | "encoding" ws '=' ws quotes  Encname quotes ws ;
+EncodingDecl: /*empty*/ | "encoding" ws '=' ws quotes  Encname quotes ws ;
 
 Encname: Enc | Encname Enc ;
 
@@ -20,11 +20,11 @@ SDDecl: /*empty */ | "standalone" ws '=' ws quotes yn quotes ws ;
 
 yn: "yes" | "no" ; 
 
-inside: block  | inside block ;
+inside: block | inside block ;
 
 block: Stag content Etag | EmptyElemTag | Stag Etag ;
 
-content: Reference   | block ;
+content: Reference | block ;
 
 EmptyElemTag: '<' Name At '/' '>' ;
 
@@ -34,11 +34,11 @@ Etag: '<' '/' Name  ws '>' ;
 
 At: Atts | /*empty */ | space ;
 
-Atts:  Attrib  | Atts Attrib  ;
+Atts: Attrib | Atts Attrib ;
 
-Attrib: space Name ws '=' ws AttValue  ;
+Attrib: space Name ws '=' ws AttValue ;
 
-AttValue: '"' Reference '"'  ;
+AttValue: '"' Reference '"' ;
 
 Reference: EntityRef | CharRef | any ; 
 
@@ -86,5 +86,5 @@ punct: '!' | '#' | '$' | '%' | '(' | ')' | '*' | '+'
 
 escchar: 'b' | 'f' | 'n' | 'r' | 't' | '\\' | '/' ;
 
-quotes: " \'" | '"' ; 
+quotes: '\x27' | '"' ; 
 
