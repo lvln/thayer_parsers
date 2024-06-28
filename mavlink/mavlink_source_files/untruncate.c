@@ -9,10 +9,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <math.h>
-#include <stdint.h>
 #include <mavlink.h>
 
 int main(int argc, char **argv) {
@@ -48,9 +44,7 @@ int main(int argc, char **argv) {
 	numMess = pcapFile->n;
 	
 	for (i = 0; i < numMess; i++) {
-		printMessage(pcapFile->messages[i]);
 		untruncate(&(pcapFile->messages[i]));
-		printMessage(pcapFile->messages[i]);
 		writeToFile(pcapFile->messages[i], ofile);
 	}
 

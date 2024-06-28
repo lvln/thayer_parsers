@@ -12,7 +12,7 @@ messageBody : /* empty */ | messageBody OCTET ;
 /* Header field is optional and contains a field name followed by a colon, optional white space and followed by a field value */
 optHeaderField : /* empty */ | optHeaderField headerField ;
 
-headerField : fieldName ':' OWS fieldValue OWS CRLF ;
+headerField : fieldName ':' OWS fieldValue CRLF ;
 
 fieldValue : /* empty */ | fieldValue fieldValueSS ;
 

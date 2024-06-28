@@ -213,14 +213,22 @@ void untruncate(message_t *mess) {
 		len = LOCAL_POSITION_NED_LEN;
 	else if (messageCode == GLOBAL_POSITION_INT)
 		len = GLOBAL_POSITION_INT_LEN;
+	else if (messageCode == MISSION_CURRENT)
+		len = MISSION_CURRENT_LEN;
+	else if (messageCode == MISSION_ITEM_REACHED)
+		len = MISSION_ITEM_REACHED_LEN;
 	else if (messageCode == RC_CHANNELS)
 		len = RC_CHANNELS_LEN;
 	else if (messageCode == VFR_HUD)
 		len = VFR_HUD_LEN;
+	else if (messageCode == COMMAND_ACK)
+		len = COMMAND_ACK_LEN;
 	else if (messageCode == ATTITUDE_TARGET)
 		len = ATTITUDE_TARGET_LEN;
 	else if (messageCode == POSITION_TARGET_LOCAL_NED)
 		len = POSITION_TARGET_LOCAL_NED_LEN;
+	else if (messageCode == POSITION_TARGET_GLOBAL_INT)
+		len = POSITION_TARGET_GLOBAL_INT_LEN;
 	else if (messageCode == RADIO_STATUS)
 		len = RADIO_STATUS_LEN;
 	else if (messageCode == ALTITUDE)

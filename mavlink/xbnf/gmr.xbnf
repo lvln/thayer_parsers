@@ -16,7 +16,7 @@ fcs : * * ; /* frame check sequence */
 
 /* Messsages contain header for each packet followed by the MAVLink specific header then the message and finally a checkusm */
 message : packetRecordHeader mavHeader messageOption * * ;
-messageOption : hb | ss | ping | lns | pv | gri | sp | att | aq | lpn | gpi | rc | vh | at | ptln | rs | alt | bs | es | vb | hp | ess | ugp | st | tett | ev | ces | odil | odis ;
+messageOption : hb | ss | ping | lns | pv | gri | sp | att | aq | lpn | gpi | mc | mir | rc | vh | ca | at | ptln | ptli | rs | alt | bs | es | vb | hp | ess | ugp | st | tett | ev | ces | odil | odis ;
 
 /* Header for each captured packet */
 packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
@@ -178,6 +178,22 @@ gpiVY : * * ;
 gpiVZ : * * ;
 gpiHdg : * * ;
 
+/* MISSION_CURRENT (42) */
+mc : mcMH mcSeq mcTotal mcMS mcMM mcMissID mcFenceID mcRallyPtsID ;
+mcMH : MAVCODE MCLEN incompFlag compFlag packetSequence sysID compID MCCODE ;
+mcSeq : * * ;
+mcTotal : * * ;
+mcMS : [ '\x00' - '\x05' ] ;
+mcMM : [ '\x00' - '\x02' ] ;
+mcMissID : * * * * ;
+mcFenceID : * * * * ;
+mcRallyPtsID : * * * * ;
+
+/* MISSION_ITEM_REACHED (46) */
+mir : mirMH mirSeq ;
+mirMH : ml02 MIRCODE ;
+mirSeq : * * ;
+
 /* RC_CHANNELS (65) */
 rc : rcMH timeBoot rcC1Raw rcC2Raw rcC3Raw rcC4Raw rcC5Raw rcC6Raw rcC7Raw rcC8Raw rcC9Raw rcC10Raw rcC11Raw rcC12Raw rcC13Raw rcC14Raw rcC15Raw rcC16Raw rcC17Raw rcC18Raw rcCCount rcRssi ;
 rcMH : ml42 RCCODE ;
@@ -212,6 +228,16 @@ vhClimb : * * * * ;
 vhHeading : * * ;
 vhThrottle : * * ;
 
+/* COMMAND_ACK (77) */
+ca : caMH caCmd caRes caProgress caResParam2 caTargSys caTargComp ;
+caMH : MAVCODE CALEN incompFlag compFlag packetSequence sysID compID CACODE ;
+caCmd : * * ;
+caRes : [ '\x00' - '\x09' ] ;
+caProgress : * ;
+caResParam2 : * * * * ;
+caTargSys : * ;
+caTargComp : * ;
+
 /* ATTITUDE_TARGET (83) */
 at : atMH timeBoot atQ0 atQ1 atQ2 atQ3 atBodyRollRate atBodyPitchRate atBodyYawRate atThrust atTypeMask ;
 atMH : MAVCODE ATLEN incompFlag compFlag packetSequence sysID compID ATCODE ;
@@ -227,7 +253,7 @@ atTypeMask : * ;
 
 /* POSITION_TARGET_LOCAL_NED (85) */
 ptln : ptlnMH timeBoot ptlnX ptlnY ptlnZ ptlnVX ptlnVY ptlnVZ pltnAFX pltnAFY pltnAFZ ptlnYaw ptlnYawRate ptlnTypeMask ptlnCoordFrame ;
-ptlnMH : MAVCODE PTLNLEN incompFlag compFlag packetSequence sysID compID PTLNCODE ;
+ptlnMH : ml51 PTLNCODE ;
 ptlnX : * * * * ;
 ptlnY : * * * * ;
 ptlnZ : * * * * ;
@@ -241,6 +267,23 @@ ptlnYaw : * * * * ;
 ptlnYawRate : * * * * ;
 ptlnTypeMask : * * ;
 ptlnCoordFrame : '\x01' | [ '\x07' - '\x09' ] ;
+
+/* POSITION_TARGET_LOCAL_INT (87) */
+ptli : ptliMH timeBoot ptliLatInt ptliLonInt ptliAlt ptliVX ptliVY ptliVZ ptliAFX ptliAFY ptliAFZ ptliYaw ptliYawRate ptliMask ptliCoordFrame ;
+ptliMH : ml51 PTLICODE ;
+ptliLatInt : * * * * ;
+ptliLonInt : * * * * ;
+ptliAlt : * * * * ;
+ptliVX : * * * * ;
+ptliVY : * * * * ;
+ptliVZ : * * * * ;
+ptliAFX : * * * * ;
+ptliAFY : * * * * ;
+ptliAFZ : * * * * ;
+ptliYaw : * * * * ;
+ptliYawRate : * * * * ;
+ptliMask : * * ;
+ptliCoordFrame : '\x00' | '\x03' | '\x0A' | '\x05' | '\x06' | '\x0B' ;
 
 /* RADIO_STATUS (109) */
 rs : rsMH rsRXErrors rsFixed rsRSSI rsRemRSSI rsTXBuf rsNoise rsRemNoise ;
@@ -337,7 +380,7 @@ hpTime : * * * * * * * * ;
 
 /* EXTENDED_SYS_STATE (245) */
 ess : essMH essVtolState essLandedState ;
-essMH : MAVCODE ESSLEN incompFlag compFlag packetSequence sysID compID ESSCODE ;
+essMH : ml02 ESSCODE ;
 essVtolState : [ '\x00' - '\x04' ] ;
 essLandedState : [ '\x00' - '\x04' ] ;
 
@@ -498,11 +541,13 @@ odisCatEU : * ;
 odisClassEU : * ;
 
 /* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
+ml02 : MAVCODE LEN02 incompFlag compFlag packetSequence sysID compID ;
 ml09 : MAVCODE LEN09 incompFlag compFlag packetSequence sysID compID ;
 ml20 : MAVCODE LEN20 incompFlag compFlag packetSequence sysID compID ;
 ml28 : MAVCODE LEN28 incompFlag compFlag packetSequence sysID compID ;
 ml32 : MAVCODE LEN32 incompFlag compFlag packetSequence sysID compID ;
 ml42 : MAVCODE LEN42 incompFlag compFlag packetSequence sysID compID ;
+ml51 : MAVCODE LEN51 incompFlag compFlag packetSequence sysID compID ;
 ml54 : MAVCODE LEN54 incompFlag compFlag packetSequence sysID compID ;
 
 /* Tokens */
@@ -519,10 +564,14 @@ ATTCODE : '\x1E' '\x00' '\x00' ;
 AQCODE : '\x1F' '\x00' '\x00' ;
 LPNCODE : '\x20' '\x00' '\x00' ;
 GPICODE : '\x21' '\x00' '\x00' ;
+MCCODE : '\x2A' '\x00' '\x00' ;
+MIRCODE : '\x2E' '\x00' '\x00' ;
 RCCODE : '\x41' '\x00' '\x00' ;
 VHCODE : '\x4A' '\x00' '\x00' ;
+CACODE : '\x4D' '\x00' '\x00' ;
 ATCODE : '\x53' '\x00' '\x00' ;
 PTLNCODE : '\x55' '\x00' '\x00' ;
+PTLICODE : '\x57' '\x00' '\x00' ;
 RSCODE : '\x6D' '\x00' '\x00' ;
 ALTCODE : '\x8D' '\x00' '\x00' ;
 BSCODE : '\x93' '\x00' '\x00' ;
@@ -538,27 +587,29 @@ CESCODE : '\x9B' '\x01' '\x00' ;
 ODILCODE : '\x65' '\x32' '\x00' ;
 ODISCODE : '\x68' '\x32' '\x00' ;
 
-ESSLEN : '\x02' ;
 CESLEN : '\x03' ;
+CALEN : '\x0A' ;
 PINGLEN : '\x0E' ;
 SPLEN : '\x10' ;
+MCLEN : '\x12' ;
 PVLEN : '\x19' ;
 LNSLEN : '\x24' ;
 ATLEN : '\x25' ;
 SSLEN : '\x2B' ;
 AQLEN : '\x30' ;
-PTLNLEN : '\x33' ;
 GRILEN : '\x34' ;
 EVLEN : '\x35' ;
 ODILLEN : '\x3B' ;
 HPLEN : '\x3C' ;
 UGPLEN : '\x46' ;
 
+LEN02 : '\x02' ;
 LEN09 : '\x09' ;
 LEN20 : '\x14' ;
 LEN28 : '\x1C' ;
 LEN32 : '\x20' ;
 LEN42 : '\x2A' ;
+LEN51 : '\x33' ;
 LEN54 : '\x36' ;
 
 incompFlag : '\x00' ;  /* incompatibility flag */
