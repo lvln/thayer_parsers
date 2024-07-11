@@ -14,10 +14,10 @@ echo -en "GET https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages HTTP/1.
 echo -en "CONNECT developer.mozilla.org:80 HTTP/1.1\r\nRobust: tests\r\n\r\nMulti-worded message with a special character ^ and no newline following it" > ./pass.10
 echo -en "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\nConnection: keep-alive\r\n\r\n<!DOCTYPE html>\r\n<html lang="en">" > ./pass.11
 echo -en "HTTP/1.1 100 Continue\r\n\r\n" > ./pass.12
-echo -en "HTTP/1.1 201 Created\r\n\r\nHost: server side\r\n\r\nMessage\r\n" > ./pass.13
+echo -en "HTTP/1.1 201 Created\r\nHost: server side\r\n\r\nMessage\r\n" > ./pass.13
 echo -en "HTTP/1.1 303 Moved permanently\r\nServer: Apache/2.4.37 (Red Hat)\r\nontent-Type: text/html; charset=utf-8\r\nDate: Thu, 06 Dec 2018 17:33:08 GMT\r\n\r\nThis is a message\r\n" > ./pass.14
 echo -en "HTTP/1.1 503 Service Unavailable\r\n\r\n<!DOCTYPE html>… (contains a site-customized page helping the user to find the missing resource)" > ./pass.15
-echo -en "CONNECT www.example.com:80 HTTP/1.1\r\nNo-field-value:\r\n\r\n" > ./pass.17
+echo -en "CONNECT www.example.com:80 HTTP/1.1\r\nNo-field-value:\r\n\r\n" > ./pass.16
 echo -en "CONNECT www.example.com:80 HTTP/1.1\r\nField-name:Multi-lined field\r\n value\r\n\r\n" > ./pass.17
 
 # [FAILING TESTS]
