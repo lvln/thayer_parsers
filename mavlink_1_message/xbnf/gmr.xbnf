@@ -1,0 +1,55 @@
+/* Grammar for a message of type PARAM_VALUE (22) */
+
+P : optMessage ;
+optMessage : /* empty */ | optMessage message ;
+
+/* Messsages contain header for each packet followed by the MAVLink specific header then the message and finally a checkusm */
+message : packetRecordHeader mavHeader pv * * ;
+
+/* Header for each captured packet */
+packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
+prhTimestampSec : * * * * ;
+prhTimestampUSNS : * * * * ;
+prhCPL : * * * * ; /* captured packet length */
+prhOPL : * * * * ; /* original packet length */
+
+/* MAVLink header for each message */
+mavHeader : family ipvhl dsf totalLen id ffo ttl protocol headerChecksum sourceAddr destAddr sourcePort destPort length checksum ;
+family : '\x02' '\x00' '\x00' '\x00' ; /* Always 2 for MAVLink */
+ipvhl : '\x45' ; /* ip version and header length  - always ip version 4 and 5 as header length for MAVLink */
+dsf : * ; /* differentiated services field - not sure */
+totalLen : * * ;
+id : * * ;
+ffo : * * ;
+ttl : '\x40' ; /* time to live - seemingly always 0x40 for MAVLink */
+protocol : '\x11' ; /* protocol - always 0x11 for MAVLink because it is UDP */
+headerChecksum : * * ; /* header checksum */
+sourceAddr : * * * * ;
+destAddr : * * * * ;
+sourcePort : '\x38' '\xD6' ;
+destPort : '\x38' '\xF4' ;
+length : * * ;
+checksum : * * ;
+
+
+/* PARAM_VALUE (22) */
+pv : pvMH pvPV pvCnt pvInd pvID pvType ;
+pvMH : MAVCODE PVLEN incompFlag compFlag packetSequence sysID compID PVCODE ;
+pvPV : * * * * ;
+pvCnt : * * ;
+pvInd : * * ;
+pvID : * * * * * * * * * * * * * * * * ;
+pvType : [ '\x01' - '\x0A' ] ;
+
+/* Tokens */
+MAVCODE : '\xFD' ;
+
+PVCODE : '\x16' '\x00' '\x00' ;
+
+PVLEN : '\x19' ;
+
+incompFlag : '\x00' ;  /* incompatibility flag */
+compFlag : '\x00' ; /* compatibility flag */
+packetSequence : * ;
+sysID : '\x01' | '\x33' | '\xFF' ; /* system ID  */
+compID : '\x01' | '\x44' | '\xBE' ; /* component ID */
