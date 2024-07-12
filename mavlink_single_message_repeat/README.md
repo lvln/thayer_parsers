@@ -1,10 +1,12 @@
-# MAVLink SCALED\_PRESSURE - generates a parser for a SCALED\_PRESSURE MAVLink message's grammar
+# MAVLink SCALED\_PRESSURE - generates a parser for zero or more MAVLink messages of type SCALED_PRESSURE
 
-1;95;0cAll data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
+NOTE: This differs from the parser in `mavlink\_standalone\_message` in that it accepts multiple messages of type SCALED_PRESSURE.
+
+All data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
 
 ## Directory structure
 
-* **xbnf** contains a working parser written in xbnf for a PARAM_VALUE MAVLink message (or no message at all)
+* **xbnf** contains a working parser written in xbnf for one or more SCALED_PRESSURE MAVLink messages (or no message at all)
 * **tests** contains a full set of tests for the parser
   * `pass.1` is an empty file
   * `pass.2` is a single SCALED_PRESSURE message
@@ -26,8 +28,8 @@ The data packets are found in packet capture, `.pcap`, files, however for the pu
 * Each message begins with a 16 byte packet record header:
   * Bytes 0 - 3: Timestamp (seconds).
   * Bytes 4 - 7: Timestamp (microseconds or nanoseconds).
-  * Bytes 8 - 11: Captured packet length (always   for SCALED_PRESSURE).
-  * Bytes 12 - 15: Original packet length ().
+  * Bytes 8 - 11: Captured packet length.
+  * Bytes 12 - 15: Original packet length.
   
 **The header for the SCALED_PRESSURE message follows a standard format and is comprised of the first 32 bytes of the message (following the packer record header)**
 
