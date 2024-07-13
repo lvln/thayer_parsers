@@ -15,25 +15,19 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
   * `pass.5` is all of the GLOBAL\_POSITION\_INT messages recorded during a short flight with the drone
   * `pass.6` is all of the ATTITUDE and GLOBAL\_POSITION\_INT messages recorded during a short flight with the drone
   * `fail.1` is a SCALED_PRESSURE message (incorrect messsage type)
-  * `fail.2` is a SCALED_PRESSURE message with the MAVLink version code changed
-  * `fail.1` is a SCALED_PRESSURE message with the message id changed
-  * `fail.1` is a SCALED_PRESSURE message with the length value changed
-  * `fail.5` is a SCALED_PRESSURE message with 1 too few bytes at the end
-  * `fail.6` is a SCALED_PRESSURE message with 1 too many bytes at the end
-  
 
 ## Data packet structure
-MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding gorund control stations.
+MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.
 The format of MAVLink messages is defined in the `common.xml` file and can be found [here](https://mavlink.io/en/messages/common.html).
-The data packets are found in packet capture, `.pcap`, files, however for the purpose of constructing tests, the PCAP file header is removed.
 
-* Each message begins with a 16 byte packet record header:
-  * Bytes 0 - 3: Timestamp (seconds).
-  * Bytes 4 - 7: Timestamp (microseconds or nanoseconds).
-  * Bytes 8 - 11: Captured packet length.
-  * Bytes 12 - 15: Original packet length.
+** Each message begins with a 16 byte packet record header:**
+
+* Bytes 0 - 3: Timestamp (seconds).
+* Bytes 4 - 7: Timestamp (microseconds or nanoseconds).
+* Bytes 8 - 11: Captured packet length.
+* Bytes 12 - 15: Original packet length.
   
-**The header for the SCALED_PRESSURE message follows a standard format and is comprised of the first 32 bytes of the message (following the packer record header)**
+**The header for MAVLink messages follows a standard format and is comprised of the first 32 bytes of the message (following the packer record header)**
 
 * Bytes 0 - 3: Message family (always 0x00000002).
 * Byte 4: 4 MSB are IP version ; 4 LSB are header length (0x45 for MAVLink messages).
@@ -52,6 +46,7 @@ The data packets are found in packet capture, `.pcap`, files, however for the pu
 * Bytes 30 - 31: Checksum.
 
 **This is followed by a message-specific header which is 10 bytes in length**
+
 * Byte 32: Magic value/version (always 0xfd for MAVLink 2.0).
 * Byte 33: Payload length (0x1C for ATTITUDE and GLOBAL\_POSITION\_INT).
 * Byte 34: Incompatibility flag.

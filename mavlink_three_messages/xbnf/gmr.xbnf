@@ -1,0 +1,82 @@
+P : optMessage ;
+optMessage : /* empty */ | optMessage message ;
+
+/* Messsages contain header for each packet followed by the MAVLink specific header then the message and finally a checkusm */
+message : packetRecordHeader mavHeader messageOption * * ;
+messageOption : sp | att | gpi ;
+
+/* Header for each captured packet */
+packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
+prhTimestampSec : * * * * ;
+prhTimestampUSNS : * * * * ;
+prhCPL : * * * * ; /* captured packet length */
+prhOPL : * * * * ; /* original packet length */
+
+/* MAVLink header for each message */
+mavHeader : family ipvhl dsf totalLen id ffo ttl protocol headerChecksum sourceAddr destAddr sourcePort destPort length checksum ;
+family : '\x02' '\x00' '\x00' '\x00' ; /* Always 2 for MAVLink */
+ipvhl : '\x45' ; /* ip version and header length  - always ip version 4 and 5 as header length for MAVLink */
+dsf : * ; /* differentiated services field - not sure */
+totalLen : * * ;
+id : * * ;
+ffo : * * ;
+ttl : '\x40' ; /* time to live - seemingly always 0x40 for MAVLink - not sure */
+protocol : '\x11' ; /* protocol - always 0x11 for MAVLink because it is UDP */
+headerChecksum : * * ; /* header checksum - not sure */
+sourceAddr : * * * * ;
+destAddr : * * * * ;
+sourcePort : '\x38' '\xD6' ;
+destPort : '\x38' '\xF4' ;
+length : * * ;
+checksum : * * ;
+
+/* SCALED_PRESSURE (29) */
+sp : spMH timeBoot spPressAb spPressDiff spTemp spTempParseDiff ;
+spMH : MAVCODE SPLEN incompFlag compFlag packetSequence sysID compID SPCODE ;
+spPressAb : * * * * ;
+spPressDiff : * * * * ;
+spTemp : * * ;
+spTempParseDiff : * * ;
+
+/* ATTITUDE (30) */
+att : attMH timeBoot attRoll attPitch attYaw attRollSpeed attPitchSpeed attYawSpeed ;
+attMH : ml28 ATTCODE ;
+attRoll : * * * * ;
+attPitch : * * * * ;
+attYaw : * * * * ;
+attRollSpeed : * * * * ;
+attPitchSpeed : * * * * ;
+attYawSpeed : * * * * ;
+
+/* GLOBAL_POSITION_INT (33) */
+gpi : gpiMH timeBoot gpiLat gpiLon gpiAlt gpiRelAlt gpiVX gpiVY gpiVZ gpiHdg ;
+gpiMH : ml28 GPICODE ;
+gpiLat : * * * * ;
+gpiLon : * * * * ;
+gpiAlt : * * * * ;
+gpiRelAlt : * * * * ;
+gpiVX : * * ;
+gpiVY : * * ;
+gpiVZ : * * ;
+gpiHdg : * * ;
+
+/* Header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
+ml28 : MAVCODE LEN28 incompFlag compFlag packetSequence sysID compID ;
+
+/* Tokens */
+MAVCODE : '\xFD' ;
+
+SPCODE : '\x1D' '\x00' '\x00' ;
+ATTCODE : '\x1E' '\x00' '\x00' ;
+GPICODE : '\x21' '\x00' '\x00' ;
+
+SPLEN : '\x10' ;
+
+LEN28 : '\x1C' ;
+
+incompFlag : '\x00' ;  /* incompatibility flag */
+compFlag : '\x00' ; /* compatibility flag */
+packetSequence : * ;
+sysID : '\x01' | '\x33' | '\xFF' ; /* system ID  */
+compID : '\x01' | '\x44' | '\xBE' ; /* component ID */
+timeBoot : * * * * ;

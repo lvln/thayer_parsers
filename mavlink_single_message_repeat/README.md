@@ -14,16 +14,15 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
   * `pass.4` is all of the SCALED_PRESSURE messages recorded during a short flight with the drone
   * `fail.1` is an ATTITUDE message (incorrect messsage type)
   * `fail.2` is a SCALED_PRESSURE message with the MAVLink version code changed
-  * `fail.1` is a SCALED_PRESSURE message with the message id changed
-  * `fail.1` is a SCALED_PRESSURE message with the length value changed
+  * `fail.3` is a SCALED_PRESSURE message with the message id changed
+  * `fail.4` is a SCALED_PRESSURE message with the length value changed
   * `fail.5` is a SCALED_PRESSURE message with 1 too few bytes at the end
   * `fail.6` is a SCALED_PRESSURE message with 1 too many bytes at the end
   
 
 ## Data packet structure
-MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding gorund control stations.
+MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.
 The format of MAVLink messages is defined in the `common.xml` file and can be found [here](https://mavlink.io/en/messages/common.html).
-The data packets are found in packet capture, `.pcap`, files, however for the purpose of constructing tests, the PCAP file header is removed.
 
 * Each message begins with a 16 byte packet record header:
   * Bytes 0 - 3: Timestamp (seconds).
@@ -58,7 +57,6 @@ The data packets are found in packet capture, `.pcap`, files, however for the pu
 * Byte 37: System id.
 * Byte 38: Component id.
 * Bytes 39 - 41: Message id (0x00001D for SCALED_PRESSURE).
-
 
 * **SCALED_PRESSURE**: The pressure readings for the typical setup of one absolute and differential pressure sensor.
   * Bytes 42 - 45: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.

@@ -20,15 +20,15 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
   * `fail.8` is an empty file
 
 ## Data packet structure
-MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding gorund control stations.
+MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.
 The format of MAVLink messages is defined in the `common.xml` file and can be found [here](https://mavlink.io/en/messages/common.html).
-The data packets are found in packet capture, `.pcap`, files, however for the purpose of constructing tests, the PCAP file header is removed.
 
-* Each message begins with a 16 byte packet record header:
-  * Bytes 0 - 3: Timestamp (seconds).
-  * Bytes 4 - 7: Timestamp (microseconds or nanoseconds).
-  * Bytes 8 - 11: Captured packet length.
-  * Bytes 12 - 15: Original packet length.
+**Each message begins with a 16 byte packet record header:**
+
+* Bytes 0 - 3: Timestamp (seconds).
+* Bytes 4 - 7: Timestamp (microseconds or nanoseconds).
+* Bytes 8 - 11: Captured packet length.
+* Bytes 12 - 15: Original packet length.
   
 **The header for the SCALED_PRESSURE message follows a standard format and is comprised of the first 32 bytes of the message (following the packer record header)**
 
@@ -49,6 +49,7 @@ The data packets are found in packet capture, `.pcap`, files, however for the pu
 * Bytes 30 - 31: Checksum.
 
 **This is followed by a message-specific header which is 10 bytes in length**
+
 * Byte 32: Magic value/version (always 0xfd for MAVLink 2.0).
 * Byte 33: Payload length (0x10 for SCALED_PRESSURE).
 * Byte 34: Incompatibility flag.

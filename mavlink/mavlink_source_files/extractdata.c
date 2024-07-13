@@ -153,8 +153,8 @@ int main(int argc, char **argv) {
 		bytesRead = fread(&buf, sizeof(buf), 1, ifile);
 		i++;
 		
-		if (fwrite(&buf, sizeof(buf), 1, ofile) != 1)
-			printf("Not successfully written");
+		//		if (fwrite(&buf, sizeof(buf), 1, ofile) != 1)
+		//			printf("Not successfully written");
 		
 	}
 
