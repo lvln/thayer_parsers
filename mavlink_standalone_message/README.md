@@ -1,4 +1,5 @@
-# MAVLink SCALED\_PRESSURE - generates a parser for a single MAVLink SCALED_PRESSURE message
+# MAVLink SCALED\_PRESSURE
+## Generates a parser for a single MAVLink SCALED_PRESSURE message
 
 NOTE: This differs from the parser in `mavlink\_single\_message\_repeat` in that it accepts one and only one message of type SCALED_PRESSURE.
 
@@ -59,13 +60,14 @@ The format of MAVLink messages is defined in the `common.xml` file and can be fo
 * Byte 38: Component id.
 * Bytes 39 - 41: Message id (0x00001D for SCALED_PRESSURE).
 
-* **SCALED_PRESSURE**: The pressure readings for the typical setup of one absolute and differential pressure sensor.
-  * Bytes 42 - 45: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.
-  * Bytes 46 - 49: *press_abs*: absolute pressure; *hPa*; `float`.
-  * Bytes 50 - 53: *press_diff*: differential pressure; *hPa*; `float`.
-  * Bytes 54 - 55: *temperature*: absolute pressure temperature; *cdegC*; `int16_t`.
-  * Bytes 56 - 57: *temperature_press_diff*: differential pressure temperature (0, if not available). Report values of 0 (or 1) as 1 cdegC.; *cdegC*; `int16_t`.
+**SCALED_PRESSURE**: The pressure readings for the typical setup of one absolute and differential pressure sensor.
 
-  ![SCALED_PRESSURE](./.images/SPImage.jpg)
+* Bytes 42 - 45: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.
+* Bytes 46 - 49: *press_abs*: absolute pressure; *hPa*; `float`.
+* Bytes 50 - 53: *press_diff*: differential pressure; *hPa*; `float`.
+* Bytes 54 - 55: *temperature*: absolute pressure temperature; *cdegC*; `int16_t`.
+* Bytes 56 - 57: *temperature_press_diff*: differential pressure temperature (0, if not available). Report values of 0 (or 1) as 1 cdegC.; *cdegC*; `int16_t`.
+
+![SCALED_PRESSURE](./.images/SPImage.jpg)
   
 All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum.
