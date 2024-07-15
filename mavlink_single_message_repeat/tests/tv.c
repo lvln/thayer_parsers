@@ -67,6 +67,7 @@ int main(void) {
 	messArr_t *messArr;
 	uint8_t old;
 	int i;
+	char fname[10];
 	
 	if ((fp = fopen("pass.2", "rb")) == NULL)
 		exit(EXIT_FAILURE);
@@ -124,66 +125,94 @@ int main(void) {
 	writeSPFile(messArr->messages, fp, toInt24le(messArr->messages[0].header.capturedPacketLength) + 16 + 1);
 	
 	fclose(fp);
-	
-	if ((fp = fopen("./pass.5", "wb")) == NULL)
-		exit(EXIT_FAILURE);
 
-	old = messArr->messages[0].body.payload[0];
-	messArr->messages[0].body.payload[0] = 0x21;
+	if ((fp = fopen("./fail.7", "wb")) == NULL)
+		exit(EXIT_FAILURE);
+	
+	old = messArr->messages[0].header.messageFam[0];
+	messArr->messages[0].header.messageFam[0] = 0x03;
+	
+	writeSPFile(messArr->messages, fp, toInt24le(messArr->messages[0].header.capturedPacketLength) + 16);
+	
+	fclose(fp);
+	
+	messArr->messages[0].header.messageFam[0] = old;
+	
+	if ((fp = fopen("./fail.8", "wb")) == NULL)
+		exit(EXIT_FAILURE);
+	
+	old = messArr->messages[0].header.iphl;
+	messArr->messages[0].header.iphl = 0x03;
 	
 	writeSPFile(messArr->messages, fp, toInt24le(messArr->messages[0].header.capturedPacketLength) + 16);
 	
 	fclose(fp);
 
-	messArr->messages[0].body.payload[0] = old;
+	messArr->messages[0].header.iphl = old;
 
-	if ((fp = fopen("./pass.6", "wb")) == NULL)
+	if ((fp = fopen("./fail.9", "wb")) == NULL)
 		exit(EXIT_FAILURE);
 
-	old = messArr->messages[0].body.payload[6];
-	messArr->messages[0].body.payload[6] = 0x21;
-
-	writeToFile(messArr->messages[0], fp);
+	old = messArr->messages[0].header.totalLength[0];
+	messArr->messages[0].header.totalLength[0] = 0x03;
+	
+	writeSPFile(messArr->messages, fp, toInt24le(messArr->messages[0].header.capturedPacketLength) + 16);
 	
 	fclose(fp);
 
-	messArr->messages[0].body.payload[6] = old;
+	messArr->messages[0].header.totalLength[0] = old;
 
-	if ((fp = fopen("./pass.7", "wb")) == NULL)
+	if ((fp = fopen("./fail.10", "wb")) == NULL)
 		exit(EXIT_FAILURE);
 
-	old = messArr->messages[0].body.payload[9];
-	messArr->messages[0].body.payload[9] = 0x21;
-
-	writeToFile(messArr->messages[0], fp);
+	old = messArr->messages[0].header.ttl;
+	messArr->messages[0].header.ttl = 0x03;
+	
+	writeSPFile(messArr->messages, fp, toInt24le(messArr->messages[0].header.capturedPacketLength) + 16);
 	
 	fclose(fp);
 
-	messArr->messages[0].body.payload[9] = old;
+	messArr->messages[0].header.ttl = old;
 
-	if ((fp = fopen("./pass.8", "wb")) == NULL)
+	if ((fp = fopen("./fail.11", "wb")) == NULL)
 		exit(EXIT_FAILURE);
 
-	old = messArr->messages[0].body.payload[12];
-	messArr->messages[0].body.payload[12] = 0x21;
-
-	writeToFile(messArr->messages[0], fp);
+	old = messArr->messages[0].header.sourcePort[0];
+	messArr->messages[0].header.sourcePort[0] = 0x03;
+	
+	writeSPFile(messArr->messages, fp, toInt24le(messArr->messages[0].header.capturedPacketLength) + 16);
 	
 	fclose(fp);
 
-	messArr->messages[0].body.payload[12] = old;
+	messArr->messages[0].header.sourcePort[0] = old;
 
-	if ((fp = fopen("./pass.9", "wb")) == NULL)
+	if ((fp = fopen("./fail.12", "wb")) == NULL)
 		exit(EXIT_FAILURE);
 
-	old = messArr->messages[0].body.payload[14];
-	messArr->messages[0].body.payload[14] = 0x21;
-
-	writeToFile(messArr->messages[0], fp);
+	old = messArr->messages[0].header.destPort[0];
+	messArr->messages[0].header.destPort[0] = 0x03;
+	
+	writeSPFile(messArr->messages, fp, toInt24le(messArr->messages[0].header.capturedPacketLength) + 16);
 	
 	fclose(fp);
 
-	messArr->messages[0].body.payload[14] = old;
+	messArr->messages[0].header.destPort[0] = old;
+
+	for (i = 0; i < 16; i++) {
+		sprintf(fname, "./pass.%d", i + 5);
+
+		if ((fp = fopen(fname, "wb")) == NULL)
+			exit(EXIT_FAILURE);
+
+		old = messArr->messages[0].body.payload[i];
+		messArr->messages[0].body.payload[i] = old + 0x01;
+		
+		writeToFile(messArr->messages[0], fp);
+
+		fclose(fp);
+
+		messArr->messages[0].body.payload[i] = old;
+	}
 	
 	freeMem(messArr);
 
@@ -194,7 +223,7 @@ int main(void) {
 
 	fclose(fp);
 
-	if ((fp = fopen("fail.7", "wb")) == NULL)
+	if ((fp = fopen("fail.13", "wb")) == NULL)
 		exit(EXIT_FAILURE);
 
 	for (i = 0; i < messArr->n - 1; i++)
@@ -204,7 +233,7 @@ int main(void) {
 
 	fclose(fp);
 
-	if ((fp = fopen("fail.8", "wb")) == NULL)
+	if ((fp = fopen("fail.14", "wb")) == NULL)
 		exit(EXIT_FAILURE);
 
 	for (i = 0; i < messArr->n - 1; i++)

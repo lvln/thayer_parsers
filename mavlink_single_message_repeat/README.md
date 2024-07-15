@@ -13,19 +13,25 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
   * `pass.2` is a single SCALED_PRESSURE message
   * `pass.3` is another single SCALED_PRESSURE message
   * `pass.4` is all of the SCALED_PRESSURE messages recorded during a short flight with the drone
-  * `pass.5` is the SCALED_PRESSURE message from `pass.2` with the `time_boot_ms` field changed
-  * `pass.6` is the SCALED_PRESSURE message from `pass.2` with the `press_abs` field changed
-  * `pass.7` is the SCALED_PRESSURE message from `pass.2` with the `press_diff` field changed
-  * `pass.8` is the SCALED_PRESSURE message from `pass.2` with the `temperature` field changed
-  * `pass.9` is the SCALED_PRESSURE message from `pass.2` with the `temperature_press_diff` field changed
+  * `pass.5` - `pass.8` are the first SCALED_PRESSURE message with the *time_boot_ms* field changed
+  * `pass.9` - `pass.12` are the first SCALED_PRESSURE message with the *press_abs* field changed
+  * `pass.13` - `pass.16` are the first SCALED_PRESSURE message with the *press_diff* field changed
+  * `pass.17` - `pass.18` are the first SCALED_PRESSURE message with the *temperature* field changed
+  * `pass.19` - `pass.20` are the first SCALED_PRESSURE message with the *temperature_press_diff* field changed
   * `fail.1` is an ATTITUDE message (incorrect messsage type)
   * `fail.2` is a SCALED_PRESSURE message with the MAVLink version code changed
   * `fail.3` is a SCALED_PRESSURE message with the message id changed
   * `fail.4` is a SCALED_PRESSURE message with the payload length value changed
   * `fail.5` is a SCALED_PRESSURE message with 1 too few bytes at the end
   * `fail.6` is a SCALED_PRESSURE message with 1 too many bytes at the end
-  * `fail.7` is the file from `pass.4` with one too few bytes at the end
-  * `fail.8` is the file from `pass.4` with one too many bytes at the end
+  * `fail.7` is a SCALED_PRESSURE message with the message family value changed
+  * `fail.8` is a SCALED_PRESSURE message with the IP version/header length field changed
+  * `fail.9` is a SCALED_PRESSURE message with the IP total length field changed
+  * `fail.10` is a SCALED_PRESSURE message with the time to live field changed
+  * `fail.11` is a SCALED_PRESSURE message with the source port field changed
+  * `fail.12` is a SCALED_PRESSURE message with the destination port field changed
+  * `fail.13` is the file from `pass.4` with one too few bytes at the end
+  * `fail.14` is the file from `pass.4` with one too many bytes at the end
 
 ## Data packet structure
 
