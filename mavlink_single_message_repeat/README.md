@@ -1,6 +1,7 @@
-# MAVLink SCALED\_PRESSURE - generates a parser for zero or more MAVLink messages of type SCALED_PRESSURE
+# MAVLink SCALED\_PRESSURE
+## Generates a parser for zero or more MAVLink messages of type SCALED_PRESSURE
 
-NOTE: This differs from the parser in `mavlink\_standalone\_message` in that it accepts multiple messages of type SCALED_PRESSURE.
+NOTE: This differs from the parser in `mavlink_standalone_message` in that it accepts multiple messages of type SCALED_PRESSURE.
 
 All data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
 
@@ -12,15 +13,22 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
   * `pass.2` is a single SCALED_PRESSURE message
   * `pass.3` is another single SCALED_PRESSURE message
   * `pass.4` is all of the SCALED_PRESSURE messages recorded during a short flight with the drone
+  * `pass.5` is the SCALED_PRESSURE message from `pass.2` with the `time_boot_ms` field changed
+  * `pass.6` is the SCALED_PRESSURE message from `pass.2` with the `press_abs` field changed
+  * `pass.7` is the SCALED_PRESSURE message from `pass.2` with the `press_diff` field changed
+  * `pass.8` is the SCALED_PRESSURE message from `pass.2` with the `temperature` field changed
+  * `pass.9` is the SCALED_PRESSURE message from `pass.2` with the `temperature_press_diff` field changed
   * `fail.1` is an ATTITUDE message (incorrect messsage type)
   * `fail.2` is a SCALED_PRESSURE message with the MAVLink version code changed
   * `fail.3` is a SCALED_PRESSURE message with the message id changed
-  * `fail.4` is a SCALED_PRESSURE message with the length value changed
+  * `fail.4` is a SCALED_PRESSURE message with the payload length value changed
   * `fail.5` is a SCALED_PRESSURE message with 1 too few bytes at the end
   * `fail.6` is a SCALED_PRESSURE message with 1 too many bytes at the end
-  
+  * `fail.7` is the file from `pass.4` with one too few bytes at the end
+  * `fail.8` is the file from `pass.4` with one too many bytes at the end
 
 ## Data packet structure
+
 MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.
 The format of MAVLink messages is defined in the `common.xml` file and can be found [here](https://mavlink.io/en/messages/common.html).
 
@@ -58,13 +66,13 @@ The format of MAVLink messages is defined in the `common.xml` file and can be fo
 * Byte 38: Component id.
 * Bytes 39 - 41: Message id (0x00001D for SCALED_PRESSURE).
 
-* **SCALED_PRESSURE**: The pressure readings for the typical setup of one absolute and differential pressure sensor.
-  * Bytes 42 - 45: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.
-  * Bytes 46 - 49: *press_abs*: absolute pressure; *hPa*; `float`.
-  * Bytes 50 - 53: *press_diff*: differential pressure; *hPa*; `float`.
-  * Bytes 54 - 55: *temperature*: absolute pressure temperature; *cdegC*; `int16_t`.
-  * Bytes 56 - 57: *temperature_press_diff*: differential pressure temperature (0, if not available). Report values of 0 (or 1) as 1 cdegC.; *cdegC*; `int16_t`.
+**SCALED_PRESSURE**: The pressure readings for the typical setup of one absolute and differential pressure sensor.
+* Bytes 42 - 45: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.
+* Bytes 46 - 49: *press_abs*: absolute pressure; *hPa*; `float`.
+* Bytes 50 - 53: *press_diff*: differential pressure; *hPa*; `float`.
+* Bytes 54 - 55: *temperature*: absolute pressure temperature; *cdegC*; `int16_t`.
+* Bytes 56 - 57: *temperature_press_diff*: differential pressure temperature (0, if not available). Report values of 0 (or 1) as 1 cdegC.; *cdegC*; `int16_t`.
 
-  ![SCALED_PRESSURE](./.images/SPImage.jpg)
+![SCALED_PRESSURE](./.images/SPImage.jpg)
   
 All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum.
