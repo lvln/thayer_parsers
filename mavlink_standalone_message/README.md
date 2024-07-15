@@ -11,7 +11,7 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
 * **tests** contains a full set of tests for the parser
   * `pass.1` is a single SCALED_PRESSURE message
   * `pass.2` is another single SCALED_PRESSURE message
-  * `pass.3` is the first SCALED_PRESSURE message with the `time\_boot\_ms` field changed
+  * `pass.3` is the first SCALED_PRESSURE message with the `time_boot_ms` field changed
   * `pass.4` is the first SCALED_PRESSURE message with the `press_abs` field changed
   * `pass.5` is the first SCALED_PRESSURE message with the `press_diff` field changed
   * `pass.6` is the first SCALED_PRESSURE message with the `temperature` field changed
