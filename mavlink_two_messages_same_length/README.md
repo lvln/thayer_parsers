@@ -13,7 +13,8 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
   * `pass.3` is a single GLOBAL\_POSITION\_INT message
   * `pass.4` is all of the ATTITUDE messages recorded during a short flight with the drone
   * `pass.5` is all of the GLOBAL\_POSITION\_INT messages recorded during a short flight with the drone
-  * `pass.6` is all of the ATTITUDE and GLOBAL\_POSITION\_INT messages recorded during a short flight with the drone
+  * `pass.6` is a single ATTITUDE and GLOBAL\_POSITION\_INT message
+  * `pass.7` is all of the ATTITUDE and GLOBAL\_POSITION\_INT messages recorded during a short flight with the drone
   * `fail.1` is a SCALED_PRESSURE message (incorrect messsage type)
 
 ## Data packet structure
