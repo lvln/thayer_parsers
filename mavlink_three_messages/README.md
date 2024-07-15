@@ -15,8 +15,11 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
   * `pass.5` is all of the ATTITUDE messages recorded during a short flight with the drone
   * `pass.6` is all of the GLOBAL\_POSITION\_INT messages recorded during a short flight with the drone
   * `pass.7` is all of the SCALED_PRESSURE messages recorded during a short flight with the drone
-  * `pass.8` is all of the ATTITUDE, GLOBAL\_POSITION\_INT and SCALED_PRESSURE messages recorded during a short flight with the drone
+  * `pass.8` is a single ATTITUDE, SCALED_PRESSURE and GLOBAL\_POSITION\_INT message from a short flight with the drone
+  * `pass.9` is all of the ATTITUDE, GLOBAL\_POSITION\_INT and SCALED_PRESSURE messages recorded during a short flight with the drone
+  * `pass.10` - `pass.81` contains each of the messages from `pass.8` with a single field changed
   * `fail.1` is an ATTITUDE_QUATERNION message (incorrect messsage type)
+  * `fail.2` - `fail.34` are messages with fields changed or additional bytes added/removed
 
 ## Data packet structure
 MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.
@@ -57,6 +60,8 @@ The format of MAVLink messages is defined in the `common.xml` file and can be fo
 * Byte 37: System id.
 * Byte 38: Component id.
 * Bytes 39 - 41: Message id.
+
+**The three message types are defined as follows:**
 
 * **GLOBAL_POSITION_INT**: The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame (right-handed, Z-up).
   * Bytes 42 - 45: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.

@@ -72,31 +72,37 @@ int main(int argc, char **argv) {
 	// Variable declarations
 	FILE *ifile, *ofile;
 	unsigned char buf;
-	int bytesRead, i, len, prevLen, messageNum, currMessage;
+	int bytesRead, i, len, prevLen, messageNum, currMessage, *nums, j;
 	message_t mess;
-	bool prevMDNS;
+	bool prevMDNS, messFound;
 
 	// Check arguments
-	if (argc != 3 && argc != 4) {
-    printf("usage: read inputFile outputFile [messageNumber]\n");
+	if (argc < 3) {
+    printf("usage: read inputFile outputFile [messageNumbers]\n");
     exit(EXIT_FAILURE);
 	}
-
+	
 	// Check that provided file exists by opening for binary reading
 	if ((ifile = fopen(argv[1], "rb")) == NULL) {
     printf("File does not exist\n");
     exit(EXIT_FAILURE);
 	}
-
+	
 	// If there is a thrid argument, check that it is of valid format and convert it to an integer.
-	if (argc == 4) {
-		// Convert to integer
-		messageNum = atoi(argv[3]);
+	if (argc > 3) {
+		nums = (int *)malloc(sizeof(int)*(argc - 3));
 
-		// Check argument		
-		if (messageNum < 1) {
-			printf("usage: read inputFile outputFile [messageNumber]\n");
-			exit(EXIT_FAILURE);
+		for (i = 0; i < argc - 3; i++) {
+			// Convert to integer
+			messageNum = atoi(argv[3 + i]);
+			
+			// Check argument		
+			if (messageNum < 1) {
+				printf("usage: read inputFile outputFile [messageNumbers]\n");
+				exit(EXIT_FAILURE);
+			}
+
+			nums[i] = messageNum;
 		}
 	}
 
@@ -181,13 +187,20 @@ int main(int argc, char **argv) {
 
 		// If the end of a message has been reached.
 		if (((i == (MAVLEN + len) && prevMDNS == false) || (i == (MDNSLEN + len) && prevMDNS == true)) && len != 0) {
+			// See if the current message is one of the codes in the array.
+			messFound = false;
+			for (j = 0; j < argc - 3; j++) {
+				if (currMessage == nums[j])
+					messFound = true;
+			}
+
 			// Only write all  MAVLink messages into the file if 2 arguments
 			if (mess.body[0] == 0xfd && argc == 3) {
 				writeMessageToFile(mess, len + MAVLEN, ofile);
 				printMessage(mess, len + MAVLEN);
 			}
-			// Write only the specific message into the file if 3 arguments are provided.
-			else if (mess.body[0] == 0xfd && argc == 4 && currMessage == messageNum)
+			// Write only the specific message into the file if more than 3 arguments are provided and the current message code was entered.
+			else if (mess.body[0] == 0xfd && argc > 3 && messFound)
 				writeMessageToFile(mess, len + MAVLEN, ofile);
 
 			// Reset all variables
@@ -207,6 +220,7 @@ int main(int argc, char **argv) {
 
 	}
 
+	free(nums);
 	fclose(ifile);
 	fclose(ofile);
 	exit(EXIT_SUCCESS);
