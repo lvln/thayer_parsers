@@ -11,10 +11,15 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
 * **tests** contains a full set of tests for the parser
   * `pass.1` is a single SCALED_PRESSURE message
   * `pass.2` is another single SCALED_PRESSURE message
+  * `pass.3` is the first SCALED_PRESSURE message with the `time\_boot\_ms` field changed
+  * `pass.4` is the first SCALED_PRESSURE message with the `press_abs` field changed
+  * `pass.5` is the first SCALED_PRESSURE message with the `press_diff` field changed
+  * `pass.6` is the first SCALED_PRESSURE message with the `temperature` field changed
+  * `pass.7` is the first SCALED_PRESSURE message with the `temperature_press_diff` field changed
   * `fail.1` is an ATTITUDE message (incorrect messsage type)
   * `fail.2` is a SCALED_PRESSURE message with the MAVLink version code changed
-  * `fail.1` is a SCALED_PRESSURE message with the message id changed
-  * `fail.1` is a SCALED_PRESSURE message with the length value changed
+  * `fail.3` is a SCALED_PRESSURE message with the message id changed
+  * `fail.4` is a SCALED_PRESSURE message with the payload length value changed
   * `fail.5` is a SCALED_PRESSURE message with 1 too few bytes at the end
   * `fail.6` is a SCALED_PRESSURE message with 1 too many bytes at the end
   * `fail.7` is all of the SCALED_PRESSURE messages recorded during a short flight with the drone (message repeates not allowed)

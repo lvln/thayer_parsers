@@ -1,15 +1,18 @@
-CFLAGS=-Wall -pedantic -std=c11
+CFLAGS=-Wall -pedantic -std=c11 -I.
 
 all:			tv
 
-tv:				tv.c
-					gcc $(CFLAGS) -o tv tv.c
+tv.o:			tv.c mavlink.h
+					gcc $(CFLAGS) -c tv.c
 
-run:			tv
-					./tv
+tv:				tv.o mavlink.o
+					gcc $(CFLAGS) tv.o mavlink.o -o tv
+
+mavlink.o: mavlink.c mavlink.h
+					 gcc $(CFLAGS) -c mavlink.c
 
 clean:
-				rm -f *~ tv
+				rm -f *~ tv *.o
 
 
 
