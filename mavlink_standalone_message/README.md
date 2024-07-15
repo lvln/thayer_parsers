@@ -1,7 +1,7 @@
 # MAVLink SCALED\_PRESSURE
 ## Generates a parser for a single MAVLink SCALED_PRESSURE message
 
-NOTE: This differs from the parser in `mavlink\_single\_message\_repeat` in that it accepts one and only one message of type SCALED_PRESSURE.
+NOTE: This differs from the parser in `mavlink_single_message_repeat` in that it accepts one and only one message of type SCALED_PRESSURE.
 
 All data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
 
