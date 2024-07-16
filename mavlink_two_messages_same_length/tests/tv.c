@@ -1,7 +1,7 @@
 /* 
  * tv.c --- 
  * 
- * Author: Stephen Taylor, Brandon Guzman, Josh Meise
+1;95;0c * Author: Stephen Taylor, Brandon Guzman, Josh Meise
  * Created: 12-02-2020
  * Version: 1.0
  * 
@@ -225,7 +225,7 @@ int main(void) {
 
 	messArr = readFile(fp);
 
-		if ((fp = fopen("fail.32", "wb")) == NULL)
+	if ((fp = fopen("fail.22", "wb")) == NULL)
 		exit(EXIT_FAILURE);
 
 	for (i = 0; i < messArr->n - 1; i++)
@@ -235,7 +235,7 @@ int main(void) {
 
 	fclose(fp);
 
-	if ((fp = fopen("fail.33", "wb")) == NULL)
+	if ((fp = fopen("fail.23", "wb")) == NULL)
 		exit(EXIT_FAILURE);
 
 	for (i = 0; i < messArr->n - 1; i++)

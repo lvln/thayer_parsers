@@ -1,4 +1,5 @@
-# MAVLink ATTITUDE and GLOBAL\_POSITION\_INT - generates a parser for grammar defined for MAVLink messages of type ATTITUDE and GLOBAL\_POSITION\_INT
+# MAVLink ATTITUDE and GLOBAL\_POSITION\_INT
+# Generates a parser for grammar defined for MAVLink messages of type ATTITUDE and GLOBAL\_POSITION\_INT
 
 NOTE: These messages are the same length so the first 7 bytes of the MAVLink header had to ocupy their own rule `ml28` so as to avoid a reduce/reduce conflict on the rules for the respective message headers, `attMH` and `gpiMH`.
 
@@ -15,7 +16,11 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
   * `pass.5` is all of the GLOBAL\_POSITION\_INT messages recorded during a short flight with the drone
   * `pass.6` is a single ATTITUDE and GLOBAL\_POSITION\_INT message
   * `pass.7` is all of the ATTITUDE and GLOBAL\_POSITION\_INT messages recorded during a short flight with the drone
+  * `pass.8` - `pass.63` contain each of the messages from `pass.6` with a single non-constant, non-ennumerated field changed
   * `fail.1` is a SCALED_PRESSURE message (incorrect messsage type)
+  * `fail.2` - `fail.21` are messages with constant fields changed
+  * `fail.22` is the file from `pass.7` with one too few bytes
+  * `fail.23` is the file from `pass.7` with one too many bytes
 
 ## Data packet structure
 MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.
