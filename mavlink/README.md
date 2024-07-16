@@ -9,7 +9,21 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
 * **mavlink\_source\_files** holds 3 datafiles (*run1.pcap*, *run2.pcap* and *run3.pcap) containing data messages from 3 flights with a Holybro X500 V2 drone. These files were collected using Wireshark. This directory also holds C-code which can be used to clean the data as well as extract individual messages from the original files (`cleandata.c`) for the purpose of creating individual test cases; `countcodes.c` counts the number of unique message codes in a file containing MAVLink messages; `untruncate.c` pads truncated MAVLink messages with 0s such that all messages of a specific type have a standardized length
 * **xbnf** contains a working parser written in xbnf for the 3 captured datasets
 * **tests** contains a full set of tests for the MAVLink parser, including the cleaned datasets from the shorter and longer runs
-
+  * `tv.c` autop-generates a range of tests
+  * `pass.xxx` is an original message from a drone flight, where xxx is the message id
+  * `pass.xxx.yyy` is an original message with message id xxx from a drone flight with non-constant field number yyy changed
+  * `fail.xxx.yyy` is an original message with message id xxx from a drone flight with a specific constant field changed:
+	* yyy = 0: MAVLink code is changed
+	* yyy = 1: Kmessage id is changed
+	* yyy = 2: payload length value is changed
+	* yyy = 3: one to few bytes is written
+	* yyy = 4: one to many bytes is written
+	* yyy = 5: message family value is changed
+	* yyy = 6: ip version/header length field value is changed
+	* yyy = 7: time to live value is changed
+	* yyy = 8: source port value is changed
+	* yyy = 9: destination port value is changed
+	
 ## Data packet structure
 MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.
 The format of MAVLink messages is defined in the `common.xml` file and can be found [here](https://mavlink.io/en/messages/common.html).

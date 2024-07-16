@@ -1,39 +1,27 @@
-CFLAGS=-Wall -pedantic -std=c11 -I.
+CFLAGS=-Wall -pedantic -std=c11 -I../../utils -L../../lib
+LIBS=-lutils -lcurl
 
-all: read cleandata extractdata countcodes untruncate
+all: cleandata read extractdata untruncate countcodes
 
-mavlink.o: mavlink.c mavlink.h
-					 gcc $(CFLAGS) -c mavlink.c
+cleandata:
+						gcc $(CFLAGS) cleandata.c $(LIBS) -o $@
 
-untruncate.o: untruncate.c mavlink.h
-							gcc $(CFLAGS) -c  untruncate.c
+read:
+						gcc $(CFLAGS) read.c $(LIBS) -o $@
 
-untruncate: untruncate.o mavlink.o
-						gcc $(CFLAGS) untruncate.o mavlink.o -o untruncate
+extractdata:
+						gcc $(CFLAGS) extractdata.c $(LIBS) -o $@
 
-read.o: read.c
-				gcc $(CFLAGS) -c read.c
+untruncate:
+						gcc $(CFLAGS) untruncate.c $(LIBS) -o $@
 
-read: read.o
-		  gcc $(CFLAGS) read.o -o read
-
-cleandata.o: cleandata.c
-				gcc $(CFLAGS) -c cleandata.c
-
-cleandata: cleandata.o
-		  gcc $(CFLAGS) cleandata.o -lm -o cleandata
-
-extractdata.o: extractdata.c
-				gcc $(CFLAGS) -c extractdata.c
-
-extractdata: extractdata.o
-		  gcc $(CFLAGS) extractdata.o -lm -o extractdata
-
-countcodes.o: countcodes.c
-				gcc $(CFLAGS) -c countcodes.c
-
-countcodes: countcodes.o
-		  gcc $(CFLAGS) countcodes.o -o countcodes
+countcodes:
+						gcc $(CFLAGS) countcodes.c $(LIBS) -o $@
 
 clean:
-			rm -f *.o read cleandata extractdata countcodes untruncate
+				rm -f *~ cleandata read extractdata untruncate countcodes *.o
+
+
+
+
+

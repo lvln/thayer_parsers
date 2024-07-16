@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
 		writeToFile(pcapFile->messages[i], ofile);
 	}
 
-	freeMem(pcapFile);
+	freeMemPcap(pcapFile);
 
 	fclose(ofile);
 	fclose(ifile);

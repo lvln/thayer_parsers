@@ -1,15 +1,5 @@
-P : pcapHeader optMessage ;
+P : optMessage ;
 optMessage : /* empty */ | optMessage message ;
-
-/* PCAP file header */
-pcapHeader : magicNumber majorVersion minorVersion reserved snapLen linkType fcs ;
-magicNumber : '\xD4' '\xC3' '\xB2' '\xA1' | '\x4D' '\x3C' '\xB2' '\xA1' ; /* timestamp is seconds and either microseconds or nanoseconds depending on magic number */
-majorVersion : '\x02' '\x00' ;
-minorVersion : '\x04' '\x00' ;
-reserved : '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' '\x00' ;
-snapLen : * * * * ;
-linkType : '\x00' '\x00' ;
-fcs : * * ; /* frame check sequence */
 
 /* Messsages contain header for each packet followed by the MAVLink specific header then the message and finally a checkusm */
 message : packetRecordHeader mavHeader messageOption * * ;
