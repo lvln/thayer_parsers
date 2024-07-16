@@ -5,7 +5,7 @@
  * Created: 06-22-2020
  * Version: 1.0
  * 
- * Description: 
+ * Description:
  * 
  */
 #include <stdio.h>
@@ -20,7 +20,6 @@ extern int yydebug;
 void yyerror(char *s)
 {
 	fprintf(stderr, "error: %s\n", s);
-	exit(EXIT_FAILURE);
 }
 
 FILE* yyin;

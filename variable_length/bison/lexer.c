@@ -22,6 +22,5 @@ int yylex (void) {
 		return 0;
 	else if(c==0x00)
 		return X00;
-	yylval = (int)c;
 	return c;
 }
