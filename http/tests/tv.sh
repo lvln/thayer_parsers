@@ -19,6 +19,7 @@ echo -en "HTTP/1.1 303 Moved permanently\r\nServer: Apache/2.4.37 (Red Hat)\r\no
 echo -en "HTTP/1.1 503 Service Unavailable\r\n\r\n<!DOCTYPE html>… (contains a site-customized page helping the user to find the missing resource)" > ./pass.15
 echo -en "CONNECT www.example.com:80 HTTP/1.1\r\nNo-field-value:\r\n\r\n" > ./pass.16
 echo -en "CONNECT www.example.com:80 HTTP/1.1\r\nField-name:Multi-lined field\r\n value\r\n\r\n" > ./pass.17
+echo -en "CONNECT www.example.com:80 HTTP/1.1\r\nField-name:Multi-lined field\r\n value\r\n\r\nWith a message" > ./pass.18
 
 # [FAILING TESTS]
 echo -en "GET /where?q=now HTTP/1.1\r\nMessage\r\n" > ./fail.1
