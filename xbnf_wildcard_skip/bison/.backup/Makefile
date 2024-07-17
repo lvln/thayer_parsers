@@ -23,7 +23,7 @@ run:
 						./xbnftest.sh
 
 clean:
-						rm -f *~ *.o xbnf.tab.* *output* *xml xbnf
+						rm -f *~ *.o xbnf.tab.* *output* gmr.xml xbnf
 
 
 

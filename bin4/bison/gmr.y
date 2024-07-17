@@ -7,8 +7,15 @@
 %token X00
 
 %%
-p : 'a' WC 'c' ;
+// Top-level rule
+P : bytes ;
 
+bytes : 
+    WC 
+    | bytes WC
+    ;
+
+// Consume byte for wildcard
 WC : { int c = yylex(); if (c == 0) YYABORT; } ;
 
 %%
