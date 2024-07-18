@@ -6,7 +6,7 @@ all:				gmr
 # bison: generate gmr.tab.[ch]
 gmr.tab.o:  gmr.y
 #						bison -d -t -v --report=all -x gmr.y
-						bison -d -t -v -x gmr.y
+						bison -d -t -v -x --debug gmr.y
 						gcc $(CFLAGS) -c gmr.tab.c
 
 gmr_tb.o:		gmr_tb.c

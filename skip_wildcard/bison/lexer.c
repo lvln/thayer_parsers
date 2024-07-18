@@ -14,14 +14,13 @@
 
 extern FILE *yyin;
 
-int yylex (void) {
+int yylex(void) {
 	uint8_t c;
 
 	if(fread(&c,sizeof(uint8_t),1,yyin) != 1)
 		return 0;
 	else if(c==0x00)
 		return X00;
-	yylval = c;
+	printf("%d read in lexer.c.\n", c);
 	return c;
 }
-

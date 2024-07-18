@@ -1,5 +1,2 @@
 /* Here is the grammar */
-P : line ;
-
-line : * | line * ;
-
+P : * ;

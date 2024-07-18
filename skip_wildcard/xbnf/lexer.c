@@ -17,10 +17,14 @@ extern FILE *yyin;
 int yylex (void) {
 	uint8_t c;
 
-	if(fread(&c,sizeof(uint8_t),1,yyin) != 1)
+	if(fread(&c,sizeof(uint8_t),1,yyin) != 1) {
+		printf("End of file in lexer.c.\n");
 		return 0;
-	else if(c==0x00)
+	}
+	else if(c==0x00) {
+		printf("Terminal 0 in lexer.c.\n");
 		return X00;
+	}
+	printf("%d read in lexer.c.\n", c);
 	return c;
 }
-

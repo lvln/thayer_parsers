@@ -1,2 +1,2 @@
 /* Here is the grammar */
-P : 'a' * 'c' ;
+P : /* empty */ | P * ;

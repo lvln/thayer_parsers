@@ -1,14 +1,15 @@
 %{
+  #include <stdint.h>
 	#define YYDEBUG 1
-	int yylex(void);
+	extern int yylex(void);
 	void yyerror(char *s);
 %}
 
 %token X00
-
+												
 %%
-p : 'a' WC 'c' ;
+P : /*empty */ | WC ;
 
-WC : { int c = yylex(); if (c == 0) YYABORT; } ;
+WC : { uint8_t c = yylex(); if (c == 0) YYABORT; } ;
 
 %%
