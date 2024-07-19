@@ -7,7 +7,7 @@
 %token X00
 																		
 %%
-p : WC | p WC ;
+p : WC | WC WC | WC WC WC ;
 
 WC : { yylex(); } ;
 
