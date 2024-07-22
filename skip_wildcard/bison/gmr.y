@@ -4,12 +4,10 @@
 	extern int yylex(void);
 	void yyerror(char *s);
 %}
-
 %token X00
-												
 %%
-P : /*empty */ | WC ;
+P : 'a' WC 'c' ;
 
-WC : { uint8_t c = yylex(); if (c == 0) YYABORT; } ;
+WC : { int c = yylex(); if (c == 0) YYABORT; } ;
 
 %%

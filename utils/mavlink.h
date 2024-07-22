@@ -179,6 +179,13 @@ int toInt24be(uint8_t *arr);
 void writeHeader(pcap_t *pcapFile, FILE *ofile);
 
 /*
+ * Write raw MAVLink emssage to a file - just the header and payload.
+ * Inputs: message to write, file pointer.
+ * Outputs: none.
+ */
+void writeMessageToFile(message_t mess, FILE *ofile);
+
+/*
  * Write a AMVLink message to a file.
  * Inputs: message to write, file pointer.
  * Outputs: none.
@@ -191,6 +198,14 @@ void writeToFile(message_t mess, FILE *ofile);
  * Outputs: none.
  */
 void printMessage(message_t mess);
+
+/*
+ * Read a file that contains just MAVlink messagess - no pcap header and no UDP headers.
+ * Inputs: input file
+ * Outputs: array of messages; NULL if unsuccessful
+ */
+messArr_t *readMavFile(FILE *ifile);
+
 
 /*
  * Read a file that contains just messagess - no pcap header.

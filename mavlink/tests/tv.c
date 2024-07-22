@@ -28,29 +28,10 @@ static void writeEditedFile(message_t *mess, FILE *fp, int len, int payload) {
 	int i;
 	uint8_t buf;
 
-	i = 0;
+	i = 48;
 	
 	while (i < len) {
-		if (i < 4) buf = mess->header.timeS[i];
-		else if (i < 8) buf = mess->header.timeUNS[i - 4];
-		else if (i < 12) buf = mess->header.capturedPacketLength[i - 8];
-		else if (i < 16) buf = mess->header.originalPacketLength[i - 12];
-		else if (i < 20) buf = mess->header.messageFam[i - 16];
-		else if (i == 20) buf = mess->header.iphl;
-		else if (i == 21) buf = mess->header.dsf;
-		else if (i < 24) buf = mess->header.totalLength[i - 22];
-		else if (i < 26) buf = mess->header.id[i - 24];
-		else if (i < 28) buf = mess->header.ffOffset[i - 26];
-		else if (i == 28) buf = mess->header.ttl;
-		else if (i == 29) buf = mess->header.protocol;
-		else if (i < 32) buf = mess->header.headerChecksum[i - 30];
-		else if (i < 36) buf = mess->header.sourceAddr[i - 32];
-		else if (i < 40) buf = mess->header.destAddr[i - 36];
-		else if (i < 42) buf = mess->header.sourcePort[i - 40];
-		else if (i < 44) buf = mess->header.destPort[i - 42];
-		else if (i < 46) buf = mess->header.length[i - 44];
-		else if (i < 48) buf = mess->header.checkSum[i - 46];
-		else if (i == 48) buf = mess->body.mavCode;
+		if (i == 48) buf = mess->body.mavCode;
 		else if (i == 49) buf =	mess->body.payloadLen;
 		else if (i == 50) buf = mess->body.incompFlag;
 		else if (i == 51) buf = mess->body.compFlag;
@@ -172,11 +153,10 @@ int main(int argc, char **argv) {
 			if ((fp = fopen(fname, "wb")) == NULL)
 				printf("Error opening file for writing.\n");
 
-			writeToFile(pcapFile->messages[i], fp);
+			writeMessageToFile(pcapFile->messages[i], fp);
 
 			fclose(fp);
 		}
-		
 	}
 
 	// Loop through all passing test files.
@@ -187,7 +167,7 @@ int main(int argc, char **argv) {
 		if ((fp = fopen(fname, "rb")) == NULL)
 			printf("Error opening file.\n");
 		
-		messArr = readFile(fp);
+		messArr = readMavFile(fp);
 
 		fclose(fp);
 
@@ -204,11 +184,10 @@ int main(int argc, char **argv) {
 			messArr->messages[0].body.payload[j] = old + 0x01;
 
 			// Write the updated file.
-			writeToFile(messArr->messages[0], fp);
-			
+			writeMessageToFile(messArr->messages[0], fp);
+
 			// Revert the field.
 			messArr->messages[0].body.payload[j] = old;
-			
 		}
 
 		// Generate failure tests by changing fixed fields.
@@ -219,7 +198,7 @@ int main(int argc, char **argv) {
 		old = messArr->messages[0].body.mavCode;
 		messArr->messages[0].body.mavCode = old + 0x01;
 	
-		writeToFile(messArr->messages[0], fp);
+		writeMessageToFile(messArr->messages[0], fp);
 		
 		fclose(fp);
 		
@@ -232,7 +211,7 @@ int main(int argc, char **argv) {
 		old = messArr->messages[0].body.messageID[0];
 		messArr->messages[0].body.messageID[0] = old + 0x10;
 	
-		writeToFile(messArr->messages[0], fp);
+		writeMessageToFile(messArr->messages[0], fp);
 		
 		fclose(fp);
 		
@@ -274,7 +253,7 @@ int main(int argc, char **argv) {
 		old = messArr->messages[0].header.messageFam[0];
 		messArr->messages[0].header.messageFam[0] = old + 0x01;
 	
-		writeToFile(messArr->messages[0], fp);
+		writeMessageToFile(messArr->messages[0], fp);
 	
 		fclose(fp);
 		
@@ -287,7 +266,7 @@ int main(int argc, char **argv) {
 		old = messArr->messages[0].header.iphl;
 		messArr->messages[0].header.iphl = old + 0x01;
 
-		writeToFile(messArr->messages[0], fp);
+		writeMessageToFile(messArr->messages[0], fp);
 		fclose(fp);
 		
 		messArr->messages[0].header.iphl = old;
@@ -299,7 +278,7 @@ int main(int argc, char **argv) {
 		old = messArr->messages[0].header.ttl;
 		messArr->messages[0].header.ttl = old + 0x01;
 		
-		writeToFile(messArr->messages[0], fp);
+		writeMessageToFile(messArr->messages[0], fp);
 		
 		fclose(fp);
 		
@@ -312,7 +291,7 @@ int main(int argc, char **argv) {
 		old = messArr->messages[0].header.sourcePort[0];
 		messArr->messages[0].header.sourcePort[0] = old + 0x01;
 		
-		writeToFile(messArr->messages[0], fp);
+		writeMessageToFile(messArr->messages[0], fp);
 	
 		fclose(fp);
 		
@@ -325,7 +304,7 @@ int main(int argc, char **argv) {
 		old = messArr->messages[0].header.destPort[0];
 		messArr->messages[0].header.destPort[0] = old + 0x01;
 		
-		writeToFile(messArr->messages[0], fp);
+		writeMessageToFile(messArr->messages[0], fp);
 		
 		fclose(fp);
 

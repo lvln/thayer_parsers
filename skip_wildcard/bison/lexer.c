@@ -21,6 +21,6 @@ int yylex(void) {
 		return 0;
 	else if(c==0x00)
 		return X00;
-	printf("%d read in lexer.c.\n", c);
+	yylval = c;
 	return c;
 }

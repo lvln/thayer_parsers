@@ -74,7 +74,36 @@ void writeHeader(pcap_t *pcapFile, FILE *ofile) {
 			printf("Problem writing to file.\n");
 
 }
+
+/*
+ * Write a raw MAVLink message to a file - just header and payload.
+ * Inputs: message to write, file pointer.
+ * Outputs: none.
+ */
+void writeMessageToFile(message_t mess, FILE *ofile) {
+	// Variable declarations.
+	int i, payload;
+	uint8_t buf;
 	
+	payload = toInt8(&mess.body.payloadLen);
+
+	for (i = 0; i < payload + 12; i++) {
+		if (i == 0) buf = mess.body.mavCode;
+		else if (i == 1) buf =	mess.body.payloadLen;
+		else if (i == 2) buf = mess.body.incompFlag;
+		else if (i == 3) buf = mess.body.compFlag;
+		else if (i == 4) buf = mess.body.packetSeq;
+		else if (i == 5) buf = mess.body.systemID;
+		else if (i == 6) buf = mess.body.compID;
+		else if (i < 10) buf = mess.body.messageID[i - 7];		
+		else if (i < 10 + payload) buf = mess.body.payload[i - 10];
+		else buf = mess.body.crc[i - 10 - payload];
+
+		if (fwrite(&buf, sizeof(buf), 1, ofile) != 1)
+			printf("Error writing byte %02x to file.\n", buf);
+	}
+
+}	
 								 
 /*
  * Write a AMVLink message to a file.
@@ -292,6 +321,68 @@ void untruncate(message_t *mess) {
 	}
 	
 }
+
+/*
+ * Read a file that contains just MAVLink messagess - no pcap header and no UDP headers.
+ * Inputs: input file
+ * Outputs: array of messages; NULL if unsuccessful
+ */
+messArr_t *readMavFile(FILE *ifile) {
+	// variable declarations.
+	messArr_t *messArr;
+	int i, payload, numMess, bytesRead;
+	message_t mess;
+	uint8_t buf;
+	
+	if ((messArr = (messArr_t *)malloc(sizeof(messArr_t))) == NULL)
+		return NULL;
+
+	i = 0;
+	payload = 0;
+	numMess = 0;
+	
+	// Read all of the successive bytes from the file.
+	while ((bytesRead = fread(&buf, sizeof(buf), 1, ifile)) > 0) {
+		if (i == 0) mess.body.mavCode = buf;
+		else if (i == 1) {
+			mess.body.payloadLen = buf;
+
+			payload = (int)buf;
+			
+			if ((mess.body.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL)
+				printf("Memory allocation failed.\n");
+		}
+		else if (i == 2) mess.body.incompFlag = buf;
+		else if (i == 3) mess.body.compFlag = buf;
+		else if (i == 4) mess.body.packetSeq = buf;
+		else if (i == 5) mess.body.systemID = buf;
+		else if (i == 6) mess.body.compID = buf;
+		else if (i < 10) mess.body.messageID[i - 7] = buf;		
+		else if (i < 10 + payload) mess.body.payload[i - 10] = buf;
+		else mess.body.crc[i - 10 - payload] = buf;		
+		
+		i++;
+
+		// If the end of a message has been reached.
+		if (i == (12 + payload) && payload != 0) {
+			if (numMess == 0) 
+				messArr->messages = (message_t *)malloc(sizeof(message_t));
+			else 
+				messArr->messages = (message_t *)realloc(messArr->messages, sizeof(message_t)*(numMess + 1));
+
+			messArr->messages[numMess] = mess;
+					
+			// Reset all variables
+			i = 0;
+			payload = 0;
+			numMess++;
+		}
+	}
+	messArr->n = numMess;
+	
+	return messArr;
+}
+
 
 /*
  * Read a file that contains just messagess - no pcap header.

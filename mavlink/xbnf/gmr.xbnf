@@ -2,33 +2,8 @@ P : optMessage ;
 optMessage : /* empty */ | optMessage message ;
 
 /* Messsages contain header for each packet followed by the MAVLink specific header then the message and finally a checkusm */
-message : packetRecordHeader mavHeader messageOption * * ;
+message : messageOption * * ;
 messageOption : hb | ss | ping | lns | pv | gri | sp | att | aq | lpn | gpi | mc | mir | rc | vh | ca | at | ptln | ptli | rs | alt | bs | es | vb | hp | ess | ugp | st | tett | ev | ces | odil | odis ;
-
-/* Header for each captured packet */
-packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
-prhTimestampSec : * * * * ;
-prhTimestampUSNS : * * * * ;
-prhCPL : * * * * ; /* captured packet length */
-prhOPL : * * * * ; /* original packet length */
-
-/* MAVLink header for each message */
-mavHeader : family ipvhl dsf totalLen id ffo ttl protocol headerChecksum sourceAddr destAddr sourcePort destPort length checksum ;
-family : '\x02' '\x00' '\x00' '\x00' ; /* Always 2 for MAVLink */
-ipvhl : '\x45' ; /* ip version and header length  - always ip version 4 and 5 as header length for MAVLink */
-dsf : * ; /* differentiated services field - not sure */
-totalLen : * * ;
-id : * * ;
-ffo : * * ;
-ttl : '\x40' ; /* time to live - seemingly always 0x40 for MAVLink - not sure */
-protocol : '\x11' ; /* protocol - always 0x11 for MAVLink because it is UDP */
-headerChecksum : * * ; /* header checksum - not sure */
-sourceAddr : * * * * ;
-destAddr : * * * * ;
-sourcePort : '\x38' '\xD6' ;
-destPort : '\x38' '\xF4' ;
-length : * * ;
-checksum : * * ;
 
 /* HEARTBEAT (0) */
 hb : hb01 | hb02 | hb03 | hb04 | hb05 | hb06 | hb07 | hb08 | hb09 ;

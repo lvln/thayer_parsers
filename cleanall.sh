@@ -33,7 +33,7 @@ make ${MODE} clean
 popd
 
 # make the hmr grammars
-for DIR in gmr0 gmr1 jnum jstring json bin0 bin1 bin2 unicode command response json.unicode abnf url usps can can/can.pr J1939 http xml mavlink mavlink_standalone_message mavlink_single_message_repeat mavlink_two_messages_same_length mavlink_three_messages
+for DIR in gmr0 gmr1 jnum jstring json bin0 bin1 bin2 unicode command response json.unicode abnf url usps can can/can.pr J1939 http xml mavlink mavlink_standalone_message mavlink_single_message_repeat mavlink_two_messages_same_length mavlink_three_messages xbnf_skip_wildcard skip_wildcard
 do
 		if [ -d ./${DIR}/bison ] ; then
 				pushd ./${DIR}/bison

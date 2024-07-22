@@ -89,7 +89,7 @@
 		/* generate the preamble */
 		fprintf(xout,"%%{\n");
 		fprintf(xout,"  #define YYDEBUG 1\n");
-		fprintf(xout,"  int yylex(void);\n");
+		fprintf(xout,"  extern int yylex(void);\n");
 		fprintf(xout,"  void yyerror(char *s);\n");
 		fprintf(xout,"%%}\n");
 		fprintf(xout,"%%token X00\n");

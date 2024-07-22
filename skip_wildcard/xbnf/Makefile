@@ -1,6 +1,6 @@
 CFLAGS=-Wall -pedantic -std=c11 -I.
 OFILES=gmr.tab.o lexer.o gmr_tb.o
-XBNFDIR=../../xbnf/bison
+XBNFDIR=../../xbnf_wildcard_skip/bison
 
 all:				gmr
 
