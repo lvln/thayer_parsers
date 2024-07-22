@@ -1,1 +1,1 @@
-A parser that acceots any single byte \x00 to \xff.
+A parser that accepts any single byte \x00 to \xff.
