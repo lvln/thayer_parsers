@@ -3,11 +3,11 @@ LIBS=-lutils -lcurl
 
 all: tv
 
-tv:
+tv:					tv.c
 						gcc $(CFLAGS) tv.c $(LIBS) -o $@
 
 clean:
-				rm -f *~ tv *.o
+				rm -f *~ tv pass.* fail.* *.o
 
 
 
