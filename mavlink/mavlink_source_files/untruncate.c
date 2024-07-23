@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
 	
 	for (i = 0; i < numMess; i++) {
 		untruncate(&(pcapFile->messages[i]));
-		writeToFile(pcapFile->messages[i], ofile);
+		writeMessageToFile(pcapFile->messages[i], ofile);
 	}
 
 	freeMemPcap(pcapFile);

@@ -36,7 +36,6 @@ static int toInt(unsigned char *len, int numBytes) {
  * Inputs: message to be printed, number of bytes in the message.
  * Outputs: none.
  */
-
 static void printMessage(message_t mess, int len) {
 	int i;
 
@@ -48,7 +47,6 @@ static void printMessage(message_t mess, int len) {
 
 	printf("\n");
 }
-
 
 /*
  * Write a message to a file in binary.
@@ -78,7 +76,7 @@ int main(int argc, char **argv) {
 
 	// Check arguments
 	if (argc < 3) {
-    printf("usage: read inputFile outputFile [messageNumbers]\n");
+    printf("usage: cleandata inputFile outputFile [messageNumbers]\n");
     exit(EXIT_FAILURE);
 	}
 	
@@ -120,8 +118,8 @@ int main(int argc, char **argv) {
 		i++;
 		printf("%02x ", buf);
 		
-		//		if (fwrite(&buf, sizeof(buf), 1, ofile) != 1)
-		//			printf("Not successfully written");
+		if (fwrite(&buf, sizeof(buf), 1, ofile) != 1)
+			printf("Not successfully written");
 		
 	}
 
