@@ -1,94 +1,56 @@
-# MAVLink - generates a parser for the MAVLink grammar
+# MAVLink
 
-Note: This directory contains the complete definition for the MAVLink grammar. Please see `mavlink_standalone_message`, `mavlink_single_message-repeat`, `mavlink_two_messages_same_length` or `mavlink_three_messages` for grammars for smaller components of MAVLink.
+Note: This directory contains the complete definition for the MAVLink grammar. Please see `mavlink_standalone_message`, `mavlink_single_message-repeat`, `mavlink_two_messages_same_length` or `mavlink_three_messages` for smaller components of the MAVLink grammar.
+
+According to the [MAVLink documentation](https://mavlink.io/en/guide/serialization.html), MAVLink 2 truncates empty (zero-filled bytes) at the end of the payload; it will never truncate the first byte of the payload regardless of if it is empty or not. The grammar is thus defined such that it allows for each payload to be any length.
 
 All data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
 
 ## Directory structure
 
-* **mavlink\_source\_files** holds 3 datafiles (*run1.pcap*, *run2.pcap* and *run3.pcap) containing data messages from 3 flights with a Holybro X500 V2 drone. These files were collected using Wireshark. This directory also holds C-code which can be used to clean the data as well as extract individual messages from the original files (`cleandata.c`) for the purpose of creating individual test cases; `countcodes.c` counts the number of unique message codes in a file containing MAVLink messages; `untruncate.c` pads truncated MAVLink messages with 0s such that all messages of a specific type have a standardized length
-* **xbnf** contains a working parser written in xbnf for the 3 captured datasets
-* **tests** contains a full set of tests for the MAVLink parser, including the cleaned datasets from the shorter and longer runs
-  * `tv.c` autop-generates a range of tests
-  * `pass.xxx` is an original message from a drone flight, where xxx is the message id
-  * `pass.xxx.yyy` is an original message with message id xxx from a drone flight with non-constant field number yyy changed
-  * `fail.xxx.yyy` is an original message with message id xxx from a drone flight with a specific constant field changed:
-	* yyy = 0: MAVLink code is changed
-	* yyy = 1: Kmessage id is changed
-	* yyy = 2: payload length value is changed
-	* yyy = 3: one to few bytes is written
-	* yyy = 4: one to many bytes is written
-	* yyy = 5: message family value is changed
-	* yyy = 6: ip version/header length field value is changed
-	* yyy = 7: time to live value is changed
-	* yyy = 8: source port value is changed
-	* yyy = 9: destination port value is changed
+* **mavlink\_source\_files** holds 3 datafiles (*run1.pcap*, *run2.pcap* and *run3.pcap) containing data messages from 3 flights with a Holybro X500 V2 drone. These files were collected using Wireshark.  It also contains a preprocessor which extracts the MAVLink messages from the data files.
+* **xbnf** contains a working parser written in xbnf for the 3 captured datasets.
+* **tests** contains a full set of tests for the MAVLink parser.
 	
 ## Data packet structure
 MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.
-The format of MAVLink messages is defined in the `common.xml` file and can be found [here](https://mavlink.io/en/messages/common.html).
-The data packets are found in packet capture, `.pcap`, files.
+The format of MAVLink messages is defined [here](https://mavlink.io/en/guide/serialization.html) with the payload of each individual message defined in the `common.xml` file and can be found [here](https://mavlink.io/en/messages/common.html).
 
-**Each message begins with a 16 byte packet record header:**
+**Each message begins with a message-specific header which is 10 bytes in length.**
 
-* Bytes 0 - 3: Timestamp (seconds).
-* Bytes 4 - 7: Timestamp (microseconds or nanoseconds - depending on magic number in the PCAP file header).
-* Bytes 8 - 11: Captured packet length.
-* Bytes 12 - 15: Original packet length.
-  
-**The header for all MAVLink messages follows a standard format and is comprised of the first 32 bytes of the message (following the packer record header)**
+* Byte 0: Magic value/version (always 0xfd for MAVLink 2).
+* Byte 1: Payload length.
+* Byte 2: Incompatibility flag.
+* Byte 3: Compatibility flag.
+* Byte 4: Packet sequence.
+* Byte 5: System id.
+* Byte 6: Component id.
+* Bytes 7 - 9: Message id (big endian).
 
-* Bytes 0 - 3: Message family.
-* Byte 4: 4 MSB are IP version; 4 LSB are header length.
-* Byte 5: Differentiated service field.
-* Bytes 6 - 7: Total length (big endian).
-* Bytes 8 - 9: Identification.
-* Bytes 10 - 11: Flags and fragment offset.
-* Byte 12: Time to live.
-* Byte 13: Protocol.
-* Bytes 14 - 15: Header checksum.
-* Bytes 16 - 19: Source address.
-* Bytes 20 - 23: Destination address.
-* Bytes 24 - 25: Source port (big endian).
-* Bytes 26 - 27: Destination port (big endian).
-* Bytes 28 - 29: Length (big endian).
-* Bytes 30 - 31: Checksum.
-
-**This is followed by a message-specific header which is 10 bytes in length**
-
-* Byte 32: Magic value/version (always 0xfd for MAVLink 2.0).
-* Byte 33: Payload length.
-* Byte 34: Incompatibility flag.
-* Byte 35: Compatibility flag.
-* Byte 36: Packet sequence.
-* Byte 37: System id.
-* Byte 38: Component id.
-* Bytes 39 - 41: Message id (big endian).
-
-**A few messages in the MAVLink `common.xml` dialect:**
+**The is then followed by the message payload which is listed here for a few messages.**
 
 * **GLOBAL_POSITION_INT**: The filtered global position (e.g. fused GPS and accelerometers). The position is in GPS-frame (right-handed, Z-up).
-  * Bytes 42 - 45: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.
-  * Bytes 46 - 49: *lat*: latitude; *degE7*; `int32_t`.
-  * Bytes 50 - 53: *lon*: longitude; *degE7*; `int32_t`.
-  * Bytes 54 - 57: *alt*; altitude; *mm*; `int32_t`.
-  * Bytes 58 - 61: *relative_alt*; altitude above ground; *mm*; `int32_t`.
-  * Bytes 62 - 63: *vx*; ground x speed (latitude, positive north); *cm/s*; `int16_t`.
-  * Bytes 64 - 65: *vy*; ground y speed (longitude, positive east); *cm/s*; `int16_t`.
-  * Bytes 66 - 67: *vz*; ground z speed (altitude, positive down); *cm/s*; `int16_t`.
-  * Bytes 68 - 69: *hdg*; vehicle heading (yaw angle); *cdeg*; `uint16_t`.
+  * Bytes 10 - 13: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.
+  * Bytes 14 - 17: *lat*: latitude; *degE7*; `int32_t`.
+  * Bytes 18 - 21: *lon*: longitude; *degE7*; `int32_t`.
+  * Bytes 22 - 25: *alt*; altitude; *mm*; `int32_t`.
+  * Bytes 26 - 29: *relative_alt*; altitude above ground; *mm*; `int32_t`.
+  * Bytes 30 - 31: *vx*; ground x speed (latitude, positive north); *cm/s*; `int16_t`.
+  * Bytes 32 - 33: *vy*; ground y speed (longitude, positive east); *cm/s*; `int16_t`.
+  * Bytes 34 - 35: *vz*; ground z speed (altitude, positive down); *cm/s*; `int16_t`.
+  * Bytes 36 - 37: *hdg*; vehicle heading (yaw angle); *cdeg*; `uint16_t`.
   
   ![GLOBAL_POSITION_INT](./.images/GPIImage.jpg)
   
 * **ATTITUDE**: The attitude in the aeronautical frame (right-handed, Z-down, Y-right, X-front, ZYX, intrinsic)
-  * Bytes 42 - 45: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.
-  * Bytes 46 - 49: *roll*; roll angle (-pi..+pi); *rad*; `float`.
-  * Bytes 50 - 53: *pitch*; pitch angle (-pi..+pi); *rad*; `float`.
-  * Bytes 54 - 57: *yaw*; yaw angle (-pi..+pi); *rad*; `float`.
-  * Bytes 58 - 61: *rollspeed*; roll angular speed; *rad/s*; `float`.
-  * Bytes 62 - 65: *pitchspeed*; pitch angular speed; *rad/s*; `float`.
-  * Bytes 66 - 69: *yawspeed*; yaw angular speed; *rad/s*; `float`.
+  * Bytes 10 - 13: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.
+  * Bytes 14 - 17: *roll*; roll angle (-pi..+pi); *rad*; `float`.
+  * Bytes 18 - 21: *pitch*; pitch angle (-pi..+pi); *rad*; `float`.
+  * Bytes 22 - 25: *yaw*; yaw angle (-pi..+pi); *rad*; `float`.
+  * Bytes 26 - 29: *rollspeed*; roll angular speed; *rad/s*; `float`.
+  * Bytes 30 - 33: *pitchspeed*; pitch angular speed; *rad/s*; `float`.
+  * Bytes 34 - 37: *yawspeed*; yaw angular speed; *rad/s*; `float`.
   
-  ![GLOBAL_POSITION_INT](./.images/AttitudeImage.jpg)
+  ![ATTITUDE](./.images/AttitudeImage.jpg)
   
-All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum.
+All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum and an optional 13 byte signature (only for MAVLink 2).
