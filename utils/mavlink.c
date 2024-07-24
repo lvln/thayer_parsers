@@ -1,11 +1,11 @@
 /* 
- * mavlink.c --- 
+ * mavlink.c --- implementation of the functions described in mavlink.h
  * 
  * Author: Joshua M. Meise
  * Created: 06-27-2024
  * Version: 1.0
  * 
- * Description: 
+ * Description: Allows for data processing and test generation.
  * 
  */
 
@@ -173,7 +173,7 @@ static void generateEnumTests(int msgID, int ind, messageBody_t mess) {
 
 			// Fill array.
 			for (i = 1; i <= arr.n; i++)
-				arr.arr[i] = i;
+				arr.arr[i - 1] = i;
 
 			// Generate the test files.
 			gt(mess, ind, arr, PARAM_VALUE_LEN, msgID);
@@ -406,7 +406,7 @@ static void generateEnumTests(int msgID, int ind, messageBody_t mess) {
 				arr.arr[i] = i;
 
 			// Generate the test files.
-			gt(mess, ind, arr, STATUSTEXT, msgID);
+			gt(mess, ind, arr, STATUSTEXT_LEN, msgID);
 			
 			free(arr.arr);
 		}
@@ -1725,9 +1725,131 @@ void generateTests(int msgID) {
 		fclose(fp);	
 	}
 	mess.compFlag = 0x00;
+
+	// Write a failing test with an extra byte.
+	sprintf(fname, "./fail.%d.%d.extraByte", msgID, maxLen);
+	
+	// Open file for writing.
+	if ((fp = fopen(fname, "wb")) == NULL) {
+		printf("Error opening file %s for writing.\n", fname);
+		exit(EXIT_FAILURE);
+	}
+	
+	// Write message to file wuth an extra byte.
+	writeMavDiffLenToFile(mess, fp, i + 13, i);
+	
+	fclose(fp);
+
+	// Write a failing test with a byte too few.
+	sprintf(fname, "./fail.%d.%d.oneLessByte", msgID, maxLen);
+	
+	// Open file for writing.
+	if ((fp = fopen(fname, "wb")) == NULL) {
+		printf("Error opening file %s for writing.\n", fname);
+		exit(EXIT_FAILURE);
+	}
+	
+	// Write message to file with a byte too few.
+	writeMavDiffLenToFile(mess, fp, i + 11, i);
+	
+	fclose(fp);
+
+	// Generate passing system id tests.
+	for (j = 0; j <= 255; j++) {
+		mess.systemID = j;
+		
+		sprintf(fname, "./pass.%d.%d.header.systemID.%d", msgID, maxLen, j);
+		
+		// Open file for writing.
+		if ((fp = fopen(fname, "wb")) == NULL) {
+			printf("Error opening file %s for writing.\n", fname);
+			exit(EXIT_FAILURE);
+		}
+		
+		// Write message to file.
+		writeMavMessageToFile(mess, fp);
+		
+		fclose(fp);	
+	}
+	mess.systemID = (uint8_t)(rand() % 256);
+
+		// Generate passing component id tests.
+	for (j = 0; j <= 255; j++) {
+		mess.compID = j;
+		
+		sprintf(fname, "./pass.%d.%d.header.componentID.%d", msgID, maxLen, j);
+		
+		// Open file for writing.
+		if ((fp = fopen(fname, "wb")) == NULL) {
+			printf("Error opening file %s for writing.\n", fname);
+			exit(EXIT_FAILURE);
+		}
+		
+		// Write message to file.
+		writeMavMessageToFile(mess, fp);
+		
+		fclose(fp);	
+	}
+	mess.compID = (uint8_t)(rand() % 256);
+
+	// Generate passing packet sequence tests.
+	for (j = 0; j <= 255; j++) {
+		mess.packetSeq = j;
+		
+		sprintf(fname, "./pass.%d.%d.header.packetSequence.%d", msgID, maxLen, j);
+		
+		// Open file for writing.
+		if ((fp = fopen(fname, "wb")) == NULL) {
+			printf("Error opening file %s for writing.\n", fname);
+			exit(EXIT_FAILURE);
+		}
+		
+		// Write message to file.
+		writeMavMessageToFile(mess, fp);
+		
+		fclose(fp);	
+	}
+	mess.packetSeq = (uint8_t)(rand() % 256);;
+
+	// Generate passing crc field tests.
+	for (j = 0; j <= 255; j++) {
+		mess.crc[0] = j;
+		
+		sprintf(fname, "./pass.%d.%d.crc[0].%d", msgID, maxLen, j);
+		
+		// Open file for writing.
+		if ((fp = fopen(fname, "wb")) == NULL) {
+			printf("Error opening file %s for writing.\n", fname);
+			exit(EXIT_FAILURE);
+		}
+		
+		// Write message to file.
+		writeMavMessageToFile(mess, fp);
+		
+		fclose(fp);	
+	}
+	mess.crc[0] = (uint8_t)(rand() % 256);;
+
+	for (j = 0; j <= 255; j++) {
+		mess.crc[1] = j;
+		
+		sprintf(fname, "./pass.%d.%d.crc[1].%d", msgID, maxLen, j);
+		
+		// Open file for writing.
+		if ((fp = fopen(fname, "wb")) == NULL) {
+			printf("Error opening file %s for writing.\n", fname);
+			exit(EXIT_FAILURE);
+		}
+		
+		// Write message to file.
+		writeMavMessageToFile(mess, fp);
+		
+		fclose(fp);	
+	}
+	mess.crc[1] = (uint8_t)(rand() % 256);;
 	
 	free(mess.payload);
-
+	
 	if (enumArr.arr != NULL)
 		free(enumArr.arr);
 }
