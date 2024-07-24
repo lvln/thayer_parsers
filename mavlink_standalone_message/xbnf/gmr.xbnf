@@ -1,51 +1,87 @@
 P : message ;
 
 /* Messsages contain header for each packet followed by the MAVLink specific header then the message and finally a checkusm */
-message : packetRecordHeader mavHeader sp * * ;
-
-/* Header for each captured packet */
-packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
-prhTimestampSec : * * * * ;
-prhTimestampUSNS : * * * * ;
-prhCPL : * * * * ; /* captured packet length */
-prhOPL : * * * * ; /* original packet length */
-
-/* MAVLink header for each message */
-mavHeader : family ipvhl dsf totalLen id ffo ttl protocol headerChecksum sourceAddr destAddr sourcePort destPort length checksum ;
-family : '\x02' '\x00' '\x00' '\x00' ; /* Always 2 for MAVLink */
-ipvhl : '\x45' ; /* ip version and header length  - always ip version 4 and 5 as header length for MAVLink */
-dsf : * ; /* differentiated services field - not sure */
-totalLen : '\x00' '\x38' ;
-id : * * ;
-ffo : * * ;
-ttl : '\x40' ; /* time to live - seemingly always 0x40 for MAVLink - not sure */
-protocol : '\x11' ; /* protocol - always 0x11 for MAVLink because it is UDP */
-headerChecksum : * * ; /* header checksum - not sure */
-sourceAddr : * * * * ;
-destAddr : * * * * ;
-sourcePort : '\x38' '\xD6' ;
-destPort : '\x38' '\xF4' ;
-length : * * ;
-checksum : * * ;
+message : sp * * ;
 
 /* SCALED_PRESSURE (29) */
-sp : spMH timeBoot spPressAb spPressDiff spTemp spTempParseDiff ;
-spMH : MAVCODE SPLEN incompFlag compFlag packetSequence sysID compID SPCODE ;
-spPressAb : * * * * ;
-spPressDiff : * * * * ;
-spTemp : * * ;
-spTempParseDiff : * * ;
+sp : sp01 | sp02 | sp03 | sp04 | sp05 | sp06 | sp07 | sp08 | sp09 | sp10 | sp11 | sp12 | sp13 | sp14 | sp15 | sp16 ;
+sp01 : spMH01 * ;
+sp02 : spMH02 * * ;
+sp03 : spMH03 * * * ;
+sp04 : spMH04 * * * * ;
+sp05 : spMH05 * * * * * ;
+sp06 : spMH06 * * * * * * ;
+sp07 : spMH07 * * * * * * * ;
+sp08 : spMH08 * * * * * * * * ;
+sp09 : spMH09 * * * * * * * * * ;
+sp10 : spMH10 * * * * * * * * * * ;
+sp11 : spMH11 * * * * * * * * * * * ;
+sp12 : spMH12 * * * * * * * * * * * * ;
+sp13 : spMH13 * * * * * * * * * * * * * ;
+sp14 : spMH14 * * * * * * * * * * * * * * ;
+sp15 : spMH15 * * * * * * * * * * * * * * * ;
+sp16 : spMH16 * * * * * * * * * * * * * * * * ;
+spMH01 : ml01 SPCODE ;
+spMH02 : ml02 SPCODE ;
+spMH03 : ml03 SPCODE ;
+spMH04 : ml04 SPCODE ;
+spMH05 : ml05 SPCODE ;
+spMH06 : ml06 SPCODE ;
+spMH07 : ml07 SPCODE ;
+spMH08 : ml08 SPCODE ;
+spMH09 : ml09 SPCODE ;
+spMH10 : ml10 SPCODE ;
+spMH11 : ml11 SPCODE ;
+spMH12 : ml12 SPCODE ;
+spMH13 : ml13 SPCODE ;
+spMH14 : ml14 SPCODE ;
+spMH15 : ml15 SPCODE ;
+spMH16 : ml16 SPCODE ;
+
+/* Header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
+ml01 : MAVCODE LEN01 messageHeaderTail ;
+ml02 : MAVCODE LEN02 messageHeaderTail ;
+ml03 : MAVCODE LEN03 messageHeaderTail ;
+ml04 : MAVCODE LEN04 messageHeaderTail ;
+ml05 : MAVCODE LEN05 messageHeaderTail ;
+ml06 : MAVCODE LEN06 messageHeaderTail ;
+ml07 : MAVCODE LEN07 messageHeaderTail ;
+ml08 : MAVCODE LEN08 messageHeaderTail ;
+ml09 : MAVCODE LEN09 messageHeaderTail ;
+ml10 : MAVCODE LEN10 messageHeaderTail ;
+ml11 : MAVCODE LEN11 messageHeaderTail ;
+ml12 : MAVCODE LEN12 messageHeaderTail ;
+ml13 : MAVCODE LEN13 messageHeaderTail ;
+ml14 : MAVCODE LEN14 messageHeaderTail ;
+ml15 : MAVCODE LEN15 messageHeaderTail ;
+ml16 : MAVCODE LEN16 messageHeaderTail ;
+
+messageHeaderTail :  incompFlag compFlag packetSequence sysID compID ;
 
 /* Tokens */
 MAVCODE : '\xFD' ;
 
 SPCODE : '\x1D' '\x00' '\x00' ;
 
-SPLEN : '\x10' ;
+LEN01 : '\x01' ;
+LEN02 : '\x02' ;
+LEN03 : '\x03' ;
+LEN04 : '\x04' ;
+LEN05 : '\x05' ;
+LEN06 : '\x06' ;
+LEN07 : '\x07' ;
+LEN08 : '\x08' ;
+LEN09 : '\x09' ;
+LEN10 : '\x0A' ;
+LEN11 : '\x0B' ;
+LEN12 : '\x0C' ;
+LEN13 : '\x0D' ;
+LEN14 : '\x0E' ;
+LEN15 : '\x0F' ;
+LEN16 : '\x10' ;
 
 incompFlag : '\x00' ;  /* incompatibility flag */
 compFlag : '\x00' ; /* compatibility flag */
 packetSequence : * ;
-sysID : '\x01' | '\x33' | '\xFF' ; /* system ID  */
-compID : '\x01' | '\x44' | '\xBE' ; /* component ID */
-timeBoot : * * * * ;
+sysID : * ; /* system ID  */
+compID : * ; /* component ID */
