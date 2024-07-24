@@ -30,7 +30,6 @@ hbAutoPilot : [ '\x00' - '\x14' ] ;
 hbSysStatus : [ '\x00' - '\x08' ] ;
 
 /* SYS_STATUS (1) */
-
 ss : ss01 | ss02 | ss03 | ss04 | ss05 | ss06 | ss07 | ss08 | ss09 | ss10 | ss11 | ss12 | ss13 | ss14 | ss15 | ss16 | ss17 | ss18 | ss19 | ss20 | ss21 | ss22 | ss23 | ss24 | ss25 | ss26 | ss27 | ss28 | ss29 | ss30 | ss31 | ss32 | ss33 | ss34 | ss35 | ss36 | ss37 | ss38 | ss39 | ss40 | ss41 | ss42 | ss43 ;
 ss01 : ssMH01 * ;
 ss02 : ssMH02 * * ;
@@ -2336,7 +2335,7 @@ odisMH54 : ml54 ODISCODE ;
 odisOpLocType : [ '\x00' - '\x02' ] ;
 odisClassType : [ '\x00' - '\x01' ] ;
 
-/* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
+/* Header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
 ml01 : MAVCODE LEN01 messageHeaderTail ;
 ml02 : MAVCODE LEN02 messageHeaderTail ;
 ml03 : MAVCODE LEN03 messageHeaderTail ;
@@ -2409,6 +2408,7 @@ ml69 : MAVCODE LEN69 messageHeaderTail ;
 ml70 : MAVCODE LEN70 messageHeaderTail ;
 
 messageHeaderTail :  incompFlag compFlag packetSequence sysID compID ;
+
 /* Tokens */
 MAVCODE : '\xFD' ;
 

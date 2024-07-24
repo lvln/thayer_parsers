@@ -10,6 +10,8 @@ Tests for the MAVLink parser which contains tests for all given byte values in a
 * `fail.msgID.len.ind.val` is a failing test for a given mesage ID at its maximum payload length (all fields present) where `ind` is the index of the payload field being tested and `val` is the byte value being tested
 * `fail.msgID.len.header.field.val` is a failing test for a given mesage ID at its maximum payload length (all fields present) in the header field where `field` is the name of the header field being tested and val is the byte value being tested
 * `pass.msgID.len.header.field.val` is a passing test for a given mesage ID at its maximum payload length (all fields present) in the header field where `field` is the name of the header field being tested and val is the byte value being tested
+* `fail.msgID.len.extraByte` and `fail.msgID.len.oneByteLess` are failing tests for messages of the maximum length with one byte too many and one byte too few respectively
+* `pass.msgID.len.crc[x].val` are passing tests for messages of the maximum length with `crc` field `x` changed such that it contains a byte of value `val` 
 
 ## Usage:
 
