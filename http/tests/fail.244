@@ -1,0 +1,6 @@
+CONNECT mailto:John.Doe@example.com HTTP/1.1
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+

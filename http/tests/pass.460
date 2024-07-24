@@ -1,0 +1,23 @@
+HTTP/1.0 403 Forbidden
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Type: application/json
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Accept-Language: en-US
+Range: 
+Host: www.example.com
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+
+You do not have permission to access the requested resource.

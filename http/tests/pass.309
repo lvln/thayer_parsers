@@ -1,0 +1,8 @@
+OPTIONS http://g HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Language: en-US
+Content-Length: 123
+Connection: keep-alive
+Range: 
+

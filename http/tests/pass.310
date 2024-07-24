@@ -1,0 +1,4 @@
+OPTIONS http://a/b/c/.g HTTP/1.1
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+

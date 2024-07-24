@@ -1,6 +1,12 @@
-HTTP/1.1 200 OK
-Content-Type: text/html; charset=utf-8
+GET http://example.com/data HTTP/2.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Connection: keep-alive
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Transfer-Encoding: chunked
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
 
-<!DOCTYPE html>
-<html lang=en>

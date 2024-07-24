@@ -1,0 +1,8 @@
+HEAD http://example.com HTTP/1.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+Range: 
+

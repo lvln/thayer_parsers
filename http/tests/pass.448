@@ -1,0 +1,9 @@
+HTTP/1.0 308 Permanent Redirect
+Content-Type: application/json
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Transfer-Encoding: chunked
+Pragma:
+Vary:     
+Connection: keep-alive
+

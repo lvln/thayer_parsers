@@ -1,0 +1,18 @@
+HEAD /a/b/ HTTP/2.
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Referer: https://www.example.com/page
+Host: www.example.com
+Connection: keep-alive
+Range: 
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+Transfer-Encoding: chunked
+

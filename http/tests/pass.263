@@ -1,0 +1,8 @@
+CONNECT http://a/b/c/.g HTTP/2.0
+Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+Range: 
+Host: www.example.com
+

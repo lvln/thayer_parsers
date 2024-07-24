@@ -1,0 +1,19 @@
+POST http://www.ietf.org/rfc/rfc2396.txt HTTP/1.0
+Host: www.example.com
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Connection: keep-alive
+Range: 
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Pragma:
+
+key1=value1&key2=value2

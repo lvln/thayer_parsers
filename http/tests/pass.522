@@ -1,0 +1,7 @@
+HTTP/2.0 426 Upgrade Required
+Content-Type: application/json
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Pragma:
+

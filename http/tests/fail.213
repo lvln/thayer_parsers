@@ -1,0 +1,19 @@
+DELETE http://g HTTP1.1
+Content-Type: application/json
+Transfer-Encoding: chunked
+Referer: https://www.example.com/page
+Accept-Language: en-US
+Vary:     
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Range: 
+
+Record to delete

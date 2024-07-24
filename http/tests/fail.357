@@ -1,0 +1,12 @@
+TRACE http://g HTTP1.1
+Content-Length: 123
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Range: 
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+

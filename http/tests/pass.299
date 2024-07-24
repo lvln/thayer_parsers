@@ -1,0 +1,4 @@
+OPTIONS http://example.com/data HTTP/2.0
+Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+

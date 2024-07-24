@@ -1,0 +1,10 @@
+OPTIONS http://a/b/c/g. HTTP/1.0
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
+Content-Type: application/json
+Host: www.example.com
+Accept-Language: en-US
+

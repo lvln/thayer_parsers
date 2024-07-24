@@ -1,0 +1,14 @@
+TRACE http://a/b/c/g. HTTP1.1
+Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+

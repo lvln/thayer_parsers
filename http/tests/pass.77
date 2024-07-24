@@ -1,0 +1,3 @@
+HEAD http://www.example.org:8080/pub/WWW/TheProject.html HTTP/2.0
+Pragma:
+

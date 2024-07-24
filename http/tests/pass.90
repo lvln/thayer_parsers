@@ -1,0 +1,9 @@
+HEAD http://a/b/c/g. HTTP/1.0
+Content-Type: application/json
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Host: www.example.com
+Connection: keep-alive
+

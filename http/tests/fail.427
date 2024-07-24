@@ -1,0 +1,6 @@
+HTTP/1.0 226 IM Used
+Range: 
+Vary:     
+Content-Length: 123
+WWW-Authenticate    : Basic realm="Access to the staging site"
+

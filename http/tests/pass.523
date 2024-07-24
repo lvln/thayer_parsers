@@ -1,0 +1,17 @@
+HTTP/1.0 426 Upgrade Required
+Transfer-Encoding: chunked
+Pragma:
+Range: 
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Referer: https://www.example.com/page
+Host: www.example.com
+Content-Type: application/json
+Accept-Language: en-US
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
+

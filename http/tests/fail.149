@@ -1,0 +1,14 @@
+PUT http://a/b/c/..g HTTP1.1
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Pragma:
+Host: www.example.com
+
+key1=value1&key2=value2

@@ -1,0 +1,5 @@
+HTTP/2.0 501 Not Implemented
+Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+

@@ -1,0 +1,6 @@
+DELET http://example.com/data/ HTTP/1.0
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+

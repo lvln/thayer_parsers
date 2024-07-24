@@ -1,0 +1,17 @@
+POST http://example.com/data HTTP/1.1
+Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
+Content-Type: application/json
+Accept-Language: en-US
+Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Range: 
+WWW-Authenticate    : Basic realm="Access to the staging site"
+
+key1=value1&key2=value2

@@ -1,0 +1,4 @@
+TRACE example.com:80/~smith/home.html HTTP/1.0
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+

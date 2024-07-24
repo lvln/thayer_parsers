@@ -1,0 +1,7 @@
+HTTP/1.0 407 Proxy Authentication Required
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
+

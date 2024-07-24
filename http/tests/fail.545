@@ -1,0 +1,12 @@
+HTTP1.1 503 Service Unavailable
+Connection: keep-alive
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Content-Length: 123
+
+The server is currently unable to handle the request due to maintenance or overload.

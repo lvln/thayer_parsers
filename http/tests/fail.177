@@ -1,0 +1,17 @@
+PUT http://www.ietf.org/rfc/rfc2396.txt HTTP1.1
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
+Transfer-Encoding: chunked
+Content-Length: 123
+Referer: https://www.example.com/page
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Language: en-US
+Pragma:
+
+key1=value1&key2=value2

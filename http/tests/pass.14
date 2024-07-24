@@ -1,6 +1,5 @@
-HTTP/1.1 303 Moved permanently
-Server: Apache/2.4.37 (Red Hat)
-ontent-Type: text/html; charset=utf-8
-Date: Thu, 06 Dec 2018 17:33:08 GMT
+GET http://example.com/data/ HTTP/2.0
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 
-This is a message

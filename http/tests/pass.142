@@ -1,0 +1,8 @@
+POST * HTTP/1.1
+Range: 
+Vary:     
+Referer: https://www.example.com/page
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
+
+key1=value1&key2=value2

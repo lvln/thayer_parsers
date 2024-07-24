@@ -1,0 +1,4 @@
+HTTP/1.1 502 Bad Gateway
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+
+The server received an invalid response from the upstream server.

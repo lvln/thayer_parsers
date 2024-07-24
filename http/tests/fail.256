@@ -1,0 +1,18 @@
+CONNECT g?y#s HTTP/1.1
+Transfer-Encoding: chunked
+Content-Length: 123
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+

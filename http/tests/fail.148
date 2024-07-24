@@ -1,0 +1,6 @@
+PUT ftp://ftp.is.co.za/rfc/rfc1808.txt# HTTP/1.1
+Transfer-Encoding: chunked
+Pragma:
+Accept-Language: en-US
+
+key1=value1&key2=value2

@@ -1,0 +1,4 @@
+CONNECT / HTTP/2.
+Transfer-Encoding: chunked
+Host: www.example.com
+

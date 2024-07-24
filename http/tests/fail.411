@@ -1,0 +1,7 @@
+HTTP/2.0 Accepted
+Host: www.example.com
+Pragma:
+Vary:     
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+

@@ -1,0 +1,18 @@
+DELETE http://www.ietf.org/rfc/rfc2396.txt HTTP/1.1
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Transfer-Encoding: chunked
+Vary:     
+Range: 
+Accept-Language: en-US
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Content-Length: 123
+Pragma:
+Connection: keep-alive
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+
+Record to delete

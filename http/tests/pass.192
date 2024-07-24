@@ -1,0 +1,6 @@
+PUT * HTTP/1.0
+Pragma:
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+
+key1=value1&key2=value2

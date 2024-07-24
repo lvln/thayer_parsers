@@ -1,0 +1,6 @@
+CONNEC * HTTP/2.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Transfer-Encoding: chunked
+
+key1=value1&key2=value2

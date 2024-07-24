@@ -1,0 +1,12 @@
+HEAD http://example.com/data/ HTTP/2.
+Vary:     
+Accept-Language: en-US
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Range: 
+Accept-Encoding: gzip,
+  deflate,
+   br
+WWW-Authenticate: Basic realm="Access to the staging site"
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+

@@ -1,0 +1,8 @@
+CONNECT http://www.example.com/hello.txt HTTP/1.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Accept-Language: en-US
+Pragma:
+Host: www.example.com
+

@@ -1,0 +1,23 @@
+DELETE http://g HTTP/2.0
+Content-Length: 123
+Host: www.example.com
+Transfer-Encoding: chunked
+Referer: https://www.example.com/page
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Connection: keep-alive
+Accept-Language: en-US
+
+Record to delete

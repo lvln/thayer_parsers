@@ -1,0 +1,6 @@
+HTTP/1.0 207 Multi-Status
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Connection : keep-alive
+

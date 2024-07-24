@@ -1,0 +1,9 @@
+GES http://www.ietf.org/rfc/rfc2396.txt HTTP/1.1
+Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Range: 
+

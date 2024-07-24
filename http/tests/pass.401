@@ -1,0 +1,15 @@
+HTTP/1.1 201 Created
+Range: 
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Pragma:
+Vary:     
+Content-Length: 123
+Transfer-Encoding: chunked
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+
+Resource has been created.

@@ -1,0 +1,14 @@
+TRACE mailto:John.Doe@example.com HTTP/1.1
+Content-Type: application/json
+Referer: https://www.example.com/page
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+

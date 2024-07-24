@@ -1,0 +1,21 @@
+HTTP/1.0 415 Unsupported Media Type
+Accept-Language: en-US
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+WWW-Authenticate: Basic realm="Access to the staging site"
+Transfer-Encoding: chunked
+Range: 
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Vary:     
+Connection: keep-alive
+Connection : keep-alive
+

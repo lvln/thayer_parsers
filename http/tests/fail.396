@@ -1,0 +1,9 @@
+HTTP/2.0 204 
+Content-Length: 123
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+

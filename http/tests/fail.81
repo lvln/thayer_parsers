@@ -1,0 +1,3 @@
+HEAD http://www.ietf.org/rfc/rfc2396.txt HTTP/2.
+WWW-Authenticate: Basic realm="Access to the staging site"
+

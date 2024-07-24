@@ -1,0 +1,4 @@
+OPTIONS * HTTP/1.0
+Host: www.example.com
+Vary:     
+

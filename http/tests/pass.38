@@ -1,0 +1,12 @@
+GET http://a/b/c/d;p?q HTTP/2.0
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Transfer-Encoding: chunked
+Accept-Language: en-US
+

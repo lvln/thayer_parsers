@@ -1,0 +1,4 @@
+DELETE / HTTP1.1
+Content-Length: 123
+
+Record to delete

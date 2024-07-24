@@ -1,0 +1,23 @@
+HTTP/2. 418 I'm a teapot
+Vary:     
+Transfer-Encoding: chunked
+Pragma:
+Content-Type: application/json
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Language: en-US
+Range: 
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
+Connection: keep-alive
+

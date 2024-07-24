@@ -1,0 +1,5 @@
+CONNECT /a/b/ HTT/1.0
+Connection: keep-alive
+Pragma:
+Content-Type: application/json
+

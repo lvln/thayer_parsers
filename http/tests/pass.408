@@ -1,0 +1,8 @@
+HTTP/2.0 203 Non-Authoritative Information
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+

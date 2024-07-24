@@ -1,0 +1,6 @@
+HTTP/1.1 102 Processing
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+

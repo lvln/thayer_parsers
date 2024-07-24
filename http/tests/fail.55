@@ -1,0 +1,20 @@
+OPTION http://example.com HTTP/1.1
+Referer: https://www.example.com/page
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Pragma:
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+Accept-Language: en-US
+Content-Type: application/json
+Range: 
+

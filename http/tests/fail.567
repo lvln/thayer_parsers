@@ -1,0 +1,10 @@
+HTTP/2.0 Accepted
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Connection: keep-alive
+Content-Type: application/json
+Vary:     
+Host: www.example.com
+

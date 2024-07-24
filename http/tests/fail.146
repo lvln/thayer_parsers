@@ -1,0 +1,12 @@
+PUT /a/b/ HTTP/2.0
+Vary:     
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Charset :utf-8,
+ iso-8859-1;q=0.5
+
+key1=value1&key2=value2

@@ -1,0 +1,4 @@
+HEAD http://a/b/c/d;p?q HTTP1.1
+Vary:     
+Pragma:
+

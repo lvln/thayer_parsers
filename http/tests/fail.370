@@ -1,0 +1,7 @@
+TRACE /g HTTP/1.1
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+*/*;q=0.8
+

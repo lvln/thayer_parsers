@@ -1,0 +1,12 @@
+HEAD http://g HTTP/2.
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Vary:     
+Host: www.example.com
+

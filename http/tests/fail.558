@@ -1,0 +1,24 @@
+HTTP/2.0 802 Processing
+Vary:     
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
+WWW-Authenticate: Basic realm="Access to the staging site"
+Referer: https://www.example.com/page
+Pragma:
+Transfer-Encoding: chunked
+Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Range: 
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+

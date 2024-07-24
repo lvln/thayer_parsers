@@ -1,0 +1,8 @@
+HTTP/1.0 101 Switching Protocols
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Accept-Language: en-US
+Pragma:
+Connection: keep-alive
+

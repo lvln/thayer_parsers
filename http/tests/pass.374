@@ -1,0 +1,4 @@
+TRACE http://a/b/c/d;p?q HTTP/2.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+

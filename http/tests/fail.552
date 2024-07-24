@@ -1,0 +1,13 @@
+HTTP/2.0 903 Early Hints
+Range: 
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+Accept-Language: en-US
+Host: www.example.com
+Content-Type: application/json
+Connection: keep-alive
+Vary:     
+Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
+

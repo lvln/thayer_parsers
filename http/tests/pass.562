@@ -1,0 +1,9 @@
+HTTP/1.0 508 Loop Detected
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Range: 
+Content-Type: application/json
+Vary:     
+Connection: keep-alive
+Content-Length: 123
+

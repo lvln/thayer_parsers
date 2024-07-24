@@ -1,0 +1,13 @@
+HTTP/2.0 201 Created
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+
+Resource has been created.

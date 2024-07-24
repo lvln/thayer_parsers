@@ -1,0 +1,7 @@
+HTTP/1.0 303 See Other
+Connection: keep-alive
+Transfer-Encoding: chunked
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
+

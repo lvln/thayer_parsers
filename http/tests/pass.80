@@ -1,0 +1,9 @@
+HEAD http://www.ietf.org/rfc/rfc2396.txt HTTP/2.0
+Transfer-Encoding: chunked
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+Content-Type: application/json
+Pragma:
+

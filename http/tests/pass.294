@@ -1,0 +1,15 @@
+OPTIONS http://a/b/c/..g HTTP/1.0
+Accept-Language: en-US
+Referer: https://www.example.com/page
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Range: 
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+

@@ -1,0 +1,9 @@
+HEAD mailto:John.Doe@example.com HTTP/2.0
+Transfer-Encoding: chunked
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+Content-Type: application/json
+Pragma:
+

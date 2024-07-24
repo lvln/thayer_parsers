@@ -1,0 +1,6 @@
+HEAD / HTTP/.0
+Referer: https://www.example.com/page
+Content-Type: application/json
+Range: 
+Transfer-Encoding: chunked
+

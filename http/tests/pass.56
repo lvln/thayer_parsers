@@ -1,0 +1,4 @@
+HEAD http://example.com HTTP/2.0
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+

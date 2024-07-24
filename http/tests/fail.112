@@ -1,0 +1,4 @@
+POST ldap://[2001:db8::7]/c=GB?objectClass?one HTTP/1.1
+Host: www.example.com
+
+key1=value1&key2=value2

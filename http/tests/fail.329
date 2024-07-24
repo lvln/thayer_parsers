@@ -1,0 +1,14 @@
+OPTIONS http://a/b/c/g. HTT/1.0
+Content-Type: application/json
+Transfer-Encoding: chunked
+Range: 
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+Vary:     
+Accept-Language: en-US
+

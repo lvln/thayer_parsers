@@ -1,0 +1,6 @@
+GES http://a/b/c/.g HTTP/2.0
+Connection: keep-alive
+Host: www.example.com
+Vary:     
+
+Record to delete

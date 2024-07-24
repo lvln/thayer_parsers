@@ -1,0 +1,8 @@
+HTT/1.0 207 Multi-Status
+Transfer-Encoding: chunked
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+

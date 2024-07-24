@@ -1,0 +1,17 @@
+HTTP1.1 200 OK
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Host: www.example.com
+Connection: keep-alive
+Transfer-Encoding: chunked
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Referer: https://www.example.com/page
+Content-Type: application/json
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+
+Your request was successful.

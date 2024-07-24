@@ -1,0 +1,4 @@
+TRACES http://www.example.com/hello.txt HTTP/1.0
+Content-Length: 123
+
+Record to delete

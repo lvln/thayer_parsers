@@ -1,0 +1,7 @@
+HTTP/2.0 226 IM Used
+Host: www.example.com
+Content-Type: application/json
+Accept-Language: en-US
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+

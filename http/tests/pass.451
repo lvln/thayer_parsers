@@ -1,0 +1,11 @@
+HTTP/1.0 400 Bad Request
+Host: www.example.com
+Pragma:
+Transfer-Encoding: chunked
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Encoding: gzip,
+  deflate,
+   br
+
+The request could not be understood or was missing required parameters.

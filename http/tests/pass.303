@@ -1,0 +1,10 @@
+OPTIONS http://example.com/data/ HTTP/1.0
+Transfer-Encoding: chunked
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+

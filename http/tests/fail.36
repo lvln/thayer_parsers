@@ -1,0 +1,10 @@
+GET ?y HTTP/1.0
+Content-Length: 123
+Accept-Encoding: gzip,
+  deflate,
+   br
+Referer: https://www.example.com/page
+Content-Type: application/json
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+

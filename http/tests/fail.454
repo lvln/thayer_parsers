@@ -1,0 +1,11 @@
+HTTP/1.0 401 Unauthorized
+Vary:     
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Connection: keep-alive
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+WWW-Authenticate    : Basic realm="Access to the staging site"
+
+Authentication credentials were missing or incorrect.

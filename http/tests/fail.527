@@ -1,0 +1,7 @@
+HTTP1.1 429 Too Many Requests
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Vary:     
+Host: www.example.com
+WWW-Authenticate: Basic realm="Access to the staging site"
+

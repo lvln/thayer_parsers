@@ -1,0 +1,5 @@
+CONNECT /a/b/ HTTP/1.1
+Connection: keep-alive
+Pragma:
+Content-Type: application/json
+

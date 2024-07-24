@@ -1,0 +1,10 @@
+HTTP/2.0 407 Proxy Authentication Required
+Range: 
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+Content-Length: 123
+Pragma:
+Transfer-Encoding: chunked
+

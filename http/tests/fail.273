@@ -1,0 +1,12 @@
+CONNECT http://www.ietf.org/rfc/rfc2396.txt HTTP/.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Referer: https://www.example.com/page
+

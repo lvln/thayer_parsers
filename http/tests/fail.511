@@ -1,0 +1,14 @@
+HTTP/1.0 422 Unprocessable Content
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Range: 
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Date Tue, 23 Jul 2024 12:00:00 GMT
+

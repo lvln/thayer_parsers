@@ -1,0 +1,21 @@
+GET http://a/b/c/.g HTTP/2.0
+Host: www.example.com
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Range: 
+Transfer-Encoding: chunked
+Content-Length: 123
+Pragma:
+Connection: keep-alive
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+

@@ -1,0 +1,9 @@
+GET http://www.ietf.org/rfc/rfc2396.txt HTTP/1.0
+Pragma:
+Transfer-Encoding: chunked
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+

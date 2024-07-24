@@ -1,0 +1,9 @@
+CONNECT http://a/b/c/d;p?q HTTP/1.0
+Authorization: Basic XMlcrpwYzdyZA==
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+

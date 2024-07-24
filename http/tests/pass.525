@@ -1,0 +1,5 @@
+HTTP/2.0 428 Precondition Required
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Host: www.example.com
+

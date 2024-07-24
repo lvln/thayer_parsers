@@ -1,0 +1,4 @@
+POST http://a/b/c/.g HTTP/1.0
+Content-Length: 123
+
+key1=value1&key2=value2

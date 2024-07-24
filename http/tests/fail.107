@@ -1,0 +1,16 @@
+PUTT http://example.com/data HTTP/2.0
+Host: www.example.com
+Content-Type: application/json
+Authorization: Basic XMlcrpwYzdyZA==
+Pragma:
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Transfer-Encoding: chunked
+Accept-Language: en-US
+
+key1=value1&key2=value2

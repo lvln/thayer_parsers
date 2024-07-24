@@ -1,0 +1,4 @@
+DELETE http://www.example.com/hello.txt HTTP/2.0
+Range: 
+
+Record to delete

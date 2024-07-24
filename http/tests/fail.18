@@ -1,2 +1,18 @@
-HTTP/1.1  Continue
+GET example.com:80/~smith/home.html HTTP/1.0
+Range: 
+Vary:     
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+Transfer-Encoding: chunked
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length : 123
 

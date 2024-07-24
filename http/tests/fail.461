@@ -1,0 +1,15 @@
+HTTP/.0 404 Not Found
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
+Pragma:
+Range: 
+Connection: keep-alive
+Content-Type: application/json
+Vary:     
+Accept-Language: en-US
+
+The requested resource could not be found.

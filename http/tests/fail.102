@@ -1,0 +1,14 @@
+POST http://a/b/c/..g HTTP/1.0
+Host: www.example.com
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+: chunked
+
+key1=value1&key2=value2

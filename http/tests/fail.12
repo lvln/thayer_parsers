@@ -1,6 +1,4 @@
-HTTP/12.1 200 OK
-Content-Type: text/html; charset=utf-8
-Connection: keep-alive
+GET .. HTTP/1.0
+Content-Length: 123
+Vary:     
 
-<!DOCTYPE html>
-<html lang=en>

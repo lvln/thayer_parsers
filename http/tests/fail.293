@@ -1,0 +1,21 @@
+OPTIONS http://a/b/c/..g HTT/1.0
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+Range: 
+Referer: https://www.example.com/page
+Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
+

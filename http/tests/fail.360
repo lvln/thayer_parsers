@@ -1,0 +1,12 @@
+TRACE g HTTP/1.0
+Content-Length: 123
+Referer: https://www.example.com/page
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Connection: keep-alive
+

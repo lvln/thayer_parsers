@@ -1,0 +1,17 @@
+PUT http://a/b/c/..g HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Host: www.example.com
+Content-Type: application/json
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Referer: https://www.example.com/page
+Content-Length: 123
+Accept-Language: en-US
+
+key1=value1&key2=value2

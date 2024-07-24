@@ -1,0 +1,7 @@
+OPTIONS http://www.example.com/hello.txt HTTP/2.0
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Charset :utf-8,
+ iso-8859-1;q=0.5
+

@@ -1,0 +1,9 @@
+OPTIONS http://www.example.com/hello.txt HTTP/2.0
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+

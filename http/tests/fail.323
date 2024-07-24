@@ -1,0 +1,11 @@
+CONNEC /g HTTP/2.0
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Pragma:
+

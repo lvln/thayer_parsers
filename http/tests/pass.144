@@ -1,0 +1,13 @@
+POST * HTTP/1.0
+Vary:     
+Host: www.example.com
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Range: 
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+
+key1=value1&key2=value2

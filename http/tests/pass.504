@@ -1,0 +1,10 @@
+HTTP/2.0 418 I'm a teapot
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Language: en-US
+

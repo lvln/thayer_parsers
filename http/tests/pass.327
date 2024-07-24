@@ -1,0 +1,4 @@
+OPTIONS http://a/b/c/d;p?q HTTP/1.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+

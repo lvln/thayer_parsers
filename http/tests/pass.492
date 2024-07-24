@@ -1,0 +1,6 @@
+HTTP/2.0 414 URI Too Long
+Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+

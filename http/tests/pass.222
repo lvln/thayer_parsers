@@ -1,0 +1,5 @@
+DELETE http://www.example.org:8080/pub/WWW/TheProject.html HTTP/1.0
+Transfer-Encoding: chunked
+Range: 
+
+Record to delete

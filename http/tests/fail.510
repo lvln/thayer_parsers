@@ -1,0 +1,14 @@
+HTTP/2.0 903 Early Hints
+Vary:     
+Content-Length: 123
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+

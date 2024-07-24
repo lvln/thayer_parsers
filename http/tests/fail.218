@@ -1,0 +1,4 @@
+DELETE http://www.example.com/hello.txt HTTP/2.0
+WWW-Authenticate    : Basic realm="Access to the staging site"
+
+Record to delete

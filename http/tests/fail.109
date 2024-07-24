@@ -1,0 +1,18 @@
+POST http://example.com/data/ HTTP/2.
+Pragma:
+Range: 
+Accept-Language: en-US
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Content-Type: application/json
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Transfer-Encoding: chunked
+Content-Length: 123
+Accept-Encoding: gzip,
+  deflate,
+   br
+
+key1=value1&key2=value2

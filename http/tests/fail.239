@@ -1,0 +1,17 @@
+DELET * HTTP/2.0
+Content-Type: application/json
+Referer: https://www.example.com/page
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+
+Record to delete

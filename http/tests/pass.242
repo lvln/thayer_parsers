@@ -1,0 +1,6 @@
+CONNECT /a/b/ HTTP/2.0
+Host: www.example.com
+Transfer-Encoding: chunked
+Content-Type: application/json
+Range: 
+

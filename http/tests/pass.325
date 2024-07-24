@@ -1,0 +1,6 @@
+OPTIONS http://a/b/c/d;p?q HTTP/1.1
+Accept-Encoding: gzip,
+  deflate,
+   br
+Transfer-Encoding: chunked
+

@@ -1,0 +1,9 @@
+HTTP/2.0 802 Processing
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Type: application/json
+
+Authentication credentials were missing or incorrect.

@@ -1,0 +1,5 @@
+HTTP/1.0 500 Internal Server Error
+Content-Length: 123
+Connection: keep-alive
+
+An unexpected error occurred on the server.

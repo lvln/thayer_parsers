@@ -1,0 +1,13 @@
+TRACE http://example.com/data/ HTTP/.0
+Content-Type: application/json
+Content-Length: 123
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+

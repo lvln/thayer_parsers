@@ -1,0 +1,14 @@
+HTTP/1.0 417 Expectation Failed
+Content-Type: application/json
+Connection: keep-alive
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Range: 
+Transfer-Encoding: chunked
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+

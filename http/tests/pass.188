@@ -1,0 +1,19 @@
+PUT / HTTP/2.0
+Referer: https://www.example.com/page
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Content-Type: application/json
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+
+key1=value1&key2=value2

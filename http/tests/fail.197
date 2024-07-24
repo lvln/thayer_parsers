@@ -1,0 +1,5 @@
+DELETE http://a/b/c/..g HTT/1.0
+Accept-Language: en-US
+Pragma:
+
+Record to delete

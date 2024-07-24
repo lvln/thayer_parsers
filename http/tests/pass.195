@@ -1,0 +1,5 @@
+DELETE /a/b/ HTTP/1.0
+Vary:     
+Host: www.example.com
+
+Record to delete

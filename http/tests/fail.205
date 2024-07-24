@@ -1,0 +1,5 @@
+DELETE http://example.com/data/ HTTP1.1
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+
+Record to delete

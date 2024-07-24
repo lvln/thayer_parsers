@@ -1,0 +1,7 @@
+HTTP/1.1 407 Proxy Authentication Required
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Type: application/json
+

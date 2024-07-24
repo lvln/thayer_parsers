@@ -1,0 +1,10 @@
+TRACE * HTTP/1.1
+Pragma:
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Connection: keep-alive
+Accept-Encoding: gzip,
+  deflate,
+   br
+

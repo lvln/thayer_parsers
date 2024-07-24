@@ -1,0 +1,6 @@
+HTTP/2.0 600 Continue
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Language: en-US
+Pragma:
+Content-Length: 123
+

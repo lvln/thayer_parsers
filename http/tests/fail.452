@@ -1,0 +1,25 @@
+HTTP1.1 401 Unauthorized
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+Pragma:
+Transfer-Encoding: chunked
+Content-Length: 123
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Referer: https://www.example.com/page
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Type: application/json
+Range: 
+
+Authentication credentials were missing or incorrect.

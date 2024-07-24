@@ -1,0 +1,7 @@
+DELETE http://www.example.org:8080/pub/WWW/TheProject.html HTTP/1.1
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+Content-Type: application/json
+Content-Length: 123
+
+Record to delete

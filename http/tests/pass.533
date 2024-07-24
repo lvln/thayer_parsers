@@ -1,0 +1,9 @@
+HTTP/1.1 451 Unavailable For Legal Reasons
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Transfer-Encoding: chunked
+Host: www.example.com
+Content-Length: 123
+Content-Type: application/json
+Range: 
+

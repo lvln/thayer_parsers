@@ -1,0 +1,9 @@
+HEAD http://a/b/c/.g HTTP/1.1
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+Content-Type: application
+/json
+

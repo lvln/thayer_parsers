@@ -1,0 +1,17 @@
+DELETE /a/b/ HTT/1.0
+Vary:     
+Pragma:
+Accept-Language: en-US
+Range: 
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Content-Length: 123
+Transfer-Encoding: chunked
+Content-Type: application/json
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+
+Record to delete

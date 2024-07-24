@@ -1,0 +1,14 @@
+GET * HTTP/1.0
+Vary:     
+Transfer-Encoding: chunked
+Host: www.example.com
+Content-Type: application/json
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
+Range: 
+Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
+

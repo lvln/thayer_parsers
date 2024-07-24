@@ -1,0 +1,15 @@
+HTTP/1.0 200 OK
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Host: www.example.com
+Content-Length: 123
+Transfer-Encoding: chunked
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+
+Your request was successful.

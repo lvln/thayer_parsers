@@ -1,0 +1,19 @@
+TRACE http://example.com/data HTTP/2.0
+Host: www.example.com
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Range: 
+Content-Type: application/json
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Connection: keep-alive
+Transfer-Encoding: chunked
+Vary:     
+

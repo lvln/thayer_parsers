@@ -1,0 +1,8 @@
+OPTIONS / HTT/1.0
+Accept-Encoding: gzip,
+  deflate,
+   br
+Referer: https://www.example.com/page
+Range: 
+Content-Length: 123
+

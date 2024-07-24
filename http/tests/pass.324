@@ -1,0 +1,3 @@
+OPTIONS /g HTTP/1.0
+Connection: keep-alive
+

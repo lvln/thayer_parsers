@@ -1,0 +1,5 @@
+HTTP/1.0 304 Not Modified
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+Range: 
+

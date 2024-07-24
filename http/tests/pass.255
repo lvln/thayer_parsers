@@ -1,0 +1,10 @@
+CONNECT http://example.com/data/ HTTP/1.0
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Language: en-US
+

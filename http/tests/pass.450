@@ -1,0 +1,16 @@
+HTTP/2.0 400 Bad Request
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Type: application/json
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Host: www.example.com
+Transfer-Encoding: chunked
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Referer: https://www.example.com/page
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+
+The request could not be understood or was missing required parameters.

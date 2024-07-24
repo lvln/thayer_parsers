@@ -1,0 +1,4 @@
+OPTIONS /g HTTP/1.1
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+

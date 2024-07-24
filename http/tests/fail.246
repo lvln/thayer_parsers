@@ -1,0 +1,13 @@
+CONNECT http://a/b/c/..g HTTP/1.0
+Vary:     
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Pragma:
+Range: 
+Content-Length: 123
+Connection: keep-alive
+Accept-Charset :utf-8,
+ iso-8859-1;q=0.5
+

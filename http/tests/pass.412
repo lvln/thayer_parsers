@@ -1,0 +1,7 @@
+HTTP/1.0 204 No Content
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Referer: https://www.example.com/page
+Connection: keep-alive
+Content-Type: application/json
+

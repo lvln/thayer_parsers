@@ -1,4 +1,12 @@
-CONNECT  HTTP/1.1
-Robust: tests
+GES http://example.com/data HTTP/2.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Connection: keep-alive
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Transfer-Encoding: chunked
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
 
-This is a message

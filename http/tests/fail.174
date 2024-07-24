@@ -1,0 +1,10 @@
+PUT http://www.example.org:8080/pub/WWW/TheProject.html HTTP/1.0
+Accept-Language: en-US
+Content-Type: application/json
+Vary:     
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+*/*;q=0.8
+
+key1=value1&key2=value2

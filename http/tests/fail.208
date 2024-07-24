@@ -1,0 +1,17 @@
+DELETE ?y HTTP/1.1
+Content-Type: application/json
+Range: 
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Content-Length: 123
+Transfer-Encoding: chunked
+Vary:     
+
+Record to delete

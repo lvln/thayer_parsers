@@ -1,0 +1,9 @@
+HTTP/1.0 103 Early Hints
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Language: en-US
+Content-Length: 123
+:
+

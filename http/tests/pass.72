@@ -1,0 +1,5 @@
+HEAD http://a/b/c/.g HTTP/1.0
+Connection: keep-alive
+Accept-Language: en-US
+Host: www.example.com
+

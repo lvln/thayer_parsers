@@ -1,4 +1,10 @@
-HTTP/1.1 201 Created
-Host: server side
+GET http://example.com/data/ HTTP/1.1
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
+Accept-Language: en-US
 
-Message

@@ -1,0 +1,5 @@
+HEAD * HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Type: application/json
+

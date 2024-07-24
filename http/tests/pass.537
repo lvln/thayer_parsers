@@ -1,0 +1,12 @@
+HTTP/2.0 500 Internal Server Error
+Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Content-Type: application/json
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+
+An unexpected error occurred on the server.

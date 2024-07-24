@@ -1,0 +1,10 @@
+POST http://a/b/c/.g HTTP/1.1
+Vary:     
+Range: 
+Connection: keep-alive
+Pragma:
+Accept-Language: en-US
+Transfer-Encoding: chunked
+ Range: 
+
+key1=value1&key2=value2

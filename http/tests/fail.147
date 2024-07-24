@@ -1,0 +1,14 @@
+GES /a/b/ HTTP/1.0
+Host: www.example.com
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Pragma:
+Transfer-Encoding: chunked
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+
+key1=value1&key2=value2

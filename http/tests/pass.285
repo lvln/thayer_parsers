@@ -1,0 +1,4 @@
+CONNECT / HTTP/1.0
+Transfer-Encoding: chunked
+Host: www.example.com
+

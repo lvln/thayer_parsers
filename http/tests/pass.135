@@ -1,0 +1,5 @@
+POST http://a/b/c/d;p?q HTTP/1.0
+Authorization: Basic XMlcrpwYzdyZA==
+Connection: keep-alive
+
+key1=value1&key2=value2

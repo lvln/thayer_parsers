@@ -1,0 +1,22 @@
+HTTP/1.0 412 Precondition Failed
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Host: www.example.com
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Pragma:
+Connection: keep-alive
+Vary:     
+Referer: https://www.example.com/page
+Transfer-Encoding: chunked
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+

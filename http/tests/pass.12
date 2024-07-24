@@ -1,2 +1,4 @@
-HTTP/1.1 100 Continue
+GET http://example.com/data HTTP/1.0
+Content-Length: 123
+Vary:     
 

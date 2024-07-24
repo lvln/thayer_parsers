@@ -1,0 +1,5 @@
+HEAS http://a/b/c/d;p?q HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
+

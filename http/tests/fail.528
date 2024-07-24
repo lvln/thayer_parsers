@@ -1,0 +1,7 @@
+HTTP/2.0 204 
+Content-Length: 123
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+

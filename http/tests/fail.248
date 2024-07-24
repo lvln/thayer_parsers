@@ -1,0 +1,4 @@
+CONNECT g HTTP/2.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+WWW-Authenticate: Basic realm="Access to the staging site"
+

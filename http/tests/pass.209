@@ -1,0 +1,19 @@
+DELETE example.com:80/~smith/home.html HTTP/2.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Connection: keep-alive
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
+Range: 
+
+Record to delete

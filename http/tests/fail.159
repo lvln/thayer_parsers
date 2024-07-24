@@ -1,0 +1,12 @@
+DELET http://example.com/data/ HTTP/1.0
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+WWW-Authenticate: Basic realm="Access to the staging site"
+Transfer-Encoding: chunked
+Host: www.example.com
+Accept-Language: en-US
+Content-Length: 123
+
+key1=value1&key2=value2

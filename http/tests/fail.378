@@ -1,0 +1,19 @@
+TRACE http://a/b/c/g. HTTP/1.0
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Type: application/json
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Referer: https://www.example.com/page
+Connection : keep-alive
+

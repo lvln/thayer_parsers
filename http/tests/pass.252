@@ -1,0 +1,7 @@
+CONNECT http://example.com/data HTTP/1.0
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+

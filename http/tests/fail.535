@@ -1,0 +1,5 @@
+HTTP/1.0 451 Unavailable For Legal Reasons
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma :
+

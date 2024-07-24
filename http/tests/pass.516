@@ -1,0 +1,11 @@
+HTTP/2.0 424 Failed Dependency
+Content-Length: 123
+Connection: keep-alive
+Accept-Language: en-US
+Range: 
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+

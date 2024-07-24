@@ -1,0 +1,10 @@
+GET http://a/b/c/g. HTTP/1.1
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Range: 
+Host: www.example.com
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+

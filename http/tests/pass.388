@@ -1,0 +1,6 @@
+HTTP/1.0 100 Continue
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Referer: https://www.example.com/page
+

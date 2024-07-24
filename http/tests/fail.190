@@ -1,0 +1,19 @@
+PUT * HTTP/1.1
+Accept-Language: en-US
+Pragma:
+Transfer-Encoding: chunked
+Content-Length: 123
+Content-Type: application/json
+Referer: https://www.example.com/page
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+: chunked
+
+key1=value1&key2=value2

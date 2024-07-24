@@ -1,0 +1,8 @@
+TRACE g?y#s HTTP/1.0
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Transfer-Encoding: chunked
+

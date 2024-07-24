@@ -1,0 +1,4 @@
+OPTIONS http://example.com/data/ HTT/1.0
+Content-Type: application/json
+Host: www.example.com
+
