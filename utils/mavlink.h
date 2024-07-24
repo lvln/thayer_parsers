@@ -37,7 +37,7 @@
 #define ESTIMATOR_STATUS 230
 #define VIBRATION 241
 #define HOME_POSITION 242
-#define EXTENDED_SYSSTATE 245
+#define EXTENDED_SYS_STATE 245
 #define STATUSTEXT 253
 #define UTM_GLOBAL_POSITION 340
 #define TIME_ESTIMATE_TO_TARGET 380
@@ -71,7 +71,7 @@
 #define ESTIMATOR_STATUS_LEN 42
 #define VIBRATION_LEN 32
 #define HOME_POSITION_LEN 60
-#define EXTENDED_SYSSTATE_LEN 2
+#define EXTENDED_SYS_STATE_LEN 2
 #define STATUSTEXT_LEN 54
 #define UTM_GLOBAL_POSITION_LEN 70
 #define TIME_ESTIMATE_TO_TARGET_LEN 20
@@ -79,6 +79,12 @@
 #define CURRENT_EVENT_SEQUENCE_LEN 3
 #define OPEN_DRONE_ID_LOCATION_LEN 59
 #define OPEN_DRONE_ID_SYSTEM_LEN 54
+
+// Structure that holds an array of integers and number of elements in array.
+typedef struct arrSize {
+	int *arr;
+	int n;
+} arrSize_t;
 
 // Define the message header with the various fields.
 typedef struct messageHeader {
@@ -123,14 +129,20 @@ typedef struct message {
 	messageBody_t body;
 } message_t;
 
-// Data structure to hold message array and length.
-typedef struct messArr {
+// Data structure to hold array of MAVLink messages and length.
+typedef struct mavMessArr {
+	messageBody_t *messages;
+	int n;
+} mavMessArr_t;
+
+// Data structure to hold array of pcap messages and length.
+typedef struct pcapMessArr {
 	message_t *messages;
 	int n;
 } messArr_t;
 
 // Data structure to hold a pcap file.
-typedef struct pcap{
+typedef struct pcap {
 	uint8_t header[24];
 	message_t *messages;
 	int n;
@@ -172,6 +184,13 @@ int toInt24le(uint8_t *arr);
 int toInt24be(uint8_t *arr);
 
 /*
+ * Convert from integer to 24 bit hexadecimal (little endian).
+ * Inputs: integer value, array into which to write hex value
+ * Outputs: none
+ */
+void fromInt24le(int num, uint8_t arr[]);
+
+/*
  * Writes a pcap header to a file.
  * Inputs: pcap file data structure, file to which to write.
  * Outputs: none.
@@ -179,33 +198,46 @@ int toInt24be(uint8_t *arr);
 void writeHeader(pcap_t *pcapFile, FILE *ofile);
 
 /*
- * Write raw MAVLink emssage to a file - just the header and payload.
+ * Write raw MAVLink message to a file - just the header and payload.
+ * Inputs: message to write, file pointer.
+ * Outputs: none.
+ */
+void writeMavMessageToFile(messageBody_t mess, FILE *ofile);
+
+/*
+ * Write a MAVLink message to a file with PCAP wrappers.
  * Inputs: message to write, file pointer.
  * Outputs: none.
  */
 void writeMessageToFile(message_t mess, FILE *ofile);
 
 /*
- * Write a AMVLink message to a file.
- * Inputs: message to write, file pointer.
- * Outputs: none.
+ * Writes a specified number of bytes of a MAVLink message to a file.
+ * Inputs: message to write, pointer to file to write, number of bytes to write, payload length of the message
+ * Outputs: none
  */
-void writeToFile(message_t mess, FILE *ofile);
+void writeMavDiffLenToFile(messageBody_t mess, FILE *fp, int len, int payload);
 
 /*
- * Print out a message.
+ * Print out a message without it's PCAP wrappers.
+ * Inputs: MAVLink message to print
+ * Outputs: none.
+ */
+void printMavMessage(messageBody_t mess);
+
+/*
+ * Print out a message incuding its PCAP wrappers.
  * Inputs: message to print
  * Outputs: none.
  */
 void printMessage(message_t mess);
 
 /*
- * Read a file that contains just MAVlink messagess - no pcap header and no UDP headers.
+ * Read a file that contains just MAVLink messagess - no pcap header or pcap wrappers.
  * Inputs: input file
  * Outputs: array of messages; NULL if unsuccessful
  */
-messArr_t *readMavFile(FILE *ifile);
-
+mavMessArr_t *readMavFile(FILE *ifile);
 
 /*
  * Read a file that contains just messagess - no pcap header.
@@ -229,6 +261,13 @@ pcap_t *readPcapFile(FILE *ifile);
 void untruncate(message_t *mess);
 
 /*
+ * Free memory from payload, messages array and the structure itself for mavlink messages.
+ * Inputs: MAVLink message array structure.
+ * Outputs: none.
+ */
+void freeMemMav(mavMessArr_t *messArr);
+
+/*
  * Free memory from payload, messages array and the structure itself for a pcap file structure.
  * Inputs: pcap file structure.
  * Outputs: none.
@@ -241,3 +280,10 @@ void freeMemPcap(pcap_t *pcapFile);
  * Outputs: none.
  */
 void freeMem(messArr_t *messArr);
+
+/*
+ * Generats test cases for a given message id.
+ * Inputs: message id
+ * Outputs: none
+ */
+void generateTests(int msgID);
