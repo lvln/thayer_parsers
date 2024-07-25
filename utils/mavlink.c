@@ -1815,7 +1815,7 @@ void generateTests(int msgID) {
 	for (j = 0; j <= 255; j++) {
 		mess.crc[0] = j;
 		
-		sprintf(fname, "./pass.%d.%d.crc[0].%d", msgID, maxLen, j);
+		sprintf(fname, "./pass.%d.%d.crc0.%d", msgID, maxLen, j);
 		
 		// Open file for writing.
 		if ((fp = fopen(fname, "wb")) == NULL) {
@@ -1833,7 +1833,7 @@ void generateTests(int msgID) {
 	for (j = 0; j <= 255; j++) {
 		mess.crc[1] = j;
 		
-		sprintf(fname, "./pass.%d.%d.crc[1].%d", msgID, maxLen, j);
+		sprintf(fname, "./pass.%d.%d.crc1.%d", msgID, maxLen, j);
 		
 		// Open file for writing.
 		if ((fp = fopen(fname, "wb")) == NULL) {

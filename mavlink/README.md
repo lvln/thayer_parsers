@@ -1,6 +1,8 @@
 # MAVLink
 
-Note: This directory contains the complete definition for the MAVLink grammar. Please see `mavlink_standalone_message`, `mavlink_single_message-repeat`, `mavlink_two_messages_same_length` or `mavlink_three_messages` for smaller components of the MAVLink grammar.
+**Note: Best way to run tests is to use the `mavlinktest.sh` script inside of the xbnf directory. This allows for each message type to be tested, one at a time.**
+
+This directory contains the complete definition for the MAVLink grammar. Please see `mavlink_standalone_message`, `mavlink_single_message-repeat`, `mavlink_two_messages_same_length` or `mavlink_three_messages` for smaller components of the MAVLink grammar.
 
 According to the [MAVLink documentation](https://mavlink.io/en/guide/serialization.html), MAVLink 2 truncates empty (zero-filled bytes) at the end of the payload; it will never truncate the first byte of the payload regardless of if it is empty or not. The grammar is thus defined such that it allows for each payload to be any length.
 
@@ -53,4 +55,4 @@ The format of MAVLink messages is defined [here](https://mavlink.io/en/guide/ser
   
   ![ATTITUDE](./.images/AttitudeImage.jpg)
   
-All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum and an optional 13 byte signature (only for MAVLink 2).
+All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum.

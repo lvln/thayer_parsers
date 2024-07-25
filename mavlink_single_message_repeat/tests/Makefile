@@ -1,18 +1,13 @@
-CFLAGS=-Wall -pedantic -std=c11 -I.
+CFLAGS=-Wall -pedantic -std=c11 -I../../utils -L../../lib
+LIBS=-lutils -lcurl
 
-all:			tv
+all: tv
 
-tv.o:			tv.c mavlink.h
-					gcc $(CFLAGS) -c tv.c
-
-tv:				tv.o mavlink.o
-					gcc $(CFLAGS) tv.o mavlink.o -o tv
-
-mavlink.o: mavlink.c mavlink.h
-					 gcc $(CFLAGS) -c mavlink.c
+tv: tv.c
+		gcc $(CFLAGS) tv.c $(LIBS) -o $@
 
 clean:
-				rm -f *~ tv *.o
+				rm -f *~ tv *.o pass.* fail.*
 
 
 

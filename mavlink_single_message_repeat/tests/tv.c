@@ -82,7 +82,7 @@ int main(void) {
 	old = messArr->messages[0].body.mavCode;
 	messArr->messages[0].body.mavCode = 0x00;
 	
-	writeToFile(messArr->messages[0], fp);
+	writeMessageToFile(messArr->messages[0], fp);
 	
 	fclose(fp);
 
@@ -94,7 +94,7 @@ int main(void) {
 	old = messArr->messages[0].body.messageID[0];
 	messArr->messages[0].body.messageID[0] = 0x21;
 	
-	writeToFile(messArr->messages[0], fp);
+	writeMessageToFile(messArr->messages[0], fp);
 	
 	fclose(fp);
 
@@ -207,7 +207,7 @@ int main(void) {
 		old = messArr->messages[0].body.payload[i];
 		messArr->messages[0].body.payload[i] = old + 0x01;
 		
-		writeToFile(messArr->messages[0], fp);
+		writeMessageToFile(messArr->messages[0], fp);
 
 		fclose(fp);
 
@@ -227,7 +227,7 @@ int main(void) {
 		exit(EXIT_FAILURE);
 
 	for (i = 0; i < messArr->n - 1; i++)
-		writeToFile(messArr->messages[i], fp);
+		writeMessageToFile(messArr->messages[i], fp);
 
 	writeSPFile(&(messArr->messages[i]), fp, toInt24le(messArr->messages[i].header.capturedPacketLength) + 16 - 1);
 
@@ -237,7 +237,7 @@ int main(void) {
 		exit(EXIT_FAILURE);
 
 	for (i = 0; i < messArr->n - 1; i++)
-		writeToFile(messArr->messages[i], fp);
+		writeMessageToFile(messArr->messages[i], fp);
 
 	writeSPFile(&(messArr->messages[i]), fp, toInt24le(messArr->messages[i].header.capturedPacketLength) + 16 + 1);
 

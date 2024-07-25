@@ -78,3 +78,18 @@ done
 pushd ../tests
 make clean > /dev/null
 popd
+
+# Create a test file for full flights with the drone with the drone.
+if [ -e ../mavlink_source_files/run1.mav ]; then
+		cp ../mavlink_source_files/run1.mav ../tests/pass.1000 > /dev/null
+		CMD="./gmr ../tests/pass.1000"
+		{ ${CMD} >& /dev/null ; } >& /dev/null
+fi
+
+if [ -e ../mavlink_source_files/run2.mav ]; then
+		cp ../mavlink_source_files/run2.mav ../tests/pass.1001 > /dev/null
+		CMD="./gmr ../tests/pass.1001"
+		{ ${CMD} >& /dev/null ; } >& /dev/null
+fi
+
+make clean > /dev/null

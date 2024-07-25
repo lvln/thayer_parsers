@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Create tests for each message type.
 ./tv 0
 echo "HEARTBEAT"
 ./tv 1
@@ -66,3 +67,12 @@ echo "CURRENT_EVENT_SEQUENCE"
 echo "OPEN_DRONE_ID_LOCATION"
 ./tv 12904
 echo "OPEN_DRONE_ID_SYSTEM"
+
+# Create tests for full drone flights.
+if [ -e ../mavlink_source_files/run1.mav ]; then
+		cp ../mavlink_source_files/run1.mav ./pass.1000 > /dev/null
+fi
+
+if [ -e ../mavlink_source_files/run2.mav ]; then
+		cp ../mavlink_source_files/run2.mav ./pass.1001 > /dev/null
+fi
