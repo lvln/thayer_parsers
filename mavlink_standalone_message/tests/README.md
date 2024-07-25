@@ -19,5 +19,5 @@ Tests for the MAVLink parser which contains tests for all given byte values in a
 ## Usage:
 
 * `make clean` to remove all old test files (except for tests from an actual drone flight) as well as executables
-* `make` too build executable `tv` from `tv.c`
-* `./tv.sh` generates passing and failing tests for each message id present in the parser
+* `make` to build executable `tv` from `tv.c`
+* `./tv.sh` generates roughtly 10,000 passing and failing tests for each message id present in the parser
