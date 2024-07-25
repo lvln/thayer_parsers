@@ -280,7 +280,7 @@ static void generateEnumTests(int msgID, int ind, messageBody_t mess) {
 			arr.n = 6;
 
 			// Fill array.
-			arr.arr[0] = 0x01;
+			arr.arr[0] = 0x00;
 			arr.arr[1] = 0x03;
 			arr.arr[2] = 0x0A;
 			arr.arr[3] = 0x05;
