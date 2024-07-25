@@ -1,14 +1,13 @@
 DELETE http://www.example.com/hello.txt HTTP/1.1
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Vary:     
-Accept-Language: en-US
-Host: www.example.com
-Transfer-Encoding: chunked
-Connection: keep-alive
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
 Accept-Encoding: gzip,
   deflate,
    br
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Vary:     
+Range: 
+Transfer-Encoding: chunked
 
 Record to delete

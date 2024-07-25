@@ -1,5 +1,5 @@
 HTTP/1.0 404 Not Found
-Accept-Charset :utf-8,
- iso-8859-1;q=0.5
+Vary:     
+Date Tue, 23 Jul 2024 12:00:00 GMT
 
 The requested resource could not be found.

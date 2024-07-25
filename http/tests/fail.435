@@ -1,8 +1,14 @@
-HTTP/2.0 2000 OK
-Vary:     
+HTTP/2.0 Accepted
+Range: 
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
 Accept-Language: en-US
-Transfer-Encoding: chunked
-Pragma:
-Content-Type: application/json
-Host: www.example.com
 

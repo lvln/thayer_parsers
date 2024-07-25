@@ -1,17 +1,9 @@
 HTTP/1.0 302 Found
-Content-Length: 123
-Referer: https://www.example.com/page
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Vary:     
-Accept-Language: en-US
-Content-Type: application/json
-Transfer-Encoding: chunked
 Host: www.example.com
-Authorization: Basic XMlcrpwYzdyZA==
-Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+Accept-Encoding: gzip,
+  deflate,
+   br
 Content-Length : 123
 

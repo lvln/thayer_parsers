@@ -1,5 +1,7 @@
 HTTP/2.0 404 Not Found
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Transfer-Encoding: chunked
 
 The requested resource could not be found.

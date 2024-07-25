@@ -1,9 +1,6 @@
-HTTP/2. 451 Unavailable For Legal Reasons
-Authorization: Basic XMlcrpwYzdyZA==
+HTT/1.0 451 Unavailable For Legal Reasons
 Vary:     
-Transfer-Encoding: chunked
-Host: www.example.com
-Content-Length: 123
-Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
 Range: 
 

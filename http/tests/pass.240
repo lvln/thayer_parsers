@@ -1,5 +1,6 @@
 DELETE * HTTP/1.0
 Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
 
 Record to delete

@@ -1,6 +1,11 @@
 HTTP/1.0 226 IM Used
-Range: 
-Vary:     
-Content-Length: 123
-Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Pragma:
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 

@@ -1,12 +1,7 @@
 OPTIONS http://a/b/c/.g HTTP/1.0
-Pragma:
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
 Vary:     
-Range: 
-Connection: keep-alive
+Transfer-Encoding: chunked
+Pragma:
 WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Length: 123
+Accept-Language: en-US
 

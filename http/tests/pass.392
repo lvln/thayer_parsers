@@ -1,6 +1,15 @@
 HTTP/1.1 102 Processing
-Pragma:
 Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
 Transfer-Encoding: chunked
-WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
+Connection: keep-alive
+Content-Length: 123
+Vary:     
 

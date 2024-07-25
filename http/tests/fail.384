@@ -1,8 +1,16 @@
-TRACE g?y#s HTTP/1.0
+TRACE .. HTTP/1.0
+Connection: keep-alive
+Vary:     
 Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
 Authorization: Basic XMlcrpwYzdyZA==
-Accept-Encoding: gzip,
-  deflate,
-   br
-Transfer-Encoding: chunked
+Range: 
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Referer: https://www.example.com/page
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 

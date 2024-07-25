@@ -1,4 +1,13 @@
 TRACE example.com:80/~smith/home.html HTTP/1.0
-Accept-Language: en-US
-WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Host: www.example.com
+Pragma:
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
+Transfer-Encoding: chunked
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 

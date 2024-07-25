@@ -1,8 +1,9 @@
 OPTIONS / HTT/1.0
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Referer: https://www.example.com/page
 Accept-Encoding: gzip,
   deflate,
    br
-Referer: https://www.example.com/page
-Range: 
-Content-Length: 123
+Vary:     
 

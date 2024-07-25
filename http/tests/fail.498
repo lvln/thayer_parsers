@@ -1,7 +1,5 @@
-HTTP/2.0 903 Early Hints
-Pragma:
-Vary:     
-Range: 
-Accept-Language: en-US
+HTTP/2.0 2000 OK
 Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Content-Type: application/json
 

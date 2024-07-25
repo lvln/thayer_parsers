@@ -1,11 +1,23 @@
 PUT /a/b/ HTTP/2.0
-Vary:     
-Content-Length: 123
-WWW-Authenticate: Basic realm="Access to the staging site"
-Host: www.example.com
+Accept-Language: en-US
+Pragma:
 Accept-Encoding: gzip,
   deflate,
    br
+Authorization: Basic XMlcrpwYzdyZA==
 Transfer-Encoding: chunked
+Content-Type: application/json
+Vary:     
+Host: www.example.com
+Range: 
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Referer: https://www.example.com/page
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+Content-Length: 123
 
 key1=value1&key2=value2

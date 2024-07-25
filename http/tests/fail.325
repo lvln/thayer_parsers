@@ -1,6 +1,9 @@
-OPTIONS http://a/b/c/d;p?q HTT/1.0
+OPTIONS http://a/b/c/d;p?q HTTP/2.
+Accept-Language: en-US
+Content-Length: 123
+Transfer-Encoding: chunked
+Content-Type: application/json
 Accept-Encoding: gzip,
   deflate,
    br
-Transfer-Encoding: chunked
 

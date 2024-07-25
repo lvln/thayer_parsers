@@ -1,8 +1,16 @@
-HEAD http://example.com HTTP/2.
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Host: www.example.com
+HEAD http://example.com HTT/1.0
+Connection: keep-alive
+Content-Type: application/json
 Accept-Encoding: gzip,
   deflate,
    br
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Language: en-US
+Transfer-Encoding: chunked
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Range: 
 

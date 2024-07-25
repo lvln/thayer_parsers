@@ -1,10 +1,7 @@
 CONNECT * HTTP/1.0
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Type: application/json
 Host: www.example.com
-Range: 
-Accept-Language: en-US
-Accept-Encoding: gzip,
-  deflate,
-   br
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 

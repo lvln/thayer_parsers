@@ -1,6 +1,10 @@
-HTTP1.1 423 Locked
-Connection: keep-alive
-Content-Type: application/json
-Authorization: Basic XMlcrpwYzdyZA==
+HTTP/2. 423 Locked
 Content-Length: 123
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+Host: www.example.com
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
 

@@ -1,16 +1,9 @@
-CONNECT ?y HTTP/1.0
-Connection: keep-alive
+CONNECT ** HTTP/1.0
+Accept-Encoding: gzip,
+  deflate,
+   br
 Pragma:
-Accept-Language: en-US
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Length: 123
 Referer: https://www.example.com/page
-Transfer-Encoding: chunked
-Content-Type: application/json
+Range: 
 Authorization: Basic XMlcrpwYzdyZA==
-Vary:     
 

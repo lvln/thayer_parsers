@@ -1,7 +1,5 @@
 HTTP/2.0 416 Range Not Satisfiable
-Pragma:
-Vary:     
-Range: 
-Accept-Language: en-US
 Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Content-Type: application/json
 

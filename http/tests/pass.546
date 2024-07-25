@@ -1,5 +1,24 @@
 HTTP/2.0 503 Service Unavailable
-Referer: https://www.example.com/page
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
 Transfer-Encoding: chunked
+Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Referer: https://www.example.com/page
+Range: 
+Accept-Language: en-US
 
 The server is currently unable to handle the request due to maintenance or overload.

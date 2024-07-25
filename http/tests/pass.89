@@ -1,14 +1,17 @@
 HEAD http://a/b/c/g. HTTP/2.0
-Host: www.example.com
+Accept-Language: en-US
+Transfer-Encoding: chunked
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Vary:     
+Connection: keep-alive
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Connection: keep-alive
-Referer: https://www.example.com/page
-Vary:     
-Transfer-Encoding: chunked
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
 

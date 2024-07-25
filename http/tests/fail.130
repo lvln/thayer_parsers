@@ -1,16 +1,5 @@
 POST /g HTTP/1.1
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Authorization: Basic XMlcrpwYzdyZA==
-Connection: keep-alive
-Content-Type: application/json
-Range: 
-Pragma:
-Referer: https://www.example.com/page
-Accept-Encoding: gzip,
-  deflate,
-   br
-Transfer-Encoding: chunked
-Authorization:Basic XMlcrpwYzdyZA==
+Content-Type: application
+/json
+
 key1=value1&key2=value2

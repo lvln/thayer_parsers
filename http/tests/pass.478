@@ -1,9 +1,13 @@
 HTTP/1.0 409 Conflict
+Host: www.example.com
+Content-Length: 123
 WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Connection: keep-alive
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Transfer-Encoding: chunked
-Accept-Language: en-US
 Content-Type: application/json
-Content-Length: 123
+Range: 
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
 

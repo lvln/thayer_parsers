@@ -1,9 +1,12 @@
-HTTP/.0 504 Gateway Timeout
-Transfer-Encoding: chunked
+HTTP1.1 504 Gateway Timeout
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Authorization: Basic XMlcrpwYzdyZA==
 Referer: https://www.example.com/page
+Vary:     
+Range: 
 

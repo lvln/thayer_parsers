@@ -1,5 +1,16 @@
 DELETE /a/b/ HTTP/1.0
-Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+Referer: https://www.example.com/page
+Accept-Language: en-US
 Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 
 Record to delete

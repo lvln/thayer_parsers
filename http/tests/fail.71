@@ -1,4 +1,5 @@
-GES http://a/b/c/.g HTTP/2.0
-Connection: keep-alive
+PSST http://a/b/c/.g HTTP/2.0
+Content-Type: application/json
+Vary:     
 WWW-Authenticate: Basic realm="Access to the staging site"
 

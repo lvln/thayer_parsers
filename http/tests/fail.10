@@ -1,19 +1,4 @@
 GET http://example.com/data HTTP/1.1
-Content-Length: 123
-Vary:     
-Pragma:
 Content-Type: application/json
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Language: en-US
-Transfer-Encoding: chunked
-Range: 
-WWW-Authenticate: Basic realm="Access to the staging site"
-Connection: keep-alive
-Referer: https://www.example.com/page
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Length : 123
+Accept-Encoding :gzip, deflate, br
 

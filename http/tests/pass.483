@@ -1,9 +1,14 @@
 HTTP/2.0 411 Length Required
-Pragma:
-Transfer-Encoding: chunked
 Accept-Encoding: gzip,
   deflate,
    br
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
 Content-Length: 123
+Transfer-Encoding: chunked
+Referer: https://www.example.com/page
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Range: 
 

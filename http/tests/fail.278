@@ -1,19 +1,4 @@
 CONNECT http://a/b/c/d;p?q HTTP/2.0
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Range: 
-Vary:     
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Pragma:
-Connection: keep-alive
 Accept-Language: en-US
-Content-Length: 123
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept-Encoding :gzip, deflate, br
+WWW-Authenticate    : Basic realm="Access to the staging site"
 

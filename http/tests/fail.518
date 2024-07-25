@@ -1,6 +1,11 @@
-HTTP/2. 425 Too Early
-Accept-Encoding: gzip,
-  deflate,
-   br
-Pragma:
+HTT/1.0 425 Too Early
+Accept-Language: en-US
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Host: www.example.com
+Referer: https://www.example.com/page
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Range: 
 

@@ -1,22 +1,4 @@
 GET http://www.ietf.org/rfc/rfc2396.txt HTTP/2.0
-Host: www.example.com
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Type: application/json
-Content-Length: 123
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Encoding: gzip,
-  deflate,
-   br
-Connection: keep-alive
 Vary:     
-Transfer-Encoding: chunked
-Pragma:
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Range: 
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
 

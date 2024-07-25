@@ -1,4 +1,9 @@
 DELETE http://www.example.com/hello.txt HTTP/2.0
-Range: 
+Content-Length: 123
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
+Vary:     
+Pragma:
 
 Record to delete

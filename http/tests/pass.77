@@ -1,3 +1,7 @@
 HEAD http://www.example.org:8080/pub/WWW/TheProject.html HTTP/2.0
-Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
 

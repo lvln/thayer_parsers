@@ -1,7 +1,4 @@
 HTTP/2.0 415 Unsupported Media Type
-Range: 
-Accept-Language: en-US
-Pragma:
-Content-Type: application/json
-Connection: keep-alive
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 

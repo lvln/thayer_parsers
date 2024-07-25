@@ -1,25 +1,24 @@
-HEAS http://g HTTP/1.1
-Content-Type: application/json
-Range: 
+CONNEC http://g HTTP/1.1
+Accept-Language: en-US
+Vary:     
+Transfer-Encoding: chunked
+Host: www.example.com
+Pragma:
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Transfer-Encoding: chunked
+Referer: https://www.example.com/page
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+Content-Type: application/json
 Accept-Encoding: gzip,
   deflate,
    br
-Connection: keep-alive
-Pragma:
-Content-Length: 123
-Authorization: Basic XMlcrpwYzdyZA==
-Referer: https://www.example.com/page
-Host: www.example.com
-Vary:     
+Range: 
 WWW-Authenticate: Basic realm="Access to the staging site"
 
 Record to delete

@@ -1,10 +1,4 @@
 TRACE http://g HTTP/1.1
+Host: www.example.com
 Accept-Language: en-US
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Pragma:
-Accept-Encoding: gzip,
-  deflate,
-   br
-Transfer-Encoding: chunked
 

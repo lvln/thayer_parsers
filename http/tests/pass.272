@@ -1,16 +1,10 @@
 CONNECT http://www.ietf.org/rfc/rfc2396.txt HTTP/2.0
 WWW-Authenticate: Basic realm="Access to the staging site"
-Transfer-Encoding: chunked
-Content-Type: application/json
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Pragma:
-Connection: keep-alive
-Accept-Language: en-US
-Vary:     
+Referer: https://www.example.com/page
+Accept-Encoding: gzip,
+  deflate,
+   br
+Range: 
 Host: www.example.com
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Vary:     
 

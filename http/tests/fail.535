@@ -1,5 +1,16 @@
 HTTP/1.0 451 Unavailable For Legal Reasons
-Transfer-Encoding: chunked
-WWW-Authenticate: Basic realm="Access to the staging site"
-Pragma :
+Content-Type: application/json
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Referer: https://www.example.com/page
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+: chunked
 

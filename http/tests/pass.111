@@ -1,10 +1,4 @@
 POST http://example.com/data/ HTTP/1.0
-Range: 
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Host: www.example.com
-Content-Length: 123
+Content-Type: application/json
 
 key1=value1&key2=value2

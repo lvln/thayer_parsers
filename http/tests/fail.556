@@ -1,13 +1,9 @@
 HTTP/1.0 506 Variant Also Negotiates
-WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Length: 123
-Content-Type: application/json
-Host: www.example.com
-Pragma:
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Referer: https://www.example.com/page
 Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Charset :utf-8,
- iso-8859-1;q=0.5
+Accept-Language: en-US
+Vary:     
+Range: 
+Content-Length: 123
+Content-Type: application
+/json
 

@@ -1,7 +1,5 @@
-HTTP/2.0 204 
-Content-Type: application/json
-Host: www.example.com
+HTTP/2.0 Accepted
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Pragma:
+Accept-Language: en-US
 

@@ -1,5 +1,18 @@
 POST http://a/b/c/d;p?q HTTP/1.0
-Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Range: 
+Content-Length: 123
+Referer: https://www.example.com/page
+Content-Type: application/json
 Connection: keep-alive
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Host: www.example.com
 
 key1=value1&key2=value2

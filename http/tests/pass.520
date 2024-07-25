@@ -1,22 +1,8 @@
 HTTP/1.0 425 Too Early
-Transfer-Encoding: chunked
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Host: www.example.com
-Accept-Encoding: gzip,
-  deflate,
-   br
-Content-Length: 123
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
 Connection: keep-alive
-Content-Type: application/json
-WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Host: www.example.com
 Range: 
-Pragma:
-Accept-Language: en-US
+Transfer-Encoding: chunked
 Vary:     
-Date: Tue, 23 Jul 2024 12:00:00 GMT
 

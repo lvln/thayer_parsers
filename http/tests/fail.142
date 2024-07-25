@@ -1,8 +1,13 @@
 POST * HTTP/1.1
 Range: 
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Vary:     
-Referer: https://www.example.com/page
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+Content-Type: application/json
+Accept-Encoding :gzip, deflate, br
 
 key1=value1&key2=value2

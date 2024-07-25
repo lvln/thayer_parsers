@@ -1,8 +1,4 @@
 PUT example.com:80/~smith/home.html HTTP/1.0
-Pragma:
 Content-Type: application/json
-Vary:     
-Accept-Language: en-US
-Range: 
 
 key1=value1&key2=value2

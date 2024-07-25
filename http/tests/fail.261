@@ -1,3 +1,4 @@
-CONNECT http://g HTTP/.0
-Authorization: Basic XMlcrpwYzdyZA==
+CONNECT http://g HTTP1.1
+Transfer-Encoding: chunked
+Pragma:
 

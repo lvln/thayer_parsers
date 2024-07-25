@@ -1,21 +1,13 @@
 DELETE http://a/b/c/g. HTTP/2.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Range: 
 Pragma:
-Host: www.example.com
-Transfer-Encoding: chunked
+Referer: https://www.example.com/page
 Accept-Encoding: gzip,
   deflate,
    br
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Connection: keep-alive
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Accept-Language: en-US
-Content-Type: application/json
-Referer: https://www.example.com/page
-Vary:     
 
 Record to delete

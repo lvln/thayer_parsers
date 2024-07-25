@@ -1,4 +1,5 @@
 OPTIONS ** HTTP/1.0
-Host: www.example.com
-Vary:     
+Connection: keep-alive
+Accept-Language: en-US
+Referer: https://www.example.com/page
 

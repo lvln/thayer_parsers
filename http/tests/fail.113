@@ -1,11 +1,19 @@
-POST example.com:80/~smith/home.html HTTP/.0
-Pragma:
-Content-Length: 123
-Host: www.example.com
-Range: 
+POST example.com:80/~smith/home.html HTT/1.0
+Connection: keep-alive
+Referer: https://www.example.com/page
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 Accept-Language: en-US
+Content-Type: application/json
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Accept-Encoding: gzip,
   deflate,
    br
+WWW-Authenticate: Basic realm="Access to the staging site"
 
 key1=value1&key2=value2

@@ -1,9 +1,22 @@
 PUT http://example.com/data HTTP/2.0
-Transfer-Encoding: chunked
-Vary:     
-Referer: https://www.example.com/page
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
 Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Referer: https://www.example.com/page
 Host: www.example.com
 Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+Range: 
+Vary:     
+Connection: keep-alive
 
 key1=value1&key2=value2

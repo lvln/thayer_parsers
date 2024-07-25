@@ -1,12 +1,4 @@
 DELETE http://example.com HTTP/2.0
-Content-Length: 123
-Host: www.example.com
-Referer: https://www.example.com/page
-WWW-Authenticate: Basic realm="Access to the staging site"
 Content-Type: application/json
-Pragma:
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Range: 
 
 Record to delete

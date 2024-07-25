@@ -1,12 +1,21 @@
 CONNECT example.com:80/~smith/home.html HTTP/1.0
+Content-Type: application/json
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
 Accept-Language: en-US
-Date: Tue, 23 Jul 2024 12:00:00 GMT
 Host: www.example.com
-WWW-Authenticate: Basic realm="Access to the staging site"
+Transfer-Encoding: chunked
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Content-Type: application/json
-Authorization: Basic XMlcrpwYzdyZA==
+Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 

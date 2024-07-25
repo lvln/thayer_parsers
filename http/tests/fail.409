@@ -1,5 +1,21 @@
 HTTP/1.0 203 Non-Authoritative Information
-Transfer-Encoding: chunked
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
 Date: Tue, 23 Jul 2024 12:00:00 GMT
- Range: 
+Vary:     
+Pragma:
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+Transfer-Encoding: chunked
+Referer: https://www.example.com/page
+Content-Type: application/json
+Connection: keep-alive
+Accept-Language: en-US
 

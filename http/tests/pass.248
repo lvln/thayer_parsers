@@ -1,4 +1,14 @@
 CONNECT http://example.com HTTP/2.0
+Range: 
+Vary:     
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
 Date: Tue, 23 Jul 2024 12:00:00 GMT
+Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Language: en-US
 WWW-Authenticate: Basic realm="Access to the staging site"
 

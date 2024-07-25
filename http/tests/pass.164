@@ -1,18 +1,10 @@
 PUT http://g HTTP/2.0
-Accept-Encoding: gzip,
-  deflate,
-   br
-Content-Length: 123
-Referer: https://www.example.com/page
-Host: www.example.com
-Authorization: Basic XMlcrpwYzdyZA==
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Type: application/json
-Pragma:
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-WWW-Authenticate: Basic realm="Access to the staging site"
-Vary:     
 Range: 
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Type: application/json
 
 key1=value1&key2=value2

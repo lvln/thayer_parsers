@@ -1,13 +1,3 @@
 HTTP/1.1 304 Not Modified
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Type: application/json
-Pragma:
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Connection: keep-alive
-Vary:     
 Accept-Language: en-US
-Content-Length: 123
-WWW-Authenticate: Basic realm="Access to the staging site"
 

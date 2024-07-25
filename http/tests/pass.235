@@ -1,11 +1,17 @@
 DELETE / HTTP/1.1
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Range: 
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
 Date: Tue, 23 Jul 2024 12:00:00 GMT
-WWW-Authenticate: Basic realm="Access to the staging site"
 Content-Length: 123
+Accept-Encoding: gzip,
+  deflate,
+   br
+Range: 
+Content-Type: application/json
+Pragma:
+Connection: keep-alive
+Accept-Language: en-US
+Host: www.example.com
 
 Record to delete

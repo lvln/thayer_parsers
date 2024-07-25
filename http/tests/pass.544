@@ -1,13 +1,18 @@
 HTTP/1.0 502 Bad Gateway
-Content-Type: application/json
-Range: 
-Referer: https://www.example.com/page
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
 Pragma:
-Host: www.example.com
-Connection: keep-alive
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
+Vary:     
 
 The server received an invalid response from the upstream server.

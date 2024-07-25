@@ -1,20 +1,7 @@
 HEAD http://a/b/c/d;p?q HTTP/2.0
-Accept-Encoding: gzip,
-  deflate,
-   br
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Accept-Language: en-US
 Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
 Connection: keep-alive
-WWW-Authenticate: Basic realm="Access to the staging site"
-Pragma:
-Range: 
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Content-Length: 123
-Transfer-Encoding: chunked
-Host: www.example.com
 

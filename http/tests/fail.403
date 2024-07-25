@@ -1,7 +1,8 @@
 HTTP/1.0 201 Created
-Transfer-Encoding: chunked
+Referer: https://www.example.com/page
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Range: 
-Content-Length: 123
-Connection : keep-alive
+Content-Length : 123
 
 Resource has been created.

@@ -1,5 +1,22 @@
 OPTIONS http://a/b/c/d;p?q HTTP/2.0
+Range: 
+Pragma:
+Content-Type: application/json
+Vary:     
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
 Transfer-Encoding: chunked
+Accept-Language: en-US
 Date: Tue, 23 Jul 2024 12:00:00 GMT
-: chunked
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application
+/json
 

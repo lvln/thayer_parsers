@@ -1,5 +1,7 @@
 HTTP/1.0 500 Internal Server Error
 Content-Length: 123
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Range: 
 Connection: keep-alive
 
 An unexpected error occurred on the server.

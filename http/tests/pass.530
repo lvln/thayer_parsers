@@ -1,3 +1,10 @@
 HTTP/1.1 431 Request Header Fields Too Large
-Content-Type: application/json
+Host: www.example.com
+Range: 
+Transfer-Encoding: chunked
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
+Vary:     
+Connection: keep-alive
+Accept-Language: en-US
 

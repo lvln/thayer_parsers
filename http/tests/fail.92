@@ -1,3 +1,9 @@
-HEAD g HTTP/2.0
-Vary:     
+HEAD mailto:John.Doe@example.com HTTP/2.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+Accept-Encoding: gzip,
+  deflate,
+   br
 

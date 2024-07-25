@@ -1,21 +1,15 @@
 GET http://g HTTP/1.1
+Content-Length: 123
+Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Connection: keep-alive
 Accept-Encoding: gzip,
   deflate,
    br
-Authorization: Basic XMlcrpwYzdyZA==
-Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
 Range: 
-Pragma:
-Vary:     
 Accept-Language: en-US
-Host: www.example.com
-Content-Type: application/json
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Length: 123
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
 

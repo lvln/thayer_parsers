@@ -1,2 +1,2 @@
-CONNEC http://g HTTP/1.1
+CONNEC / HTTP/1.0
 

@@ -1,14 +1,21 @@
 HTTP/1.0 422 Unprocessable Content
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+Accept-Language: en-US
 Host: www.example.com
 Authorization: Basic XMlcrpwYzdyZA==
-Connection: keep-alive
-WWW-Authenticate: Basic realm="Access to the staging site"
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Referer: https://www.example.com/page
+Content-Length: 123
+Pragma:
+Range: 
+Content-Type: application/json
 Accept-Encoding: gzip,
   deflate,
    br
-Range: 
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Date Tue, 23 Jul 2024 12:00:00 GMT
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+:
 

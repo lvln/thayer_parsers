@@ -1,7 +1,14 @@
-CONNECT ftp://ftp.is.co.za/rfc/rfc1808.txt# HTTP/1.0
-Host: www.example.com
-Accept-Encoding: gzip,
-  deflate,
-   br
+CONNECT g?y#s HTTP/1.0
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
 Vary:     
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
 

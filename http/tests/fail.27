@@ -1,7 +1,14 @@
-TRACES http://www.example.com/hello.txt HTTP/1.0
-Connection: keep-alive
-Referer: https://www.example.com/page
+DELET http://www.example.com/hello.txt HTTP/1.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
 Authorization: Basic XMlcrpwYzdyZA==
-Transfer-Encoding: chunked
 Content-Type: application/json
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 

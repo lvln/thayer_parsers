@@ -1,5 +1,7 @@
-HTTP1.1 400 Bad Request
-Connection: keep-alive
-Accept-Language: en-US
+HTT/1.0 400 Bad Request
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Pragma:
 
 The request could not be understood or was missing required parameters.

@@ -1,23 +1,17 @@
 DELETE / HTTP/2.0
-WWW-Authenticate: Basic realm="Access to the staging site"
-Range: 
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+Referer: https://www.example.com/page
+Pragma:
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Content-Length: 123
-Connection: keep-alive
-Host: www.example.com
-Content-Type: application/json
-Vary:     
-Pragma:
 Accept-Encoding: gzip,
   deflate,
    br
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Referer: https://www.example.com/page
-Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Language: en-US
+Range: 
 
 Record to delete

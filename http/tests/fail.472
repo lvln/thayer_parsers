@@ -1,7 +1,24 @@
 HTTP/1.0 407 Proxy Authentication Required
-WWW-Authenticate: Basic realm="Access to the staging site"
-Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Range: 
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Referer: https://www.example.com/page
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Referer https://www.example.com/page
+Content-Length: 123
+Content-Type: application/json
+Accept-Language: en-US
+Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+Connection : keep-alive
 

@@ -1,5 +1,11 @@
-HTTP/2.0 204 
-WWW-Authenticate: Basic realm="Access to the staging site"
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+HTTP/2.0 2000 OK
+Authorization: Basic XMlcrpwYzdyZA==
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Pragma:
+Connection: keep-alive
+Accept-Language: en-US
+Transfer-Encoding: chunked
 

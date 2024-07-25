@@ -1,7 +1,17 @@
 POST http://www.example.com/hello.txt HTTP/2.0
-Referer: https://www.example.com/page
+Vary:     
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Encoding: gzip,
+  deflate,
+   br
 Pragma:
 Accept-Language: en-US
-WWW-Authenticate    : Basic realm="Access to the staging site"
+Connection: keep-alive
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Charset :utf-8,
+ iso-8859-1;q=0.5
 
 key1=value1&key2=value2

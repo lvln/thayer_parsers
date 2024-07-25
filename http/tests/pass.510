@@ -1,14 +1,11 @@
 HTTP/2.0 422 Unprocessable Content
-Vary:     
-Content-Length: 123
-Content-Type: application/json
-Accept-Encoding: gzip,
-  deflate,
-   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Connection: keep-alive
-Authorization: Basic XMlcrpwYzdyZA==
 Accept-Language: en-US
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Content-Type: application/json
 

@@ -1,18 +1,20 @@
-PSST /a/b/ HTTP/1.0
-Vary:     
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Language: en-US
-Transfer-Encoding: chunked
-Host: www.example.com
+OPTION /a/b/ HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
 Accept-Encoding: gzip,
   deflate,
    br
-Range: 
-Content-Length: 123
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Referer: https://www.example.com/page
-Content-Type: application/json
 Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
 Date: Tue, 23 Jul 2024 12:00:00 GMT
+Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Range: 
+Pragma:
 

@@ -1,7 +1,17 @@
 GET http://www.example.com/hello.txt HTTP/.0
+Vary:     
+Connection: keep-alive
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Connection: keep-alive
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Language: en-US
+Content-Type: application/json
+Range: 
 

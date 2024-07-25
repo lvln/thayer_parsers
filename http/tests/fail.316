@@ -1,19 +1,7 @@
-OPTIONS ldap://[2001:db8::7]/c=GB?objectClass?one HTTP/1.1
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Content-Length: 123
-Transfer-Encoding: chunked
+OPTIONS tel:+1-816-555-1212 HTTP/1.1
 Accept-Encoding: gzip,
   deflate,
    br
-Connection: keep-alive
-Range: 
-Vary:     
-Pragma:
-Referer: https://www.example.com/page
+WWW-Authenticate: Basic realm="Access to the staging site"
 Host: www.example.com
-Authorization: Basic XMlcrpwYzdyZA==
-Content-Type: application/json
 

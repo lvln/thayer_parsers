@@ -1,24 +1,11 @@
-PSST http://example.com/data HTTP/2.0
-Pragma:
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+CONNEC http://example.com/data HTTP/2.0
+Transfer-Encoding: chunked
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Authorization: Basic XMlcrpwYzdyZA==
-Vary:     
 Host: www.example.com
-Connection: keep-alive
 Content-Type: application/json
-Referer: https://www.example.com/page
-Range: 
-Transfer-Encoding: chunked
 Accept-Language: en-US
-Accept-Encoding: gzip,
-  deflate,
-   br
+Connection: keep-alive
 WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Length: 123
+Vary:     
 

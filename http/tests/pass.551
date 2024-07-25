@@ -1,10 +1,10 @@
 HTTP/1.1 505 HTTP Version Not Supported
-Range: 
-Content-Length: 123
-Accept-Language: en-US
-Host: www.example.com
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Type: application/json
-Connection: keep-alive
+Referer: https://www.example.com/page
+Transfer-Encoding: chunked
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
 

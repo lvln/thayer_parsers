@@ -1,6 +1,21 @@
-PUT g?y/./x HTTP/1.0
+PUT ** HTTP/1.0
 Accept-Encoding: gzip,
   deflate,
    br
+Transfer-Encoding: chunked
+Host: www.example.com
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+Connection: keep-alive
+Referer: https://www.example.com/page
+Vary:     
+Pragma:
 
 key1=value1&key2=value2

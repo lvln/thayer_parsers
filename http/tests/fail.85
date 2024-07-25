@@ -1,4 +1,11 @@
-HEAD http://a/b/c/d;p?q HTTP1.1
+HEAD http://a/b/c/d;p?q HTT/1.0
 Vary:     
-Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
+Range: 
+Host: www.example.com
+Connection: keep-alive
 

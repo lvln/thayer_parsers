@@ -1,3 +1,14 @@
 HTTP/1.1 424 Failed Dependency
-Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Range: 
+Pragma:
+Vary:     
+Accept-Language: en-US
+Host: www.example.com
 

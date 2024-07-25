@@ -1,13 +1,7 @@
-POST http://www.example.com/hello.txt HTTP/.0
-WWW-Authenticate: Basic realm="Access to the staging site"
-Transfer-Encoding: chunked
-Accept-Encoding: gzip,
-  deflate,
-   br
-Referer: https://www.example.com/page
-Connection: keep-alive
-Range: 
+POST http://www.example.com/hello.txt HTTP1.1
+Pragma:
+Accept-Language: en-US
+Host: www.example.com
 Date: Tue, 23 Jul 2024 12:00:00 GMT
-Vary:     
 
 key1=value1&key2=value2

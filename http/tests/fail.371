@@ -1,6 +1,13 @@
-TRACES /g HTTP/2.0
-Referer: https://www.example.com/page
+HEAS /g HTTP/2.0
+Transfer-Encoding: chunked
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
+Host: www.example.com
+Range: 
 Pragma:
-Connection: keep-alive
 Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
 

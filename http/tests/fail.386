@@ -1,21 +1,8 @@
-HTT/1.0 100 Continue
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Authorization: Basic XMlcrpwYzdyZA==
-Host: www.example.com
-Content-Type: application/json
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-WWW-Authenticate: Basic realm="Access to the staging site"
-Pragma:
-Vary:     
-Referer: https://www.example.com/page
-Accept-Language: en-US
-Content-Length: 123
+HTTP1.1 100 Continue
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Accept-Encoding: gzip,
-  deflate,
-   br
+Transfer-Encoding: chunked
+Range: 
 

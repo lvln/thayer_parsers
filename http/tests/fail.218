@@ -1,4 +1,9 @@
 DELETE http://www.example.com/hello.txt HTTP/2.0
-WWW-Authenticate    : Basic realm="Access to the staging site"
+Content-Length: 123
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
+Vary:     
+Accept-Encoding :gzip, deflate, br
 
 Record to delete

@@ -1,20 +1,8 @@
 HTTP/1.0 421 Misdirected Request
-WWW-Authenticate: Basic realm="Access to the staging site"
-Connection: keep-alive
-Authorization: Basic XMlcrpwYzdyZA==
-Host: www.example.com
-Pragma:
-Content-Length: 123
-Accept-Language: en-US
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
 Referer: https://www.example.com/page
+WWW-Authenticate: Basic realm="Access to the staging site"
 Range: 
+Pragma:
+Host: www.example.com
 Vary:     
 

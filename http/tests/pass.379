@@ -1,21 +1,13 @@
 TRACE / HTTP/1.1
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Transfer-Encoding: chunked
-Connection: keep-alive
-Content-Type: application/json
-Referer: https://www.example.com/page
 Host: www.example.com
-WWW-Authenticate: Basic realm="Access to the staging site"
 Authorization: Basic XMlcrpwYzdyZA==
 Content-Length: 123
+Referer: https://www.example.com/page
+Connection: keep-alive
 Accept-Language: en-US
-Vary:     
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+Content-Type: application/json
 Accept-Encoding: gzip,
   deflate,
    br
+Pragma:
 

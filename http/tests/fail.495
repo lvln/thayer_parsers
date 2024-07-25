@@ -1,7 +1,4 @@
-HTTP/2.0 204 
-Range: 
-Accept-Language: en-US
-Pragma:
-Content-Type: application/json
-Connection: keep-alive
+HTTP/2.0 600 Continue
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 

@@ -1,8 +1,12 @@
-HTTP/2.0 2000 OK
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+HTTP/2.0 001 Created
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Vary:     
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Content-Length: 123
 

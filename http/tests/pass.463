@@ -1,4 +1,5 @@
 HTTP/1.0 404 Not Found
-Host: www.example.com
+Vary:     
+Transfer-Encoding: chunked
 
 The requested resource could not be found.

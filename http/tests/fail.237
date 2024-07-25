@@ -1,4 +1,9 @@
-DELETE / HTTP1.1
+DELETE / HTTP/.0
+Pragma:
 Content-Length: 123
+Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
 
 Record to delete

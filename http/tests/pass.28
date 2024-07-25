@@ -1,14 +1,13 @@
 GET http://www.example.org:8080/pub/WWW/TheProject.html HTTP/1.1
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-WWW-Authenticate: Basic realm="Access to the staging site"
-Connection: keep-alive
-Content-Length: 123
-Host: www.example.com
-Accept-Language: en-US
-Accept-Encoding: gzip,
-  deflate,
-   br
 Range: 
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Transfer-Encoding: chunked
+Host: www.example.com
 

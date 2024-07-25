@@ -1,11 +1,5 @@
-CONNECT http://a/b/c/d;p?q HTT/1.0
-WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Length: 123
-Pragma:
-Accept-Language: en-US
-Connection: keep-alive
-Accept-Encoding: gzip,
-  deflate,
-   br
-Range: 
+CONNECT http://a/b/c/d;p?q HTTP/2.
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 

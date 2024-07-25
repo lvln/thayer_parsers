@@ -1,18 +1,10 @@
 GET http://a/b/c/d;p?q HTTP/1.0
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Range: 
+Pragma:
+Connection: keep-alive
 Accept-Encoding: gzip,
   deflate,
    br
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Connection: keep-alive
-Vary:     
-Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
 Accept-Language: en-US
-Host: www.example.com
-Content-Length: 123
-Referer: https://www.example.com/page
 

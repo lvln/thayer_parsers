@@ -1,8 +1,15 @@
 HTTP/1.0 505 HTTP Version Not Supported
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Pragma:
+Vary:     
 Range: 
-Referer: https://www.example.com/page
-Accept-Language: en-US
+Content-Type: application/json
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
+Accept-Encoding: gzip,
+  deflate,
+   br
 

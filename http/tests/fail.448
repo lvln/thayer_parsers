@@ -1,9 +1,13 @@
 HTTP/1.0 308 Permanent Redirect
-Content-Type: application/json
+Vary:     
+Host: www.example.com
+Range: 
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Transfer-Encoding: chunked
-Pragma:
-Vary:     
-Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset :utf-8,
+ iso-8859-1;q=0.5
 

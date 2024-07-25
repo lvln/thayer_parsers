@@ -1,17 +1,7 @@
 PUT http://example.com/data HTTP/1.1
-Accept-Encoding: gzip,
-  deflate,
-   br
-Content-Type: application/json
-Range: 
-Connection: keep-alive
-Host: www.example.com
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Language: en-US
-Vary:     
-Transfer-Encoding: chunked
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-WWW-Authenticate    : Basic realm="Access to the staging site"
+Content-Length: 123
+Content-Length : 123
 
 key1=value1&key2=value2

@@ -1,25 +1,5 @@
 DELETE example.com:80/~smith/home.html HTTP/1.0
-Referer: https://www.example.com/page
-Range: 
-WWW-Authenticate: Basic realm="Access to the staging site"
-Host: www.example.com
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Language: en-US
-Pragma:
 Content-Length: 123
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Vary:     
-Content-Type: application/json
-Accept-Encoding: gzip,
-  deflate,
-   br
-Transfer-Encoding: chunked
-Connection: keep-alive
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Accept-Language: en-US
 
 Record to delete

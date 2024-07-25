@@ -1,13 +1,17 @@
 HTTP/2.0 505 HTTP Version Not Supported
-Range: 
-Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Authorization: Basic XMlcrpwYzdyZA==
-Transfer-Encoding: chunked
+Pragma:
 Accept-Language: en-US
 Host: www.example.com
 Content-Type: application/json
-Connection: keep-alive
-Vary:     
-Pragma:
+Transfer-Encoding: chunked
+Range: 
+Content-Length: 123
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
 

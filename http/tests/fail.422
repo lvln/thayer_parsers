@@ -1,6 +1,5 @@
-HTTP/2. 208 Already Reported
-Transfer-Encoding: chunked
-Content-Type: application/json
-Content-Length: 123
-Authorization: Basic XMlcrpwYzdyZA==
+HTT/1.0 208 Already Reported
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
 

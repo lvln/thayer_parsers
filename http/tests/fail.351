@@ -1,7 +1,11 @@
 TRACES http://example.com/data/ HTTP/1.0
-Content-Length: 123
+Transfer-Encoding: chunked
+Vary:     
+Range: 
 Accept-Encoding: gzip,
   deflate,
    br
-Vary:     
+Content-Type: application/json
+Referer: https://www.example.com/page
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 

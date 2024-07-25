@@ -1,21 +1,7 @@
 PUT http://a/b/c/g. HTTP/1.1
-Authorization: Basic XMlcrpwYzdyZA==
-WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Length: 123
-Vary:     
-Host: www.example.com
-Pragma:
 Accept-Language: en-US
-Content-Type: application/json
-Accept-Encoding: gzip,
-  deflate,
-   br
+Pragma:
+Content-Length: 123
 Transfer-Encoding: chunked
-Referer: https://www.example.com/page
-Connection: keep-alive
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
 
 key1=value1&key2=value2

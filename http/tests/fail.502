@@ -1,14 +1,18 @@
 HTTP/1.0 417 Expectation Failed
-Content-Type: application/json
-Connection: keep-alive
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Authorization: Basic XMlcrpwYzdyZA==
+WWW-Authenticate: Basic realm="Access to the staging site"
 Host: www.example.com
+Connection: keep-alive
+Pragma:
+Referer: https://www.example.com/page
 Range: 
-Transfer-Encoding: chunked
 Accept-Encoding: gzip,
   deflate,
    br
-Accept-Encoding :gzip, deflate, br
+Accept-Language: en-US
+Vary:     
+Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+Content-Length: 123
+Date Tue, 23 Jul 2024 12:00:00 GMT
 

@@ -1,21 +1,17 @@
-GES http://www.ietf.org/rfc/rfc2396.txt HTTP/1.1
-Accept-Encoding: gzip,
-  deflate,
-   br
-Pragma:
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+TRACES http://www.ietf.org/rfc/rfc2396.txt HTTP/1.1
+Authorization: Basic XMlcrpwYzdyZA==
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
+Host: www.example.com
+Vary:     
 Content-Length: 123
-WWW-Authenticate: Basic realm="Access to the staging site"
-Range: 
 Transfer-Encoding: chunked
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Authorization: Basic XMlcrpwYzdyZA==
-Content-Type: application/json
+Accept-Language: en-US
 Referer: https://www.example.com/page
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Connection: keep-alive
 
 key1=value1&key2=value2

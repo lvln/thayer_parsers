@@ -1,3 +1,9 @@
 HEAD / HTTP/2.0
-Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+Accept-Encoding: gzip,
+  deflate,
+   br
 

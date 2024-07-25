@@ -1,23 +1,15 @@
 GET http://a/b/c/..g HTTP/1.1
-Transfer-Encoding: chunked
-Vary:     
-Content-Type: application/json
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Referer: https://www.example.com/page
+Range: 
+Accept-Encoding: gzip,
+  deflate,
+   br
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Host: www.example.com
-Content-Length: 123
-Range: 
-Pragma:
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Language: en-US
-Authorization: Basic XMlcrpwYzdyZA==
-WWW-Authenticate: Basic realm="Access to the staging site"
-Referer: https://www.example.com/page
+Vary:     
 

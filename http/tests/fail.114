@@ -1,12 +1,4 @@
 POST example.com:80/~smith/home.html HTTP/1.0
-Pragma:
-Host: www.example.com
-Content-Length: 123
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Transfer-Encoding: chunked
-Date Tue, 23 Jul 2024 12:00:00 GMT
+Pragma :
 
 key1=value1&key2=value2

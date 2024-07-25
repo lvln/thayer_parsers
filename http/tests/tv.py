@@ -177,3 +177,64 @@ pass_number += 1
 version = random.choice(invalid_versions)
 write_fail_response(version, status_code, None, fail_number, message_body)
 fail_number += 1
+
+# Create tests where non-optional fields are omitted - first generate a passing test and then a corresponding failing test
+# Omit method in request
+method = random.choice(valid_methods)
+message_body = request_body(method)
+url = random.choice(valid_urls)
+version = random.choice(valid_versions)
+headers = random.sample(valid_headers, k=random.randint(0, len(valid_headers)))
+write_pass_request(method, url, version, headers, pass_number, message_body)
+pass_number += 1
+method = ""
+write_fail_request(method, url, version, headers, fail_number, message_body)
+fail_number += 1
+
+# Omit url in request
+method = random.choice(valid_methods)
+message_body = request_body(method)
+url = random.choice(valid_urls)
+version = random.choice(valid_versions)
+headers = random.sample(valid_headers, k=random.randint(0, len(valid_headers)))
+write_pass_request(method, url, version, headers, pass_number, message_body)
+pass_number += 1
+url = ""
+write_fail_request(method, url, version, headers, fail_number, message_body)
+fail_number += 1
+
+# Omit version in request
+method = random.choice(valid_methods)
+message_body = request_body(method)
+url = random.choice(valid_urls)
+version = random.choice(valid_versions)
+headers = random.sample(valid_headers, k=random.randint(0, len(valid_headers)))
+write_pass_request(method, url, version, headers, pass_number, message_body)
+pass_number += 1
+version = ""
+write_fail_request(method, url, version, headers, fail_number, message_body)
+fail_number += 1
+
+# Omit version in response
+version = random.choice(valid_versions)
+status_code = random.choice(valid_status_codes)
+numeric_part = status_code.split()[0]
+message_body = response_body(int(numeric_part[:3]))
+headers = random.sample(valid_headers, k=random.randint(0, len(valid_headers)))
+write_pass_response(version, status_code, headers, pass_number, message_body)
+pass_number += 1
+version = ""
+write_fail_response(version, status_code, headers, fail_number, message_body)
+fail_number += 1
+
+# Omit status code in request
+version = random.choice(valid_versions)
+status_code = random.choice(valid_status_codes)
+numeric_part = status_code.split()[0]
+message_body = response_body(int(numeric_part[:3]))
+headers = random.sample(valid_headers, k=random.randint(0, len(valid_headers)))
+write_pass_response(version, status_code, headers, pass_number, message_body)
+pass_number += 1
+status_code = ""
+write_fail_response(version, status_code, headers, fail_number, message_body)
+fail_number += 1

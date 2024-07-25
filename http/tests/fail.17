@@ -1,20 +1,13 @@
 GET example.com:80/~smith/home.html HTTP/2.
-Host: www.example.com
-Accept-Language: en-US
-Content-Length: 123
-Accept-Encoding: gzip,
-  deflate,
-   br
+Authorization: Basic XMlcrpwYzdyZA==
 Pragma:
-Range: 
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-WWW-Authenticate: Basic realm="Access to the staging site"
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Referer: https://www.example.com/page
 Connection: keep-alive
+Content-Length: 123
+Accept-Language: en-US
+Referer: https://www.example.com/page
+Transfer-Encoding: chunked
+Content-Type: application/json
+Range: 
 

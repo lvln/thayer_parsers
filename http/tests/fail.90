@@ -1,8 +1,13 @@
 HEAD http://a/b/c/g. HTTP/1.0
-Content-Type: application/json
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+Vary:     
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
 Host: www.example.com
-Authorization:Basic XMlcrpwYzdyZA==
+Connection: keep-alive
+Range: 
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date Tue, 23 Jul 2024 12:00:00 GMT
+

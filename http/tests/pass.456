@@ -1,14 +1,20 @@
 HTTP/2.0 402 Payment Required
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Authorization: Basic XMlcrpwYzdyZA==
 Content-Type: application/json
-Accept-Language: en-US
-WWW-Authenticate: Basic realm="Access to the staging site"
 Accept-Encoding: gzip,
   deflate,
    br
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
 Transfer-Encoding: chunked
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Content-Length: 123
+Range: 
+Accept-Language: en-US
+Host: www.example.com
+Referer: https://www.example.com/page
 

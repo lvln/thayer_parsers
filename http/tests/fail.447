@@ -1,5 +1,12 @@
-HTTP/2.0 802 Processing
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Pragma:
+HTTP/2.0 001 Created
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Vary:     
 Transfer-Encoding: chunked
+Accept-Encoding: gzip,
+  deflate,
+   br
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
 

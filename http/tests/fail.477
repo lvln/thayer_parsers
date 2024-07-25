@@ -1,6 +1,12 @@
-HTTP/2.0 600 Continue
+HTTP/2.0 Accepted
 WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Language: en-US
-Pragma:
-Content-Length: 123
+Referer: https://www.example.com/page
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+Host: www.example.com
+Transfer-Encoding: chunked
 

@@ -1,7 +1,23 @@
 HTTP/2.0 429 Too Many Requests
-Content-Length: 123
-Host: www.example.com
-Authorization: Basic XMlcrpwYzdyZA==
-WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Referer: https://www.example.com/page
+Transfer-Encoding: chunked
 Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
+Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 

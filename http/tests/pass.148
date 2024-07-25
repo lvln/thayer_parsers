@@ -1,6 +1,6 @@
 PUT http://a/b/c/..g HTTP/1.1
-Transfer-Encoding: chunked
-Pragma:
-Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
 
 key1=value1&key2=value2

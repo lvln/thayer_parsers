@@ -1,18 +1,22 @@
 HTTP/1.1 508 Loop Detected
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Length: 123
-Authorization: Basic XMlcrpwYzdyZA==
-Host: www.example.com
-Accept-Language: en-US
-Transfer-Encoding: chunked
-Connection: keep-alive
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Content-Type: application/json
+Pragma:
 WWW-Authenticate: Basic realm="Access to the staging site"
 Referer: https://www.example.com/page
-Pragma:
+Content-Length: 123
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Range: 
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
 

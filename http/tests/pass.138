@@ -1,9 +1,6 @@
 POST http://a/b/c/g. HTTP/1.0
-Pragma:
-Accept-Encoding: gzip,
-  deflate,
-   br
-Vary:     
-Content-Type: application/json
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
+Connection: keep-alive
 
 key1=value1&key2=value2

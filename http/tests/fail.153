@@ -1,7 +1,14 @@
-PUT http://example.com HTT/1.0
+PUT http://example.com HTTP1.1
+Pragma:
+Vary:     
+Host: www.example.com
+Content-Length: 123
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
 Transfer-Encoding: chunked
 Accept-Language: en-US
-Date: Tue, 23 Jul 2024 12:00:00 GMT
 Referer: https://www.example.com/page
 
 key1=value1&key2=value2

@@ -1,7 +1,5 @@
 TRACE http://a/b/c/..g HTTP/1.0
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Connection: keep-alive
-Host: www.example.com
-Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+Pragma:
+Content-Length: 123
 

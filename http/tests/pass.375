@@ -1,4 +1,10 @@
 TRACE http://a/b/c/d;p?q HTTP/1.0
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Transfer-Encoding: chunked
+Vary:     
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
 Connection: keep-alive

@@ -1,11 +1,19 @@
 HTTP/1.0 401 Unauthorized
-Vary:     
-WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Referer: https://www.example.com/page
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Range: 
 Connection: keep-alive
+Vary:     
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Pragma:
-Authorization: Basic XMlcrpwYzdyZA==
-Content-Type: application/json
-WWW-Authenticate    : Basic realm="Access to the staging site"
+Connection : keep-alive
 
 Authentication credentials were missing or incorrect.

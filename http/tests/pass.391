@@ -1,8 +1,19 @@
 HTTP/1.0 101 Switching Protocols
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Pragma:
+Vary:     
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+Accept-Encoding: gzip,
+  deflate,
+   br
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Content-Length: 123
-Accept-Language: en-US
-Pragma:
-Connection: keep-alive
+Host: www.example.com
 

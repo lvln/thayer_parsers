@@ -1,14 +1,4 @@
-CONNECT http://a/b/c/g. HTTP/.0
-Host: www.example.com
-Connection: keep-alive
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Pragma:
+CONNECT http://a/b/c/g. HTT/1.0
 Vary:     
-Authorization: Basic XMlcrpwYzdyZA==
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Content-Type: application/json
+Pragma:
 

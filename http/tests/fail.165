@@ -1,18 +1,14 @@
-PUT http://g HTTP/2.
-Transfer-Encoding: chunked
+PUT http://g HTTP1.1
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Host: www.example.com
 Connection: keep-alive
 Range: 
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Encoding: gzip,
-  deflate,
-   br
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Content-Length: 123
-Content-Type: application/json
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
 
 key1=value1&key2=value2

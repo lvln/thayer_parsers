@@ -1,20 +1,14 @@
-TRACE example.com:80/~smith/home.html HTTP/.0
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Host: www.example.com
-Accept-Encoding: gzip,
-  deflate,
-   br
+TRACE example.com:80/~smith/home.html HTT/1.0
 Content-Type: application/json
-Transfer-Encoding: chunked
-Referer: https://www.example.com/page
-Content-Length: 123
-Range: 
-Pragma:
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Language: en-US
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Accept-Language: en-US
+Vary:     
+Referer: https://www.example.com/page
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Content-Length: 123
 

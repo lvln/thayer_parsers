@@ -1,6 +1,7 @@
 CONNECT /a/b/ HTTP/2.0
-Host: www.example.com
-Transfer-Encoding: chunked
-Content-Type: application/json
-WWW-Authenticate    : Basic realm="Access to the staging site"
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection : keep-alive
 

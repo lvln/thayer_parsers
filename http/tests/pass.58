@@ -1,17 +1,8 @@
 HEAD http://example.com/data HTTP/1.1
-Accept-Encoding: gzip,
-  deflate,
-   br
-Host: www.example.com
-Referer: https://www.example.com/page
-WWW-Authenticate: Basic realm="Access to the staging site"
 Range: 
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Transfer-Encoding: chunked
-Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
+Content-Length: 123
+Referer: https://www.example.com/page
 

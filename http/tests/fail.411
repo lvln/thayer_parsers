@@ -1,7 +1,20 @@
-HTTP/2.0 Accepted
-Host: www.example.com
-Pragma:
-Vary:     
+HTTP/2.0 802 Processing
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Length: 123
 Range: 
+Transfer-Encoding: chunked
+Accept-Language: en-US
+Pragma:
+Connection: keep-alive
 WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 

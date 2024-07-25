@@ -1,23 +1,23 @@
-HEAD g?y/./x HTTP/1.1
+HEAD tel:+1-816-555-1212 HTTP/1.1
 WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Language: en-US
+Content-Type: application/json
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Referer: https://www.example.com/page
+Connection: keep-alive
+Pragma:
 Transfer-Encoding: chunked
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 Accept-Encoding: gzip,
   deflate,
    br
+Range: 
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Authorization: Basic XMlcrpwYzdyZA==
-Connection: keep-alive
-Range: 
-Pragma:
-Referer: https://www.example.com/page
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Host: www.example.com
-Content-Type: application/json
-Content-Length: 123
+Accept-Language: en-US
 

@@ -1,6 +1,5 @@
 HTTP/1.1 208 Already Reported
-Transfer-Encoding: chunked
-Content-Type: application/json
-Content-Length: 123
-Authorization: Basic XMlcrpwYzdyZA==
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
 

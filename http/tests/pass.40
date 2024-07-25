@@ -1,10 +1,20 @@
 GET http://a/b/c/g. HTTP/1.1
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Referer: https://www.example.com/page
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Type: application/json
+Transfer-Encoding: chunked
+Accept-Language: en-US
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Length: 123
+Host: www.example.com
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
 Range: 
-Host: www.example.com
-Accept-Language: en-US
-WWW-Authenticate: Basic realm="Access to the staging site"
-Authorization: Basic XMlcrpwYzdyZA==
-Transfer-Encoding: chunked
 

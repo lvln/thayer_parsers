@@ -1,16 +1,23 @@
 POST http://example.com/data HTTP/2.0
-Host: www.example.com
-Content-Type: application/json
-Authorization: Basic XMlcrpwYzdyZA==
-Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-WWW-Authenticate: Basic realm="Access to the staging site"
-Transfer-Encoding: chunked
 Accept-Language: en-US
+Host: www.example.com
+Transfer-Encoding: chunked
+Range: 
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Referer: https://www.example.com/page
+Content-Length: 123
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
 
 key1=value1&key2=value2

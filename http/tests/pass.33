@@ -1,9 +1,11 @@
 GET http://www.ietf.org/rfc/rfc2396.txt HTTP/1.0
-Pragma:
-Transfer-Encoding: chunked
-Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
 Accept-Encoding: gzip,
   deflate,
    br
+Vary:     
+Accept-Language: en-US
+Host: www.example.com
 Authorization: Basic XMlcrpwYzdyZA==
+Range: 
 

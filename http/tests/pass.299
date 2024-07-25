@@ -1,4 +1,10 @@
 OPTIONS http://example.com/data HTTP/2.0
+Transfer-Encoding: chunked
+Content-Length: 123
+Range: 
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Accept-Language: en-US
-Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
 

@@ -1,3 +1,5 @@
-HTTP/2.0 903 Early Hints
-Accept-Language: en-US
+HTTP/2.0 Accepted
+Transfer-Encoding: chunked
+Vary:     
+Range: 
 

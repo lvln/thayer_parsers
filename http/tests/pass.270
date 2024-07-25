@@ -1,10 +1,20 @@
 CONNECT http://www.example.org:8080/pub/WWW/TheProject.html HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Vary:     
 Accept-Encoding: gzip,
   deflate,
    br
 Date: Tue, 23 Jul 2024 12:00:00 GMT
-Connection: keep-alive
-Pragma:
+Transfer-Encoding: chunked
+Host: www.example.com
+Range: 
 Accept-Language: en-US
-Content-Type: application/json
+Authorization: Basic XMlcrpwYzdyZA==
+Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 

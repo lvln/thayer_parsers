@@ -1,14 +1,12 @@
-HEAD http://a/b/c/..g HTTP1.1
-Accept-Encoding: gzip,
-  deflate,
-   br
-Range: 
-Pragma:
-Accept-Language: en-US
-WWW-Authenticate: Basic realm="Access to the staging site"
+HEAD http://a/b/c/..g HTT/1.0
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Host: www.example.com
+Connection: keep-alive
+Content-Length: 123
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
 
