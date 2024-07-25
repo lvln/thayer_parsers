@@ -1,7 +1,5 @@
 # Tests for MAVLink parser
 
-TODO: Add in a single scaled pressure message from a real flight, add in another message for failure test; add into tv.sh to get these files in
-
 Tests for the MAVLink parser which contains tests for all given byte values in all fields of all messages.
 
 ## Contents:
@@ -15,9 +13,11 @@ Tests for the MAVLink parser which contains tests for all given byte values in a
 * `fail.29.16.extraByte` and `fail.29.16.oneByteLess` are failing tests for messages of the maximum length with one byte too many and one byte too few respectively
 * `pass.29.16.crcx.val` are passing tests for messages of the maximum length with `crc` field `x` changed such that it contains a byte of value `val` 
 * `pass.1000` and `pass.1001` are individual SCALED_PRESSURE messages from an actual flight with the drone
+* `fail.1000` is an empty file
+* `fail.1001` contains an EVENT message of the same length as a SCALED_PRESSURE message
 
 ## Usage:
 
-* `make clean` to remove all old test files as well as executables
+* `make clean` to remove all old test files (except for tests from an actual drone flight) as well as executables
 * `make` too build executable `tv` from `tv.c`
 * `./tv.sh` generates passing and failing tests for each message id present in the parser
