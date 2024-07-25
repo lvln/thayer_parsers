@@ -1,10 +1,8 @@
-CONNECT ldap://[2001:db8::7]/c=GB?objectClass?one HTTP/1.1
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Range: 
-Host: www.example.com
-Transfer-Encoding: chunked
-WWW-Authenticate: Basic realm="Access to the staging site"
+DELETE .. HTTP/1.1
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Type: application/json
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
 
+Record to delete

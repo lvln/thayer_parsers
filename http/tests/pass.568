@@ -1,11 +1,7 @@
-HTTP/1.0 511 Network Authentication Required
-Authorization: Basic XMlcrpwYzdyZA==
+HTTP/1.0 502 Bad Gateway
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Accept-Encoding: gzip,
-  deflate,
-   br
-Connection: keep-alive
-Accept-Language: en-US
-Content-Length: 123
+Host: www.example.com
+Content-Type: application/json
 
+The server received an invalid response from the upstream server.

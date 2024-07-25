@@ -1,4 +1,10 @@
-CONNECT http://a/b/c/d;p?q HTTP/2.0
+CONNECT http://g HTTP/2.0
+Content-Type: application/json
 Accept-Language: en-US
-WWW-Authenticate    : Basic realm="Access to the staging site"
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Vary:     
+Date Tue, 23 Jul 2024 12:00:00 GMT
 

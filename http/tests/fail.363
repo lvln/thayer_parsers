@@ -1,13 +1,14 @@
-DELET http://www.example.com/hello.txt HTTP/1.0
+PSST www.example.com:80 HTTP/1.0
 Accept-Language: en-US
 Transfer-Encoding: chunked
-Content-Type: application/json
 Connection: keep-alive
-Content-Length: 123
+Host: www.example.com
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
 Accept-Encoding: gzip,
   deflate,
    br
-Pragma:
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Authorization: Basic XMlcrpwYzdyZA==
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 

@@ -1,10 +1,17 @@
-GET http://a/b/c/..g HTTP/2.0
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept-Language: en-US
+GET www.example.com:80 HTTP/2.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Connection: keep-alive
 Vary:     
 Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
 Referer: https://www.example.com/page
 Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
+Range: 
+Pragma:
 

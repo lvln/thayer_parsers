@@ -1,8 +1,4 @@
-PUT example.com:80/~smith/home.html HTTP/2.0
-Host: www.example.com
-Connection: keep-alive
-Vary:     
-Transfer-Encoding: chunked
-Range: 
+PUT http://a/b/c/..g HTTP/2.0
+Authorization: Basic XMlcrpwYzdyZA==
 
 key1=value1&key2=value2

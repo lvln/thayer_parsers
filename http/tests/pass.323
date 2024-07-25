@@ -1,4 +1,4 @@
-OPTIONS /g HTTP/2.0
-Content-Type: application/json
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+OPTIONS http://example.com/data/ HTTP/2.0
+Content-Length: 123
+Transfer-Encoding: chunked
 

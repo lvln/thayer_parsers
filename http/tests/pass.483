@@ -1,14 +1,4 @@
-HTTP/2.0 411 Length Required
-Accept-Encoding: gzip,
-  deflate,
-   br
-Pragma:
-Content-Length: 123
-Transfer-Encoding: chunked
-Referer: https://www.example.com/page
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Range: 
+HTTP/2.0 403 Forbidden
+Connection: keep-alive
 
+You do not have permission to access the requested resource.

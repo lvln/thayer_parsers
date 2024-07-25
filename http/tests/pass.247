@@ -1,22 +1,4 @@
-CONNECT http://example.com HTTP/1.1
-Authorization: Basic XMlcrpwYzdyZA==
-Pragma:
-Content-Type: application/json
-Vary:     
-Transfer-Encoding: chunked
-Host: www.example.com
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+DELETE http://a/b/c/g. HTTP/1.1
 Accept-Language: en-US
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-WWW-Authenticate: Basic realm="Access to the staging site"
-Connection: keep-alive
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Length: 123
-Accept-Encoding: gzip,
-  deflate,
-   br
 
+Record to delete

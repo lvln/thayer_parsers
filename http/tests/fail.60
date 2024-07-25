@@ -1,11 +1,4 @@
-HEAD ftp://ftp.is.co.za/rfc/rfc1808.txt# HTTP/1.0
+HEAD ** HTTP/1.0
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Vary:     
-Accept-Language: en-US
-Authorization: Basic XMlcrpwYzdyZA==
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Type: application/json
-Transfer-Encoding: chunked
-Content-Length: 123
 

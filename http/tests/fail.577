@@ -1,0 +1,6 @@
+HTTP/1.0 505 HTTP Version Not Supported
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Vary:     
+Referer https://www.example.com/page
+

@@ -1,14 +1,8 @@
-GES http://a/b/c/d;p?q HTTP/1.0
-Pragma:
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Connection: keep-alive
-Authorization: Basic XMlcrpwYzdyZA==
+PSST example.com:80/~smith/home.html HTTP/1.0
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
 Accept-Language: en-US
-Referer: https://www.example.com/page
-Vary:     
-WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
 Range: 
 

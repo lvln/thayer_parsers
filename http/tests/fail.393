@@ -1,6 +1,20 @@
-HTTP/2.0 204 
+TRACE http://www.ietf.org/rfc/rfc2396.txt HTT/1.0
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 Accept-Encoding: gzip,
   deflate,
    br
-Content-Type: application/json
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Length: 123
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Connection: keep-alive
 

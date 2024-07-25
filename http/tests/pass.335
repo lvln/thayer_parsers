@@ -1,6 +1,23 @@
-OPTIONS * HTTP/2.0
+OPTIONS http://www.example.com/hello.txt HTTP/2.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Referer: https://www.example.com/page
+Transfer-Encoding: chunked
+Vary:     
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Content-Type: application/json
 Pragma:
-Transfer-Encoding: chunked
 Host: www.example.com
+Connection: keep-alive
 

@@ -1,11 +1,20 @@
-POST http://a/b/c/.g HTTP/1.1
-Accept-Language: en-US
-WWW-Authenticate: Basic realm="Access to the staging site"
-Transfer-Encoding: chunked
-Content-Type: application/json
+POST http://example.com/data/ HTTP/1.1
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Accept-Charset :utf-8,
- iso-8859-1;q=0.5
+Transfer-Encoding: chunked
+Accept-Language: en-US
+Range: 
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma :
 
 key1=value1&key2=value2

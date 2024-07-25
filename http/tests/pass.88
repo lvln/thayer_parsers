@@ -1,23 +1,11 @@
-HEAD http://a/b/c/g. HTTP/1.1
-WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Type: application/json
-Vary:     
-Authorization: Basic XMlcrpwYzdyZA==
-Referer: https://www.example.com/page
-Connection: keep-alive
-Pragma:
-Transfer-Encoding: chunked
-Host: www.example.com
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Accept-Encoding: gzip,
-  deflate,
-   br
-Range: 
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+HEAD /g HTTP/1.1
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
 Accept-Language: en-US
+Content-Type: application/json
+Range: 
 

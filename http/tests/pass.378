@@ -1,8 +1,15 @@
-TRACE http://a/b/c/g. HTTP/1.0
-Connection: keep-alive
-Accept-Language: en-US
+TRACE example.com:80/~smith/home.html HTTP/1.0
 Vary:     
-Referer: https://www.example.com/page
-Host: www.example.com
+Pragma:
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
 Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 

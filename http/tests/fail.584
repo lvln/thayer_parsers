@@ -1,0 +1,8 @@
+HTTP/2. 508 Loop Detected
+Connection: keep-alive
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+

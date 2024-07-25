@@ -1,17 +1,3 @@
-HTTP1.1 202 Accepted
-Range: 
-Connection: keep-alive
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Accept-Language: en-US
-Host: www.example.com
+TRACE g?y/./x HTTP/2.0
 WWW-Authenticate: Basic realm="Access to the staging site"
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Vary:     
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Transfer-Encoding: chunked
-Pragma:
 

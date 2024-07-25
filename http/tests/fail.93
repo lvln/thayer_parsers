@@ -1,3 +1,12 @@
-HEAD / HTTP/.0
+HEAD http://a/b/c/d;p?q HTTP/2.
 Content-Length: 123
+Pragma:
+Referer: https://www.example.com/page
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Host: www.example.com
+Vary:     
+Connection: keep-alive
 

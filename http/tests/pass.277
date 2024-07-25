@@ -1,5 +1,13 @@
-CONNECT http://a/b/c/d;p?q HTTP/1.1
+CONNECT http://g HTTP/1.1
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Pragma:
 Vary:     
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Language: en-US
+Host: www.example.com
 

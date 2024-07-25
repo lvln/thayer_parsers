@@ -1,14 +1,19 @@
-GET http://www.example.com/hello.txt HTTP/1.0
+GET http://a/b/c/.g HTTP/1.0
+WWW-Authenticate: Basic realm="Access to the staging site"
 Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Language: en-US
+Connection: keep-alive
 Accept-Encoding: gzip,
   deflate,
    br
 Range: 
-WWW-Authenticate: Basic realm="Access to the staging site"
-Authorization: Basic XMlcrpwYzdyZA==
 Content-Type: application/json
+Accept-Language: en-US
 Host: www.example.com
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
+Vary:     
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 

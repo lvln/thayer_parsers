@@ -1,3 +1,23 @@
-HEAD ldap://[2001:db8::7]/c=GB?objectClass?one HTTP/1.1
-Transfer-Encoding: chunked
+HEAD ftp://ftp.is.co.za/rfc/rfc1808.txt# HTTP/1.1
+Content-Type: application/json
+Vary:     
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Host: www.example.com
+Accept-Language: en-US
+Referer: https://www.example.com/page
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
 

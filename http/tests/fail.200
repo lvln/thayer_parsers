@@ -1,4 +1,15 @@
-DELETE ftp://ftp.is.co.za/rfc/rfc1808.txt# HTTP/2.0
+PUT g HTTP/2.0
+Accept-Encoding: gzip,
+  deflate,
+   br
+WWW-Authenticate: Basic realm="Access to the staging site"
 Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Vary:     
 
-Record to delete
+key1=value1&key2=value2

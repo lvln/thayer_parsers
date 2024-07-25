@@ -1,25 +1,25 @@
-DELETE http://www.ietf.org/rfc/rfc2396.txt HTTP/1.1
-Authorization: Basic XMlcrpwYzdyZA==
+DELETE example.com:80/~smith/home.html HTTP/1.1
 Pragma:
-Accept-Language: en-US
-Transfer-Encoding: chunked
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Vary:     
 Range: 
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Type: application/json
-Content-Length: 123
-WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
 Referer: https://www.example.com/page
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Host: www.example.com
-Accept-Encoding: gzip,
-  deflate,
-   br
 Connection: keep-alive
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Language: en-US
+Content-Type: application/json
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 
 Record to delete

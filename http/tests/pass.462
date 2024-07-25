@@ -1,7 +1,10 @@
-HTTP/2.0 404 Not Found
+HTTP/2.0 303 See Other
+Host: www.example.com
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+Content-Length: 123
 Accept-Encoding: gzip,
   deflate,
    br
 Transfer-Encoding: chunked
 
-The requested resource could not be found.

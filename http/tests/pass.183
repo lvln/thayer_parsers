@@ -1,9 +1,16 @@
-PUT http://a/b/c/d;p?q HTTP/1.0
+PUT http://www.example.com/hello.txt HTTP/1.0
+Connection: keep-alive
+Accept-Language: en-US
+Host: www.example.com
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
+Authorization: Basic XMlcrpwYzdyZA==
 Pragma:
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Vary:     
+Transfer-Encoding: chunked
+Range: 
 
 key1=value1&key2=value2

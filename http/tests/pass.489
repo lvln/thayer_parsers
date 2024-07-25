@@ -1,4 +1,4 @@
-HTTP/2.0 413 Payload Too Large
-Authorization: Basic XMlcrpwYzdyZA==
+HTTP/2.0 405 Method Not Allowed
 Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
 

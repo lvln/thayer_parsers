@@ -1,2 +1,13 @@
-HTTP/1.1 511 Network Authentication Required
+HTTP/1.1 503 Service Unavailable
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Language: en-US
+Host: www.example.com
+Transfer-Encoding: chunked
+Content-Length: 123
+Pragma:
+Content-Type: application/json
+Vary:     
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
 
+The server is currently unable to handle the request due to maintenance or overload.

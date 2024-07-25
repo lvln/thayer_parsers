@@ -1,19 +1,18 @@
-HTTP/1.0 418 I'm a teapot
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-WWW-Authenticate: Basic realm="Access to the staging site"
-Connection: keep-alive
-Host: www.example.com
-Pragma:
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Range: 
-Content-Type: application/json
-Transfer-Encoding: chunked
-Authorization: Basic XMlcrpwYzdyZA==
+HTTP/1.0 410 Gone
 Referer: https://www.example.com/page
+Content-Length: 123
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Encoding: gzip,
+  deflate,
+   br
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Content-Length: 123
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Pragma:
 

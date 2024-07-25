@@ -1,21 +1,8 @@
-HTTP/1.1 503 Service Unavailable
-Range: 
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Host: www.example.com
-Content-Length: 123
-WWW-Authenticate: Basic realm="Access to the staging site"
+HTTP/2.0 504 Gateway Timeout
 Connection: keep-alive
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Transfer-Encoding: chunked
-Content-Type: application/json
-Referer: https://www.example.com/page
-Accept-Language: en-US
-Vary:     
-Pragma:
-Accept-Encoding: gzip,
-  deflate,
-   br
 Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 
-The server is currently unable to handle the request due to maintenance or overload.

@@ -1,4 +1,4 @@
-HTTP/2.0 903 Early Hints
-Authorization: Basic XMlcrpwYzdyZA==
+HTTP/2.0 203
 Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
 

@@ -1,15 +1,4 @@
-HTTP/1.0 431 Request Header Fields Too Large
-Accept-Language: en-US
-Connection: keep-alive
-Range: 
+HTTP/1.0 421 Misdirected Request
 Referer: https://www.example.com/page
-Content-Type: application/json
-Vary:     
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
 Authorization: Basic XMlcrpwYzdyZA==
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
 

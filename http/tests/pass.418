@@ -1,12 +1,23 @@
-HTTP/1.0 206 Partial Content
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Connection: keep-alive
+HTTP/1.0 102 Processing
+Vary:     
 Range: 
+Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
+Referer: https://www.example.com/page
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
 Accept-Language: en-US
+Content-Length: 123
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Pragma:
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Content-Type: application/json
-Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
 

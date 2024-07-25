@@ -1,23 +1,19 @@
-HEAD http://a/b/c/.g HTTP/1.1
-Content-Type: application/json
-Transfer-Encoding: chunked
-Range: 
-Accept-Encoding: gzip,
-  deflate,
-   br
-Authorization: Basic XMlcrpwYzdyZA==
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+HEAD example.com:80/~smith/home.html HTTP/1.1
 Accept-Language: en-US
+Vary:     
+Transfer-Encoding: chunked
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Vary:     
-Host: www.example.com
-Referer: https://www.example.com/page
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-WWW-Authenticate: Basic realm="Access to the staging site"
-Pragma:
 Content-Length: 123
+Range: 
+Referer: https://www.example.com/page
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
 

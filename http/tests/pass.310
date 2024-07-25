@@ -1,12 +1,9 @@
-OPTIONS http://a/b/c/.g HTTP/1.1
-Transfer-Encoding: chunked
-WWW-Authenticate: Basic realm="Access to the staging site"
-Pragma:
-Authorization: Basic XMlcrpwYzdyZA==
-Vary:     
-Referer: https://www.example.com/page
-Accept-Language: en-US
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+OPTIONS www.example.com:80 HTTP/1.1
+Content-Length: 123
 Range: 
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
 

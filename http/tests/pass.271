@@ -1,10 +1,6 @@
-CONNECT http://www.ietf.org/rfc/rfc2396.txt HTTP/1.1
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+CONNECT http://example.com/data/ HTTP/1.1
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Host: www.example.com
-Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
 

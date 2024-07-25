@@ -1,22 +1,9 @@
-DELET http://example.com/data HTTP/2.0
+PUTT http://example.com HTTP/2.0
+Accept-Language: en-US
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Authorization: Basic XMlcrpwYzdyZA==
-Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
 Accept-Encoding: gzip,
   deflate,
    br
-Content-Length: 123
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Transfer-Encoding: chunked
-Referer: https://www.example.com/page
-Content-Type: application/json
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-WWW-Authenticate: Basic realm="Access to the staging site"
-Vary:     
-Accept-Language: en-US
-Host: www.example.com
 

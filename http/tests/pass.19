@@ -1,15 +1,4 @@
-GET http://g HTTP/1.1
-Content-Length: 123
-Pragma:
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Authorization: Basic XMlcrpwYzdyZA==
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Connection: keep-alive
-Accept-Encoding: gzip,
-  deflate,
-   br
-WWW-Authenticate: Basic realm="Access to the staging site"
-Range: 
-Accept-Language: en-US
+GET example.com:80/~smith/home.html HTTP/1.1
+Vary:     
+Transfer-Encoding: chunked
 

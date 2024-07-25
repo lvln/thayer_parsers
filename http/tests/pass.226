@@ -1,9 +1,8 @@
-DELETE /g HTTP/1.1
-Vary:     
-Range: 
-Accept-Language: en-US
+DELETE http://g HTTP/1.1
 Connection: keep-alive
-Pragma:
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
 

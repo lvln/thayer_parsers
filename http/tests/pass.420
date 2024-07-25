@@ -1,14 +1,7 @@
-HTTP/2.0 207 Multi-Status
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Encoding: gzip,
-  deflate,
-   br
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Range: 
-Content-Type: application/json
+HTTP/2.0 103 Early Hints
 Host: www.example.com
-Vary:     
-WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+Pragma:
 

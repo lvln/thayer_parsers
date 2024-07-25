@@ -1,9 +1,7 @@
-DELETE /g HTTP/1.1
-Vary:     
-Range: 
-Accept-Language: en-US
+DELETE http://g HTTP/1.1
 Connection: keep-alive
-Pragma:
-Accept-Encoding :gzip, deflate, br
-
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Authorization:Basic XMlcrpwYzdyZA==
 Record to delete

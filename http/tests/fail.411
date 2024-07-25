@@ -1,20 +1,20 @@
-HTTP/2.0 802 Processing
+HTTP/2.0 204 
+Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+Transfer-Encoding: chunked
+Content-Type: application/json
+Connection: keep-alive
 Accept-Encoding: gzip,
   deflate,
    br
-Content-Type: application/json
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Length: 123
-Range: 
-Transfer-Encoding: chunked
-Accept-Language: en-US
-Pragma:
-Connection: keep-alive
-WWW-Authenticate: Basic realm="Access to the staging site"
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Referer: https://www.example.com/page
 

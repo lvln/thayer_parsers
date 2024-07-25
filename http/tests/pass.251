@@ -1,17 +1,21 @@
-CONNECT http://example.com/data HTTP/2.0
-Range: 
-Content-Length: 123
-Accept-Language: en-US
-WWW-Authenticate: Basic realm="Access to the staging site"
-Pragma:
+DELETE / HTTP/2.0
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
 Accept-Encoding: gzip,
   deflate,
    br
+Content-Length: 123
+Host: www.example.com
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
 Content-Type: application/json
-Transfer-Encoding: chunked
-Authorization: Basic XMlcrpwYzdyZA==
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 
+Record to delete

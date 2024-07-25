@@ -1,10 +1,6 @@
-HTTP/1.1 207 Multi-Status
-Pragma:
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Referer: https://www.example.com/page
+HTTP/1.1 103 Early Hints
 WWW-Authenticate: Basic realm="Access to the staging site"
-Connection: keep-alive
+Content-Type: application/json
+Referer: https://www.example.com/page
+Range: 
 

@@ -1,17 +1,4 @@
-HEAD example.com:80/~smith/home.html HTTP/1.1
-Pragma:
+HEAD http://example.com/data HTTP/1.1
 Content-Length: 123
-Range: 
-Vary:     
-WWW-Authenticate: Basic realm="Access to the staging site"
-Referer: https://www.example.com/page
-Accept-Language: en-US
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Accept-Encoding: gzip,
-  deflate,
-   br
-Host: www.example.com
-Authorization: Basic XMlcrpwYzdyZA==
-Transfer-Encoding: chunked
+Connection: keep-alive
 

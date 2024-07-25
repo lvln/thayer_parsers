@@ -1,7 +1,10 @@
-CONNECT * HTTP/1.0
-Connection: keep-alive
-Content-Type: application/json
-Host: www.example.com
+CONNECT http://www.example.org:8080/pub/WWW/TheProject.html HTTP/1.0
+Transfer-Encoding: chunked
+Pragma:
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Range: 
 Authorization: Basic XMlcrpwYzdyZA==
-Date: Tue, 23 Jul 2024 12:00:00 GMT
 

@@ -1,22 +1,14 @@
-HTTP/1.1 510 Not Extended
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Language: en-US
+HTTP/1.1 501 Not Implemented
 Content-Length: 123
-Vary:     
-Referer: https://www.example.com/page
-Content-Type: application/json
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Pragma:
-Host: www.example.com
+Connection: keep-alive
 Transfer-Encoding: chunked
 Accept-Encoding: gzip,
   deflate,
    br
-Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Range: 
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 

@@ -1,15 +1,7 @@
-HTTP1.1 206 Partial Content
-WWW-Authenticate: Basic realm="Access to the staging site"
-Range: 
-Host: www.example.com
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Pragma:
-Content-Length: 123
-Authorization: Basic XMlcrpwYzdyZA==
-Referer: https://www.example.com/page
+HTTP/2. 102 Processing
 Vary:     
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Referer: https://www.example.com/page
+Range: 
 

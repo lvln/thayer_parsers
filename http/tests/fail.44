@@ -1,17 +1,8 @@
-GET tel:+1-816-555-1212 HTTP/2.0
-Vary:     
-Range: 
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Host: www.example.com
-Accept-Encoding: gzip,
-  deflate,
-   br
-Authorization: Basic XMlcrpwYzdyZA==
+GET ?y HTTP/2.0
 Transfer-Encoding: chunked
-WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Type: application/json
-Accept-Language: en-US
-Pragma:
-Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Host: www.example.com
 

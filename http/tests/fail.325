@@ -1,9 +1,13 @@
-OPTIONS http://a/b/c/d;p?q HTTP/2.
+OPTIONS example.com:80/~smith/home.html HTT/1.0
+Pragma:
+Vary:     
 Accept-Language: en-US
-Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
 Transfer-Encoding: chunked
-Content-Type: application/json
-Accept-Encoding: gzip,
-  deflate,
-   br
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
 

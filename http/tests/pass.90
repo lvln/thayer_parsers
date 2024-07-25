@@ -1,14 +1,7 @@
-HEAD http://a/b/c/g. HTTP/1.0
-Vary:     
-WWW-Authenticate: Basic realm="Access to the staging site"
+HEAD /g HTTP/1.0
 Authorization: Basic XMlcrpwYzdyZA==
 Content-Length: 123
+Transfer-Encoding: chunked
 Host: www.example.com
 Connection: keep-alive
-Range: 
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
 

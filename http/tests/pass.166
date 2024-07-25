@@ -1,8 +1,21 @@
-PUT http://a/b/c/.g HTTP/1.1
-Vary:     
-Authorization: Basic XMlcrpwYzdyZA==
+PUT http://example.com/data HTTP/1.1
 WWW-Authenticate: Basic realm="Access to the staging site"
-Range: 
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Type: application/json
 Date: Tue, 23 Jul 2024 12:00:00 GMT
+Authorization: Basic XMlcrpwYzdyZA==
+Connection: keep-alive
+Vary:     
+Pragma:
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Host: www.example.com
+Accept-Language: en-US
+Range: 
+Transfer-Encoding: chunked
 
 key1=value1&key2=value2

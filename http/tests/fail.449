@@ -1,7 +1,11 @@
-HTT/1.0 400 Bad Request
+HTTP1.1 226 IM Used
+Content-Type: application/json
 WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Transfer-Encoding: chunked
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Vary:     
 
-The request could not be understood or was missing required parameters.

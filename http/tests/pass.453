@@ -1,21 +1,24 @@
-HTTP/2.0 401 Unauthorized
-Pragma:
-Content-Type: application/json
+HTTP/2.0 300 Multiple Choices
+Vary:     
+Transfer-Encoding: chunked
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Range: 
-Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 Authorization: Basic XMlcrpwYzdyZA==
+Referer: https://www.example.com/page
+Host: www.example.com
+Content-Length: 123
+Connection: keep-alive
+Accept-Language: en-US
 Accept-Encoding: gzip,
   deflate,
    br
-Host: www.example.com
-Referer: https://www.example.com/page
-Connection: keep-alive
-WWW-Authenticate: Basic realm="Access to the staging site"
-Vary:     
-Accept-Language: en-US
+Range: 
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
 
-Authentication credentials were missing or incorrect.

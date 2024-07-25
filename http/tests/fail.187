@@ -1,11 +1,8 @@
-PSST / HTTP/1.1
-Accept-Language: en-US
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+HEAS http://www.ietf.org/rfc/rfc2396.txt HTTP/1.1
+Host: www.example.com
 WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Encoding: gzip,
-  deflate,
-   br
 Connection: keep-alive
-Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
 
 key1=value1&key2=value2

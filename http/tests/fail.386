@@ -1,8 +1,17 @@
-HTTP1.1 100 Continue
+TRACE http://www.example.com/hello.txt HTTP/2.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Language: en-US
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
+Vary:     
+Referer: https://www.example.com/page
+Authorization: Basic XMlcrpwYzdyZA==
 Transfer-Encoding: chunked
-Range: 
+Content-Length: 123
+Connection: keep-alive
+Referer https://www.example.com/page
 

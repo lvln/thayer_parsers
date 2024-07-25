@@ -1,3 +1,14 @@
-HTTP/1.1 205 Reset Content
-Accept-Language: en-US
+HTTP/1.1 101 Switching Protocols
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 

@@ -1,9 +1,6 @@
-DELETE / HTTP/1.0
-Pragma:
-Content-Length: 123
-Accept-Language: en-US
+DELETE http://www.example.org:8080/pub/WWW/TheProject.html HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 Authorization: Basic XMlcrpwYzdyZA==
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Type: application/json
 
 Record to delete

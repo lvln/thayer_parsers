@@ -1,9 +1,15 @@
-HTTP/2.0 201 Created
-Connection: keep-alive
-Referer: https://www.example.com/page
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Transfer-Encoding: chunked
+TRACE http://a/b/c/g. HTTP/1.0
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+Range: 
+Content-Type: application/json
+Vary:     
 Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Language: en-US
+Content-Length: 123
+Referer: https://www.example.com/page
+Host: www.example.com
 
-Resource has been created.

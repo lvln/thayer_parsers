@@ -1,13 +1,4 @@
-DELETE http://www.example.com/hello.txt HTTP/1.1
-Content-Type: application/json
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Length: 123
-Vary:     
-Range: 
-Transfer-Encoding: chunked
+DELETE http://example.com/data HTTP/1.1
+Pragma:
 
 Record to delete

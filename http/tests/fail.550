@@ -1,11 +1,11 @@
-HTTP/1.0 504 Gateway Timeout
+HTTP/1.0 428 Precondition Required
 WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
 Accept-Encoding: gzip,
   deflate,
    br
-Content-Length: 123
-Pragma:
-Referer: https://www.example.com/page
-Host: www.example.com
-Accept-Encoding :gzip, deflate, br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+*/*;q=0.8
 

@@ -1,11 +1,4 @@
-POST ** HTTP/2.0
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Connection: keep-alive
-Content-Type: application/json
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Language: en-US
+POST ?y HTTP/2.0
+Pragma:
 
 key1=value1&key2=value2

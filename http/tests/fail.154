@@ -1,7 +1,5 @@
-PUT http://example.com/data HTTP/1.1
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Length: 123
-Content-Length : 123
+PUT /a/b/ HTTP/1.1
+Range: 
+Accept-Encoding :gzip, deflate, br
 
 key1=value1&key2=value2

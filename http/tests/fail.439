@@ -1,14 +1,8 @@
-HTTP/1.0 303 See Other
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Host: www.example.com
-Accept-Language: en-US
+HTTP/1.0 205 Reset Content
+Connection: keep-alive
 Transfer-Encoding: chunked
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
 Vary:     
-: chunked
-
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization:Basic XMlcrpwYzdyZA==

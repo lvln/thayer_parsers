@@ -1,16 +1,7 @@
-HTTP/1.1 308 Permanent Redirect
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+HTTP/1.1 208 Already Reported
 Pragma:
-Accept-Language: en-US
-Authorization: Basic XMlcrpwYzdyZA==
-Host: www.example.com
-Range: 
-WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
 Date: Tue, 23 Jul 2024 12:00:00 GMT
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Language: en-US
 

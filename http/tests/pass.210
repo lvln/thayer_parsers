@@ -1,5 +1,8 @@
-DELETE example.com:80/~smith/home.html HTTP/1.0
-Content-Length: 123
-Accept-Language: en-US
+DELETE www.example.com:80 HTTP/1.0
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+Host: www.example.com
+Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 
 Record to delete

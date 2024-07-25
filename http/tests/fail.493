@@ -1,7 +1,5 @@
-HTTP/1.0 414 URI Too Long
-Transfer-Encoding: chunked
-Vary:     
-Accept-Charset:utf-8,
+HTTP/1.0 406 Not Acceptable
+Host: www.example.com
+Accept-Charset :utf-8,
  iso-8859-1;q=0.5
-:
 

@@ -1,23 +1,20 @@
-TRACES http://example.com/data/ HTTP/1.0
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Type: application/json
-Host: www.example.com
-Transfer-Encoding: chunked
-Referer: https://www.example.com/page
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Pragma:
+CONNEC / HTTP/1.0
 Accept-Encoding: gzip,
   deflate,
    br
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Connection: keep-alive
-Vary:     
-Content-Length: 123
-WWW-Authenticate: Basic realm="Access to the staging site"
+Transfer-Encoding: chunked
+Content-Type: application/json
 Range: 
 Accept-Language: en-US
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
+Content-Length: 123
+Pragma:
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 

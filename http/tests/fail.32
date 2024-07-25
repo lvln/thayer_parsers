@@ -1,4 +1,6 @@
-GET ** HTTP/2.0
-Vary:     
-Authorization: Basic XMlcrpwYzdyZA==
+GET ?y HTTP/2.0
+Content-Length: 123
+Content-Type: application/json
+Connection: keep-alive
+Accept-Language: en-US
 

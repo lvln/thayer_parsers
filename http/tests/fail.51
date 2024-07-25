@@ -1,20 +1,15 @@
-OPTION /a/b/ HTTP/1.0
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Length: 123
+CONNEC * HTTP/1.0
+Referer: https://www.example.com/page
 Accept-Encoding: gzip,
   deflate,
    br
-Connection: keep-alive
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 WWW-Authenticate: Basic realm="Access to the staging site"
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Authorization: Basic XMlcrpwYzdyZA==
 Host: www.example.com
 Accept-Language: en-US
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Range: 
+Content-Type: application/json
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
 Pragma:
 

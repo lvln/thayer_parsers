@@ -1,18 +1,20 @@
-HEAD http://example.com/data/ HTTP/1.0
-Authorization: Basic XMlcrpwYzdyZA==
-Referer: https://www.example.com/page
+HEAD http://example.com HTTP/1.0
+Content-Length: 123
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Host: www.example.com
-Pragma:
-Content-Type: application/json
-Content-Length: 123
-WWW-Authenticate: Basic realm="Access to the staging site"
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Range: 
-Transfer-Encoding: chunked
-Vary:     
+Connection: keep-alive
 Accept-Language: en-US
+Host: www.example.com
+Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Encoding: gzip,
+  deflate,
+   br
+Referer: https://www.example.com/page
+Vary:     
+Pragma:
+Transfer-Encoding: chunked
+Range: 
 

@@ -1,4 +1,6 @@
-DELETE http://example.com/data/ HTTP/2.0
+DELETE /a/b/ HTTP/2.0
 WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Content-Length: 123
 
 Record to delete

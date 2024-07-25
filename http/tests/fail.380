@@ -1,20 +1,10 @@
-TRACE ftp://ftp.is.co.za/rfc/rfc1808.txt# HTTP/2.0
-Accept-Language: en-US
-Vary:     
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+TRACE .. HTTP/2.0
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Length: 123
 Connection: keep-alive
-Referer: https://www.example.com/page
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Content-Type: application/json
 Accept-Encoding: gzip,
   deflate,
    br
-Pragma:
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Length: 123
-Content-Type: application/json
-WWW-Authenticate: Basic realm="Access to the staging site"
 

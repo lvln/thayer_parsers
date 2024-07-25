@@ -1,17 +1,6 @@
-HTTP/2.0 204 
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Authorization: Basic XMlcrpwYzdyZA==
-Pragma:
-Accept-Language: en-US
-Host: www.example.com
-Content-Type: application/json
+HTTP/2.0 203
 Transfer-Encoding: chunked
-Range: 
-Content-Length: 123
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-WWW-Authenticate: Basic realm="Access to the staging site"
-Connection: keep-alive
+Vary:     
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
 

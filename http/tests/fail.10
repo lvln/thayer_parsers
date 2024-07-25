@@ -1,4 +1,17 @@
-GET http://example.com/data HTTP/1.1
-Content-Type: application/json
-Accept-Encoding :gzip, deflate, br
+GET http://example.com HTTP/1.1
+Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+*/*;q=0.8
 

@@ -1,4 +1,6 @@
-GET http://www.ietf.org/rfc/rfc2396.txt HTTP/2.0
-Vary:     
-Authorization: Basic XMlcrpwYzdyZA==
+GET http://www.example.org:8080/pub/WWW/TheProject.html HTTP/2.0
+Content-Length: 123
+Content-Type: application/json
+Connection: keep-alive
+Accept-Language: en-US
 

@@ -1,6 +1,24 @@
-HTTP/2.0 418 I'm a teapot
-Authorization: Basic XMlcrpwYzdyZA==
-Pragma:
-Content-Length: 123
+HTTP/2.0 410 Gone
 Date: Tue, 23 Jul 2024 12:00:00 GMT
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Referer: https://www.example.com/page
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Language: en-US
+Host: www.example.com
+Content-Type: application/json
+Content-Length: 123
+Transfer-Encoding: chunked
+Connection: keep-alive
 

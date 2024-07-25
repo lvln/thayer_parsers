@@ -1,14 +1,21 @@
-HTTP/1.0 204 No Content
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+HTTP/1.0 100 Continue
+Pragma:
+Content-Type: application/json
+Connection: keep-alive
+Content-Length: 123
+Accept-Encoding: gzip,
+  deflate,
+   br
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Host: www.example.com
-Transfer-Encoding: chunked
 Accept-Language: en-US
-Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 

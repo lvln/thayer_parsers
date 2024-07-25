@@ -1,15 +1,5 @@
-PUTT * HTTP/2.0
-Authorization: Basic XMlcrpwYzdyZA==
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Host: www.example.com
+TRACES / HTTP/2.0
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Pragma:
-Accept-Encoding: gzip,
-  deflate,
-   br
-Range: 
+Vary:     
 

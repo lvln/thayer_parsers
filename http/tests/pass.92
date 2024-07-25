@@ -1,9 +1,14 @@
-HEAD / HTTP/2.0
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-WWW-Authenticate: Basic realm="Access to the staging site"
-Connection: keep-alive
+HEAD http://a/b/c/d;p?q HTTP/2.0
 Accept-Encoding: gzip,
   deflate,
    br
+Accept-Language: en-US
+Referer: https://www.example.com/page
+Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 

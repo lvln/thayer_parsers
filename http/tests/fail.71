@@ -1,5 +1,11 @@
-PSST http://a/b/c/.g HTTP/2.0
-Content-Type: application/json
+PSST example.com:80/~smith/home.html HTTP/2.0
+Range: 
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Host: www.example.com
+Connection: keep-alive
 Vary:     
-WWW-Authenticate: Basic realm="Access to the staging site"
 

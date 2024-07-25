@@ -1,6 +1,11 @@
-DELET http://www.ietf.org/rfc/rfc2396.txt HTTP/1.1
-Authorization: Basic XMlcrpwYzdyZA==
-Content-Type: application/json
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+CONNEC http://example.com HTTP/1.1
 Vary:     
+Accept-Language: en-US
+Referer: https://www.example.com/page
+Connection: keep-alive
+Range: 
+Host: www.example.com
+Content-Type: application/json
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 

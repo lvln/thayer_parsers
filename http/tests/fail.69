@@ -1,10 +1,5 @@
-HEAD http://g HTTP/2.
-Content-Type: application/json
-Vary:     
-Accept-Language: en-US
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+HEAD http://example.com/data/ HTTP1.1
+Range: 
+Content-Length: 123
 Pragma:
 

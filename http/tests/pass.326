@@ -1,21 +1,24 @@
-OPTIONS http://a/b/c/d;p?q HTTP/2.0
-Range: 
-Pragma:
-Content-Type: application/json
-Vary:     
-Content-Length: 123
-Authorization: Basic XMlcrpwYzdyZA==
+OPTIONS example.com:80/~smith/home.html HTTP/2.0
+Connection: keep-alive
 Transfer-Encoding: chunked
-Accept-Language: en-US
 Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
+Host: www.example.com
+Pragma:
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Language: en-US
+Referer: https://www.example.com/page
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Host: www.example.com
-Accept-Encoding: gzip,
-  deflate,
-   br
 WWW-Authenticate: Basic realm="Access to the staging site"
-Referer: https://www.example.com/page
 

@@ -1,13 +1,18 @@
-OPTIONS http://a/b/c/g. HTTP/1.1
-Accept-Encoding: gzip,
-  deflate,
-   br
-Connection: keep-alive
+OPTIONS http://g HTTP/1.1
 Pragma:
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Transfer-Encoding: chunked
-Authorization: Basic XMlcrpwYzdyZA==
+Accept-Language: en-US
+Host: www.example.com
 Date: Tue, 23 Jul 2024 12:00:00 GMT
+Range: 
+Referer: https://www.example.com/page
 Content-Length: 123
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
 

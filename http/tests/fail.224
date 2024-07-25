@@ -1,25 +1,13 @@
-DELETE g HTTP/2.0
-Accept-Encoding: gzip,
-  deflate,
-   br
-Content-Type: application/json
-Content-Length: 123
-Transfer-Encoding: chunked
+DELETE mailto:John.Doe@example.com HTTP/2.0
+Pragma:
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-WWW-Authenticate: Basic realm="Access to the staging site"
-Connection: keep-alive
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Vary:     
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Authorization: Basic XMlcrpwYzdyZA==
-Pragma:
 Accept-Language: en-US
-Referer: https://www.example.com/page
-Host: www.example.com
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
 Range: 
+Content-Type: application/json
 
 Record to delete

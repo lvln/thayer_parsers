@@ -1,21 +1,5 @@
-GET http://a/b/c/d;p?q HTTP/2.0
-Authorization: Basic XMlcrpwYzdyZA==
-WWW-Authenticate: Basic realm="Access to the staging site"
-Range: 
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Pragma:
-Transfer-Encoding: chunked
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Host: www.example.com
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Referer: https://www.example.com/page
+GET /g HTTP/2.0
 Connection: keep-alive
-Accept-Language: en-US
+Host: www.example.com
+Referer: https://www.example.com/page
 

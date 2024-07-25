@@ -1,13 +1,8 @@
-TRACE example.com:80/~smith/home.html HTTP/1.0
-Authorization: Basic XMlcrpwYzdyZA==
-Content-Type: application/json
-Host: www.example.com
-Pragma:
-Vary:     
-Accept-Encoding: gzip,
-  deflate,
-   br
-Content-Length: 123
-Transfer-Encoding: chunked
+OPTIONS / HTTP/1.0
 Accept-Language: en-US
+Vary:     
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+:
 

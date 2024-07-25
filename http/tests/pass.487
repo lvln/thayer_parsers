@@ -1,19 +1,16 @@
-HTTP/1.0 412 Precondition Failed
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Host: www.example.com
-Range: 
+HTTP/1.0 404 Not Found
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
 Date: Tue, 23 Jul 2024 12:00:00 GMT
-Vary:     
-Pragma:
-Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Accept-Encoding: gzip,
-  deflate,
-   br
-Transfer-Encoding: chunked
-WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Content-Type: application/json
+Accept-Language: en-US
 
+The requested resource could not be found.

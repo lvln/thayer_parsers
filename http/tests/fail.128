@@ -1,14 +1,12 @@
-POST tel:+1-816-555-1212 HTTP/2.0
-Transfer-Encoding: chunked
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Range: 
-Authorization: Basic XMlcrpwYzdyZA==
-Referer: https://www.example.com/page
-Accept-Encoding: gzip,
-  deflate,
-   br
+POST g?y/./x HTTP/2.0
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Type: application/json
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
 Accept-Language: en-US
-Content-Length: 123
+Transfer-Encoding: chunked
 
 key1=value1&key2=value2

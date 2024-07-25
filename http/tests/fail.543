@@ -1,4 +1,12 @@
-HTTP/2.0 001 Created
-Accept-Language: en-US
+HTTP/2.0 903 Early Hints
+Referer: https://www.example.com/page
+Content-Length: 123
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
 
-The server received an invalid response from the upstream server.

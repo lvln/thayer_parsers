@@ -1,23 +1,22 @@
-GES / HTTP/1.1
-Accept-Language: en-US
-Accept-Encoding: gzip,
-  deflate,
-   br
-Content-Length: 123
-Pragma:
-Referer: https://www.example.com/page
-Vary:     
-Content-Type: application/json
-Transfer-Encoding: chunked
-Authorization: Basic XMlcrpwYzdyZA==
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Connection: keep-alive
-Host: www.example.com
-Range: 
+DELET http://a/b/c/d;p?q HTTP/1.1
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Language: en-US
+Transfer-Encoding: chunked
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Referer: https://www.example.com/page
+Host: www.example.com
+Vary:     
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
+Content-Type: application/json
 

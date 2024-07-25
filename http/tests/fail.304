@@ -1,16 +1,5 @@
-OPTIONS tel:+1-816-555-1212 HTTP/1.1
+CONNECT ftp://ftp.is.co.za/rfc/rfc1808.txt# HTTP/1.1
 Vary:     
-Transfer-Encoding: chunked
-Referer: https://www.example.com/page
-Pragma:
 WWW-Authenticate: Basic realm="Access to the staging site"
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Range: 
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Language: en-US
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Referer: https://www.example.com/page
 

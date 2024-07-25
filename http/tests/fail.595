@@ -1,0 +1,8 @@
+PUT  HTTP/1.0
+Content-Type: application/json
+Range: 
+Content-Length: 123
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Language: en-US
+
+key1=value1&key2=value2

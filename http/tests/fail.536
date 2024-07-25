@@ -1,18 +1,7 @@
-HTTP/.0 500 Internal Server Error
-Range: 
-Connection: keep-alive
-Pragma:
-Transfer-Encoding: chunked
-Accept-Encoding: gzip,
-  deflate,
-   br
+HTTP/.0 423 Locked
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Vary:     
-Referer: https://www.example.com/page
-Accept-Language: en-US
-Content-Type: application/json
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Host: www.example.com
 
-An unexpected error occurred on the server.

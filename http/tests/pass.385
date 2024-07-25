@@ -1,2 +1,6 @@
-OPTIONS / HTTP/1.0
+TRACE http://www.example.com/hello.txt HTTP/1.1
+Referer: https://www.example.com/page
+Content-Length: 123
+Host: www.example.com
+Pragma:
 

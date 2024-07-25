@@ -1,18 +1,8 @@
-OPTION http://g HTTP/1.1
+CONNEC http://example.com/data HTTP/1.1
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
 Vary:     
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept-Language: en-US
-Transfer-Encoding: chunked
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Pragma:
-Referer: https://www.example.com/page
 Authorization: Basic XMlcrpwYzdyZA==
 
 key1=value1&key2=value2

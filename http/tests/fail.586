@@ -1,0 +1,7 @@
+HTTP/1.0 508 Loop Detected
+WWW-Authenticate: Basic realm="Access to the staging site"
+Transfer-Encoding: chunked
+Vary:     
+Content-Type: application
+/json
+

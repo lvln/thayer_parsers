@@ -1,9 +1,4 @@
-HTTP/1.0 506 Variant Also Negotiates
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Language: en-US
-Vary:     
-Range: 
-Content-Length: 123
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+HTTP/1.0 431 Request Header Fields Too Large
+Pragma:
+Transfer-Encoding: chunked
 

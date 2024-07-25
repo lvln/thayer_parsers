@@ -1,14 +1,12 @@
-CONNECT / HTTP/2.0
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Length: 123
-Connection: keep-alive
-Content-Type: application/json
-Authorization: Basic XMlcrpwYzdyZA==
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Pragma:
-Transfer-Encoding: chunked
-Host: www.example.com
+CONNECT http://www.example.com/hello.txt HTTP/2.0
 Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 

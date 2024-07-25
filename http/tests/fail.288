@@ -1,7 +1,10 @@
-CONNECT mailto:John.Doe@example.com HTTP/1.0
-Connection: keep-alive
-Content-Type: application/json
-Host: www.example.com
+CONNECT tel:+1-816-555-1212 HTTP/1.0
+Transfer-Encoding: chunked
+Pragma:
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Range: 
 Authorization: Basic XMlcrpwYzdyZA==
-Date: Tue, 23 Jul 2024 12:00:00 GMT
 

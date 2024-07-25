@@ -1,8 +1,16 @@
-POST / HTTP/2.0
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-WWW-Authenticate: Basic realm="Access to the staging site"
+POST /g HTTP/2.0
+Transfer-Encoding: chunked
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Type: application/json
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Pragma:
 
 key1=value1&key2=value2

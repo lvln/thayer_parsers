@@ -1,11 +1,11 @@
-HTTP/.0 201 Created
-Transfer-Encoding: chunked
-Referer: https://www.example.com/page
-Accept-Language: en-US
-Connection: keep-alive
+TRACE http://a/b/c/g. HTTP1.1
 Content-Type: application/json
-Accept-Encoding: gzip,
-  deflate,
-   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Host: www.example.com
+Range: 
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 
-Resource has been created.

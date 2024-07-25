@@ -1,22 +1,12 @@
-HTTP1.1 403 Forbidden
+HTTP/.0 302 Found
 Pragma:
-Content-Type: application/json
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Authorization: Basic XMlcrpwYzdyZA==
-Transfer-Encoding: chunked
-Vary:     
 Range: 
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Referer: https://www.example.com/page
-Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Language: en-US
 Accept-Encoding: gzip,
   deflate,
    br
 Content-Length: 123
-Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
 
-You do not have permission to access the requested resource.

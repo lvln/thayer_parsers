@@ -1,11 +1,9 @@
-HTTP/1.1 425 Too Early
-Accept-Language: en-US
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+HTTP/1.1 415 Unsupported Media Type
 Host: www.example.com
-Referer: https://www.example.com/page
-Transfer-Encoding: chunked
-WWW-Authenticate: Basic realm="Access to the staging site"
-Vary:     
+Content-Type: application/json
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 Range: 
 

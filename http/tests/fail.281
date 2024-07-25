@@ -1,4 +1,21 @@
-CONNECT http://a/b/c/g. HTT/1.0
+CONNECT http://a/b/c/.g HTT/1.0
 Vary:     
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Range: 
+Accept-Language: en-US
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
+Host: www.example.com
+Connection: keep-alive
 Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
 

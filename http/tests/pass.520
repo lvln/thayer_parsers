@@ -1,8 +1,9 @@
-HTTP/1.0 425 Too Early
-Connection: keep-alive
+HTTP/1.0 415 Unsupported Media Type
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Content-Length: 123
-Host: www.example.com
-Range: 
-Transfer-Encoding: chunked
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
+Connection: keep-alive
 Vary:     
 

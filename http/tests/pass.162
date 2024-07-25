@@ -1,4 +1,7 @@
-PUT example.com:80/~smith/home.html HTTP/1.0
-Content-Type: application/json
+PUT http://a/b/c/..g HTTP/1.0
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
 
 key1=value1&key2=value2

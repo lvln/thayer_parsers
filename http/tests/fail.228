@@ -1,22 +1,20 @@
-DELETE tel:+1-816-555-1212 HTTP/1.0
-WWW-Authenticate: Basic realm="Access to the staging site"
+DELETE ** HTTP/1.0
+Connection: keep-alive
+Content-Length: 123
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Host: www.example.com
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Pragma:
-Vary:     
 Accept-Encoding: gzip,
   deflate,
    br
-Transfer-Encoding: chunked
-Referer: https://www.example.com/page
-Content-Type: application/json
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Language: en-US
-Content-Length: 123
+Pragma:
 
 Record to delete

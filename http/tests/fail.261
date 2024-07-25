@@ -1,4 +1,4 @@
-CONNECT http://g HTTP1.1
-Transfer-Encoding: chunked
-Pragma:
+CONNECT www.example.com:80 HTTP/.0
+Vary:     
+Host: www.example.com
 

@@ -1,6 +1,15 @@
-HTTP/1.0 103 Early Hints
-Content-Length: 123
-Connection: keep-alive
-WWW-Authenticate: Basic realm="Access to the staging site"
- Range: 
+TRACE http://a/b/c/d;p?q HTT/1.0
+Vary:     
+Range: 
+Accept-Language: en-US
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Referer: https://www.example.com/page
 

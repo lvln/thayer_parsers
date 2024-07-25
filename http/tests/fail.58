@@ -1,8 +1,11 @@
-HEAD http://example.com/data HTTP/1.1
-Range: 
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Length: 123
+HEAD http://a/b/c/..g HTTP/1.1
+Host: www.example.com
+Connection: keep-alive
 Accept-Language: en-US
+Content-Length: 123
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection : keep-alive
 

@@ -1,14 +1,10 @@
-TRACE http://example.com/data HTTP/1.0
-WWW-Authenticate: Basic realm="Access to the staging site"
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Type: application/json
-Accept-Language: en-US
-Pragma:
-Authorization: Basic XMlcrpwYzdyZA==
+OPTIONS http://a/b/c/d;p?q HTTP/1.0
+Transfer-Encoding: chunked
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Content-Length: 123
-Range: 
 

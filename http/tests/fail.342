@@ -1,5 +1,8 @@
-TRACE http://a/b/c/..g HTTP/1.0
-Transfer-Encoding: chunked
-Pragma:
-WWW-Authenticate    : Basic realm="Access to the staging site"
+OPTIONS http://www.ietf.org/rfc/rfc2396.txt HTTP/1.0
+Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+:
 

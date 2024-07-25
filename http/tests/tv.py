@@ -7,7 +7,7 @@ valid_methods = ["GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "
 invalid_methods = ["GES", "HEAS", "PSST", "PUTT", "DELET", "CONNEC", "OPTION", "TRACES"]
 
 # Valid URLs
-valid_urls = ["/a/b/", "http://a/b/c/..g", "http://example.com", "http://example.com/data", "http://example.com/data/", "example.com:80/~smith/home.html", "http://g", "http://a/b/c/.g", "http://www.example.com/hello.txt", "http://www.example.org:8080/pub/WWW/TheProject.html", "http://www.ietf.org/rfc/rfc2396.txt", "/g", "http://a/b/c/d;p?q", "http://a/b/c/g.", "/", "*"]
+valid_urls = ["/a/b/", "www.example.com:80", "http://a/b/c/..g", "http://example.com", "http://example.com/data", "http://example.com/data/", "example.com:80/~smith/home.html", "http://g", "http://a/b/c/.g", "http://www.example.com/hello.txt", "http://www.example.org:8080/pub/WWW/TheProject.html", "http://www.ietf.org/rfc/rfc2396.txt", "/g", "http://a/b/c/d;p?q", "http://a/b/c/g.", "/", "*"]
 
 # Invalid URLs
 invalid_urls = ["?y", "mailto:John.Doe@example.com", "tel:+1-816-555-1212", "ftp://ftp.is.co.za/rfc/rfc1808.txt#", "g", "..", "g?y#s", "g?y/./x", "ldap://[2001:db8::7]/c=GB?objectClass?one", "**"]

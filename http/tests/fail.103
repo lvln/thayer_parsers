@@ -1,12 +1,7 @@
-TRACES http://example.com HTTP/1.1
+DELET /a/b/ HTTP/1.1
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
 Transfer-Encoding: chunked
-Authorization: Basic XMlcrpwYzdyZA==
-Range: 
-Connection: keep-alive
-Vary:     
-Host: www.example.com
-Content-Length: 123
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 
 key1=value1&key2=value2

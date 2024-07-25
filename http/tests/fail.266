@@ -1,20 +1,11 @@
-CONNECT http://www.example.com/hello.txt HTTP/2.0
+CONNECT http://example.com HTTP/2.0
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Vary:     
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-WWW-Authenticate: Basic realm="Access to the staging site"
-Transfer-Encoding: chunked
-Accept-Encoding: gzip,
-  deflate,
-   br
-Host: www.example.com
-Pragma:
-Accept-Language: en-US
-Connection: keep-alive
 Accept-Language: en-US
 

@@ -1,18 +1,16 @@
-TRACE http://example.com/data HTTP/1.1
-Accept-Language: en-US
-Transfer-Encoding: chunked
-Pragma:
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+OPTIONS http://a/b/c/d;p?q HTTP/1.1
 Referer: https://www.example.com/page
-Vary:     
 Accept-Encoding: gzip,
   deflate,
    br
+Host: www.example.com
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Connection: keep-alive
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
 Content-Type: application/json
-WWW-Authenticate: Basic realm="Access to the staging site"
-: chunked
+Date Tue, 23 Jul 2024 12:00:00 GMT
 

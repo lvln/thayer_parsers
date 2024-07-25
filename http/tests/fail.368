@@ -1,18 +1,21 @@
-TRACE ldap://[2001:db8::7]/c=GB?objectClass?one HTTP/2.0
-WWW-Authenticate: Basic realm="Access to the staging site"
-Connection: keep-alive
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Length: 123
-Vary:     
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Referer: https://www.example.com/page
-Pragma:
-Host: www.example.com
-Content-Type: application/json
-Authorization: Basic XMlcrpwYzdyZA==
+TRACE ftp://ftp.is.co.za/rfc/rfc1808.txt# HTTP/2.0
 Accept-Encoding: gzip,
   deflate,
    br
 Accept-Language: en-US
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Pragma:
+Range: 
+Content-Length: 123
 

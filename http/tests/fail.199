@@ -1,5 +1,5 @@
-CONNEC http://example.com HTTP/1.1
-Content-Type: application/json
-Range: 
+OPTION / HTTP/1.1
+Pragma:
+Connection: keep-alive
 
-Record to delete
+key1=value1&key2=value2

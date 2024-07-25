@@ -1,9 +1,5 @@
-PUT http://www.example.com/hello.txt HTTP/2.0
-Vary:     
-Authorization: Basic XMlcrpwYzdyZA==
+PUT http://example.com/data/ HTTP/2.0
 Accept-Language: en-US
-Host: www.example.com
-Content-Length: 123
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,

@@ -1,15 +1,4 @@
-HTTP/1.0 410 Gone
-Host: www.example.com
-Accept-Encoding: gzip,
-  deflate,
-   br
-Connection: keep-alive
+HTTP/1.0 402 Payment Required
 Content-Type: application/json
-WWW-Authenticate: Basic realm="Access to the staging site"
-Referer: https://www.example.com/page
-Transfer-Encoding: chunked
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
 

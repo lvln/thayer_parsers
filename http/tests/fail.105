@@ -1,11 +1,8 @@
-POST http://example.com HTTP1.1
+POST /a/b/ HTTP1.1
+Connection: keep-alive
 Vary:     
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
 Content-Type: application/json
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
 
 key1=value1&key2=value2

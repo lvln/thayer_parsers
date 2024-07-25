@@ -1,21 +1,24 @@
-CONNECT http://a/b/c/..g HTTP/2.0
-Transfer-Encoding: chunked
-Content-Type: application/json
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Date: Tue, 23 Jul 2024 12:00:00 GMT
+DELETE http://a/b/c/d;p?q HTTP/2.0
+Vary:     
 Accept-Language: en-US
-Connection: keep-alive
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
+Transfer-Encoding: chunked
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Connection: keep-alive
 Referer: https://www.example.com/page
+Host: www.example.com
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Range: 
+Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
 Accept-Encoding: gzip,
   deflate,
    br
-Host: www.example.com
 Pragma:
 
+Record to delete

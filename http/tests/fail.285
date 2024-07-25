@@ -1,15 +1,3 @@
-CONNECT / HTTP/2.
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Type: application/json
-Host: www.example.com
-Connection: keep-alive
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Vary:     
-Range: 
+CONNECT http://www.example.com/hello.txt HTT/1.0
 WWW-Authenticate: Basic realm="Access to the staging site"
-Transfer-Encoding: chunked
-Pragma:
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Language: en-US
 

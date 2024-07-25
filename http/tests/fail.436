@@ -1,9 +1,3 @@
-HTTP/1.0 302 Found
-Host: www.example.com
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Transfer-Encoding: chunked
-Accept-Encoding: gzip,
-  deflate,
-   br
-Content-Length : 123
+HTTP/1.0 204 No Content
+Accept-Encoding :gzip, deflate, br
 

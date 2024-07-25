@@ -1,18 +1,4 @@
-HTTP/1.0 417 Expectation Failed
-WWW-Authenticate: Basic realm="Access to the staging site"
-Host: www.example.com
-Connection: keep-alive
-Pragma:
-Referer: https://www.example.com/page
-Range: 
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept-Language: en-US
-Vary:     
-Content-Type: application/json
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Transfer-Encoding: chunked
+HTTP/1.0 409 Conflict
 Content-Length: 123
-Date Tue, 23 Jul 2024 12:00:00 GMT
+Content-Length : 123
 

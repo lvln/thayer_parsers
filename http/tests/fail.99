@@ -1,9 +1,24 @@
-TRACES /a/b/ HTTP/1.0
-WWW-Authenticate: Basic realm="Access to the staging site"
+HEAS / HTTP/1.0
 Vary:     
+Content-Length: 123
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Host: www.example.com
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Referer: https://www.example.com/page
 Authorization: Basic XMlcrpwYzdyZA==
 Connection: keep-alive
-Referer: https://www.example.com/page
-Accept-Language: en-US
+Transfer-Encoding: chunked
+Range: 
+Pragma:
 
-key1=value1&key2=value2

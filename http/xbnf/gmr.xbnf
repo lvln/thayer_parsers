@@ -50,13 +50,13 @@ obsText : [ '\x80' - '\xFF' ] ;
 /* A request message is a method, followed by a target (URI), followed by an HTTP version */
 requestLine : method SP requestTarget SP HTTPVersion ;
 
-requestTarget : originForm | absoluteForm | asteriskFrom ;
+requestTarget : originForm | absoluteForm | asteriskForm ;
 
 originForm : absolutePath queries ;
 
 absoluteForm : absoluteURI ;
 
-asteriskFrom : '*' ;
+asteriskForm : '*' ;
 
 absolutePath : '/' segment | absolutePath '/' segment ;
 

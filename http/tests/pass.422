@@ -1,5 +1,20 @@
-HTTP/1.1 208 Already Reported
+HTTP/1.1 200 OK
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Host: www.example.com
+Range: 
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Connection: keep-alive
 
+Your request was successful.

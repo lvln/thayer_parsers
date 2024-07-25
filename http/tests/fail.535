@@ -1,16 +1,9 @@
-HTTP/1.0 451 Unavailable For Legal Reasons
-Content-Type: application/json
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+HTTP/1.0 422 Unprocessable Content
+Range: 
 Referer: https://www.example.com/page
-Accept-Encoding: gzip,
-  deflate,
-   br
+Connection: keep-alive
 Accept-Language: en-US
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Length: 123
-: chunked
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Language: en-US
 

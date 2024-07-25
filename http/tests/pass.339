@@ -1,4 +1,3 @@
-TRACE /a/b/ HTTP/1.0
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
+OPTIONS http://www.example.org:8080/pub/WWW/TheProject.html HTTP/1.0
+Range: 
 

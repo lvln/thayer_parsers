@@ -1,12 +1,18 @@
-DELETE g HTTP/1.0
+PUT ldap://[2001:db8::7]/c=GB?objectClass?one HTTP/1.0
+Referer: https://www.example.com/page
 Accept-Encoding: gzip,
   deflate,
    br
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Pragma:
+Transfer-Encoding: chunked
 Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Date: Tue, 23 Jul 2024 12:00:00 GMT
 Range: 
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
+Connection: keep-alive
+Host: www.example.com
 
-Record to delete
+key1=value1&key2=value2

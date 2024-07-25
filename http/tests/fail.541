@@ -1,16 +1,4 @@
-HTTP/1.0 501 Not Implemented
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Language: en-US
-Referer: https://www.example.com/page
-Accept-Encoding: gzip,
-  deflate,
-   br
-Host: www.example.com
-Vary:     
-WWW-Authenticate: Basic realm="Access to the staging site"
-Connection: keep-alive
-Pragma:
-Range: 
-Transfer-Encoding: chunked
-WWW-Authenticate    : Basic realm="Access to the staging site"
+HTTP/1.0 424 Failed Dependency
+Content-Length: 123
+:
 

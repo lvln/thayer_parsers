@@ -1,6 +1,3 @@
-HTT/1.0 451 Unavailable For Legal Reasons
-Vary:     
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Pragma:
-Range: 
+HTTP1.1 422 Unprocessable Content
+WWW-Authenticate: Basic realm="Access to the staging site"
 

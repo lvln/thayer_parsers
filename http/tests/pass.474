@@ -1,3 +1,14 @@
-HTTP/2.0 408 Request Timeout
-Vary:     
+HTTP/2.0 400 Bad Request
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+Accept-Language: en-US
+Pragma:
+Range: 
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
 
+The request could not be understood or was missing required parameters.

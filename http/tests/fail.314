@@ -1,23 +1,18 @@
-OPTIONS http://www.example.com/hello.txt HTTP/2.0
-Accept-Encoding: gzip,
-  deflate,
-   br
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Type: application/json
+OPTIONS http://a/b/c/..g HTTP/2.0
+Range: 
+Accept-Language: en-US
+Pragma:
+Referer: https://www.example.com/page
+Connection: keep-alive
 Accept-Charset:utf-8,
  iso-8859-1;q=0.5
-Connection: keep-alive
-Referer: https://www.example.com/page
-Authorization: Basic XMlcrpwYzdyZA==
-Host: www.example.com
-Accept-Language: en-US
 Accept: text/html,
  application/xhtml+xml,
  application/xml;q=0.9,
  */*;q=0.8
-Content-Length: 123
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
-*/*;q=0.8
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Content-Type: application/json
+Content-Length : 123
 
