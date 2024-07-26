@@ -1,5 +1,5 @@
 CFLAGS=-Wall -pedantic -std=c11 -I. -g
-OFILES=mavlink.o
+OFILES=mavlink.o vector.o
 
 all:  $(OFILES)
 			ar cr ../lib/libutils.a $(OFILES)

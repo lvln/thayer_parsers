@@ -80,7 +80,6 @@
 #define OPEN_DRONE_ID_LOCATION_LEN 59
 #define OPEN_DRONE_ID_SYSTEM_LEN 54
 
-// Structure that holds an array of integers and number of elements in array.
 typedef struct arrSize {
 	int *arr;
 	int n;

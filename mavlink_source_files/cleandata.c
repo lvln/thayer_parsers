@@ -1,5 +1,5 @@
 /* 
- * cleandata.c --- cleans a .pcap file such that it only contains MAVLink messages; optional second argument allows selection of a single message (message number to be written to a file)
+ * cleandata.c --- cleans a .pcap file such that it only contains MAVLink messages; input a pcap file adn output a pcap file
  * 
  * Author: Joshua M. Meise
  * Created: 06-21-2024
@@ -31,23 +31,6 @@ static int toInt(unsigned char *len, int numBytes) {
 	return (int)len[0]*256 + (int)len[1];
 }
 
-/* 
- * For debugging; prints the message to the screen.
- * Inputs: message to be printed, number of bytes in the message.
- * Outputs: none.
- */
-static void printMessage(message_t mess, int len) {
-	int i;
-
-	printf("Message: ");
-	for (i = 0; i < len; i++) {
-		if (i < 48) printf("%02x ", mess.header[i]);
-		else printf("%02x ", mess.body[i - 48]);
-	}
-
-	printf("\n");
-}
-
 /*
  * Write a message to a file in binary.
  * Inputs: message to be written, length of message (number of bytes), stream to write to.
@@ -70,13 +53,13 @@ int main(int argc, char **argv) {
 	// Variable declarations
 	FILE *ifile, *ofile;
 	unsigned char buf;
-	int bytesRead, i, len, prevLen, messageNum, currMessage, *nums, j;
+	int bytesRead, i, len, prevLen;
 	message_t mess;
-	bool prevMDNS, messFound;
+	bool prevMDNS;
 
 	// Check arguments
-	if (argc < 3) {
-    printf("usage: cleandata inputFile outputFile [messageNumbers]\n");
+	if (argc != 3) {
+    printf("usage: cleandata inputFile outputFile\n");
     exit(EXIT_FAILURE);
 	}
 	
@@ -86,38 +69,19 @@ int main(int argc, char **argv) {
     exit(EXIT_FAILURE);
 	}
 	
-	// If there is a thrid argument, check that it is of valid format and convert it to an integer.
-	if (argc > 3) {
-		nums = (int *)malloc(sizeof(int)*(argc - 3));
-
-		for (i = 0; i < argc - 3; i++) {
-			// Convert to integer
-			messageNum = atoi(argv[3 + i]);
-			
-			// Check argument		
-			if (messageNum < 1) {
-				printf("usage: read inputFile outputFile [messageNumbers]\n");
-				exit(EXIT_FAILURE);
-			}
-
-			nums[i] = messageNum;
-		}
-	}
-
 	// Open output file for binary writing
-	if ((ofile = fopen(argv[2], "wb")) == NULL)
+	if ((ofile = fopen(argv[2], "wb")) == NULL) {
     printf("File not opened successfully\n");
+		exit(EXIT_FAILURE);
+	}
 	
 	i = 0;
 
-	printf("Header:");
-	
 	// Read the first 24 bytes of the .pcap file into the pcap header and write to the output file
 	while(i < 24) {
 		bytesRead = fread(&buf, sizeof(buf), 1, ifile);
 		i++;
-		printf("%02x ", buf);
-		
+
 		if (fwrite(&buf, sizeof(buf), 1, ofile) != 1)
 			printf("Not successfully written");
 		
@@ -129,7 +93,6 @@ int main(int argc, char **argv) {
 	len = 0;
 	prevLen = 0;
 	prevMDNS = false;
-	currMessage = 1;
 	
 	// Read all of the successive bytes from the file.
 	while ((bytesRead = fread(&buf, sizeof(buf), 1, ifile)) > 0) {
@@ -185,27 +148,14 @@ int main(int argc, char **argv) {
 
 		// If the end of a message has been reached.
 		if (((i == (MAVLEN + len) && prevMDNS == false) || (i == (MDNSLEN + len) && prevMDNS == true)) && len != 0) {
-			// See if the current message is one of the codes in the array.
-			messFound = false;
-			for (j = 0; j < argc - 3; j++) {
-				if (currMessage == nums[j])
-					messFound = true;
-			}
-
 			// Only write all  MAVLink messages into the file if 2 arguments
-			if (mess.body[0] == 0xfd && argc == 3) {
-				writeMessageToFile(mess, len + MAVLEN, ofile);
-				printMessage(mess, len + MAVLEN);
-			}
-			// Write only the specific message into the file if more than 3 arguments are provided and the current message code was entered.
-			else if (mess.body[0] == 0xfd && argc > 3 && messFound)
+			if (mess.body[0] == 0xfd)
 				writeMessageToFile(mess, len + MAVLEN, ofile);
 
 			// Reset all variables
 			i = 0;
 			prevLen = len;
 			len = 0;
-			currMessage++;
 			
 			// Check the IP protocol (should be 2) and the previous length to determine if the next message to follow is MDNS of varying format
 			if (mess.header[16] == 0x02 && (prevLen == 1366 || prevLen == 148 || prevLen == 1440)) prevMDNS = true;
@@ -218,7 +168,6 @@ int main(int argc, char **argv) {
 
 	}
 
-	free(nums);
 	fclose(ifile);
 	fclose(ofile);
 	exit(EXIT_SUCCESS);

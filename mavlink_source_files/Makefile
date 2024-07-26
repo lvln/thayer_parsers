@@ -1,7 +1,7 @@
 CFLAGS=-Wall -pedantic -std=c11 -I../utils -L../lib
 LIBS=-lutils -lcurl
 
-all: cleandata extractdata untruncate countcodes removewrappers
+all: cleandata extractdata untruncate countcodes removewrappers extractmessages
 
 cleandata: cleandata.c
 						gcc $(CFLAGS) cleandata.c $(LIBS) -o $@
@@ -18,5 +18,8 @@ countcodes: countcodes.c
 removewrappers: removewrappers.c
 						gcc $(CFLAGS) removewrappers.c $(LIBS) -o $@
 
+extractmessages: extractmessages.c
+								 gcc $(CFLAGS) extractmessages.c $(LIBS) -o $@
+
 clean:
-				rm -f *~ cleandata extractdata untruncate countcodes removewrappers *.o
+				rm -f *~ cleandata extractdata untruncate countcodes removewrappers extractmessages *.o
