@@ -1,5 +1,5 @@
 /* 
- * extractone.c --- extracts a given message/s (1 indexed sequence) from a PCAP file and outputs just the mavlink portion to a given file
+ * extractbymessagenumber.c --- extracts a given message/s (1 indexed sequence) from a PCAP file and outputs just the mavlink portion to a given file
  * 
  * Author: Joshua M. Meise
  * Created: 07-25-2024
@@ -39,13 +39,13 @@ int main(int argc, char **argv) {
 
 	// Check number of arguments.
 	if (argc < 4) {
-		printf("usage: extractone inputFile outputFile messageNumber\n");
+		printf("usage: extractbymessagenumber inputFile.pcap outputFile messageNumber\n");
 		exit(EXIT_FAILURE);
 	}
 
 	// Make sure file exists and can open.
 	if ((fp = fopen(argv[1], "rb")) == NULL) {
-		printf("usage: extractone inputFile outputFile messageNumber\n");
+		printf("usage: extractbymessagenumber inputFile.pcap outputFile messageNumber\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
 
 	// Open file for reading.
 	if ((fp = fopen(argv[2], "wb")) == NULL) {
-		printf("Failed to open file for writing.\n");
+		printf("usage: extractbymessagenumber inputFile.pcap outputFile messageNumber\n");
 		exit(EXIT_FAILURE);
 	}
 

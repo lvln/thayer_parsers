@@ -1,13 +1,13 @@
 CFLAGS=-Wall -pedantic -std=c11 -I../utils -L../lib
 LIBS=-lutils -lcurl
 
-all: cleandata extractdata untruncate countcodes removewrappers extractmessages
+all: cleandata extractbymessageid untruncate countcodes makemav extractbymessagenumber
 
 cleandata: cleandata.c
 						gcc $(CFLAGS) cleandata.c $(LIBS) -o $@
 
-extractdata: extractdata.c
-						gcc $(CFLAGS) extractdata.c $(LIBS) -o $@
+extractbymessageid: extractbymessageid.c
+						gcc $(CFLAGS) extractbymessageid.c $(LIBS) -o $@
 
 untruncate: untruncate.c
 						gcc $(CFLAGS) untruncate.c $(LIBS) -o $@
@@ -15,11 +15,11 @@ untruncate: untruncate.c
 countcodes: countcodes.c
 						gcc $(CFLAGS) countcodes.c $(LIBS) -o $@
 
-removewrappers: removewrappers.c
-						gcc $(CFLAGS) removewrappers.c $(LIBS) -o $@
+makemav: makemav.c
+				gcc $(CFLAGS) makemav.c $(LIBS) -o $@
 
-extractmessages: extractmessages.c
-								 gcc $(CFLAGS) extractmessages.c $(LIBS) -o $@
+extractbymessagenumber: extractbymessagenumber.c
+								 gcc $(CFLAGS) extractbymessagenumber.c $(LIBS) -o $@
 
 clean:
-				rm -f *~ cleandata extractdata untruncate countcodes removewrappers extractmessages *.o
+				rm -f *~ cleandata extractbymessageid untruncate countcodes makemav extractbymessagenumber *.o
