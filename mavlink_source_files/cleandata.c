@@ -59,19 +59,19 @@ int main(int argc, char **argv) {
 
 	// Check arguments
 	if (argc != 3) {
-    printf("usage: cleandata inputFile outputFile\n");
+    printf("usage: cleandata inputFile[.pcap] outputFile[.pcap]\n");
     exit(EXIT_FAILURE);
 	}
 	
 	// Check that provided file exists by opening for binary reading
 	if ((ifile = fopen(argv[1], "rb")) == NULL) {
-    printf("File does not exist\n");
+		printf("usage: cleandata inputFile[.pcap] outputFile[.pcap]\n");
     exit(EXIT_FAILURE);
 	}
 	
 	// Open output file for binary writing
 	if ((ofile = fopen(argv[2], "wb")) == NULL) {
-    printf("File not opened successfully\n");
+		printf("usage: cleandata inputFile[.pcap] outputFile[.pcap]\n");
 		exit(EXIT_FAILURE);
 	}
 	
