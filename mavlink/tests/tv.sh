@@ -1,78 +1,104 @@
 #!/bin/bash
 
-# Create tests for each message type.
-./tv 0
-echo "HEARTBEAT"
-./tv 1
-echo "SYS_STATUS"
-./tv 4
-echo "PING"
-./tv 8
-echo "LINK_NODE_STATUS"
-./tv 22
-echo "PARAM_VALUE"
-./tv 24
-echo "GPS_RAW_INT"
-./tv 29
-echo "SCALED_PRESSURE"
-./tv 30
-echo "ATTITUDE"
-./tv 31
-echo "ATTITUDE_QUATERNION"
-./tv 32
-echo "LOCAL_POSITION_NED"
-./tv 33
-echo "GLOBAL_POSITION_INT"
-./tv 42
-echo "MISSION_CURRENT"
-./tv 46
-echo "MISSION_ITEM_REACHED"
-./tv 65
-echo "RC_CHANNELS"
-./tv 74
-echo "VFR_HUD"
-./tv 77
-echo "COMMAND_ACK"
-./tv 83
-echo "ATTITUDE_TARGET"
-./tv 85
-echo "POSITION_TARGET_LOCAL_NED"
-./tv 87
-echo "POSITION_TARGET_GLOBAL_INT"
-./tv 109
-echo "RADIO_STATUS"
-./tv 141
-echo "ALTITUDE"
-./tv 147
-echo "BATTERY_STATUS"
-./tv 230
-echo "ESTIMATOR_STATUS"
-./tv 241
-echo "VIBRATION"
-./tv 242
-echo "HOME_POSITION"
-./tv 245
-echo "EXTENDED_SYS_STATE"
-./tv 253
-echo "STATUSTEXT"
-./tv 340
-echo "UTM_GLOBAL_POSITION"
-./tv 380
-echo "TIME_ESTIMATE_TO_TARGET"
-./tv 410
-echo "EVENT"
-./tv 411
-echo "CURRENT_EVENT_SEQUENCE"
-./tv 12901
-echo "OPEN_DRONE_ID_LOCATION"
-./tv 12904
-echo "OPEN_DRONE_ID_SYSTEM"
+pushd () {
+    command pushd "$@" > /dev/null
+}
 
-# Create tests for full drone flights.
-if [ -e ../mavlink_source_files/run1.mav ]; then
-		cp ../mavlink_source_files/run1.mav ./pass.1000 > /dev/null
+popd () {
+    command popd "$@" > /dev/null
+}
+
+# Check number of arguments
+if [ $# != 0 ]; then
+		echo "usage: tv.sh"
+		exit
 fi
 
-if [ -e ../mavlink_source_files/run2.mav ]; then
-		cp ../mavlink_source_files/run2.mav ./pass.1001 > /dev/null
+# This is the source directory path.
+SRCDIR="../mavlink_source_files"
+
+# Clean the current tests out and make the executables
+make clean > /dev/null
+make > /dev/null
+
+# Create array of message IDs currently in the parser
+msgIDs=(0 1 4 8 22 24 29 30 31 32 33 42 46 65 74 77 83 85 87 109 141 147 230 241 242 245 253 340 380 410 411 12901 12904)
+
+# Loop through all message IDs
+for id in "${msgIDs[@]}"; do
+		# Generate the tests for the given message code
+		./tv ${id}
+		
+		echo "Message ID ${id}"
+done
+
+# Create a test file for full flights with the drone with the drone.
+if [ -e ${SRCDIR}/run1.pcap ]; then
+		pushd ${SRCDIR}
+		make > /dev/null
+		CMD="./makemav ./run1.pcap ./pass.10000"
+		{ ${CMD} >& /dev/null ; } >& /dev/null
+		CMD="mv ./pass.10000 ./tests"
+		{ ${CMD} >& /dev/null ; } >& /dev/null
+		make clean > /dev/null
+		popd
 fi
+
+# Create a test file for full flights with the drone with the drone.
+if [ -e ${SRCDIR}/run2.pcap ]; then
+		pushd ${SRCDIR}
+		make > /dev/null
+		CMD="./makemav ./run2.pcap ./pass.10001"
+		{ ${CMD} >& /dev/null ; } >& /dev/null
+		CMD="mv ./pass.10001 ../../mavlink/tests"
+		{ ${CMD} >& /dev/null ; } >& /dev/null
+		make clean > /dev/null
+		popd
+fi
+
+# Start counter for messages for individual drone flights.
+let msgNum=1
+
+if [ -e ${SRCDIR}/run1.pcap ]; then
+		pushd ${SRCDIR}
+		make > /dev/null
+		CMD="./countmessages ./run1.pcap"
+		
+		# Save the number of messages to a temporary file
+		${CMD} > foo
+		numMess=$(cat foo)
+		rm foo > /dev/null
+
+		# Create a test in a unique file for each message
+		for (( i = 1; i <= numMess; i++ )); do
+				CMD="./extractbymessagenumber ./run1.pcap pass.${msgNum} ${i}"
+				{ ${CMD} >& /dev/null ; } >& /dev/null
+				let msgNum++
+		done
+		make clean > /dev/null
+		popd
+fi
+
+if [ -e ${SRCDIR}/run2.pcap ]; then
+		pushd ${SRCDIR}
+		make > /dev/null
+		CMD="./countmessages ./run2.pcap"
+
+		# Save the number of messages to a temporary file
+		${CMD} > foo
+		numMess=$(cat foo)
+		rm foo > /dev/null
+
+		# Create a test in a unique file for each message
+		for (( i = 1; i <= numMess; i++ )); do
+				CMD="./extractbymessagenumber ./run2.pcap pass.${msgNum} ${i}"
+				{ ${CMD} >& /dev/null ; } >& /dev/null
+				let msgNum++
+		done
+		make clean > /dev/null
+		popd
+fi
+
+# More all of the tests to the tests directory
+CMD="mv ${SRCDIR}/pass.* ../tests/"
+{ ${CMD} >& /dev/null ; } >& /dev/null

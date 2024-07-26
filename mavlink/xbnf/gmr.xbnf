@@ -2407,7 +2407,7 @@ ml68 : MAVCODE LEN68 messageHeaderTail ;
 ml69 : MAVCODE LEN69 messageHeaderTail ;
 ml70 : MAVCODE LEN70 messageHeaderTail ;
 
-messageHeaderTail :  incompFlag compFlag packetSequence sysID compID ;
+messageHeaderTail : incompFlag compFlag packetSequence sysID compID ;
 
 /* Tokens */
 MAVCODE : '\xFD' ;
