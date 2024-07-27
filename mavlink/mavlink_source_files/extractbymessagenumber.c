@@ -1,5 +1,5 @@
 /* 
- * extractbymessagenumber.c --- extracts a given message/s (1 indexed sequence) from a PCAP file and outputs just the mavlink portion to a given file
+ * extractbymessagenumber.c --- extracts a given message/s (1 indexed sequence) from a PCAP (default) or .mav file and outputs just the mavlink portion to a given file
  * 
  * Author: Joshua M. Meise
  * Created: 07-25-2024
@@ -12,6 +12,7 @@
 #include <mavlink.h>
 #include <vector.h>
 #include <stdbool.h>
+#include <string.h>
 
 /*
  * Checks to see if 2 integers are the same
@@ -35,17 +36,18 @@ int main(int argc, char **argv) {
 	FILE *fp;
 	int i, num, currMess, *ins;
 	pcap_t *pcap;
+	mavMessArr_t *mav;
 	vector_t *vec;
 
 	// Check number of arguments.
 	if (argc < 4) {
-		printf("usage: extractbymessagenumber inputFile[.pcap] outputFile[.mav] messageNumber[s]\n");
+		printf("usage: extractbymessagenumber inputFile[.pcap]/[.mav] outputFile[.mav] messageNumber[s]\n");
 		exit(EXIT_FAILURE);
 	}
 
 	// Make sure file exists and can open.
 	if ((fp = fopen(argv[1], "rb")) == NULL) {
-		printf("usage: extractbymessagenumber inputFile[.pcap] outputFile[.mav] messageNumber[s]\n");
+		printf("usage: extractbymessagenumber inputFile[.pcap]/[.mav] outputFile[.mav] messageNumber[s]\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -71,28 +73,48 @@ int main(int argc, char **argv) {
 		// Insert to vector.
 		vectorInsertBack(vec, (void *)ins);
 	}
-	
-	// Read in pcap file
-	pcap = readPcapFile(fp);
+
+	// Deal with the case where a .mav file is being read
+	if (strcmp(&argv[1][strlen(argv[1]) - 4] , ".mav") == 0) {
+		// Read in file.
+		mav = readMavFile(fp);
+	}
+	else {
+		// Read in pcap file
+		pcap = readPcapFile(fp);
+	}
 
 	fclose(fp);
 
-	// Open file for reading.
+	// Open file for writing.
 	if ((fp = fopen(argv[2], "wb")) == NULL) {
-		printf("usage: extractbymessagenumber inputFile[.pcap] outputFile[.mav] messageNumber[s]\n");
+		printf("usage: extractbymessagenumber inputFile[.pcap]/[.mav] outputFile[.mav] messageNumber[s]\n");
 		exit(EXIT_FAILURE);
 	}
 
-	// Write message to file if number was input
-	for (i = 0; i < pcap->n; i++) {
-		currMess = i + 1;
-		if (vectorContains(vec, compareInt, (void *)&(currMess)))
-			writeMavMessageToFile(pcap->messages[i].body, fp);
+	if (strcmp(&argv[1][strlen(argv[1]) - 4] , ".mav") == 0) {
+		// Write message to file if number was input
+		for (i = 0; i < mav->n; i++) {
+			currMess = i + 1;
+			if (vectorContains(vec, compareInt, (void *)&(currMess)))
+				writeMavMessageToFile(mav->messages[i], fp);
+		}
+
+		freeMemMav(mav);
+	}
+	else {
+		// Write message to file if number was input
+		for (i = 0; i < pcap->n; i++) {
+			currMess = i + 1;
+			if (vectorContains(vec, compareInt, (void *)&(currMess)))
+				writeMavMessageToFile(pcap->messages[i].body, fp);
+		}
+
+		freeMemPcap(pcap);
 	}
 
 	fclose(fp);
 
-	freeMemPcap(pcap);
 	vectorApply(vec, free);
 	vectorFree(vec);
 	exit(EXIT_SUCCESS);
