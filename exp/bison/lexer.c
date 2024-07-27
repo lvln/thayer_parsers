@@ -10,7 +10,6 @@
  */
 #include <stdio.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include "gmr.tab.h"
 
 extern FILE *yyin;
@@ -24,3 +23,4 @@ int yylex (void) {
 		return X00;
 	return c;
 }
+

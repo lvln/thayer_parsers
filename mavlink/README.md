@@ -4,8 +4,6 @@
 
 This directory contains the complete definition for the MAVLink grammar. Please see `mavlink_standalone_message`, `mavlink_single_message-repeat` or `mavlink_three_messages` for smaller components of the MAVLink grammar.
 
-According to the [MAVLink documentation](https://mavlink.io/en/guide/serialization.html), MAVLink 2.0 truncates empty (zero-filled bytes) at the end of the payload; it will never truncate the first byte of the payload regardless of if it is empty or not. The grammar is thus defined such that it allows for each payload to be any length.
-
 All data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
 
 ## Directory structure
@@ -18,6 +16,7 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
 ## Data packet structure
 MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.
 The format of MAVLink messages is defined [here](https://mavlink.io/en/guide/serialization.html) with the payload of each individual message defined in the `common.xml` file and can be found [here](https://mavlink.io/en/messages/common.html).
+MAVLink 2.0 truncates empty (zero-filled bytes) at the end of the payload; it will never truncate the first byte of the payload regardless of if it is empty or not. The grammar is thus defined such that it allows for each payload to be any length.
 
 **Each message begins with a message-specific header which is 10 bytes in length.**
 

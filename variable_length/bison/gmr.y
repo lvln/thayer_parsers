@@ -13,7 +13,7 @@ int a_count = 0;
 /* Here is the grammar */
 p : /* empty */ | p a_or_c ;
 
-a_or_c : 'a' { a_count++; if (a_count > 5) YYERROR; } ;
+a_or_c : 'a' { a_count++; if (a_count > 5) YYERROR; }
 | 'c' ;
 
 %%

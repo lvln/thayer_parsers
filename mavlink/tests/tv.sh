@@ -29,7 +29,7 @@ for id in "${msgIDs[@]}"; do
 		# Generate the tests for the given message code
 		./tv ${id}
 		
-		echo "Message ID ${id}"
+		echo "Tests for message ID ${id} generated"
 done
 
 # Create a test file for full flights with the drone with the drone.

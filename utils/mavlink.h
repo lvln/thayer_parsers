@@ -11,6 +11,7 @@
 
 // Library inclusions.
 #include <stdint.h>
+#include <stdio.h>
 
 #define HEARTBEAT 0
 #define SYS_STATUS 1

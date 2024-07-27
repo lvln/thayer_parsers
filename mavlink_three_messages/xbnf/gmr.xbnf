@@ -1,67 +1,194 @@
 P : optMessage ;
 optMessage : /* empty */ | optMessage message ;
 
-/* Messsages contain header for each packet followed by the MAVLink specific header then the message and finally a checkusm */
-message : packetRecordHeader mavHeader messageOption * * ;
+/* Messsages contain the message followed by a checkusm */
+message : messageOption * * ;
 messageOption : sp | att | gpi ;
 
-/* Header for each captured packet */
-packetRecordHeader : prhTimestampSec prhTimestampUSNS prhCPL prhOPL ;
-prhTimestampSec : * * * * ;
-prhTimestampUSNS : * * * * ;
-prhCPL : * * * * ; /* captured packet length */
-prhOPL : * * * * ; /* original packet length */
-
-/* MAVLink header for each message */
-mavHeader : family ipvhl dsf totalLen id ffo ttl protocol headerChecksum sourceAddr destAddr sourcePort destPort length checksum ;
-family : '\x02' '\x00' '\x00' '\x00' ; /* Always 2 for MAVLink */
-ipvhl : '\x45' ; /* ip version and header length  - always ip version 4 and 5 as header length for MAVLink */
-dsf : * ; /* differentiated services field - not sure */
-totalLen : * * ;
-id : * * ;
-ffo : * * ;
-ttl : '\x40' ; /* time to live - seemingly always 0x40 for MAVLink - not sure */
-protocol : '\x11' ; /* protocol - always 0x11 for MAVLink because it is UDP */
-headerChecksum : * * ; /* header checksum - not sure */
-sourceAddr : * * * * ;
-destAddr : * * * * ;
-sourcePort : '\x38' '\xD6' ;
-destPort : '\x38' '\xF4' ;
-length : * * ;
-checksum : * * ;
-
 /* SCALED_PRESSURE (29) */
-sp : spMH timeBoot spPressAb spPressDiff spTemp spTempParseDiff ;
-spMH : MAVCODE SPLEN incompFlag compFlag packetSequence sysID compID SPCODE ;
-spPressAb : * * * * ;
-spPressDiff : * * * * ;
-spTemp : * * ;
-spTempParseDiff : * * ;
+sp : sp01 | sp02 | sp03 | sp04 | sp05 | sp06 | sp07 | sp08 | sp09 | sp10 | sp11 | sp12 | sp13 | sp14 | sp15 | sp16 ;
+sp01 : spMH01 * ;
+sp02 : spMH02 * * ;
+sp03 : spMH03 * * * ;
+sp04 : spMH04 * * * * ;
+sp05 : spMH05 * * * * * ;
+sp06 : spMH06 * * * * * * ;
+sp07 : spMH07 * * * * * * * ;
+sp08 : spMH08 * * * * * * * * ;
+sp09 : spMH09 * * * * * * * * * ;
+sp10 : spMH10 * * * * * * * * * * ;
+sp11 : spMH11 * * * * * * * * * * * ;
+sp12 : spMH12 * * * * * * * * * * * * ;
+sp13 : spMH13 * * * * * * * * * * * * * ;
+sp14 : spMH14 * * * * * * * * * * * * * * ;
+sp15 : spMH15 * * * * * * * * * * * * * * * ;
+sp16 : spMH16 * * * * * * * * * * * * * * * * ;
+spMH01 : ml01 SPCODE ;
+spMH02 : ml02 SPCODE ;
+spMH03 : ml03 SPCODE ;
+spMH04 : ml04 SPCODE ;
+spMH05 : ml05 SPCODE ;
+spMH06 : ml06 SPCODE ;
+spMH07 : ml07 SPCODE ;
+spMH08 : ml08 SPCODE ;
+spMH09 : ml09 SPCODE ;
+spMH10 : ml10 SPCODE ;
+spMH11 : ml11 SPCODE ;
+spMH12 : ml12 SPCODE ;
+spMH13 : ml13 SPCODE ;
+spMH14 : ml14 SPCODE ;
+spMH15 : ml15 SPCODE ;
+spMH16 : ml16 SPCODE ;
 
 /* ATTITUDE (30) */
-att : attMH timeBoot attRoll attPitch attYaw attRollSpeed attPitchSpeed attYawSpeed ;
-attMH : ml28 ATTCODE ;
-attRoll : * * * * ;
-attPitch : * * * * ;
-attYaw : * * * * ;
-attRollSpeed : * * * * ;
-attPitchSpeed : * * * * ;
-attYawSpeed : * * * * ;
+att : att01 | att02 | att03 | att04 | att05 | att06 | att07 | att08 | att09 | att10 | att11 | att12 | att13 | att14 | att15 | att16 | att17 | att18 | att19 | att20 | att21 | att22 | att23 | att24 | att25 | att26 | att27 | att28 ;
+att01 : attMH01 * ;
+att02 : attMH02 * * ;
+att03 : attMH03 * * * ;
+att04 : attMH04 * * * * ;
+att05 : attMH05 * * * * * ;
+att06 : attMH06 * * * * * * ;
+att07 : attMH07 * * * * * * * ;
+att08 : attMH08 * * * * * * * * ;
+att09 : attMH09 * * * * * * * * * ;
+att10 : attMH10 * * * * * * * * * * ;
+att11 : attMH11 * * * * * * * * * * * ;
+att12 : attMH12 * * * * * * * * * * * * ;
+att13 : attMH13 * * * * * * * * * * * * * ;
+att14 : attMH14 * * * * * * * * * * * * * * ;
+att15 : attMH15 * * * * * * * * * * * * * * * ;
+att16 : attMH16 * * * * * * * * * * * * * * * * ;
+att17 : attMH17 * * * * * * * * * * * * * * * * * ;
+att18 : attMH18 * * * * * * * * * * * * * * * * * * ;
+att19 : attMH19 * * * * * * * * * * * * * * * * * * * ;
+att20 : attMH20 * * * * * * * * * * * * * * * * * * * * ;
+att21 : attMH21 * * * * * * * * * * * * * * * * * * * * * ;
+att22 : attMH22 * * * * * * * * * * * * * * * * * * * * * * ;
+att23 : attMH23 * * * * * * * * * * * * * * * * * * * * * * * ;
+att24 : attMH24 * * * * * * * * * * * * * * * * * * * * * * * * ;
+att25 : attMH25 * * * * * * * * * * * * * * * * * * * * * * * * * ;
+att26 : attMH26 * * * * * * * * * * * * * * * * * * * * * * * * * * ;
+att27 : attMH27 * * * * * * * * * * * * * * * * * * * * * * * * * * * ;
+att28 : attMH28 * * * * * * * * * * * * * * * * * * * * * * * * * * * * ;
+attMH01 : ml01 ATTCODE ;
+attMH02 : ml02 ATTCODE ;
+attMH03 : ml03 ATTCODE ;
+attMH04 : ml04 ATTCODE ;
+attMH05 : ml05 ATTCODE ;
+attMH06 : ml06 ATTCODE ;
+attMH07 : ml07 ATTCODE ;
+attMH08 : ml08 ATTCODE ;
+attMH09 : ml09 ATTCODE ;
+attMH10 : ml10 ATTCODE ;
+attMH11 : ml11 ATTCODE ;
+attMH12 : ml12 ATTCODE ;
+attMH13 : ml13 ATTCODE ;
+attMH14 : ml14 ATTCODE ;
+attMH15 : ml15 ATTCODE ;
+attMH16 : ml16 ATTCODE ;
+attMH17 : ml17 ATTCODE ;
+attMH18 : ml18 ATTCODE ;
+attMH19 : ml19 ATTCODE ;
+attMH20 : ml20 ATTCODE ;
+attMH21 : ml21 ATTCODE ;
+attMH22 : ml22 ATTCODE ;
+attMH23 : ml23 ATTCODE ;
+attMH24 : ml24 ATTCODE ;
+attMH25 : ml25 ATTCODE ;
+attMH26 : ml26 ATTCODE ;
+attMH27 : ml27 ATTCODE ;
+attMH28 : ml28 ATTCODE ;
 
 /* GLOBAL_POSITION_INT (33) */
-gpi : gpiMH timeBoot gpiLat gpiLon gpiAlt gpiRelAlt gpiVX gpiVY gpiVZ gpiHdg ;
-gpiMH : ml28 GPICODE ;
-gpiLat : * * * * ;
-gpiLon : * * * * ;
-gpiAlt : * * * * ;
-gpiRelAlt : * * * * ;
-gpiVX : * * ;
-gpiVY : * * ;
-gpiVZ : * * ;
-gpiHdg : * * ;
+gpi : gpi01 | gpi02 | gpi03 | gpi04 | gpi05 | gpi06 | gpi07 | gpi08 | gpi09 | gpi10 | gpi11 | gpi12 | gpi13 | gpi14 | gpi15 | gpi16 | gpi17 | gpi18 | gpi19 | gpi20 | gpi21 | gpi22 | gpi23 | gpi24 | gpi25 | gpi26 | gpi27 | gpi28 ;
+gpi01 : gpiMH01 * ;
+gpi02 : gpiMH02 * * ;
+gpi03 : gpiMH03 * * * ;
+gpi04 : gpiMH04 * * * * ;
+gpi05 : gpiMH05 * * * * * ;
+gpi06 : gpiMH06 * * * * * * ;
+gpi07 : gpiMH07 * * * * * * * ;
+gpi08 : gpiMH08 * * * * * * * * ;
+gpi09 : gpiMH09 * * * * * * * * * ;
+gpi10 : gpiMH10 * * * * * * * * * * ;
+gpi11 : gpiMH11 * * * * * * * * * * * ;
+gpi12 : gpiMH12 * * * * * * * * * * * * ;
+gpi13 : gpiMH13 * * * * * * * * * * * * * ;
+gpi14 : gpiMH14 * * * * * * * * * * * * * * ;
+gpi15 : gpiMH15 * * * * * * * * * * * * * * * ;
+gpi16 : gpiMH16 * * * * * * * * * * * * * * * * ;
+gpi17 : gpiMH17 * * * * * * * * * * * * * * * * * ;
+gpi18 : gpiMH18 * * * * * * * * * * * * * * * * * * ;
+gpi19 : gpiMH19 * * * * * * * * * * * * * * * * * * * ;
+gpi20 : gpiMH20 * * * * * * * * * * * * * * * * * * * * ;
+gpi21 : gpiMH21 * * * * * * * * * * * * * * * * * * * * * ;
+gpi22 : gpiMH22 * * * * * * * * * * * * * * * * * * * * * * ;
+gpi23 : gpiMH23 * * * * * * * * * * * * * * * * * * * * * * * ;
+gpi24 : gpiMH24 * * * * * * * * * * * * * * * * * * * * * * * * ;
+gpi25 : gpiMH25 * * * * * * * * * * * * * * * * * * * * * * * * * ;
+gpi26 : gpiMH26 * * * * * * * * * * * * * * * * * * * * * * * * * * ;
+gpi27 : gpiMH27 * * * * * * * * * * * * * * * * * * * * * * * * * * * ;
+gpi28 : gpiMH28 * * * * * * * * * * * * * * * * * * * * * * * * * * * * ;
+gpiMH01 : ml01 GPICODE ;
+gpiMH02 : ml02 GPICODE ;
+gpiMH03 : ml03 GPICODE ;
+gpiMH04 : ml04 GPICODE ;
+gpiMH05 : ml05 GPICODE ;
+gpiMH06 : ml06 GPICODE ;
+gpiMH07 : ml07 GPICODE ;
+gpiMH08 : ml08 GPICODE ;
+gpiMH09 : ml09 GPICODE ;
+gpiMH10 : ml10 GPICODE ;
+gpiMH11 : ml11 GPICODE ;
+gpiMH12 : ml12 GPICODE ;
+gpiMH13 : ml13 GPICODE ;
+gpiMH14 : ml14 GPICODE ;
+gpiMH15 : ml15 GPICODE ;
+gpiMH16 : ml16 GPICODE ;
+gpiMH17 : ml17 GPICODE ;
+gpiMH18 : ml18 GPICODE ;
+gpiMH19 : ml19 GPICODE ;
+gpiMH20 : ml20 GPICODE ;
+gpiMH21 : ml21 GPICODE ;
+gpiMH22 : ml22 GPICODE ;
+gpiMH23 : ml23 GPICODE ;
+gpiMH24 : ml24 GPICODE ;
+gpiMH25 : ml25 GPICODE ;
+gpiMH26 : ml26 GPICODE ;
+gpiMH27 : ml27 GPICODE ;
+gpiMH28 : ml28 GPICODE ;
 
 /* Header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
-ml28 : MAVCODE LEN28 incompFlag compFlag packetSequence sysID compID ;
+ml01 : MAVCODE LEN01 messageHeaderTail ;
+ml02 : MAVCODE LEN02 messageHeaderTail ;
+ml03 : MAVCODE LEN03 messageHeaderTail ;
+ml04 : MAVCODE LEN04 messageHeaderTail ;
+ml05 : MAVCODE LEN05 messageHeaderTail ;
+ml06 : MAVCODE LEN06 messageHeaderTail ;
+ml07 : MAVCODE LEN07 messageHeaderTail ;
+ml08 : MAVCODE LEN08 messageHeaderTail ;
+ml09 : MAVCODE LEN09 messageHeaderTail ;
+ml10 : MAVCODE LEN10 messageHeaderTail ;
+ml11 : MAVCODE LEN11 messageHeaderTail ;
+ml12 : MAVCODE LEN12 messageHeaderTail ;
+ml13 : MAVCODE LEN13 messageHeaderTail ;
+ml14 : MAVCODE LEN14 messageHeaderTail ;
+ml15 : MAVCODE LEN15 messageHeaderTail ;
+ml16 : MAVCODE LEN16 messageHeaderTail ;
+ml17 : MAVCODE LEN17 messageHeaderTail ;
+ml18 : MAVCODE LEN18 messageHeaderTail ;
+ml19 : MAVCODE LEN19 messageHeaderTail ;
+ml20 : MAVCODE LEN20 messageHeaderTail ;
+ml21 : MAVCODE LEN21 messageHeaderTail ;
+ml22 : MAVCODE LEN22 messageHeaderTail ;
+ml23 : MAVCODE LEN23 messageHeaderTail ;
+ml24 : MAVCODE LEN24 messageHeaderTail ;
+ml25 : MAVCODE LEN25 messageHeaderTail ;
+ml26 : MAVCODE LEN26 messageHeaderTail ;
+ml27 : MAVCODE LEN27 messageHeaderTail ;
+ml28 : MAVCODE LEN28 messageHeaderTail ;
+
+messageHeaderTail : incompFlag compFlag packetSequence sysID compID ;
 
 /* Tokens */
 MAVCODE : '\xFD' ;
@@ -70,13 +197,37 @@ SPCODE : '\x1D' '\x00' '\x00' ;
 ATTCODE : '\x1E' '\x00' '\x00' ;
 GPICODE : '\x21' '\x00' '\x00' ;
 
-SPLEN : '\x10' ;
-
+LEN01 : '\x01' ;
+LEN02 : '\x02' ;
+LEN03 : '\x03' ;
+LEN04 : '\x04' ;
+LEN05 : '\x05' ;
+LEN06 : '\x06' ;
+LEN07 : '\x07' ;
+LEN08 : '\x08' ;
+LEN09 : '\x09' ;
+LEN10 : '\x0A' ;
+LEN11 : '\x0B' ;
+LEN12 : '\x0C' ;
+LEN13 : '\x0D' ;
+LEN14 : '\x0E' ;
+LEN15 : '\x0F' ;
+LEN16 : '\x10' ;
+LEN17 : '\x11' ;
+LEN18 : '\x12' ;
+LEN19 : '\x13' ;
+LEN20 : '\x14' ;
+LEN21 : '\x15' ;
+LEN22 : '\x16' ;
+LEN23 : '\x17' ;
+LEN24 : '\x18' ;
+LEN25 : '\x19' ;
+LEN26 : '\x1A' ;
+LEN27 : '\x1B' ;
 LEN28 : '\x1C' ;
 
 incompFlag : '\x00' ;  /* incompatibility flag */
 compFlag : '\x00' ; /* compatibility flag */
 packetSequence : * ;
-sysID : '\x01' | '\x33' | '\xFF' ; /* system ID  */
-compID : '\x01' | '\x44' | '\xBE' ; /* component ID */
-timeBoot : * * * * ;
+sysID : * ; /* system ID  */
+compID : * ; /* component ID */

@@ -34,14 +34,8 @@ make ${MODE} clean
 make ${MODE}
 popd
 
-pushd ./xbnf_skip_wildcard/bison
-echo [xbnf_skip_wildcard]
-make ${MODE} clean
-make ${MODE}
-popd
-
 # make the hmr grammars
-for DIR in abnf gmr0 gmr1 jnum jstring json bin0 bin1 bin2 bin3 unicode command response json.unicode url usps can can/can.pr J1939 http xml mavlink mavlink_standalone_message mavlink_single_message_repeat mavlink_two_messages_same_length mavlink_three_messages skip_wildcard
+for DIR in abnf gmr0 gmr1 jnum jstring json bin0 bin1 bin2 unicode command response json.unicode url usps can can/can.pr J1939 http xml mavlink mavlink_standalone_message mavlink_single_message_repeatmavlink_three_messages
 do
 		if [ -d ./${DIR}/bison ] ; then
 				pushd ./${DIR}/bison
