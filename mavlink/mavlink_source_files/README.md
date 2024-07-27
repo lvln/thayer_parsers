@@ -9,7 +9,7 @@
 * `cleandata.c` cleans the data, removing MDNS messages; `usage: cleandata inputFile[.pcap] outputFile[.pcap]`
 * `extractbymessageid.c` extracts all messages of a given id; `usage: extractbymessageid inputFile[.pcap] outputFile[.mav] messageID[s]`
 * `extractbymessagenumber.c` extracts messages at a given position in the file; `usage: extractbymessagenumber inputFile[.pcap] outputFile[.mav] messageNumber[s]`
-* `countmessages.c` counts the number of messages in a PCAP file and returns that value; `usage: countmessages inputFile[.pcap]`
+* `countmessages.c` counts the number of messages in a file (default.pcap if not .mav extension) and prints that value; `usage: countmessages inputFile[.pcap]/[.mav]`
 * `countcodes.c` counts the number of unique message ids; `usage: countcodes inputFile[.pcap]`
 * `makemav.c` removes all PCAP wrappers from a file and outputs a file containing only MAVLink messages; `usage: makemav inputFile[.pcap] outputFile[.mav]`
 
