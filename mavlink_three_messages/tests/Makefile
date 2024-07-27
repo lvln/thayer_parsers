@@ -7,7 +7,7 @@ tv:
 		gcc $(CFLAGS) tv.c $(LIBS) -o $@
 
 clean:
-				rm -f *~ tv *.o
+				rm -f *~ tv *.o pass.* fail.*
 
 
 
