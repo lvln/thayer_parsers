@@ -7,7 +7,8 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
 
 ## Directory structure
 
-* **xbnf** contains a working parser written in xbnf for a single SCALED_PRESSURE MAVLink message
+* **xbnf** contains a working parser written in xbnf for a zero or more SCALED_PRESSURE MAVLink messages
+* **bison** contains a working parser written in bison for zero or more SCALED_PRESSURE MAVLink messages
 * **tests** contains a full set of passing and failing tests for the parser; it is recommended to clean this directory after testing since `tv.sh` generates roughtly 10,000 test files
 
 ## Data packet structure
