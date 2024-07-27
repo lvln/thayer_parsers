@@ -9,13 +9,21 @@ popd () {
 }
 
 # Check number of arguments
-if [ $# != 0 ]; then
-		echo "usage: tv.sh"
+if [ $# != 1 ] && [ $# != 0 ]; then
+		echo "usage: mavlinktest.sh [-v]"
+		exit
+fi
+
+# Check arguments are valid
+if [ $# == 1 ] && [ $1 != "-v" ]; then
+		echo "usage: mavlinktest.sh [-v]"
 		exit
 fi
 
 # This is the source directory path
 SRCDIR="../../mavlink/mavlink_source_files"
+
+pushd ../tests/
 
 # Clean the current tests out and make the executables
 make clean > /dev/null
@@ -102,3 +110,49 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make clean > /dev/null
 		popd
 fi
+
+popd
+
+# Run the passing tests
+shopt -s nullglob
+for f in ../tests/pass.*; do
+		# Run the parser on each passing test
+		CMD="./gmr ${f}"
+		{ ${CMD} >& /dev/null ; } >& /dev/null
+		
+		# Get the result from running the parser
+		RESVAL=$?
+		
+		# Print only when tests fail if not in verbose mode
+		if [ ${RESVAL} == 0 ]; then
+				if [ $# == 1 ]; then
+						echo -e "[PASS: ${CMD}]"
+				fi
+		else
+				echo -e "===>>> [FAIL: ${CMD}]"
+		fi
+done
+
+# Run the failing tests
+shopt -s nullglob
+for f in ../tests/fail.*; do
+		# Run the parser on each passing test
+		CMD="./gmr ${f}"
+		{ ${CMD} >& /dev/null ; } >& /dev/null
+		
+		# Get the result from running the parser
+		RESVAL=$?
+		
+		# Print only when tests fail if not in verbose mode
+		if [ ${RESVAL} != 0 ]; then
+				if [ $# == 1 ]; then
+						echo -e "[PASS: ${CMD}]"
+				fi
+		else
+				echo -e "===>>> [FAIL: ${CMD}]"
+		fi
+done
+
+pushd ../tests/
+make clean > /dev/null
+popd
