@@ -2,10 +2,12 @@
 
 Tests for the MAVLink parser which contains tests for all given byte values in all fields of all messages.
 
+Note: It is best to test this parser using the `mavlinktest.sh` script in the `xbnf`/`bison` directories due to the large number of test files produced when running `tv.sh`.
+
 ## Contents:
 
 * `tv.c` auto-generates a range of tests, testing all ranges of byte values for all fields
-* `tv.sh` creates all of the below-described test files
+* `tv.sh` creates all of the below-described test files using `tv.c`
 * `pass.msgID.len` is a test for each possible payload length with random values assigned to wildcard fields and valid values assigned to enumerated fields 
 * `pass.msgID.len.ind.val` is a passing test for a given mesage ID at its maximum payload length (all fields present) where `ind` is the index of the payload field being tested and `val` is the byte value being tested
 * `fail.msgID.len.ind.val` is a failing test for a given mesage ID at its maximum payload length (all fields present) where `ind` is the index of the payload field being tested and `val` is the byte value being tested
