@@ -124,7 +124,7 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		popd
 fi
 
-# Return to the xbnf directory
+# Return to the bison directory
 popd
 
 # Run the passing tests

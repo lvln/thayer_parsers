@@ -17,13 +17,14 @@ fi
 # This is the source directory path
 SRCDIR="../../mavlink/mavlink_source_files"
 
-# Clean the current tests out and make the executables
+# Clean the current tests out and build the executables
 make clean > /dev/null
 make > /dev/null
 
 # Generate tests for SCALED_PRESSURE message
 ./tv 29
 
+# Start a counter for the message number pass files
 let msgNum=1
 
 if [ -e ${SRCDIR}/run1.pcap ]; then
@@ -32,23 +33,20 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make > /dev/null
 		
 		# Extract all SCALED_PRESURE messages and store them in a temporary file
-		CMD="./extractbymessageid run1.pcap temp.mav 29"
-		{ ${CMD} >& /dev/null ; } >& /dev/null
+		./extractbymessageid run1.pcap temp.mav 29 > /dev/null
 
 		# Count messages in the temporary file
-		CMD="./countmessages ./temp.mav"
-
-		# Save the number of messages to a temporary file
-		${CMD} > foo
-		numMess=$(cat foo)
+		./countmessages ./temp.mav > foo
+		NUMMESS=$(cat foo)
 		rm foo > /dev/null
 
 		# Create a test in a unique file for each message
-		for (( i = 1; i <= numMess; i++ )); do
-				CMD="./extractbymessagenumber ./temp.mav pass.${msgNum} ${i}"
-				{ ${CMD} >& /dev/null ; } >& /dev/null
+		for (( i = 1; i <= NUMMESS; i++ )); do
+				./extractbymessagenumber ./temp.mav pass.${msgNum} ${i} > /dev/null
 				let msgNum++
 		done
+
+		# Clean out executables in source files directory
 		make clean > /dev/null
 
 		# Copy over all SCALED_PRESSURE messages from run1.pcap
@@ -62,23 +60,20 @@ if [ -e ${SRCDIR}/run2.pcap ]; then
 		make > /dev/null
 		
 		# Extract all SCALED_PRESURE messages and store them in a temporary file
-		CMD="./extractbymessageid run2.pcap temp.mav 29"
-		{ ${CMD} >& /dev/null ; } >& /dev/null
-
+		./extractbymessageid run2.pcap temp.mav 29 > /dev/null
+		
 		# Count messages in the temporary file
-		CMD="./countmessages ./temp.mav"
-
-		# Save the number of messages to a temporary file
-		${CMD} > foo
-		numMess=$(cat foo)
+		./countmessages ./temp.mav > foo
+		NUMMESS=$(cat foo)
 		rm foo > /dev/null
 
 		# Create a test in a unique file for each message
-		for (( i = 1; i <= numMess; i++ )); do
-				CMD="./extractbymessagenumber ./temp.mav pass.${msgNum} ${i}"
-				{ ${CMD} >& /dev/null ; } >& /dev/null
+		for (( i = 1; i <= NUMMESS; i++ )); do
+				./extractbymessagenumber ./temp.mav pass.${msgNum} ${i} > /dev/null
 				let msgNum++
 		done
+
+		# Clean out executables in source files directory
 		make clean > /dev/null
 
 		# Copy over all SCALED_PRESSURE messages from run2.pcap
@@ -98,12 +93,14 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make clean > /dev/null
 		make > /dev/null
 		
-		# Extract all SCALED_PRESURE messages and store them in a temporary file
-		CMD="./extractbymessagenumber run1.pcap fail.1000 65"
-		{ ${CMD} >& /dev/null ; } >& /dev/null
+		# Extract EVENT message
+		./extractbymessagenumber run1.pcap fail.1000 65 > /dev/null
 
-		# Move message over
+		# Move message over to tests directory
 		mv fail.1000 ../../mavlink_single_message_repeat/tests/ > /dev/null
+
+		# Clean executables in source directory
+		make clean > /dev/null
 		popd
 fi
 
@@ -113,13 +110,13 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make clean > /dev/null
 		make > /dev/null
 		
-		# Extract all SCALED_PRESURE messages and store them in a temporary file
-		CMD="./extractbymessagenumber run1.pcap fail.1001 33 65"
-		{ ${CMD} >& /dev/null ; } >& /dev/null
+		# Extract a single SCALED_PRESSURE message and follow it by an EVENT message
+		./extractbymessagenumber run1.pcap fail.1001 33 65 > /dev/null
 
-		# Move message over to tests directory
+		# Move messages over to tests directory
 		mv fail.1001 ../../mavlink_single_message_repeat/tests/ > /dev/null
 
+		# Clean executables in source directory
 		make clean > /dev/null
 		popd
 fi
