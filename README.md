@@ -113,7 +113,7 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 **command** -- binary command parser  
 **response** -- binary response parser  
 **bugs** -- Hammer implementation issues  
-**mavlink** -- MAVLink parser
+**mavlink** -- MAVLink parser as well as all MAVLink source files
 **mavlink_standalone_message** -- MAVLink single message parser for one message type
 **mavlink_single_message_repeat** -- MAVLink parser for zero or more messages of one message type
 **mavlink_three_messages** -- MAVLink parser for three dirrerent message types
@@ -135,8 +135,6 @@ Each parser directory may contain subdirectories:
 **xbnf** -- the xbnf pre-processor, written in BNF for Bison  
 **scripts** -- useful bash scripts -- copy them to ~/bin and place in your path  
 **RESULTS** -- each time _runall.sh_ is executed, it places a results file here  
-**utils** -- source code for MAVLink library which can be used for reading/writing messages from/to files and generating tests
-**libs** -- compiled MAVLink library
 
 ## Building a new Grammar (e.g. foo)
 
