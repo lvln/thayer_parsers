@@ -137,7 +137,7 @@ typedef struct mavMessArr {
 
 // Data structure to hold array of pcap messages and length.
 typedef struct pcapMessArr {
-	message_t *messages;
+	message_t *pcap;
 	int n;
 } messArr_t;
 
@@ -237,21 +237,14 @@ void printMessage(message_t mess);
  * Inputs: input file
  * Outputs: array of messages; NULL if unsuccessful
  */
-mavMessArr_t *readMavFile(FILE *ifile);
-
-/*
- * Read a file that contains just messagess - no pcap header.
- * Inputs: input file
- * Outputs: array of messages; NULL if unsuccessful
- */
-messArr_t *readFile(FILE *ifile);
+mavMessArr_t *readFileMav(FILE *ifile);
 
 /*
  * Read a pcap file (header and all messages.
  * Inputs: input file
  * Outputs: pcap file data structure; NULL if unsuccessful
  */
-pcap_t *readPcapFile(FILE *ifile);
+pcap_t *readFilePcap(FILE *ifile);
 
 /*
  * Re-inserts the trailing zeros in a MAVLink message to standardise the format for parsing.
@@ -273,13 +266,6 @@ void freeMemMav(mavMessArr_t *messArr);
  * Outputs: none.
  */
 void freeMemPcap(pcap_t *pcapFile);
-
-/*
- * Free memory from payload, messages array and the structure itself for a messages array structure.
- * Inputs: message array structure.
- * Outputs: none.
- */
-void freeMem(messArr_t *messArr);
 
 /*
  * Generats test cases for a given message id.

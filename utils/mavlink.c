@@ -16,22 +16,42 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <vector.h>
 
 /*
- * Checks if a given value is found within an array.
- * Inputs: array of values, value to find
- * Outputs: true if found, false otherwise
+ * Checks if 2 integers have the same value.
+ * Inputs: pointers to integers to compare
+ * Outputs: true if same, false otherwise
  */
-static bool arrContains(arrSize_t arr, int val) {
-	// Variable declarations.
-	int i;
+static bool compareInt(void *vp1, void *vp2) {
+	// Variable declarations
+	int *i, *j;
 
-	for (i = 0; i < arr.n; i++) {
-		if (arr.arr[i] == val)
-			return true;
-	}
+	// Coerce into valid datatypes
+	i = (int *)vp1;
+	j = (int *)vp2;
 
-	return false;
+	// Compare
+	if (*i == *j) return true;
+	else return false;
+}
+
+/*
+ * Checks if 2 8 bit integers have the same value.
+ * Inputs: pointers to integers to compare
+ * Outputs: true if same, false otherwise
+ */
+static bool compareInt8(void *vp1, void *vp2) {
+	// Variable declarations
+	uint8_t *i, *j;
+
+	// Coerce into valid datatypes
+	i = (uint8_t *)vp1;
+	j = (uint8_t *)vp2;
+
+	// Compare
+	if (*i == *j) return true;
+	else return false;
 }
 
 /*
@@ -57,7 +77,7 @@ static uint8_t fillEnumInRange(int msgID, int ind) {
  * Inputs: message to write to file, field index, valid enumerated values, maximum length of message, message ID
  * Outputs: none
  */
-static void gt(messageBody_t mess, int ind, arrSize_t arr, int maxLen, int msgID) {
+static void gt(messageBody_t mess, int ind, vector_t *vec, int maxLen, int msgID) {
 	// Variable declarations.
 	int i;
 	char fname[50];
@@ -67,7 +87,7 @@ static void gt(messageBody_t mess, int ind, arrSize_t arr, int maxLen, int msgID
 		mess.payload[ind] = (uint8_t)i;
 		
 		// If a valid enumrated value, make it a pass test.
-		if (arrContains(arr, i)) {
+		if (vectorContains(vec, compareInt8, (void *)&i)) {
 			// Create file with name pass.msgID.maxLen.field.val where field is the number of the payload field and val is the byte value being tested.
 			sprintf(fname, "./pass.%d.%d.%d.%d", msgID, maxLen, ind, i);
 			
@@ -103,487 +123,405 @@ static void gt(messageBody_t mess, int ind, arrSize_t arr, int maxLen, int msgID
 
 /*
  * Generates passing and failing tests for enumerated fields
- * Inputs: message ID, field index, message
+ * Inputs: message ID, field index, message, maximum length of the message
  * Outputs: none
  */
-static void generateEnumTests(int msgID, int ind, messageBody_t mess) {
+static void generateEnumTests(int msgID, int ind, messageBody_t mess, int maxLen) {
   // Variable declarations.
-	arrSize_t arr;
+	vector_t *vec;
 	int i;
+	uint8_t *ins;
 
+	// Initialise a vector.
+	if ((vec = vectorInit()) == NULL) {
+		fprintf(stderr, "Error initializing vector.\n");
+		return;
+	}
+	
 	// Fill in the valid enumerated values for each message type and field.
 	switch(msgID) {
 	case HEARTBEAT:
 		if (ind == 4) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*45)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 45;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, HEARTBEAT_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 45; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 5) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*21)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 21;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, HEARTBEAT_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 21; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 7) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*9)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 9;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, HEARTBEAT_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 9; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
+
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+		
 		break;
 	case PARAM_VALUE:
 		if (ind == 24) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*10)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 10;
-
-			// Fill array.
-			for (i = 1; i <= arr.n; i++)
-				arr.arr[i - 1] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, PARAM_VALUE_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 1; i <= 10; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
+		
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+		
 		break;
 	case GPS_RAW_INT:
 		if (ind == 28) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*9)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 9;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, GPS_RAW_INT_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 9; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
+		
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+
 		break;
 	case MISSION_CURRENT:
 		if (ind == 4) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*6)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 6;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, MISSION_CURRENT_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 6; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 5) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*3)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 3;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, MISSION_CURRENT_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 3; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
+		
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+
 		break;
 	case COMMAND_ACK:
 		if (ind == 2) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*10)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 10;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, COMMAND_ACK_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 10; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
+
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+
 		break;
 	case POSITION_TARGET_LOCAL_NED:
 		if (ind == 50) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*4)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 4;
-
-			// Fill array.
-			arr.arr[0] = 0x01;
-			arr.arr[1] = 0x07;
-			arr.arr[2] = 0x08;
-			arr.arr[3] = 0x09;
-
-			// Generate the test files.
-			gt(mess, ind, arr, POSITION_TARGET_LOCAL_NED_LEN, msgID);
+			// Fill vector with enumerations
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x01;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
 			
-			free(arr.arr);
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x07;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x08;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x09;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
 		}
+
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+
 		break;
 	case POSITION_TARGET_GLOBAL_INT:
 		if (ind == 50) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*6)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 6;
+			// Fill vector with enumerations
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x00;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
 
-			// Fill array.
-			arr.arr[0] = 0x00;
-			arr.arr[1] = 0x03;
-			arr.arr[2] = 0x0A;
-			arr.arr[3] = 0x05;
-			arr.arr[4] = 0x06;
-			arr.arr[5] = 0x0B;
-
-			// Generate the test files.
-			gt(mess, ind, arr, POSITION_TARGET_GLOBAL_INT_LEN, msgID);
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x03;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
 			
-			free(arr.arr);
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x0A;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
+
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x05;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
+
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x06;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
+			
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x0B;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
 		}
+
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+
 		break;
 	case BATTERY_STATUS:
 		if (ind == 33) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*5)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 5;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, BATTERY_STATUS_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 5; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 34) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*5)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 5;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, BATTERY_STATUS_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 5; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 40) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*8)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 8;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, BATTERY_STATUS_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 8; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 49) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*3)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 3;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, BATTERY_STATUS_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 3; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
+
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+
 		break;
 	case EXTENDED_SYS_STATE:
 		if (ind == 0) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*5)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 5;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, EXTENDED_SYS_STATE_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 5; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 1) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*5)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 5;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, EXTENDED_SYS_STATE_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 5; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
+
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+
 		break;
 	case STATUSTEXT:
 		if (ind == 0) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*8)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 8;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, STATUSTEXT_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 8; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
+		
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+
 		break;
 	case UTM_GLOBAL_POSITION:
 		if (ind == 68) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*5)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 5;
+			// Fill vector with enumerations
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x01;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
 
-			// Fill array.
-			arr.arr[0] = 0x01;
-			arr.arr[1] = 0x02;
-			arr.arr[2] = 0x03;
-			arr.arr[3] = 0x10;
-			arr.arr[4] = 0x20;
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x02;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
 
-			// Generate the test files.
-			gt(mess, ind, arr, UTM_GLOBAL_POSITION_LEN, msgID);
-			
-			free(arr.arr);
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x03;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
+
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x10;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
+
+			ins = (uint8_t *)malloc(sizeof(uint8_t));
+			*ins = 0x20;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
 		}
+
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+
 		break;
 	case OPEN_DRONE_ID_LOCATION:
 		if (ind == 52) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*5)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 5;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, OPEN_DRONE_ID_LOCATION_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 5; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 53) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*2)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 2;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, OPEN_DRONE_ID_LOCATION_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 2; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 54) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*13)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 13;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, OPEN_DRONE_ID_LOCATION_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 13; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 55) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*7)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 7;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, OPEN_DRONE_ID_LOCATION_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 7; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 56) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*7)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 7;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, OPEN_DRONE_ID_LOCATION_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 7; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 57) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*5)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 5;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, OPEN_DRONE_ID_LOCATION_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 5; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 58) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*15)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 15;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, OPEN_DRONE_ID_LOCATION_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 15; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
+
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+
 		break;
 	case OPEN_DRONE_ID_SYSTEM:
 		if (ind == 50) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*3)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 3;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, OPEN_DRONE_ID_SYSTEM_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 3; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
 		else if (ind == 51) {
-			// Allocate memory for array.
-			if ((arr.arr = (int *)malloc(sizeof(int)*2)) == NULL)
-				printf("Problem with memory allocation.\n");
-		 	
-			arr.n = 2;
-
-			// Fill array.
-			for (i = 0; i < arr.n; i++)
-				arr.arr[i] = i;
-
-			// Generate the test files.
-			gt(mess, ind, arr, OPEN_DRONE_ID_SYSTEM_LEN, msgID);
-			
-			free(arr.arr);
+			// Fill vector with enumerations
+			for (i = 0; i < 2; i++) {
+				ins = (uint8_t *)malloc(sizeof(uint8_t));
+				*ins = i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
 		}
+
+		// Generate the test files.
+		gt(mess, ind, vec, maxLen, msgID);
+
 		break;
 	default:
-		return;
+		break;
 	}
-	
+
+	// Clean up memory.
+	vectorApply(vec, free);
+	vectorFree(vec);
 }
 
 /*
@@ -975,7 +913,7 @@ void untruncate(message_t *mess) {
  * Inputs: input file
  * Outputs: array of messages; NULL if unsuccessful
  */
-mavMessArr_t *readMavFile(FILE *ifile) {
+mavMessArr_t *readFileMav(FILE *ifile) {
 	// Variable declarations.
 	mavMessArr_t *messArr;
 	int i, payload, numMess, bytesRead;
@@ -1032,91 +970,11 @@ mavMessArr_t *readMavFile(FILE *ifile) {
 }
 
 /*
- * Read a file that contains just messagess - no pcap header.
- * Inputs: input file
- * Outputs: array of messages; NULL if unsuccessful
- */
-messArr_t *readFile(FILE *ifile) {
-	// variable declarations.
-	messArr_t *messArr;
-	int i, payload, numMess, bytesRead;
-	message_t mess;
-	uint8_t buf;
-
-	if ((messArr = (messArr_t *)malloc(sizeof(messArr_t))) == NULL)
-		return NULL;
-
-	i = 0;
-	payload = 0;
-	numMess = 0;
-	
-	// Read all of the successive bytes from the file.
-	while ((bytesRead = fread(&buf, sizeof(buf), 1, ifile)) > 0) {
-		if (i < 4) mess.header.timeS[i] = buf;
-		else if (i < 8) mess.header.timeUNS[i - 4] = buf;
-		else if (i < 12) mess.header.capturedPacketLength[i - 8] = buf;
-		else if (i < 16) mess.header.originalPacketLength[i - 12] = buf;
-		else if (i < 20) mess.header.messageFam[i - 16] = buf;
-		else if (i == 20) mess.header.iphl = buf;
-		else if (i == 21) mess.header.dsf = buf;
-		else if (i < 24) mess.header.totalLength[i - 22] = buf;
-		else if (i < 26) mess.header.id[i - 24] = buf;
-		else if (i < 28) mess.header.ffOffset[i - 26] = buf;
-		else if (i == 28) mess.header.ttl = buf;
-		else if (i == 29) mess.header.protocol = buf;
-		else if (i < 32) mess.header.headerChecksum[i - 30] = buf;
-		else if (i < 36) mess.header.sourceAddr[i - 32] = buf;
-		else if (i < 40) mess.header.destAddr[i - 36] = buf;
-		else if (i < 42) mess.header.sourcePort[i - 40] = buf;
-		else if (i < 44) mess.header.destPort[i - 42] = buf;
-		else if (i < 46) mess.header.length[i - 44] = buf;
-		else if (i < 48) mess.header.checkSum[i - 46] = buf;
-		else if (i == 48) mess.body.mavCode = buf;
-		else if (i == 49) {
-			mess.body.payloadLen = buf;
-
-			payload = (int)buf;
-			
-			if ((mess.body.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL)
-				printf("Memory allocation failed.\n");
-		}
-		else if (i == 50) mess.body.incompFlag = buf;
-		else if (i == 51) mess.body.compFlag = buf;
-		else if (i == 52) mess.body.packetSeq = buf;
-		else if (i == 53) mess.body.systemID = buf;
-		else if (i == 54) mess.body.compID = buf;
-		else if (i < 58) mess.body.messageID[i - 55] = buf;		
-		else if (i < 58 + payload) mess.body.payload[i - 58] = buf;
-		else mess.body.crc[i - 58 - payload] = buf;		
-		
-		i++;
-
-		// If the end of a message has been reached.
-		if (i == (60 + payload) && payload != 0) {
-			if (numMess == 0) 
-				messArr->messages = (message_t *)malloc(sizeof(message_t));
-			else 
-				messArr->messages = (message_t *)realloc(messArr->messages, sizeof(message_t)*(numMess + 1));
-
-			messArr->messages[numMess] = mess;
-					
-			// Reset all variables
-			i = 0;
-			payload = 0;
-			numMess++;
-		}
-	}
-	messArr->n = numMess;
-	
-	return messArr;
-}
-
-/*
  * Read a pcap file (header and all messages.
  * Inputs: input file
  * Outputs: pcap file data structure; NULL if unsuccessful
  */
-pcap_t *readPcapFile(FILE *ifile) {
+pcap_t *readFilePcap(FILE *ifile) {
 	// variable declarations.
 	pcap_t *pcapFile;
 	int i, payload, numMess, bytesRead;
@@ -1239,25 +1097,6 @@ void freeMemPcap(pcap_t *pcapFile) {
 }
 
 /*
- * Free memory from payload, messages array and the structure itself for a messages array structure.
- * Inputs: message array structure.
- * Outputs: none.
- */
-void freeMem(messArr_t *messArr) {
-	// Variable declarations.
-	int i;
-
-	for (i = 0; i < messArr->n; i++)
-		free(messArr->messages[i].body.payload);
-
-	free(messArr->messages);
-
-	free(messArr);
-
-}
-
-
-/*
  * Generats test cases for a given message id.
  * Inputs: message id
  * Outputs: none
@@ -1265,278 +1104,254 @@ void freeMem(messArr_t *messArr) {
 void generateTests(int msgID) {
 	// Variable declarations.
 	messageBody_t mess;
-	int i, j, maxLen;
+	int i, j, maxLen, *ins;
 	uint8_t randomByte;
 	char fname[50];
 	FILE *fp;
-	arrSize_t enumArr;
+	vector_t *vec;
 
 	// Seed random number generator.
 	srand(time(NULL));
+
+	// Create vector to store enumerated indices.
+	if ((vec = vectorInit()) == NULL) {
+		fprintf(stderr, "Error allocating vector.\n");
+		return;
+	}
 	
 	// Fill in which fields are enumerated for each message type.
 	switch(msgID) {
 	case HEARTBEAT:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*3)) == NULL)
-			printf("Error with memory allocation.\n");
+		ins = (int *)malloc(sizeof(int));
+		*ins = 4;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
-		enumArr.arr[0] = 4;
-		enumArr.arr[1] = 5;
-		enumArr.arr[2] = 7;
-
-		enumArr.n = 3;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 5;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
+		
+		ins = (int *)malloc(sizeof(int));
+		*ins = 7;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
 		maxLen = HEARTBEAT_LEN;
 		break;
 	case SYS_STATUS:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = SYS_STATUS_LEN;
 		break;
 	case PING:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = PING_LEN;
 		break;
 	case LINK_NODE_STATUS:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = LINK_NODE_STATUS_LEN;
 		break;
 	case PARAM_VALUE:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*1)) == NULL)
-			printf("Error with memory allocation.\n");
-
-		enumArr.arr[0] = 24;
-
-		enumArr.n = 1;
-
+		ins = (int *)malloc(sizeof(int));
+		*ins = 24;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
+		
 		maxLen = PARAM_VALUE_LEN;
 		break;
 	case GPS_RAW_INT:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*1)) == NULL)
-			printf("Error with memory allocation.\n");
-
-		enumArr.arr[0] = 28;
-
-		enumArr.n = 1;
-
+		ins = (int *)malloc(sizeof(int));
+		*ins = 28;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
+		
 		maxLen = GPS_RAW_INT_LEN;
 		break;
 	case SCALED_PRESSURE:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = SCALED_PRESSURE_LEN;
 		break;
 	case ATTITUDE:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = ATTITUDE_LEN;
 		break;
 	case ATTITUDE_QUATERNION:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = ATTITUDE_QUATERNION_LEN;
 		break;
 	case LOCAL_POSITION_NED:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = LOCAL_POSITION_NED_LEN;
 		break;
 	case GLOBAL_POSITION_INT:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = GLOBAL_POSITION_INT_LEN;
 		break;
 	case MISSION_CURRENT:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*2)) == NULL)
-			printf("Error with memory allocation.\n");
+		ins = (int *)malloc(sizeof(int));
+		*ins = 4;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
-		enumArr.arr[0] = 4;
-		enumArr.arr[1] = 5;
-
-		enumArr.n = 2;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 5;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
 		maxLen = MISSION_CURRENT_LEN;
 		break;
 	case MISSION_ITEM_REACHED:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = MISSION_ITEM_REACHED_LEN;
 		break;
 	case RC_CHANNELS:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = RC_CHANNELS_LEN;;
 		break;
 	case VFR_HUD:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = VFR_HUD_LEN;
 		break;
 	case COMMAND_ACK:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*1)) == NULL)
-			printf("Error with memory allocation.\n");
-
-		enumArr.arr[0] = 2;
-
-		enumArr.n = 1;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 2;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
 		maxLen = COMMAND_ACK_LEN;
 		break;
 	case ATTITUDE_TARGET:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = ATTITUDE_TARGET_LEN;
 		break;
 	case POSITION_TARGET_LOCAL_NED:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*1)) == NULL)
-			printf("Error with memory allocation.\n");
-
-		enumArr.arr[0] = 50;
-
-		enumArr.n = 1;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 50;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
 		maxLen = POSITION_TARGET_LOCAL_NED_LEN;
 		break;
 	case POSITION_TARGET_GLOBAL_INT:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*1)) == NULL)
-			printf("Error with memory allocation.\n");
-
-		enumArr.arr[0] = 50;
-
-		enumArr.n = 1;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 50;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
 		maxLen = POSITION_TARGET_GLOBAL_INT_LEN;
 		break;
 	case RADIO_STATUS:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = RADIO_STATUS_LEN;
 		break;
 	case ALTITUDE:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = ALTITUDE_LEN;
 		break;
 	case BATTERY_STATUS:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*4)) == NULL)
-			printf("Error with memory allocation.\n");
+		ins = (int *)malloc(sizeof(int));
+		*ins = 33;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
-		enumArr.arr[0] = 33;
-		enumArr.arr[1] = 34;
-		enumArr.arr[2] = 40;
-		enumArr.arr[3] = 49;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 34;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
-		enumArr.n = 4;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 40;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
+
+		ins = (int *)malloc(sizeof(int));
+		*ins = 49;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
 		maxLen = BATTERY_STATUS_LEN;
 		break;
 	case ESTIMATOR_STATUS:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = ESTIMATOR_STATUS_LEN;
 		break;
 	case VIBRATION:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = VIBRATION_LEN;
 		break;
 	case HOME_POSITION:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = HOME_POSITION_LEN;
 		break;
 	case EXTENDED_SYS_STATE:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*2)) == NULL)
-			printf("Error with memory allocation.\n");
+		ins = (int *)malloc(sizeof(int));
+		*ins = 0;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
-		enumArr.arr[0] = 0;
-		enumArr.arr[1] = 1;
-
-		enumArr.n = 2;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 1;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
 		maxLen = EXTENDED_SYS_STATE_LEN;
 		break;
 	case STATUSTEXT:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*1)) == NULL)
-			printf("Error with memory allocation.\n");
-
-		enumArr.arr[0] = 0;
-
-		enumArr.n = 1;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 0;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
 		maxLen = STATUSTEXT_LEN;
 		break;
 	case UTM_GLOBAL_POSITION:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*1)) == NULL)
-			printf("Error with memory allocation.\n");
-
-		enumArr.arr[0] = 68;
-
-		enumArr.n = 1;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 68;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
 		maxLen = UTM_GLOBAL_POSITION_LEN;
 		break;
 	case TIME_ESTIMATE_TO_TARGET:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = TIME_ESTIMATE_TO_TARGET_LEN;
 		break;
 	case EVENT:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = EVENT_LEN;
 		break;
 	case CURRENT_EVENT_SEQUENCE:
-		enumArr.arr = NULL;
-		enumArr.n = 0;
-
 		maxLen = CURRENT_EVENT_SEQUENCE_LEN;
 		break;
 	case OPEN_DRONE_ID_LOCATION:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*7)) == NULL)
-			printf("Error with memory allocation.\n");
+		ins = (int *)malloc(sizeof(int));
+		*ins = 52;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
-		enumArr.arr[0] = 52;
-		enumArr.arr[1] = 53;
-		enumArr.arr[2] = 54;
-		enumArr.arr[3] = 55;
-		enumArr.arr[4] = 56;
-		enumArr.arr[5] = 57;
-		enumArr.arr[6] = 58;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 53;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
-		enumArr.n = 7;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 54;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
+
+		ins = (int *)malloc(sizeof(int));
+		*ins = 55;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
+
+		ins = (int *)malloc(sizeof(int));
+		*ins = 56;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
+
+		ins = (int *)malloc(sizeof(int));
+		*ins = 57;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
+
+		ins = (int *)malloc(sizeof(int));
+		*ins = 58;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
 		maxLen = OPEN_DRONE_ID_LOCATION_LEN;
 		break;
 	case OPEN_DRONE_ID_SYSTEM:
-		if((enumArr.arr = (int *)malloc(sizeof(int)*2)) == NULL)
-			printf("Error with memory allocation.\n");
+		ins = (int *)malloc(sizeof(int));
+		*ins = 50;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
-		enumArr.arr[0] = 50;
-		enumArr.arr[1] = 51;
-
-		enumArr.n = 2;
+		ins = (int *)malloc(sizeof(int));
+		*ins = 51;
+		if (vectorInsertBack(vec, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
 
 		maxLen = OPEN_DRONE_ID_SYSTEM_LEN;
 		break;
@@ -1569,7 +1384,7 @@ void generateTests(int msgID) {
 			randomByte = (uint8_t)(rand() % 256);
 
 			// Differentiate between ennumerated and non-ennumerated fields.
-			if (!(arrContains(enumArr, j))) mess.payload[j] = randomByte;
+			if (!(vectorContains(vec, compareInt, (void *)&j))) mess.payload[j] = randomByte;
 			else mess.payload[j] = fillEnumInRange(msgID, j);
 		}
 
@@ -1627,7 +1442,7 @@ void generateTests(int msgID) {
 		mess.compID = (uint8_t)(rand() % 256);
 
 		// Deal with non-ennumerated fields.
-		if (!(arrContains(enumArr, i))) {
+		if (!(vectorContains(vec, compareInt, (void *)&i))) {
 			// Generate tests for each byte value for the given field.
 			for (j = 0; j <= 255; j++) {
 				mess.payload[i] = (uint8_t)j;
@@ -1653,7 +1468,7 @@ void generateTests(int msgID) {
 		// Deal with enumerated fields producing passing and failing tests.
 		else {
 			// Generate passing and failing tests for enumerated fields.
-			generateEnumTests(msgID, i, mess);
+			generateEnumTests(msgID, i, mess, maxLen);
 
 			// Reset the payload of the field to be valid.
 			mess.payload[i] = fillEnumInRange(msgID, i);
@@ -1849,7 +1664,7 @@ void generateTests(int msgID) {
 	mess.crc[1] = (uint8_t)(rand() % 256);;
 	
 	free(mess.payload);
-	
-	if (enumArr.arr != NULL)
-		free(enumArr.arr);
+
+	vectorApply(vec, free);
+	vectorFree(vec);
 }
