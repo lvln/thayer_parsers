@@ -21,7 +21,7 @@ Note: The statistical analysis portion is still a work-in-progress and has been 
 ## Statistical analysis
 
 * Break-down of number of occurances of each message type:
-  ![Number of occurances](../.images/nooccurances.jpg){:style="width:300px"}
+  <img src="../.images/nooccurances.jpg" alt="Number of occurances" width="300">
 * Break-down of the number of occurances of each message length (in bytes):
   ![Message length analysis](../.images/len.jpg)
 * Bar graph of the number of occurances of each message type:
