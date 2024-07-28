@@ -45,7 +45,7 @@ If using `mavlinktest.sh` to test, in `xbnf` or `bison` directory:
 
 * `make clean`
 * `make`
-* `mavlinktest.sh [-v]` to run full suite of tests described in `test` directory
+* `mavlinktest.sh [-v]` to run full suite of tests described in `tests` directory
 
 If building tests and testing manually:
 
