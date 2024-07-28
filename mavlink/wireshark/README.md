@@ -20,16 +20,16 @@ Note: The statistical analysis portion is still a work-in-progress and has been 
 
 ## Statistical analysis
 
-* Break-down of number of occurances of each message type:<br>
-  <img src="../.images/nooccurances.jpg" alt="Number of occurances" width="300">
+* Break-down of number of occurances of each message type:
+  <br><img src="../.images/nooccurances.jpg" alt="Number of occurances" width="350">
 * Break-down of the number of occurances of each message length (in bytes):
-  ![Message length analysis](../.images/len.jpg)
+  <br><img src="../.images/len.jpg" alt="Message length" width="350">
 * Bar graph of the number of occurances of each message type:
-  ![Number of occurances pre message type](../.images/bar.jpg)
+  <br><img src="../.images/bar.jpg" alt="Bar chart" width="350">
 * Analysis on each field part of the MAVLink header:
-  ![Header field analysis](../.images/header.jpg)
+  <br><img src="../.images/header.jpg" alt="Header" width="350">
 * For each message type, provides an analysis of each field of the message:
-  ![Message analysis (GPS_RAW_INT)](../.images/message.jpg)
+  <br><img src="../.images/message.jpg" alt="Message" width="350">
   
   
   
