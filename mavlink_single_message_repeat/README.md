@@ -41,6 +41,10 @@ All data packets are followed by a 2 byte message cyclic redundancy check which 
 
 ## Usage
 
+In the `../mavlink/utils` directory:
+* `make clean`
+* `make`
+
 If using `mavlinktest.sh` to test, in `xbnf` or `bison` directory:
 * `make clean`
 * `make`

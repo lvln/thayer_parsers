@@ -1,5 +1,5 @@
 # Tests for MAVLink parser
-
+1;95;0c
 Tests for the MAVLink parser which contains tests for all given byte values in all fields of all messages.
 
 Note: It is best to test this parser using the `mavlinktest.sh` script in the `xbnf`/`bison` directories due to the large number of test files produced when running `tv.sh`.
@@ -24,6 +24,11 @@ Note: It is best to test this parser using the `mavlinktest.sh` script in the `x
 
 ## Usage:
 
+In the `../../mavlink/utils` directory:
+* `make clean`
+* `make`
+
+Back in the `tests` directory:
 * `make clean`
 * `make`
 * `./tv.sh` generates roughly 10,000 passing and failing tests for each message ID present in the parser
