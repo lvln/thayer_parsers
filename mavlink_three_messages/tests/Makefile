@@ -1,4 +1,4 @@
-CFLAGS=-Wall -pedantic -std=c11 -I../../utils -L../../lib
+CFLAGS=-Wall -pedantic -std=c11 -I../../mavlink/utils -L../../mavlink/lib
 LIBS=-lutils
 
 all: tv

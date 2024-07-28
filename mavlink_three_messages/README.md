@@ -65,19 +65,21 @@ All data packets are followed by a 2 byte message cyclic redundancy check which 
 
 ## Usage
 
-If using `mavlinktest.sh` to test, in `xbnf` or `bison` directory:
+In the `../mavlink/utils` directory:
+* `make clean`
+* `make`
 
+If using `mavlinktest.sh` to test, in `xbnf` or `bison` directory:
 * `make clean`
 * `make`
 * `mavlinktest.sh [-v]` to run full suite of tests described in `tests` directory
 
 If building tests and testing manually:
-
 * In `tests` directory:
   * `make clean` to remove old tests and executables
   * `make` to build executables
   * `tv.sh` to generate tests
-* In ` xbnf` or `bison` directory:
+* In `xbnf` or `bison` directory:
   * `make clean`
   * `make`
   * `make run` to run all tests
