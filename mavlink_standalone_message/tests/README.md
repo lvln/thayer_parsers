@@ -21,6 +21,11 @@ Note: It is best to test this parser using the `mavlinktest.sh` script in the `x
 
 ## Usage:
 
+In the `../../mavlink/utils` directory:
 * `make clean`
 * `make`
-* `./tv.sh` generates roughtly 10,000 passing and failing tests for each message id present in the parser
+
+Back in the `tests` directory:
+* `make clean`
+* `make`
+* `./tv.sh` generates roughly 10,000 passing and failing tests for each message ID present in the parser
