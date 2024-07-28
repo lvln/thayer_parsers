@@ -1,9 +1,9 @@
 CFLAGS=-Wall -pedantic -std=c11 -I../../utils -L../../lib
-LIBS=-lutils -lcurl
+LIBS=-lutils
 
 all: tv
 
-tv:
+tv: tv.c
 		gcc $(CFLAGS) tv.c $(LIBS) -o $@
 
 clean:
