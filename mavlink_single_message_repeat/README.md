@@ -44,7 +44,7 @@ All data packets are followed by a 2 byte message cyclic redundancy check which 
 If using `mavlinktest.sh` to test, in `xbnf` or `bison` directory:
 * `make clean`
 * `make`
-* `mavlinktest.sh [-v]` to run full suite of tests described in `test` directory
+* `mavlinktest.sh [-v]` to run full suite of tests described in `tests` directory
 
 If building tests and testing manually:
 * In `tests` directory:
