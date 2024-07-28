@@ -1,5 +1,5 @@
 CFLAGS=-Wall -pedantic -std=c11 -I../../utils -L../../lib
-LIBS=-lutils -lcurl
+LIBS=-lutils
 
 all: tv
 

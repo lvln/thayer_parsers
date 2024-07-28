@@ -6,12 +6,15 @@ This directory contains the complete definition for the MAVLink grammar. Please 
 
 All data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
 
+The usage of the `mavlinktest.sh` script is: `mavlinktest.sh [-v]` where `-v` indicates verbose output and the result of both passing and failing tests will be printed; non-verbose output only prints the results of failing tests.
+
 ## Directory structure
 
 * **xbnf** contains a working parser written in xbnf for the MAVLink grammar
 * **bison** contains a working parser written in bison the MAVLink grammar
 * **tests** contains a full set of tests for the MAVLink parser
 * **mavlink_source_files** contains preprocessors that format the data correctly as well as the PCAP files with data from drone flights
+* **wireshark** contains the Wireshark plugin that dissects MAVLink messages as well as provides some level of statistical analysis on all MAVLink messages in a capture
 
 ## Data packet structure
 MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.

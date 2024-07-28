@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
 	}
 
 	// Read the file contents into data structure.
-	pcapFile = readPcapFile(fp);
+	pcapFile = readFilePcap(fp);
 
 	fclose(fp);
 

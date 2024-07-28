@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
 	}
 	
 	// Read in pcap file
-	pcap = readPcapFile(fp);
+	pcap = readFilePcap(fp);
 
 	fclose(fp);
 

@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
 	// If reading in a mavlink file.
 	if (strcmp(&(argv[1][strlen(argv[1]) - 4]), ".mav") == 0) {
 		// Read into data structure.
-		mav = readMavFile(fp);
+		mav = readFileMav(fp);
 
 		num = mav->n;
 		freeMemMav(mav);
@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
 	// If reading in a pcap file (default).
 	else {
 		// Read in the data strucutre.
-		pcap = readPcapFile(fp);
+		pcap = readFilePcap(fp);
 		
 		num = pcap->n;
 		freeMemPcap(pcap);

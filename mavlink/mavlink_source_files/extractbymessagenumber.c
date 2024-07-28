@@ -77,11 +77,11 @@ int main(int argc, char **argv) {
 	// Deal with the case where a .mav file is being read
 	if (strcmp(&argv[1][strlen(argv[1]) - 4] , ".mav") == 0) {
 		// Read in file.
-		mav = readMavFile(fp);
+		mav = readFileMav(fp);
 	}
 	else {
 		// Read in pcap file
-		pcap = readPcapFile(fp);
+		pcap = readFilePcap(fp);
 	}
 
 	fclose(fp);
