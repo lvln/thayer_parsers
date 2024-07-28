@@ -51,7 +51,7 @@ If building tests and testing manually:
   * `make clean` to remove old tests and executables
   * `make` to build executables
   * `tv.sh` to generate tests
-* In ` xbnf` or `bison` directory:
+* In `xbnf` or `bison` directory:
   * `make clean`
   * `make`
   * `make run` to run all tests
