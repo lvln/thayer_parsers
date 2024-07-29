@@ -69,6 +69,10 @@ In the `utils` directory:
 * `make clean`
 * `make`
 
+In the `../xbnf/bison` directory:
+* `make clean`
+* `make`
+
 If using `mavlinktest.sh` to test, in `xbnf` or `bison` directory:
 * `make clean`
 * `make`
