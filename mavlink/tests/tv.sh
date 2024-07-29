@@ -35,11 +35,15 @@ done
 # Create a test file for full flights with the drone with the drone.
 if [ -e ${SRCDIR}/run1.pcap ]; then
 		pushd ${SRCDIR}
+		make clean > /dev/null
 		make > /dev/null
-		CMD="./makemav ./run1.pcap ./pass.10000"
-		{ ${CMD} >& /dev/null ; } >& /dev/null
-		CMD="mv ./pass.10000 ."
-		{ ${CMD} >& /dev/null ; } >& /dev/null
+
+		# Remove PCAP headers and extract only the MAVLink message portion
+		./makemav ./run1.pcap ./pass.10000 > /dev/null
+
+		# Move to tests directory
+		mv ./pass.10000 ../tests > /dev/null
+
 		make clean > /dev/null
 		popd
 fi
@@ -47,11 +51,15 @@ fi
 # Create a test file for full flights with the drone with the drone.
 if [ -e ${SRCDIR}/run2.pcap ]; then
 		pushd ${SRCDIR}
+		make clean > /dev/null
 		make > /dev/null
-		CMD="./makemav ./run2.pcap ./pass.10001"
-		{ ${CMD} >& /dev/null ; } >& /dev/null
-		CMD="mv ./pass.10001 ."
-		{ ${CMD} >& /dev/null ; } >& /dev/null
+
+		# Remove PCAP headers and extract only the MAVLink message portion
+		./makemav ./run2.pcap ./pass.10001 > /dev/null
+
+		# Move to tests directory
+		mv ./pass.10001 ../tests > /dev/null
+		
 		make clean > /dev/null
 		popd
 fi
@@ -61,20 +69,20 @@ let msgNum=1
 
 if [ -e ${SRCDIR}/run1.pcap ]; then
 		pushd ${SRCDIR}
+		make clean > /dev/null
 		make > /dev/null
-		CMD="./countmessages ./run1.pcap"
-		
-		# Save the number of messages to a temporary file
-		${CMD} > foo
+
+		# Count messages in run1 file
+		./countmessages ./run1.pcap > foo
 		numMess=$(cat foo)
 		rm foo > /dev/null
 
 		# Create a test in a unique file for each message
 		for (( i = 1; i <= numMess; i++ )); do
-				CMD="./extractbymessagenumber ./run1.pcap pass.${msgNum} ${i}"
-				{ ${CMD} >& /dev/null ; } >& /dev/null
+				./extractbymessagenumber ./run1.pcap pass.${msgNum} ${i} > /dev/null
 				let msgNum++
 		done
+		
 		make clean > /dev/null
 		popd
 fi
@@ -82,26 +90,24 @@ fi
 if [ -e ${SRCDIR}/run2.pcap ]; then
 		pushd ${SRCDIR}
 		make > /dev/null
-		CMD="./countmessages ./run2.pcap"
 
-		# Save the number of messages to a temporary file
-		${CMD} > foo
+		# Count messages in run2 file
+		./countmessages ./run2.pcap > foo
 		numMess=$(cat foo)
 		rm foo > /dev/null
 
 		# Create a test in a unique file for each message
 		for (( i = 1; i <= numMess; i++ )); do
-				CMD="./extractbymessagenumber ./run2.pcap pass.${msgNum} ${i}"
-				{ ${CMD} >& /dev/null ; } >& /dev/null
+				./extractbymessagenumber ./run2.pcap pass.${msgNum} ${i} > /dev/null
 				let msgNum++
 		done
+		
 		make clean > /dev/null
 		popd
 fi
 
 # More all of the tests to the tests directory
-CMD="mv ${SRCDIR}/pass.* ."
-{ ${CMD} >& /dev/null ; } >& /dev/null
+mv ${SRCDIR}/pass.* . > /dev/null
 
 # Create an empty file
 touch pass.10002 

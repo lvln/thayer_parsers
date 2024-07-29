@@ -21,6 +21,12 @@ Note: It is best to test this parser using the `mavlinktest.sh` script in the `x
 
 ## Usage:
 
-* `make clean` to remove all old test files as well as executables
-* `make` too build executable `tv` from `tv.c`
-* `./tv.sh` generates passing and failing tests for each message id present in the parser
+
+In the `../../mavlink/utils` directory:
+* `make clean`
+* `make`
+
+Back in the `tests` directory:
+* `make clean`
+* `make`
+* `./tv.sh` to generate all test cases

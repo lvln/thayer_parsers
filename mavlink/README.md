@@ -15,8 +15,11 @@ The usage of the `mavlinktest.sh` script is: `mavlinktest.sh [-v]` where `-v` in
 * **tests** contains a full set of tests for the MAVLink parser
 * **mavlink_source_files** contains preprocessors that format the data correctly as well as the PCAP files with data from drone flights
 * **wireshark** contains the Wireshark plugin that dissects MAVLink messages as well as provides some level of statistical analysis on all MAVLink messages in a capture
+* **utils** contains the MAVLink data processing library
+* **lib** contains the compiled libraries
 
 ## Data packet structure
+
 MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.
 The format of MAVLink messages is defined [here](https://mavlink.io/en/guide/serialization.html) with the payload of each individual message defined in the `common.xml` file and can be found [here](https://mavlink.io/en/messages/common.html).
 MAVLink 2.0 truncates empty (zero-filled bytes) at the end of the payload; it will never truncate the first byte of the payload regardless of if it is empty or not. The grammar is thus defined such that it allows for each payload to be any length.
@@ -59,3 +62,24 @@ MAVLink 2.0 truncates empty (zero-filled bytes) at the end of the payload; it wi
   ![ATTITUDE](./.images/AttitudeImage.jpg)
   
 All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum.
+
+## Usage
+
+In the `utils` directory:
+* `make clean`
+* `make`
+
+If using `mavlinktest.sh` to test, in `xbnf` or `bison` directory:
+* `make clean`
+* `make`
+* `mavlinktest.sh [-v]` to run full suite of tests described in `tests` directory
+
+If building tests and testing manually (caution: this generates a large number of test files):
+* In `tests` directory:
+  * `make clean` to remove old tests and executables
+  * `make` to build executables
+  * `tv.sh` to generate tests
+* In `xbnf` or `bison` directory:
+  * `make clean`
+  * `make`
+  * `make run` to run all tests

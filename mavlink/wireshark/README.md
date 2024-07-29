@@ -13,10 +13,10 @@ Note: The statistical analysis portion is still a work-in-progress and has been 
 
 ## Usage
 
-* Update the `dir` variable in `mavlink_2_common.lua` to reflect your own username
+* Update the `dir` variable in `mavlink_2_common.lua` to reflect the path to your Wireshark plugins directory
 * Launch Wireshark by typing `wireshark` in the command line
 * Open a PCAP file contaning MAVLink messages or start a packet capture
-* After opening the PCAP file or upon completion of the packet capture, navigate to `Statistics/MAVLink Analysis` in the Wireshark GUI to initiate the statistical analysis
+* After opening the PCAP file or upon completion of the packet capture, navigate to `Statistics/MAVLink Analysis` in the Wireshark GUI to initiate statistical analysis
 
 ## Statistical analysis
 
@@ -25,11 +25,11 @@ Note: The statistical analysis portion is still a work-in-progress and has been 
 * Break-down of the number of occurances of each message length (in bytes):
   <br><img src="../.images/len.jpg" alt="Message length" width="350">
 * Bar graph of the number of occurances of each message type:
-  <br><img src="../.images/bar.jpg" alt="Bar chart" width="350">
+  <br><img src="../.images/bar.jpg" alt="Bar chart" width="500">
 * Analysis on each field part of the MAVLink header:
-  <br><img src="../.images/header.jpg" alt="Header" width="350">
+  <br><img src="../.images/header.jpg" alt="Header" width="700">
 * For each message type, provides an analysis of each field of the message:
-  <br><img src="../.images/message.jpg" alt="Message" width="350">
+  <br><img src="../.images/message.jpg" alt="Message" width="700">
   
   
   

@@ -1,4 +1,4 @@
-CFLAGS=-Wall -pedantic -std=c11 -I../../utils -L../../lib
+CFLAGS=-Wall -pedantic -std=c11 -I../utils -L../lib
 LIBS=-lutils
 
 all: cleandata extractbymessageid countcodes makemav extractbymessagenumber countmessages

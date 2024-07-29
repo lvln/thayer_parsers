@@ -17,6 +17,11 @@ All files include the MAVLink data processing library for which the source code 
 
 ## Usage:
 
-* `make clean` removes all generated executable files as well
-* `make` builds all executables
-* Run any other programs as outlines by their above usage statements to preform their respective tasks
+In the `../utils` directory:
+* `make clean`
+* `make`
+
+Back in the `mavlink_source_code` directory:
+* `make clean`
+* `make`
+* Run any other programs as outlined by their above usage statements to preform their respective tasks
