@@ -9,7 +9,7 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
 
 * **xbnf** contains a working parser written in xbnf for a single SCALED_PRESSURE MAVLink message
 * **bison** contains a working parser written in bison for a single SCALED_PRESSURE MAVLink message
-* **tests** contains a full set of passing and failing tests for the parser; it is recommended to clean this directory after testing since `tv.sh` generates roughtly 10,000 test files
+* **tests** contains a full set of passing and failing tests for the parser
 
 ## Data packet structure
 MAVLink is a lightweight messaging protocol which enables communication between drones and their corresponding ground control stations.
@@ -59,7 +59,7 @@ If building tests and testing manually:
 * In `tests` directory:
   * `make clean` to remove old tests and executables
   * `make` to build executables
-  * `tv.sh` to generate tests
+  * `tv.sh -l` to generate tests for each field in the message type
 * In `xbnf` or `bison` directory:
   * `make clean`
   * `make`

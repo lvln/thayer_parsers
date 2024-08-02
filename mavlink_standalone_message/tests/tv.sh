@@ -8,10 +8,19 @@ popd () {
     command popd "$@" > /dev/null
 }
 
+
 # Check number of arguments
-if [ $# != 0 ]; then
-		echo "usage: tv.sh"
+if [ $# != 0 ] && [ $# != 1 ] ; then
+		echo "usage: tv.sh [-l]"
 		exit
+fi
+
+# Check that second argument is -l
+if [ $# == '1' ]; then
+		if [ $1 != '-l']; then
+				echo "usage: tv.sh [-l]"
+				exit
+		fi
 fi
 
 # This is the source directory path
@@ -21,8 +30,10 @@ SRCDIR="../../mavlink/mavlink_source_files"
 make clean > /dev/null
 make > /dev/null
 
-# Generate tests for SCALED_PRESSURE message
-./tv 29
+if [ $# == 1 ]; then
+		# Generate tests for SCALED_PRESSURE message
+		./tv 29
+fi
 
 # Start a counter for the message number
 let msgNum=1
