@@ -26,9 +26,9 @@ MAVLink 2.0 truncates empty (zero-filled bytes) at the end of the payload; it wi
 
 **Each message begins with a message-specific header which is 10 bytes in length.**
 
-* Byte 0: Magic value/version (always 0xfd for MAVLink 2.0)
+* Byte 0: Magic value/version (always 0xFD for MAVLink 2.0)
 * Byte 1: Payload length
-* Byte 2: Incompatibility flag
+* Byte 2: Incompatibility flag (0x01 indicated a signed message)
 * Byte 3: Compatibility flag
 * Byte 4: Packet sequence
 * Byte 5: System id
@@ -62,6 +62,7 @@ MAVLink 2.0 truncates empty (zero-filled bytes) at the end of the payload; it wi
   ![ATTITUDE](./.images/AttitudeImage.jpg)
   
 All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum.
+Signed messages (incompatibility flag 0x01) also contain a 13 byte signature.
 
 ## Usage
 

@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
 		for (i = 0; i < mav->n; i++) {
 			currMess = i + 1;
 			if (vectorContains(vec, compareInt, (void *)&(currMess)))
-				writeMavMessageToFile(mav->messages[i], fp);
+				writeMessageToFileMav(mav->messages[i], fp);
 		}
 
 		freeMemMav(mav);
@@ -107,7 +107,7 @@ int main(int argc, char **argv) {
 		for (i = 0; i < pcap->n; i++) {
 			currMess = i + 1;
 			if (vectorContains(vec, compareInt, (void *)&(currMess)))
-				writeMavMessageToFile(pcap->messages[i].body, fp);
+				writeMessageToFileMav(pcap->messages[i].body, fp);
 		}
 
 		freeMemPcap(pcap);

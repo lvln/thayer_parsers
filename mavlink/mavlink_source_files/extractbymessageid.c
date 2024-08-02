@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
 	for (i = 0; i < pcap->n; i++) {
 		id = toInt24le(pcap->messages[i].body.messageID);
 		if (vectorContains(vec, compareInt, (void *)&(id)))
-			writeMavMessageToFile(pcap->messages[i].body, fp);
+			writeMessageToFileMav(pcap->messages[i].body, fp);
 	}
 
 	fclose(fp);

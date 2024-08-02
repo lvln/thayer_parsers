@@ -81,11 +81,6 @@
 #define OPEN_DRONE_ID_LOCATION_LEN 59
 #define OPEN_DRONE_ID_SYSTEM_LEN 54
 
-typedef struct arrSize {
-	int *arr;
-	int n;
-} arrSize_t;
-
 // Define the message header with the various fields.
 typedef struct messageHeader {
 	uint8_t timeS[4];
@@ -121,6 +116,7 @@ typedef struct messageBody {
 	uint8_t messageID[3];
 	uint8_t *payload;
 	uint8_t crc[2];
+	uint8_t signature[13];
 } messageBody_t;
 
 // Each message contains a header and a body.
@@ -202,14 +198,14 @@ void writeHeader(pcap_t *pcapFile, FILE *ofile);
  * Inputs: message to write, file pointer.
  * Outputs: none.
  */
-void writeMavMessageToFile(messageBody_t mess, FILE *ofile);
+void writeMessageToFileMav(messageBody_t mess, FILE *ofile);
 
 /*
  * Write a MAVLink message to a file with PCAP wrappers.
  * Inputs: message to write, file pointer.
  * Outputs: none.
  */
-void writeMessageToFile(message_t mess, FILE *ofile);
+void writeMessageToFilePcap(message_t mess, FILE *ofile);
 
 /*
  * Writes a specified number of bytes of a MAVLink message to a file.
@@ -223,14 +219,14 @@ void writeMavDiffLenToFile(messageBody_t mess, FILE *fp, int len, int payload);
  * Inputs: MAVLink message to print
  * Outputs: none.
  */
-void printMavMessage(messageBody_t mess);
+void printMessageMav(messageBody_t mess);
 
 /*
  * Print out a message incuding its PCAP wrappers.
  * Inputs: message to print
  * Outputs: none.
  */
-void printMessage(message_t mess);
+void printMessagePcap(message_t mess);
 
 /*
  * Read a file that contains just MAVLink messagess - no pcap header or pcap wrappers.

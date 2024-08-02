@@ -98,7 +98,7 @@ static void gt(messageBody_t mess, int ind, vector_t *vec, int maxLen, int msgID
 			}
 			
 			// Write message to file.
-			writeMavMessageToFile(mess, fp);
+			writeMessageToFileMav(mess, fp);
 			
 			fclose(fp);
 		}
@@ -114,7 +114,7 @@ static void gt(messageBody_t mess, int ind, vector_t *vec, int maxLen, int msgID
 			}
 			
 			// Write message to file.
-			writeMavMessageToFile(mess, fp);
+			writeMessageToFileMav(mess, fp);
 			
 			fclose(fp);
 		}
@@ -525,6 +525,71 @@ static void generateEnumTests(int msgID, int ind, messageBody_t mess, int maxLen
 }
 
 /*
+ * Write signed MAVLink message to a file where the incompatibility flag is not 1 (for use of fail test generation only).
+ * Inputs: message to write, file pointer.
+ * Outputs: none.
+ */
+static void writeSignedMessageToFileMav(messageBody_t mess, FILE *ofile) {
+	// Variable declarations.
+	int i, payload;
+	uint8_t buf;
+	int len;
+
+	payload = toInt8(&mess.payloadLen);
+	len = payload + 25;
+
+	for (i = 0; i < len; i++) {
+		if (i == 0) buf = mess.mavCode;
+		else if (i == 1) buf =	mess.payloadLen;
+		else if (i == 2) buf = mess.incompFlag;
+		else if (i == 3) buf = mess.compFlag;
+		else if (i == 4) buf = mess.packetSeq;
+		else if (i == 5) buf = mess.systemID;
+		else if (i == 6) buf = mess.compID;
+		else if (i < 10) buf = mess.messageID[i - 7];		
+		else if (i < 10 + payload) buf = mess.payload[i - 10];
+		else if (i < 12 + payload)  buf = mess.crc[i - 10 - payload];
+		else buf = mess.signature[i - 12 - payload];
+
+		if (fwrite(&buf, sizeof(buf), 1, ofile) != 1)
+			printf("Error writing byte %02x to file.\n", buf);
+	}
+
+}	
+
+/*
+ * Write unsigned MAVLink message to a file where the incompatibility flag is 1 (for use of fail test generation only).
+ * Inputs: message to write, file pointer.
+ * Outputs: none.
+ */
+static void writeUnsignedMessageToFileMav(messageBody_t mess, FILE *ofile) {
+	// Variable declarations.
+	int i, payload;
+	uint8_t buf;
+	int len;
+
+	payload = toInt8(&mess.payloadLen);
+	len = payload + 12;
+
+	for (i = 0; i < len; i++) {
+		if (i == 0) buf = mess.mavCode;
+		else if (i == 1) buf =	mess.payloadLen;
+		else if (i == 2) buf = mess.incompFlag;
+		else if (i == 3) buf = mess.compFlag;
+		else if (i == 4) buf = mess.packetSeq;
+		else if (i == 5) buf = mess.systemID;
+		else if (i == 6) buf = mess.compID;
+		else if (i < 10) buf = mess.messageID[i - 7];		
+		else if (i < 10 + payload) buf = mess.payload[i - 10];
+		else if (i < 12 + payload)  buf = mess.crc[i - 10 - payload];
+
+		if (fwrite(&buf, sizeof(buf), 1, ofile) != 1)
+			printf("Error writing byte %02x to file.\n", buf);
+	}
+
+}	
+
+/*
  * Convert from 8 bit hexadecimal to integer.
  * Inputs: hex number.
  * Outputs: integer enquvalent.
@@ -603,14 +668,21 @@ void writeHeader(pcap_t *pcapFile, FILE *ofile) {
  * Inputs: message to write, file pointer.
  * Outputs: none.
  */
-void writeMavMessageToFile(messageBody_t mess, FILE *ofile) {
+void writeMessageToFileMav(messageBody_t mess, FILE *ofile) {
 	// Variable declarations.
 	int i, payload;
 	uint8_t buf;
-	
+	int len;
+
 	payload = toInt8(&mess.payloadLen);
 
-	for (i = 0; i < payload + 12; i++) {
+	// Differenttiate between signed and unsigned messages
+	if (mess.incompFlag == 0x01)
+		len = payload + 25;
+	else
+		len = payload + 12;
+
+	for (i = 0; i < len; i++) {
 		if (i == 0) buf = mess.mavCode;
 		else if (i == 1) buf =	mess.payloadLen;
 		else if (i == 2) buf = mess.incompFlag;
@@ -620,20 +692,21 @@ void writeMavMessageToFile(messageBody_t mess, FILE *ofile) {
 		else if (i == 6) buf = mess.compID;
 		else if (i < 10) buf = mess.messageID[i - 7];		
 		else if (i < 10 + payload) buf = mess.payload[i - 10];
-		else buf = mess.crc[i - 10 - payload];
+		else if (i < 12 + payload)  buf = mess.crc[i - 10 - payload];
+		else buf = mess.signature[i - 12 - payload];
 
 		if (fwrite(&buf, sizeof(buf), 1, ofile) != 1)
 			printf("Error writing byte %02x to file.\n", buf);
 	}
 
 }	
-								 
+
 /*
  * Write a MAVLink message to a file including PCAP wrappers.
  * Inputs: message to write, file pointer.
  * Outputs: none.
  */
-void writeMessageToFile(message_t mess, FILE *ofile) {
+void writeMessageToFilePcap(message_t mess, FILE *ofile) {
 	// Variable declarations.
 	int i, len, payload;
 	uint8_t buf;
@@ -683,7 +756,7 @@ void writeMessageToFile(message_t mess, FILE *ofile) {
  * Inputs: MAVLink message to print
  * Outputs: none.
  */
-void printMavMessage(messageBody_t mess) {
+void printMessageMav(messageBody_t mess) {
 // Variable declarations.
 	int i, payload;
 	uint8_t buf;
@@ -713,7 +786,7 @@ void printMavMessage(messageBody_t mess) {
  * Inputs: message to print
  * Outputs: none.
  */
-void printMessage(message_t mess) {
+void printMessagePcap(message_t mess) {
 	// Variable declarations.
 	int i, len, payload;
 	uint8_t buf;
@@ -1104,7 +1177,7 @@ void freeMemPcap(pcap_t *pcapFile) {
 void generateTests(int msgID) {
 	// Variable declarations.
 	messageBody_t mess;
-	int i, j, maxLen, *ins;
+	int i, j, k, maxLen, *ins;
 	uint8_t randomByte;
 	char fname[50];
 	FILE *fp;
@@ -1402,7 +1475,7 @@ void generateTests(int msgID) {
 		}
 
 		// Write message to file.
-		writeMavMessageToFile(mess, fp);
+		writeMessageToFileMav(mess, fp);
 		
 		fclose(fp);
 		
@@ -1457,7 +1530,7 @@ void generateTests(int msgID) {
 				}
 				
 				// Write message to file.
-				writeMavMessageToFile(mess, fp);
+				writeMessageToFileMav(mess, fp);
 				
 				fclose(fp);
 			}
@@ -1491,20 +1564,20 @@ void generateTests(int msgID) {
 		}
 		
 		// Write message to file.
-		writeMavMessageToFile(mess, fp);
+		writeMessageToFileMav(mess, fp);
 		
 		fclose(fp);	
 	}
 	mess.mavCode = 0xfd;
 
-	// Generate passing and failing tests for incompatibility flag field.
+	// Generate passing and failing tests for incompatibility flag field (unsigned messsages).
 	for (j = 0; j <= 255; j++) {
 		mess.incompFlag = j;
 		
 		if (j != 0x00)
-			sprintf(fname, "./fail.%d.%d.header.incompFlag.%d", msgID, maxLen, j);
+			sprintf(fname, "./fail.%d.%d.header.incompFlag.unsigned.%d", msgID, maxLen, j);
 		else
-			sprintf(fname, "./pass.%d.%d.header.incompFlag.%d", msgID, maxLen, j);
+			sprintf(fname, "./pass.%d.%d.header.incompFlag.unsigned.%d", msgID, maxLen, j);
 		
 		// Open file for writing.
 		if ((fp = fopen(fname, "wb")) == NULL) {
@@ -1513,9 +1586,59 @@ void generateTests(int msgID) {
 		}
 		
 		// Write message to file.
-		writeMavMessageToFile(mess, fp);
+		if (mess.incompFlag != 0x01)
+			writeMessageToFileMav(mess, fp);
+		else
+			writeUnsignedMessageToFileMav(mess, fp);
 		
 		fclose(fp);	
+	}
+	mess.incompFlag = 0x01;
+
+	// Generate passing and failing tests for incompatibility flag field (signed messsages).
+	for (j = 0; j <= 255; j++) {
+		mess.incompFlag = j;
+		
+		if (j != 0x01) {
+			sprintf(fname, "./fail.%d.%d.header.incompFlag.signed.%d", msgID, maxLen, j);
+
+			// Fill payload with random values.
+			for (k = 0; k < 13; k++)
+				mess.signature[k] = (uint8_t)(rand() % 256);
+			
+			// Open file for writing.
+			if ((fp = fopen(fname, "wb")) == NULL) {
+				printf("Error opening file %s for writing.\n", fname);
+				exit(EXIT_FAILURE);
+			}
+
+			// Write message to file.
+			writeSignedMessageToFileMav(mess, fp);
+
+			fclose(fp);	
+		}
+		else {
+			// Test every byte value in the fields.
+			for (i = 0; i <= 255; i++) {
+				sprintf(fname, "./pass.%d.%d.header.incompFlag.signed.%d.%d", msgID, maxLen, j, i);
+
+				// Fill payload with random values.
+				for (k = 0; k < 13; k++)
+					mess.signature[k] = (uint8_t)i;
+		
+				// Open file for writing.
+				if ((fp = fopen(fname, "wb")) == NULL) {
+					printf("Error opening file %s for writing.\n", fname);
+					exit(EXIT_FAILURE);
+				}
+
+				// Write message to file.
+				writeMessageToFileMav(mess, fp);
+
+				fclose(fp);
+
+			}
+		}
 	}
 	mess.incompFlag = 0x00;
 
@@ -1535,7 +1658,7 @@ void generateTests(int msgID) {
 		}
 		
 		// Write message to file.
-		writeMavMessageToFile(mess, fp);
+		writeMessageToFileMav(mess, fp);
 		
 		fclose(fp);	
 	}
@@ -1582,7 +1705,7 @@ void generateTests(int msgID) {
 		}
 		
 		// Write message to file.
-		writeMavMessageToFile(mess, fp);
+		writeMessageToFileMav(mess, fp);
 		
 		fclose(fp);	
 	}
@@ -1601,7 +1724,7 @@ void generateTests(int msgID) {
 		}
 		
 		// Write message to file.
-		writeMavMessageToFile(mess, fp);
+		writeMessageToFileMav(mess, fp);
 		
 		fclose(fp);	
 	}
@@ -1620,7 +1743,7 @@ void generateTests(int msgID) {
 		}
 		
 		// Write message to file.
-		writeMavMessageToFile(mess, fp);
+		writeMessageToFileMav(mess, fp);
 		
 		fclose(fp);	
 	}
@@ -1639,7 +1762,7 @@ void generateTests(int msgID) {
 		}
 		
 		// Write message to file.
-		writeMavMessageToFile(mess, fp);
+		writeMessageToFileMav(mess, fp);
 		
 		fclose(fp);	
 	}
@@ -1657,7 +1780,7 @@ void generateTests(int msgID) {
 		}
 		
 		// Write message to file.
-		writeMavMessageToFile(mess, fp);
+		writeMessageToFileMav(mess, fp);
 		
 		fclose(fp);	
 	}

@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
 
 	// Write only the MAVLink portion of each message to the file.
 	for (i = 0; i < pcapFile->n; i++)
-		writeMavMessageToFile(pcapFile->messages[i].body, fp);
+		writeMessageToFileMav(pcapFile->messages[i].body, fp);
 
 	fclose(fp);
 
