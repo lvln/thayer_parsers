@@ -13,6 +13,10 @@ Note: It is best to test this parser using the `mavlinktest.sh` script in the `x
 * `fail.msgID.len.ind.val` is a failing test for a given mesage ID at its maximum payload length (all fields present) where `ind` is the index of the payload field being tested and `val` is the byte value being tested
 * `fail.msgID.len.header.field.val` is a failing test for a given mesage ID at its maximum payload length (all fields present) in the header field where `field` is the name of the header field being tested and val is the byte value being tested
 * `pass.msgID.len.header.field.val` is a passing test for a given mesage ID at its maximum payload length (all fields present) in the header field where `field` is the name of the header field being tested and val is the byte value being tested
+* `fail.msgID.len.header.incompFlag.signed.val` for a given message ID at its maximum payload length is a failing test for a signed message (incompatibility flag is not 0x01) where val is the value of the flag being tested
+* `pass.msgID.len.header.incompFlag.signed.1.val` for a given message ID at its maximum payload length is a failing test for a signed message (incompatibility flag is 0x01) where val is the value of the byte being tests in all signature fields
+* `fail.msgID.len.header.incompFlag.unsigned.val` for a given message ID at its maximum payload length is a failing test for an usigned message (incompatibility flag is not 0x00) where val is the value of the flag being tested
+* `pass.msgID.len.header.incompFlag.unsigned.0` is a passing test for a given message ID at its maximum payload length for an usigned message (incompatibility flag is 0x00)
 * `fail.msgID.len.extraByte` and `fail.msgID.len.oneByteLess` are failing tests for messages of the maximum length with one byte too many and one byte too few respectively
 * `pass.msgID.len.crcx.val` are passing tests for messages of the maximum length with `crc` field `x` changed such that it contains a byte of value `val` 
 * `pass.1` - `pass.n` are passing tests for each individual message o the given message types for two complete flights flights with the drone

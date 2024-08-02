@@ -8,6 +8,7 @@ All data packets were captured in `.pcap` files using Wireshark, a network proto
 ## Directory structure
 
 * **xbnf** contains a working parser written in xbnf for an ATTITUDE message, a GLOBAL\_POSITION\_INT message, a conbination of the two, or no message at all.
+* **bison** contains a working parser written in bison for a single SCALED_PRESSURE MAVLink message
 * **tests** contains a full set of passing and failing tests for the parser; it is recommended to clean this directory after testing since `tv.sh` generates roughly 30,000 test files
 
 ## Data packet structure
@@ -19,7 +20,7 @@ MAVLink 2.0 truncates empty (zero-filled bytes) at the end of the payload; it wi
 
 * Byte 0: Magic value/version (always 0xFD for MAVLink 2.0)
 * Byte 1: Payload length
-* Byte 2: Incompatibility flag
+* Byte 2: Incompatibility flag (0x01 indicates a signed message)
 * Byte 3: Compatibility flag
 * Byte 4: Packet sequence
 * Byte 5: System id
@@ -62,6 +63,7 @@ MAVLink 2.0 truncates empty (zero-filled bytes) at the end of the payload; it wi
   ![SCALED_PRESSURE](./.images/SPImage.jpg)
 
 All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum.
+If the message is signed (incompatibility flag 0x01), it will also contain a 13 byte signature.
 
 ## Usage
 
