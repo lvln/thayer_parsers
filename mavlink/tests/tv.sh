@@ -118,3 +118,6 @@ fi
 
 # More all of the tests to the tests directory
 mv ${SRCDIR}/pass.* . > /dev/null
+
+# Gererate the failing test cases
+./tvshort > /dev/null

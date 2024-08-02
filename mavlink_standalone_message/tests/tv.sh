@@ -8,7 +8,6 @@ popd () {
     command popd "$@" > /dev/null
 }
 
-
 # Check number of arguments
 if [ $# != 0 ] && [ $# != 1 ] ; then
 		echo "usage: tv.sh [-l]"
@@ -111,3 +110,6 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make clean > /dev/null
 		popd
 fi
+
+# Generate failing test cases
+./tvshort > /dev/null

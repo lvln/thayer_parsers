@@ -122,3 +122,6 @@ fi
 # All messages of the given types with a single invalid message type added at the end
 cat pass.1 fail.1 > fail.2
 cat pass.2 fail.1 > fail.3
+
+# Generate more failing test cases
+./tvshort > /dev/null

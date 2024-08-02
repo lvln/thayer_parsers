@@ -9,7 +9,9 @@ Note: It is best to test this parser using the `mavlinktest.sh` script in the `x
 * `pass.1` - `pass.n` are all individual SCALED_PRESSURE messages from an actual flight with the drone
 * `fail.1` is an empty file
 * `fail.2` contains an EVENT message (of the same length as a SCALED_PRESSURE message)
+* `fail.3` - `fail.n` are failing tests corresponding to `pass.1` with various fixed fields altered
 * `tv.c` auto-generates a range of tests, testing all ranges of byte values for all fields
+* `tvshort.c` produces failing test cases by altering bytes in fixed fields of a message from an actual drone flight
 * `tv.sh [-l]` creates all of the above- and below-described test files using `tv.c` if using the `-l` flag; generates only the above-described tests if not using the '-l' flag
 * `pass.29.len` is a test for each possible payload length with random values assigned to wildcard fields and valid values assigned to enumerated fields 
 * `pass.29.16.ind.val` is a passing test for SCALED_PRESSURE message at its maximum payload length (all fields present) where `ind` is the index of the payload field being tested and `val` is the byte value being tested
