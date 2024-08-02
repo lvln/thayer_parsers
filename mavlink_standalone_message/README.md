@@ -20,7 +20,7 @@ MAVLink 2.0 truncates empty (zero-filled bytes) at the end of the payload; it wi
 
 * Byte 0: Magic value/version (always 0xFD for MAVLink 2.0)
 * Byte 1: Payload length (0x10 for SCALED_PRESSURE)
-* Byte 2: Incompatibility flag
+* Byte 2: Incompatibility flag (0x01 indicates a signed message)
 * Byte 3: Compatibility flag
 * Byte 4: Packet sequence
 * Byte 5: System id
@@ -38,6 +38,7 @@ MAVLink 2.0 truncates empty (zero-filled bytes) at the end of the payload; it wi
 ![SCALED_PRESSURE](./.images/SPImage.jpg)
   
 All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum (this will be bytes 26 - 27 in an untruncated SCALED_PRESSURE message).
+If the message is signed (incompatibility flag 0x01), it will also contain a 13 byte signature.
 
 ## Usage
 

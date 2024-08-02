@@ -1,62 +1,137 @@
 P : message ;
 
-/* Messsages contain header for each packet followed by the MAVLink specific header then the message and finally a checkusm */
-message : sp * * ;
+/* a message may be either a signed or an unsigned message */
+message : messageUS | messageS ;
+
+/* unsigned messsages contain a header with a payload and finally a checksum */
+messageUS : spUS crc ;
+
+/* signed messages contain a header with a payload, followed by a checksum and finally a 13 byte signature */
+messageS : spS crc sig ;
 
 /* SCALED_PRESSURE (29) */
-sp : sp01 | sp02 | sp03 | sp04 | sp05 | sp06 | sp07 | sp08 | sp09 | sp10 | sp11 | sp12 | sp13 | sp14 | sp15 | sp16 ;
-sp01 : spMH01 * ;
-sp02 : spMH02 * * ;
-sp03 : spMH03 * * * ;
-sp04 : spMH04 * * * * ;
-sp05 : spMH05 * * * * * ;
-sp06 : spMH06 * * * * * * ;
-sp07 : spMH07 * * * * * * * ;
-sp08 : spMH08 * * * * * * * * ;
-sp09 : spMH09 * * * * * * * * * ;
-sp10 : spMH10 * * * * * * * * * * ;
-sp11 : spMH11 * * * * * * * * * * * ;
-sp12 : spMH12 * * * * * * * * * * * * ;
-sp13 : spMH13 * * * * * * * * * * * * * ;
-sp14 : spMH14 * * * * * * * * * * * * * * ;
-sp15 : spMH15 * * * * * * * * * * * * * * * ;
-sp16 : spMH16 * * * * * * * * * * * * * * * * ;
-spMH01 : ml01 SPCODE ;
-spMH02 : ml02 SPCODE ;
-spMH03 : ml03 SPCODE ;
-spMH04 : ml04 SPCODE ;
-spMH05 : ml05 SPCODE ;
-spMH06 : ml06 SPCODE ;
-spMH07 : ml07 SPCODE ;
-spMH08 : ml08 SPCODE ;
-spMH09 : ml09 SPCODE ;
-spMH10 : ml10 SPCODE ;
-spMH11 : ml11 SPCODE ;
-spMH12 : ml12 SPCODE ;
-spMH13 : ml13 SPCODE ;
-spMH14 : ml14 SPCODE ;
-spMH15 : ml15 SPCODE ;
-spMH16 : ml16 SPCODE ;
+spUS : sp01US | sp02US | sp03US | sp04US | sp05US | sp06US | sp07US | sp08US | sp09US | sp10US | sp11US | sp12US | sp13US | sp14US | sp15US | sp16US ;
+spS : sp01S | sp02S | sp03S | sp04S | sp05S | sp06S | sp07S | sp08S | sp09S | sp10S | sp11S | sp12S | sp13S | sp14S | sp15S | sp16S ;
+sp01US : spMH01US spPL01 ;
+sp02US : spMH02US spPL02 ;
+sp03US : spMH03US spPL03 ;
+sp04US : spMH04US spPL04 ;
+sp05US : spMH05US spPL05 ;
+sp06US : spMH06US spPL06 ;
+sp07US : spMH07US spPL07 ;
+sp08US : spMH08US spPL08 ;
+sp09US : spMH09US spPL09 ;
+sp10US : spMH10US spPL10 ;
+sp11US : spMH11US spPL11 ;
+sp12US : spMH12US spPL12 ;
+sp13US : spMH13US spPL13 ;
+sp14US : spMH14US spPL14 ;
+sp15US : spMH15US spPL15 ;
+sp16US : spMH16US spPL16 ;
+sp01S : spMH01S spPL01 ;
+sp02S : spMH02S spPL02 ;
+sp03S : spMH03S spPL03 ;
+sp04S : spMH04S spPL04 ;
+sp05S : spMH05S spPL05 ;
+sp06S : spMH06S spPL06 ;
+sp07S : spMH07S spPL07 ;
+sp08S : spMH08S spPL08 ;
+sp09S : spMH09S spPL09 ;
+sp10S : spMH10S spPL10 ;
+sp11S : spMH11S spPL11 ;
+sp12S : spMH12S spPL12 ;
+sp13S : spMH13S spPL13 ;
+sp14S : spMH14S spPL14 ;
+sp15S : spMH15S spPL15 ;
+sp16S : spMH16S spPL16 ;
+spMH01US : ml01US SPCODE ;
+spMH02US : ml02US SPCODE ;
+spMH03US : ml03US SPCODE ;
+spMH04US : ml04US SPCODE ;
+spMH05US : ml05US SPCODE ;
+spMH06US : ml06US SPCODE ;
+spMH07US : ml07US SPCODE ;
+spMH08US : ml08US SPCODE ;
+spMH09US : ml09US SPCODE ;
+spMH10US : ml10US SPCODE ;
+spMH11US : ml11US SPCODE ;
+spMH12US : ml12US SPCODE ;
+spMH13US : ml13US SPCODE ;
+spMH14US : ml14US SPCODE ;
+spMH15US : ml15US SPCODE ;
+spMH16US : ml16US SPCODE ;
+spMH01S : ml01S SPCODE ;
+spMH02S : ml02S SPCODE ;
+spMH03S : ml03S SPCODE ;
+spMH04S : ml04S SPCODE ;
+spMH05S : ml05S SPCODE ;
+spMH06S : ml06S SPCODE ;
+spMH07S : ml07S SPCODE ;
+spMH08S : ml08S SPCODE ;
+spMH09S : ml09S SPCODE ;
+spMH10S : ml10S SPCODE ;
+spMH11S : ml11S SPCODE ;
+spMH12S : ml12S SPCODE ;
+spMH13S : ml13S SPCODE ;
+spMH14S : ml14S SPCODE ;
+spMH15S : ml15S SPCODE ;
+spMH16S : ml16S SPCODE ;
+spPL01 : * ;
+spPL02 : * * ;
+spPL03 : * * * ;
+spPL04 : * * * * ;
+spPL05 : * * * * * ;
+spPL06 : * * * * * * ;
+spPL07 : * * * * * * * ;
+spPL08 : * * * * * * * * ;
+spPL09 : * * * * * * * * * ;
+spPL10 : * * * * * * * * * * ;
+spPL11 : * * * * * * * * * * * ;
+spPL12 : * * * * * * * * * * * * ;
+spPL13 : * * * * * * * * * * * * * ;
+spPL14 : * * * * * * * * * * * * * * ;
+spPL15 : * * * * * * * * * * * * * * * ;
+spPL16 : * * * * * * * * * * * * * * * * ;
 
-/* Header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code */
-ml01 : MAVCODE LEN01 messageHeaderTail ;
-ml02 : MAVCODE LEN02 messageHeaderTail ;
-ml03 : MAVCODE LEN03 messageHeaderTail ;
-ml04 : MAVCODE LEN04 messageHeaderTail ;
-ml05 : MAVCODE LEN05 messageHeaderTail ;
-ml06 : MAVCODE LEN06 messageHeaderTail ;
-ml07 : MAVCODE LEN07 messageHeaderTail ;
-ml08 : MAVCODE LEN08 messageHeaderTail ;
-ml09 : MAVCODE LEN09 messageHeaderTail ;
-ml10 : MAVCODE LEN10 messageHeaderTail ;
-ml11 : MAVCODE LEN11 messageHeaderTail ;
-ml12 : MAVCODE LEN12 messageHeaderTail ;
-ml13 : MAVCODE LEN13 messageHeaderTail ;
-ml14 : MAVCODE LEN14 messageHeaderTail ;
-ml15 : MAVCODE LEN15 messageHeaderTail ;
-ml16 : MAVCODE LEN16 messageHeaderTail ;
+/* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code - unsigned messages */
+ml01US : MAVCODE LEN01 messageHeaderTailUS ;
+ml02US : MAVCODE LEN02 messageHeaderTailUS ;
+ml03US : MAVCODE LEN03 messageHeaderTailUS ;
+ml04US : MAVCODE LEN04 messageHeaderTailUS ;
+ml05US : MAVCODE LEN05 messageHeaderTailUS ;
+ml06US : MAVCODE LEN06 messageHeaderTailUS ;
+ml07US : MAVCODE LEN07 messageHeaderTailUS ;
+ml08US : MAVCODE LEN08 messageHeaderTailUS ;
+ml09US : MAVCODE LEN09 messageHeaderTailUS ;
+ml10US : MAVCODE LEN10 messageHeaderTailUS ;
+ml11US : MAVCODE LEN11 messageHeaderTailUS ;
+ml12US : MAVCODE LEN12 messageHeaderTailUS ;
+ml13US : MAVCODE LEN13 messageHeaderTailUS ;
+ml14US : MAVCODE LEN14 messageHeaderTailUS ;
+ml15US : MAVCODE LEN15 messageHeaderTailUS ;
+ml16US : MAVCODE LEN16 messageHeaderTailUS ;
 
-messageHeaderTail :  incompFlag compFlag packetSequence sysID compID ;
+/* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code  - signed messages*/
+ml01S : MAVCODE LEN01 messageHeaderTailS ;
+ml02S : MAVCODE LEN02 messageHeaderTailS ;
+ml03S : MAVCODE LEN03 messageHeaderTailS ;
+ml04S : MAVCODE LEN04 messageHeaderTailS ;
+ml05S : MAVCODE LEN05 messageHeaderTailS ;
+ml06S : MAVCODE LEN06 messageHeaderTailS ;
+ml07S : MAVCODE LEN07 messageHeaderTailS ;
+ml08S : MAVCODE LEN08 messageHeaderTailS ;
+ml09S : MAVCODE LEN09 messageHeaderTailS ;
+ml10S : MAVCODE LEN10 messageHeaderTailS ;
+ml11S : MAVCODE LEN11 messageHeaderTailS ;
+ml12S : MAVCODE LEN12 messageHeaderTailS ;
+ml13S : MAVCODE LEN13 messageHeaderTailS ;
+ml14S : MAVCODE LEN14 messageHeaderTailS ;
+ml15S : MAVCODE LEN15 messageHeaderTailS ;
+ml16S : MAVCODE LEN16 messageHeaderTailS ;
+
+/* tail of the message header for unsigned and signed messages, respectively */
+messageHeaderTailUS :  incompFlagUS compFlag packetSequence sysID compID ;
+messageHeaderTailS :  incompFlagS compFlag packetSequence sysID compID ;
 
 /* Tokens */
 MAVCODE : '\xFD' ;
@@ -80,8 +155,12 @@ LEN14 : '\x0E' ;
 LEN15 : '\x0F' ;
 LEN16 : '\x10' ;
 
-incompFlag : '\x00' ;  /* incompatibility flag */
+incompFlagUS : '\x00' ;  /* incompatibility flag for unsigned message */
+incompFlagS : '\x01' ; /* incompatinility flag for signed message */
 compFlag : '\x00' ; /* compatibility flag */
 packetSequence : * ;
 sysID : * ; /* system ID  */
 compID : * ; /* component ID */
+
+crc : * * ;
+sig : * * * * * * * * * * * * * ;
