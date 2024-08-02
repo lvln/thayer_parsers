@@ -83,7 +83,7 @@ If building tests and testing manually (caution: this generates a large number o
 * In `tests` directory:
   * `make clean` to remove old tests and executables
   * `make` to build executables
-  * `tv.sh` to generate tests
+  * `tv.sh -l` to generate tests for each field on eahc message type
 * In `xbnf` or `bison` directory:
   * `make clean`
   * `make`
