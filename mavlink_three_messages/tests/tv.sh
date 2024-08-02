@@ -9,9 +9,17 @@ popd () {
 }
 
 # Check number of arguments
-if [ $# != 0 ]; then
-		echo "usage: tv.sh"
+if [ $# != 0 ] && [ $# != 1 ] ; then
+		echo "usage: tv.sh [-l]"
 		exit
+fi
+
+# Check that second argument is -l
+if [ $# == '1' ]; then
+		if [ $1 != '-l']; then
+				echo "usage: tv.sh [-l]"
+				exit
+		fi
 fi
 
 # This is the source directory path.
@@ -21,22 +29,21 @@ SRCDIR="../../mavlink/mavlink_source_files"
 make clean > /dev/null
 make > /dev/null
 
-# Array of message ids present in parser
-msgIDs=(29 30 33)
-
-# Loop through all message ids and generate tests
-for id in "${msgIDs[@]}"; do
-		# Generate tests for given id
-		./tv ${id} > /dev/null
-
-		echo "Tests for message ID ${id} generated"
-done
-
-# Create empty file for passing test
-touch pass.10000
+if [ $# == 1 ]; then
+		# Array of message ids present in parser
+		msgIDs=(29 30 33)
+		
+		# Loop through all message ids and generate tests
+		for id in "${msgIDs[@]}"; do
+				# Generate tests for given id
+				./tv ${id} > /dev/null
+				
+				echo "Tests for message ID ${id} generated"
+		done
+fi
 
 # Start counter for messages for individual drone flights.
-let msgNum=1
+let msgNum=3
 
 if [ -e ${SRCDIR}/run1.pcap ]; then
 		pushd ${SRCDIR}
@@ -58,7 +65,7 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		done
 
 		# Move all messages over to tests directory
-		mv ./temp.mav ../../mavlink_three_messages/tests/pass.10001 > /dev/null
+		mv ./temp.mav ../../mavlink_three_messages/tests/pass.1 > /dev/null
 
 		# Clean out source file directory
 		make clean > /dev/null
@@ -85,14 +92,14 @@ if [ -e ${SRCDIR}/run2.pcap ]; then
 		done
 
 		# Move all messages over to tests directory
-		mv ./temp.mav ../../mavlink_three_messages/tests/pass.10002 > /dev/null
+		mv ./temp.mav ../../mavlink_three_messages/tests/pass.2 > /dev/null
 
 		# Clean out source directory
 		make clean > /dev/null
 		popd
 fi
 
-# More all of the tests to the tests directory
+# Move all of the tests to the tests directory
 mv ${SRCDIR}/pass.* . > /dev/null
 
 # Bring over an EVENT message and place it in a failing test file
@@ -102,10 +109,10 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make > /dev/null
 		
 		# Extract EVENT message
-		./extractbymessagenumber run1.pcap fail.10000 65 > /dev/null
+		./extractbymessagenumber run1.pcap fail.1 65 > /dev/null
 
 		# Move message over to tests directory
-		mv fail.10000 ../../mavlink_three_messages/tests/ > /dev/null
+		mv fail.1 ../../mavlink_three_messages/tests/ > /dev/null
 
 		# Clean source file directory
 		make clean > /dev/null
@@ -113,5 +120,5 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 fi
 
 # All messages of the given types with a single invalid message type added at the end
-cat pass.10001 fail.10000 > fail.10001
-cat pass.10002 fail.10000 > fail.10002
+cat pass.1 fail.1 > fail.2
+cat pass.2 fail.1 > fail.3
