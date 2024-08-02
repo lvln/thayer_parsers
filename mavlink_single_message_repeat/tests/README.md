@@ -1,5 +1,5 @@
 # Tests for MAVLink parser
-1;95;0c
+
 Tests for the MAVLink parser which contains tests for all given byte values in all fields of all messages.
 
 Note: It is best to test this parser using the `mavlinktest.sh` script in the `xbnf`/`bison` directories due to the large number of test files produced when running `tv.sh`.
@@ -13,7 +13,12 @@ Note: It is best to test this parser using the `mavlinktest.sh` script in the `x
 * `fail.29.16.ind.val` is a failing test for a SCALED_PRESSURE message at its maximum payload length (all fields present) where `ind` is the index of the payload field being tested and `val` is the byte value being tested
 * `fail.29.16.header.field.val` is a failing test for a SCALED_PRESSURE message at its maximum payload length (all fields present) in the header field where `field` is the name of the header field being tested and val is the byte value being tested
 * `pass.29.16.header.field.val` is a passing test for a given mesage ID at its maximum payload length (all fields present) in the header field where `field` is the name of the header field being tested and val is the byte value being tested
+* `fail.29.16.header.incompFlag.signed.val` is a failing test for a signed message (incompatibility flag is not 0x01) where val is the value of the flag being tested
+* `pass.29.16.header.incompFlag.signed.1.val` is a failing test for a signed message (incompatibility flag is 0x01) where val is the value of the byte being tests in all signature fields
+* `fail.29.16.header.incompFlag.unsigned.val` is a failing test for an usigned message (incompatibility flag is not 0x00) where val is the value of the flag being tested
+* `pass.29.16.header.incompFlag.unsigned.0` is a passing test for an usigned message (incompatibility flag is 0x00)
 * `fail.29.16.extraByte` and `fail.29.16.oneByteLess` are failing tests for messages of the maximum length with one byte too many and one byte too few respectively
+* `fail.29.16.header.field.val` is a passing test for a SCALED_PRESSURE message at its maximum payload length (all fields present) in the header field where `field` is the name of the header field being tested and val is the byte value being tested
 * `pass.29.16.crcx.val` are passing tests for messages of the maximum length with `crc` field `x` changed such that it contains a byte of value `val` 
 * `pass.1` and `pass.n` are all of the individual SCALED_PRESSURE messages fromm two flights with the drone
 * `pass.1001` is all of the SCALED_PRESSURE messages from a flight with the drone
