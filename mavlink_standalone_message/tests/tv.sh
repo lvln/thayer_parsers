@@ -100,11 +100,28 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make clean > /dev/null
 		make > /dev/null
 		
-		# Extract all SCALED_PRESURE messages and store them in a temporary file
+		# Extract EVENT message
 		./extractbymessagenumber run1.pcap fail.2 65 > /dev/null
 
 		# Move message over
 		mv fail.2 ../../mavlink_standalone_message/tests/ > /dev/null
+
+		# Clean out directory
+		make clean > /dev/null
+		popd
+fi
+
+# Create fialing test file with more than 1 SCALED_PRESSURE message
+if [ -e ${SRCDIR}/run1.pcap ]; then
+		pushd ${SRCDIR}
+		make clean > /dev/null
+		make > /dev/null
+		
+		# Extract EVENT message
+		./extractbymessageid run1.pcap fail.3 29 > /dev/null
+
+		# Move messages over
+		mv fail.3 ../../mavlink_standalone_message/tests/ > /dev/null
 
 		# Clean out directory
 		make clean > /dev/null

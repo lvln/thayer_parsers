@@ -34,7 +34,7 @@ make > /dev/null
 ./tv 29
 
 # Start a counter for the message number
-let msgNum=1
+let msgNum=3
 
 if [ -e ${SRCDIR}/run1.pcap ]; then
 		pushd ${SRCDIR}
@@ -82,7 +82,7 @@ if [ -e ${SRCDIR}/run2.pcap ]; then
 
 		# CLean out the course directory and remove temporary files
 		make clean > /dev/null
-		rm temp.mav > /dev/null
+		rm temp.mav  > /dev/null
 		popd
 fi
 
@@ -108,6 +108,26 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make clean > /dev/null
 		popd
 fi
+
+# Create fialing test file with more than 1 SCALED_PRESSURE message
+if [ -e ${SRCDIR}/run1.pcap ]; then
+		pushd ${SRCDIR}
+		make clean > /dev/null
+		make > /dev/null
+		
+		# Extract more than one SCALED_PRESSURE message
+		./extractbymessageid run1.pcap fail.3 29 > /dev/null
+
+		# Move messages over
+		mv fail.3 ../../mavlink_standalone_message/tests/ > /dev/null
+
+		# Clean out directory
+		make clean > /dev/null
+		popd
+fi
+
+# Generate failing test cases
+./tvshort > /dev/null
 
 # Move back into xbnf direcotry
 popd

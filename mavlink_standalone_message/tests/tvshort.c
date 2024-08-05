@@ -29,7 +29,7 @@ int main(void) {
 
 	fclose(fp);
 
-	if ((fp = fopen("fail.3", "wb")) == NULL) {
+	if ((fp = fopen("fail.4", "wb")) == NULL) {
 		printf("File not opened successfully.\n");
 		exit(EXIT_FAILURE);
 	}
@@ -43,7 +43,7 @@ int main(void) {
 
 	message->messages[0].mavCode = old;
 
-	if ((fp = fopen("fail.4", "wb")) == NULL) {
+	if ((fp = fopen("fail.5", "wb")) == NULL) {
 		printf("File not opened successfully.\n");
 		exit(EXIT_FAILURE);
 	}
@@ -57,7 +57,7 @@ int main(void) {
 
 	message->messages[0].payloadLen = old;
 
-	if ((fp = fopen("fail.5", "wb")) == NULL) {
+	if ((fp = fopen("fail.6", "wb")) == NULL) {
 		printf("File not opened successfully.\n");
 		exit(EXIT_FAILURE);
 	}
@@ -71,7 +71,7 @@ int main(void) {
 
 	message->messages[0].incompFlag = old;
 
-	if ((fp = fopen("fail.6", "wb")) == NULL) {
+	if ((fp = fopen("fail.7", "wb")) == NULL) {
 		printf("File not opened successfully.\n");
 		exit(EXIT_FAILURE);
 	}
@@ -85,7 +85,7 @@ int main(void) {
 
 	message->messages[0].compFlag = old;
 	
-	if ((fp = fopen("fail.7", "wb")) == NULL) {
+	if ((fp = fopen("fail.8", "wb")) == NULL) {
 		printf("File not opened successfully.\n");
 		exit(EXIT_FAILURE);
 	}
@@ -98,6 +98,26 @@ int main(void) {
 	fclose(fp);
 
 	message->messages[0].messageID[0] = old;
+
+	if ((fp = fopen("fail.9", "wb")) == NULL) {
+		printf("File not opened successfully.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	writeMavDiffLenToFile(message->messages[0], fp, message->messages[0].payloadLen + 13, message->messages[0].payloadLen);
+
+	fclose(fp);
+
+	if ((fp = fopen("fail.10", "wb")) == NULL) {
+		printf("File not opened successfully.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	writeMavDiffLenToFile(message->messages[0], fp, message->messages[0].payloadLen + 11, message->messages[0].payloadLen);
+
+	fclose(fp);
+
+	freeMemMav(message);
 
 	exit(EXIT_SUCCESS);
 }

@@ -59,7 +59,7 @@ If building tests and testing manually:
 * In `tests` directory:
   * `make clean` to remove old tests and executables
   * `make` to build executables
-  * `tv.sh -l` to generate tests for each field in the message type
+  * `tv.sh -l` to generate tests for each field in the message type or `tv.sh` to generate limited suite of tests for actual drone flights
 * In `xbnf` or `bison` directory:
   * `make clean`
   * `make`
