@@ -20,7 +20,7 @@ int main(void) {
 	mavMessArr_t *message;
 	uint8_t old;
 
-	if ((fp = fopen("pass.3", "rb")) == NULL) {
+	if ((fp = fopen("pass.4", "rb")) == NULL) {
 		printf("File not opened successfully.");
 		exit(EXIT_FAILURE);
 	}
@@ -98,6 +98,26 @@ int main(void) {
 	fclose(fp);
 
 	message->messages[0].messageID[0] = old;
+
+	if ((fp = fopen("fail.8", "wb")) == NULL) {
+		printf("File not opened successfully.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	writeMavDiffLenToFile(message->messages[0], fp, message->messages[0].payloadLen + 13, message->messages[0].payloadLen);
+
+	fclose(fp);
+
+	if ((fp = fopen("fail.9", "wb")) == NULL) {
+		printf("File not opened successfully.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	writeMavDiffLenToFile(message->messages[0], fp, message->messages[0].payloadLen + 11, message->messages[0].payloadLen);
+
+	fclose(fp);
+
+	freeMemMav(message);
 
 	exit(EXIT_SUCCESS);
 }

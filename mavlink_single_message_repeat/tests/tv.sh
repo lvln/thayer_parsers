@@ -35,7 +35,7 @@ if [ $# == 1 ]; then
 fi
 
 # Start a counter for the message number pass files
-let msgNum=3
+let msgNum=4
 
 if [ -e ${SRCDIR}/run1.pcap ]; then
 		pushd ${SRCDIR}
@@ -93,6 +93,9 @@ fi
 
 # Move passing tests to tests directory
 mv ${SRCDIR}/pass.* . > /dev/null
+
+# Create an empty file
+touch pass.3 > /dev/null
 
 # Bring over an EVENT message and place it in a failing test file
 if [ -e ${SRCDIR}/run1.pcap ]; then

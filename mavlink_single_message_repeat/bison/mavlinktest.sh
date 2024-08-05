@@ -8,9 +8,16 @@ popd () {
     command popd "$@" > /dev/null
 }
 
+
 # Check number of arguments
-if [ $# != 0 ]; then
-		echo "usage: tv.sh"
+if [ $# != 1 ] && [ $# != 0 ]; then
+		echo "usage: mavlinktest.sh [-v]"
+		exit
+fi
+
+# Check arguments are valid
+if [ $# == 1 ] && [ $1 != "-v" ]; then
+		echo "usage: mavlinktest.sh [-v]"
 		exit
 fi
 
@@ -28,7 +35,7 @@ make > /dev/null
 ./tv 29
 
 # Start counter for the individual message file names
-let msgNum=1
+let msgNum=4
 
 if [ -e ${SRCDIR}/run1.pcap ]; then
 		pushd ${SRCDIR}
@@ -53,7 +60,7 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make clean > /dev/null
 
 		# Copy over all SCALED_PRESSURE messages from run1.pcap
-		mv temp.mav ../../mavlink_single_message_repeat/tests/pass.1001 > /dev/null
+		mv temp.mav ../../mavlink_single_message_repeat/tests/pass.1 > /dev/null
 		popd
 fi
 
@@ -80,7 +87,7 @@ if [ -e ${SRCDIR}/run2.pcap ]; then
 		make clean > /dev/null
 
 		# Copy over all SCALED_PRESSURE messages from run2.pcap
-		mv temp.mav ../../mavlink_single_message_repeat/tests/pass.1002 > /dev/null
+		mv temp.mav ../../mavlink_single_message_repeat/tests/pass.2 > /dev/null
 		popd
 fi
 
@@ -88,7 +95,7 @@ fi
 mv ${SRCDIR}/pass.* . > /dev/null
 
 # Create an empty file
-touch pass.1000
+touch pass.3
 
 # Bring over an EVENT message and place it in a failing test file
 if [ -e ${SRCDIR}/run1.pcap ]; then
@@ -97,10 +104,10 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make > /dev/null
 		
 		# Extract an EVENT message
-		./extractbymessagenumber run1.pcap fail.1000 65 > /dev/null
+		./extractbymessagenumber run1.pcap fail.1 65 > /dev/null
 		
 		# Move message over to tests directory
-		mv fail.1000 ../../mavlink_single_message_repeat/tests/ > /dev/null
+		mv fail.1 ../../mavlink_single_message_repeat/tests/ > /dev/null
 
 		# Clean source files directory
 		make clean > /dev/null
@@ -114,17 +121,20 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make > /dev/null
 		
 		# Extract aSCALED_PRESSURE message followed by an EVENT message and store it in a temporary file
-		./extractbymessagenumber run1.pcap fail.1001 33 65 > /dev/null
+		./extractbymessagenumber run1.pcap fail.2 33 65 > /dev/null
 		
 		# Move message over to tests directory
-		mv fail.1001 ../../mavlink_single_message_repeat/tests/ > /dev/null
+		mv fail.2 ../../mavlink_single_message_repeat/tests/ > /dev/null
 
 		# Clean source files directory
 		make clean > /dev/null
 		popd
 fi
 
-# Return to the bison directory
+# Generate fialing test cases
+./tvshort > /dev/null
+
+# Return to the xbnf directory
 popd
 
 # Run the passing tests
