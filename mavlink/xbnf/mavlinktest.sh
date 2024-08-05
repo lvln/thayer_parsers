@@ -92,16 +92,16 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make > /dev/null
 
 		# Extract the MAVLink portion of the messages from run1
-		./makemav ./run1.pcap ./pass.10000 > /dev/null
+		./makemav ./run1.pcap ./pass.1 > /dev/null
 
 		# Move test file to tests directory
-		mv ./pass.10000 ../tests > /dev/null
+		mv ./pass.1 ../tests > /dev/null
 
 		make clean > /dev/null
 		popd
 
 		# Run the parser on the test file
-		CMD="./gmr ../tests/pass.10000"
+		CMD="./gmr ../tests/pass.1"
 		{ ${CMD} >& /dev/null ; } >& /dev/null
 
 		# Get the result from running the parser
@@ -124,16 +124,16 @@ if [ -e ${SRCDIR}/run2.pcap ]; then
 		make > /dev/null
 		
 		# Extract the MAVLink portion of the messages from run1
-		./makemav ./run2.pcap ./pass.10001 > /dev/null
+		./makemav ./run2.pcap ./pass.2 > /dev/null
 
 		# Move test file to tests directory
-		mv ./pass.10001 ../tests > /dev/null
+		mv ./pass.2 ../tests > /dev/null
 
 		make clean > /dev/null
 		popd
 
 		# Run the parser on the test file
-		CMD="./gmr ../tests/pass.10001"
+		CMD="./gmr ../tests/pass.2"
 		{ ${CMD} >& /dev/null ; } >& /dev/null
 
 		# Get the result from running the parser
@@ -155,7 +155,7 @@ make clean > /dev/null
 popd
 
 # Extract each individual message from a drone flight and place it in its own file
-let msgNum=1
+let msgNum=3
 
 if [ -e ${SRCDIR}/run1.pcap ]; then
 		pushd ${SRCDIR}
@@ -198,8 +198,13 @@ if [ -e ${SRCDIR}/run2.pcap ]; then
 		popd
 fi
 
-# More the newly generated tests to the tests directory
+# Move the newly generated tests to the tests directory
 mv ${SRCDIR}/pass.* ../tests/ > /dev/null
+
+# Move into the tests directory to generate additional failing test cases
+pushd ../tests
+./tvshort > /dev/null
+popd
 
 # Run the tests on these newly created test files
 shopt -s nullglob

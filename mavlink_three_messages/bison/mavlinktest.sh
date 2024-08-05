@@ -37,7 +37,7 @@ done
 touch pass.10000
 
 # Start counter for messages for individual drone flights.
-let msgNum=1
+let msgNum=3
 
 if [ -e ${SRCDIR}/run1.pcap ]; then
 		pushd ${SRCDIR}
@@ -59,7 +59,7 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		done
 
 		# Move all messages over to tests directory
-		mv ./temp.mav ../../mavlink_three_messages/tests/pass.10001 > /dev/null
+		mv ./temp.mav ../../mavlink_three_messages/tests/pass.1 > /dev/null
 
 		# Clean out the srouce files directory
 		make clean > /dev/null
@@ -86,7 +86,7 @@ if [ -e ${SRCDIR}/run2.pcap ]; then
 		done
 
 		# Move all messages over to tests directory
-		mv ./temp.mav ../../mavlink_three_messages/tests/pass.10002 > /dev/null
+		mv ./temp.mav ../../mavlink_three_messages/tests/pass.2 > /dev/null
 
 		# Clean out the source files directory
 		make clean > /dev/null
@@ -103,10 +103,10 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 		make > /dev/null
 		
 		# Extract an EVENT message
-		./extractbymessagenumber run1.pcap fail.10000 65 > /dev/null
+		./extractbymessagenumber run1.pcap fail.1 65 > /dev/null
 
 		# Move message over to tests directory
-		mv fail.10000 ../../mavlink_three_messages/tests/ > /dev/null
+		mv fail.1 ../../mavlink_three_messages/tests/ > /dev/null
 
 		# Clean out source files directory
 		make clean > /dev/null
@@ -114,8 +114,11 @@ if [ -e ${SRCDIR}/run1.pcap ]; then
 fi
 
 # All messages of the given types with a single invalid message type added at the end
-cat pass.10001 fail.10000 > fail.10001
-cat pass.10002 fail.10000 > fail.10002
+cat pass.1 fail.1 > fail.2
+cat pass.2 fail.1 > fail.3
+
+# Generate more failing test cases
+./tvshort > /dev/null
 
 # Return to xbnf directory
 popd

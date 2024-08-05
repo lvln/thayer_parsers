@@ -1,6 +1,6 @@
 # MAVLink
 
-**Note: Best way to run tests is to use the `mavlinktest.sh` script inside of the xbnf directory. This allows for each message type to be tested, one at a time.**
+**Note: Best way to run the full set of tests is to use the `mavlinktest.sh` script inside of the xbnf directory. This allows for each message type to be tested, one at a time. A more limited suite of tests can also be generated using `tv.sh` inside of the `tests` directory.**
 
 This directory contains the complete definition for the MAVLink grammar. Please see `mavlink_standalone_message`, `mavlink_single_message-repeat` or `mavlink_three_messages` for smaller components of the MAVLink grammar.
 
@@ -83,7 +83,7 @@ If building tests and testing manually (caution: this generates a large number o
 * In `tests` directory:
   * `make clean` to remove old tests and executables
   * `make` to build executables
-  * `tv.sh -l` to generate tests for each field on eahc message type
+  * `tv.sh -l` to generate tests for each field in the message type or `tv.sh` to generate limited suite of tests for actual drone flights
 * In `xbnf` or `bison` directory:
   * `make clean`
   * `make`

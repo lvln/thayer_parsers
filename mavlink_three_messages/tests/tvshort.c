@@ -99,5 +99,25 @@ int main(void) {
 
 	message->messages[0].messageID[0] = old;
 
+	if ((fp = fopen("fail.9", "wb")) == NULL) {
+		printf("File not opened successfully.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	writeMavDiffLenToFile(message->messages[0], fp, message->messages[0].payloadLen + 13, message->messages[0].payloadLen);
+
+	fclose(fp);
+
+	if ((fp = fopen("fail.10", "wb")) == NULL) {
+		printf("File not opened successfully.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	writeMavDiffLenToFile(message->messages[0], fp, message->messages[0].payloadLen + 11, message->messages[0].payloadLen);
+
+	fclose(fp);
+
+	freeMemMav(message);
+
 	exit(EXIT_SUCCESS);
 }

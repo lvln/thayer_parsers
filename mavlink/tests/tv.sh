@@ -116,7 +116,7 @@ if [ -e ${SRCDIR}/run2.pcap ]; then
 		popd
 fi
 
-# More all of the tests to the tests directory
+# Move all of the tests to the tests directory
 mv ${SRCDIR}/pass.* . > /dev/null
 
 # Gererate the failing test cases
