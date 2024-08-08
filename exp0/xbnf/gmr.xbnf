@@ -1,0 +1,6 @@
+/* Here is the grammar */
+P : optMessage ;
+
+optMessage : /* empty */ | optMessage message ;
+
+message : * 'a' * 'c' ;
