@@ -113,10 +113,10 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 **command** -- binary command parser  
 **response** -- binary response parser  
 **bugs** -- Hammer implementation issues  
-**mavlink** -- MAVLink parser as well as all MAVLink-related source files
-**mavlink_standalone_message** -- MAVLink single message parser for one message type
-**mavlink_single_message_repeat** -- MAVLink parser for zero or more messages of one message type
-**mavlink_three_messages** -- MAVLink parser for three dirrerent message types
+**mavlink** -- MAVLink parser as well as all MAVLink-related source files  
+**mavlink_standalone_message** -- MAVLink single message parser for one message type  
+**mavlink_single_message_repeat** -- MAVLink parser for zero or more messages of one message type  
+**mavlink_three_messages** -- MAVLink parser for three dirrerent message types  
 
 ### Parser Subdirectories
 
