@@ -1,7 +1,7 @@
 P : message ;
 
 /* a message may be either a signed or an unsigned message */
-message : messageUS | messageS ;
+message : messageUS | messageS | messageM1 ;
 
 /* unsigned messsages contain a header with a payload and finally a checksum */
 messageUS : spUS crc ;
@@ -9,9 +9,13 @@ messageUS : spUS crc ;
 /* signed messages contain a header with a payload, followed by a checksum and finally a 13 byte signature */
 messageS : spS crc sig ;
 
+/* MAVLink 1 messages have a slightly different header fields and cannot contain a signature */
+messageM1 : spM1 crc ;
+
 /* SCALED_PRESSURE (29) */
 spUS : sp01US | sp02US | sp03US | sp04US | sp05US | sp06US | sp07US | sp08US | sp09US | sp10US | sp11US | sp12US | sp13US | sp14US | sp15US | sp16US ;
 spS : sp01S | sp02S | sp03S | sp04S | sp05S | sp06S | sp07S | sp08S | sp09S | sp10S | sp11S | sp12S | sp13S | sp14S | sp15S | sp16S ;
+spM1 : ml01M1 SPCODEM1 spPL14 ;
 sp01US : spMH01US spPL01 ;
 sp02US : spMH02US spPL02 ;
 sp03US : spMH03US spPL03 ;
@@ -94,49 +98,55 @@ spPL15 : * * * * * * * * * * * * * * * ;
 spPL16 : * * * * * * * * * * * * * * * * ;
 
 /* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code - unsigned messages */
-ml01US : MAVCODE LEN01 messageHeaderTailUS ;
-ml02US : MAVCODE LEN02 messageHeaderTailUS ;
-ml03US : MAVCODE LEN03 messageHeaderTailUS ;
-ml04US : MAVCODE LEN04 messageHeaderTailUS ;
-ml05US : MAVCODE LEN05 messageHeaderTailUS ;
-ml06US : MAVCODE LEN06 messageHeaderTailUS ;
-ml07US : MAVCODE LEN07 messageHeaderTailUS ;
-ml08US : MAVCODE LEN08 messageHeaderTailUS ;
-ml09US : MAVCODE LEN09 messageHeaderTailUS ;
-ml10US : MAVCODE LEN10 messageHeaderTailUS ;
-ml11US : MAVCODE LEN11 messageHeaderTailUS ;
-ml12US : MAVCODE LEN12 messageHeaderTailUS ;
-ml13US : MAVCODE LEN13 messageHeaderTailUS ;
-ml14US : MAVCODE LEN14 messageHeaderTailUS ;
-ml15US : MAVCODE LEN15 messageHeaderTailUS ;
-ml16US : MAVCODE LEN16 messageHeaderTailUS ;
+ml01US : MAV2CODE LEN01 messageHeaderTailUS ;
+ml02US : MAV2CODE LEN02 messageHeaderTailUS ;
+ml03US : MAV2CODE LEN03 messageHeaderTailUS ;
+ml04US : MAV2CODE LEN04 messageHeaderTailUS ;
+ml05US : MAV2CODE LEN05 messageHeaderTailUS ;
+ml06US : MAV2CODE LEN06 messageHeaderTailUS ;
+ml07US : MAV2CODE LEN07 messageHeaderTailUS ;
+ml08US : MAV2CODE LEN08 messageHeaderTailUS ;
+ml09US : MAV2CODE LEN09 messageHeaderTailUS ;
+ml10US : MAV2CODE LEN10 messageHeaderTailUS ;
+ml11US : MAV2CODE LEN11 messageHeaderTailUS ;
+ml12US : MAV2CODE LEN12 messageHeaderTailUS ;
+ml13US : MAV2CODE LEN13 messageHeaderTailUS ;
+ml14US : MAV2CODE LEN14 messageHeaderTailUS ;
+ml15US : MAV2CODE LEN15 messageHeaderTailUS ;
+ml16US : MAV2CODE LEN16 messageHeaderTailUS ;
 
 /* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code  - signed messages*/
-ml01S : MAVCODE LEN01 messageHeaderTailS ;
-ml02S : MAVCODE LEN02 messageHeaderTailS ;
-ml03S : MAVCODE LEN03 messageHeaderTailS ;
-ml04S : MAVCODE LEN04 messageHeaderTailS ;
-ml05S : MAVCODE LEN05 messageHeaderTailS ;
-ml06S : MAVCODE LEN06 messageHeaderTailS ;
-ml07S : MAVCODE LEN07 messageHeaderTailS ;
-ml08S : MAVCODE LEN08 messageHeaderTailS ;
-ml09S : MAVCODE LEN09 messageHeaderTailS ;
-ml10S : MAVCODE LEN10 messageHeaderTailS ;
-ml11S : MAVCODE LEN11 messageHeaderTailS ;
-ml12S : MAVCODE LEN12 messageHeaderTailS ;
-ml13S : MAVCODE LEN13 messageHeaderTailS ;
-ml14S : MAVCODE LEN14 messageHeaderTailS ;
-ml15S : MAVCODE LEN15 messageHeaderTailS ;
-ml16S : MAVCODE LEN16 messageHeaderTailS ;
+ml01S : MAV2CODE LEN01 messageHeaderTailS ;
+ml02S : MAV2CODE LEN02 messageHeaderTailS ;
+ml03S : MAV2CODE LEN03 messageHeaderTailS ;
+ml04S : MAV2CODE LEN04 messageHeaderTailS ;
+ml05S : MAV2CODE LEN05 messageHeaderTailS ;
+ml06S : MAV2CODE LEN06 messageHeaderTailS ;
+ml07S : MAV2CODE LEN07 messageHeaderTailS ;
+ml08S : MAV2CODE LEN08 messageHeaderTailS ;
+ml09S : MAV2CODE LEN09 messageHeaderTailS ;
+ml10S : MAV2CODE LEN10 messageHeaderTailS ;
+ml11S : MAV2CODE LEN11 messageHeaderTailS ;
+ml12S : MAV2CODE LEN12 messageHeaderTailS ;
+ml13S : MAV2CODE LEN13 messageHeaderTailS ;
+ml14S : MAV2CODE LEN14 messageHeaderTailS ;
+ml15S : MAV2CODE LEN15 messageHeaderTailS ;
+ml16S : MAV2CODE LEN16 messageHeaderTailS ;
 
-/* tail of the message header for unsigned and signed messages, respectively */
-messageHeaderTailUS :  incompFlagUS compFlag packetSequence sysID compID ;
-messageHeaderTailS :  incompFlagS compFlag packetSequence sysID compID ;
+/* header starter for MAVLink 1 messages */
+ml01M1 : MAV1CODE LEN14 messageHeaderTailM1 ;
+
+/* tail of the message header for unsigned, signed and MAVLink 1 messages, respectively */
+messageHeaderTailUS : incompFlagUS compFlag packetSequence sysID compID ;
+messageHeaderTailS : incompFlagS compFlag packetSequence sysID compID ;
+messageHeaderTailM1 : packetSequence sysID compID ;
 
 /* Tokens */
-MAVCODE : '\xFD' ;
+MAV1CODE : '\xFE' ;
+MAV2CODE : '\xFD' ;
 
 SPCODE : '\x1D' '\x00' '\x00' ;
+SPCODEM1 : '\x1D' ;
 
 LEN01 : '\x01' ;
 LEN02 : '\x02' ;
