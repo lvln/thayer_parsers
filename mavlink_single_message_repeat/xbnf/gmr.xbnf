@@ -1,8 +1,11 @@
 P : optMessage ;
 optMessage : /* empty */ | optMessage message ;
 
-/* a message may be either a signed or an unsigned message */
-message : messageUS | messageS | messageM1 ;
+/* a message may be either a MAVLink 1, signed or an unsigned message */
+message : messageM1 | messageUS | messageS ;
+
+/* MAVLink 1 messages have a slightly different header fields and cannot contain a signature */
+messageM1 : spM1 crc ;
 
 /* unsigned messsages contain a header with a payload and finally a checksum */
 messageUS : spUS crc ;
@@ -10,13 +13,10 @@ messageUS : spUS crc ;
 /* signed messages contain a header with a payload, followed by a checksum and finally a 13 byte signature */
 messageS : spS crc sig ;
 
-/* MAVLink 1 messages have a slightly different header fields and cannot contain a signature */
-messageM1 : spM1 crc ;
-
 /* SCALED_PRESSURE (29) */
+spM1 : ml14M1 SPCODEM1 spPL14 ;
 spUS : sp01US | sp02US | sp03US | sp04US | sp05US | sp06US | sp07US | sp08US | sp09US | sp10US | sp11US | sp12US | sp13US | sp14US | sp15US | sp16US ;
 spS : sp01S | sp02S | sp03S | sp04S | sp05S | sp06S | sp07S | sp08S | sp09S | sp10S | sp11S | sp12S | sp13S | sp14S | sp15S | sp16S ;
-spM1 : ml01M1 SPCODEM1 spPL14 ;
 sp01US : spMH01US spPL01 ;
 sp02US : spMH02US spPL02 ;
 sp03US : spMH03US spPL03 ;
@@ -98,6 +98,9 @@ spPL14 : * * * * * * * * * * * * * * ;
 spPL15 : * * * * * * * * * * * * * * * ;
 spPL16 : * * * * * * * * * * * * * * * * ;
 
+/* header starter for MAVLink 1 messages */
+ml14M1 : MAV1CODE LEN14 messageHeaderTailM1 ;
+
 /* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code - unsigned messages */
 ml01US : MAV2CODE LEN01 messageHeaderTailUS ;
 ml02US : MAV2CODE LEN02 messageHeaderTailUS ;
@@ -134,13 +137,10 @@ ml14S : MAV2CODE LEN14 messageHeaderTailS ;
 ml15S : MAV2CODE LEN15 messageHeaderTailS ;
 ml16S : MAV2CODE LEN16 messageHeaderTailS ;
 
-/* header starter for MAVLink 1 messages */
-ml01M1 : MAV1CODE LEN14 messageHeaderTailM1 ;
-
-/* tail of the message header for unsigned and signed messages, respectively */
+/* tail of the message header for MAVLink 1, unsigned and signed messages, respectively */
+messageHeaderTailM1 : packetSequence sysID compID ;
 messageHeaderTailUS :  incompFlagUS compFlag packetSequence sysID compID ;
 messageHeaderTailS :  incompFlagS compFlag packetSequence sysID compID ;
-messageHeaderTailM1 : packetSequence sysID compID ;
 
 /* Tokens */
 MAV1CODE : '\xFE' ;
