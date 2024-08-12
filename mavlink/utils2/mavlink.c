@@ -86,6 +86,102 @@
 #define OPEN_DRONE_ID_LOCATION_LEN 59
 #define OPEN_DRONE_ID_SYSTEM_LEN 54
 
+// Packet record header
+typedef struct pcaketRecordHeader {
+	uint8_t timeS[4];
+	uint8_t timeUNS[4];
+	uint8_t capturedPacketLength[4];
+	uint8_t originalPacketLength[4];
+} packetRecordHeader_t;
+
+// Ethernet header.
+typedef struct ethernetHeader {
+	uint8_t messageFam[4];
+	uint8_t iphl;
+	uint8_t dsf;
+	uint8_t totalLength[2];
+	uint8_t id[2];
+	uint8_t ffOffset[2];
+	uint8_t ttl;
+	uint8_t protocol;
+	uint8_t headerChecksum[2];
+	uint8_t sourceAddr[4];
+	uint8_t destAddr[4];
+	uint8_t sourcePort[2];
+	uint8_t destPort[2];
+	uint8_t length[2];
+	uint8_t checkSum[2];
+} ethernetHeader_t;
+
+// TLOG header.
+typedef struct tlogHeader {
+	uint8_t bytes[8];
+} tlogHeader_t;
+
+// MAVLink 1 message.
+typedef struct mav1Message {
+	uint8_t mavCode;
+	uint8_t payloadLen;
+	uint8_t packetSeq;
+	uint8_t systemID;
+	uint8_t compID;
+	uint8_t messageID;
+	uint8_t *payload;
+	uint8_t crc[2];
+} mav1Message_t;
+
+// MAVLink 2 message.
+typedef struct mav2Message {
+	uint8_t mavCode;
+	uint8_t payloadLen;
+	uint8_t incompFlag;
+	uint8_t compFlag;
+	uint8_t packetSeq;
+	uint8_t systemID;
+	uint8_t compID;
+	uint8_t messageID[3];
+	uint8_t *payload;
+	uint8_t crc[2];
+	bool signedMess;
+	uint8_t signature[13];
+} mav2Message_t;
+
+// MAVLink message is either MAVLink 1 or MAVLink 2.
+typedef union mavMessage {
+	mav1Message_t mav1;
+	mav2Message_t mav2;
+} mavMessage_t;
+
+// A TLOG message contains a tlog header and a MAVLink message.
+typedef struct tlogMessage {
+	tlogHeader_t header;
+	mavMessage_t mav;
+} tlogMessage_t;
+
+// A pcap message contains a packet record header, an ethernet header and a MAVLink message.
+typedef struct pcapMessage {
+	packetRecordHeader_t prh;
+	ethernetHeader_t eth;
+	mavMessage_t mav;
+} pcapMessage_t;
+
+// Data structure to hold a TLOG file.
+typedef struct tlog {
+	vector_t *messages;
+} pTlog_t;
+
+// Data structure to hold a MAVLink file.
+typedef struct mavlink {
+	vector_t *messages;
+} pMavlink_t;
+
+// Data structure to hold a pcap file.
+typedef struct pcap {
+	uint8_t header[24];
+	vector_t *messages;
+} pPcap_t;
+
+
 // Global variables.
 static FILE *file;
 
@@ -120,6 +216,829 @@ static void printID(void *idp) {
 	id = (int *)idp;
 
 	printf("Message ID: %d\n", *id);
+}
+
+/*
+ * Convert from integer to 16 bit hexadecimal (little endian).
+ * Inputs: integer value, array in which to store hex number
+ * Outputs: none
+ */
+
+static void fromInt16be(int num, uint8_t arr[]) {
+	arr[1] = num % 256;
+	num /= 256;
+	arr[0] = num % 256;
+	
+}
+
+/*
+ * Convert from integer to 32 bit hexadecimal (little endian).
+ * Inputs: integer value, array in which to store hex number
+ * Outputs: none
+ */
+static void fromInt32le(int num, uint8_t arr[]) {
+	arr[0] = num % 256;
+	num /= 256;
+	arr[1] = num % 256;
+	num /= 256;
+	arr[2] = num % 256;
+	num /= 256;
+	arr[3] = num % 256;
+	
+}
+
+/*
+ * Convert from 24 bit hexadecimal (little endian) to integer.
+ * Inputs: array containing hex digits.
+ * Outputs: integer enquvalent.
+ */
+static int toInt24le(uint8_t *arr) {
+	return (int)arr[0] + (int)arr[1]*256 + (int)arr[2]*4096;
+}
+
+/*
+ * Print out a message including its PCAP wrappers.
+ * Inputs: message to print
+ * Outputs: none.
+ */
+static void printMessagePcap(pcapMessage_t *mess) {
+	// Variable declarations.
+	int i, len, payload;
+	uint8_t buf;
+	bool mav1, mav2;
+
+	// Check argument.
+	if (mess == NULL) {
+		fprintf(stderr, "Invalid argument.\n");
+		return;
+	}
+
+	len = toInt24le(mess->prh.capturedPacketLength) + 16;
+	mav1 = mav2 = false;
+	
+	// Detect type of message.
+	if (mess->mav.mav1.mavCode == 0xfe) mav1 = true;
+	else if (mess->mav.mav2.mavCode == 0xfd) mav2 = true;
+
+	printf("Message: \n" );
+	
+	for (i = 0; i < len; i++) {
+		if (i < 4) buf = mess->prh.timeS[i];
+		else if (i < 8) buf = mess->prh.timeUNS[i - 4];
+		else if (i < 12) buf = mess->prh.capturedPacketLength[i - 8];
+		else if (i < 16) buf = mess->prh.originalPacketLength[i - 12];
+		else if (i < 20) buf = mess->eth.messageFam[i - 16];
+		else if (i == 20) buf = mess->eth.iphl;
+		else if (i == 21) buf = mess->eth.dsf;
+		else if (i < 24) buf = mess->eth.totalLength[i - 22];
+		else if (i < 26) buf = mess->eth.id[i - 24];
+		else if (i < 28) buf = mess->eth.ffOffset[i - 26];
+		else if (i == 28) buf = mess->eth.ttl;
+		else if (i == 29) buf = mess->eth.protocol;
+		else if (i < 32) buf = mess->eth.headerChecksum[i - 30];
+		else if (i < 36) buf = mess->eth.sourceAddr[i - 32];
+		else if (i < 40) buf = mess->eth.destAddr[i - 36];
+		else if (i < 42) buf = mess->eth.sourcePort[i - 40];
+		else if (i < 44) buf = mess->eth.destPort[i - 42];
+		else if (i < 46) buf = mess->eth.length[i - 44];
+		else if (i < 48) buf = mess->eth.checkSum[i - 46];
+	
+		// Depending on the messsage type, set the respective fields.
+		if (mav1 && i >= 48) {
+			if (i == 48) buf = mess->mav.mav1.mavCode;
+			else if (i == 49) {
+				buf = mess->mav.mav1.payloadLen;
+
+				payload = (int)buf;
+
+			}
+			else if (i == 50) buf =  mess->mav.mav1.packetSeq;
+			else if (i == 51) buf = mess->mav.mav1.systemID;
+			else if (i == 52) buf = mess->mav.mav1.compID;
+			else if (i == 53) buf = mess->mav.mav1.messageID;		
+			else if (i < 54 + payload) buf = mess->mav.mav1.payload[i - 54];
+			else buf = mess->mav.mav1.crc[i - 54 - payload];		
+		}
+		else if (mav2 && i >= 48) {
+			if (i == 48) buf = mess->mav.mav2.mavCode;
+			else if (i == 49) {
+				buf = mess->mav.mav2.payloadLen;
+
+				payload = (int)buf;
+			}
+			else if (i == 50) buf = mess->mav.mav2.incompFlag;
+			else if (i == 51) buf = mess->mav.mav2.compFlag;
+			else if (i == 52) buf = mess->mav.mav2.packetSeq;
+			else if (i == 53) buf = mess->mav.mav2.systemID;
+			else if (i == 54) buf = mess->mav.mav2.compID;
+			else if (i < 58) buf = mess->mav.mav2.messageID[i - 55];		
+			else if (i < 58 + payload) buf = mess->mav.mav2.payload[i - 58];
+			else if (i < 60 + payload) buf = mess->mav.mav2.crc[i - 58 - payload];
+			else buf = mess->mav.mav2.signature[i - 60 - payload];
+		}
+
+		printf("%02x ", buf);
+
+	}
+
+	printf("\n");
+}
+
+/*
+ * Print out a MAVLink message.
+ * Inputs: message to print
+ * Outputs: none
+ */
+static void printMessageMav(mavMessage_t *mess) {
+	// Variable declarations.
+	int i, len, payload;
+	uint8_t buf;
+	bool mav1, mav2;
+
+	// Check argument.
+	if (mess == NULL) {
+		fprintf(stderr, "Invalid argument.\n");
+		return;
+	}
+
+	len = 0;
+	mav1 = mav2 = false;
+	
+	// Detect type of message.
+	if (mess->mav1.mavCode == 0xfe) {
+		mav1 = true;
+		len = (int)mess->mav1.payloadLen + 8;
+	}
+	else if (mess->mav2.mavCode == 0xfd) {
+		mav2 = true;
+		len = (int)mess->mav2.payloadLen + 12;
+		if (mess->mav2.signedMess) len += 13;
+	}
+
+	printf("Message: \n" );
+	
+	for (i = 0; i < len; i++) {
+		// Depending on the messsage type, set the respective fields.
+		if (mav1) {
+			if (i == 0) buf = mess->mav1.mavCode;
+			else if (i == 1) {
+				buf = mess->mav1.payloadLen;
+
+				payload = (int)buf;
+
+			}
+			else if (i == 2) buf = mess->mav1.packetSeq;
+			else if (i == 3) buf = mess->mav1.systemID;
+			else if (i == 4) buf = mess->mav1.compID;
+			else if (i == 5) buf = mess->mav1.messageID;		
+			else if (i < 6 + payload) buf = mess->mav1.payload[i - 6];
+			else buf = mess->mav1.crc[i - 6 - payload];		
+		}
+		else if (mav2) {
+			if (i == 0) buf = mess->mav2.mavCode;
+			else if (i == 1) {
+				buf = mess->mav2.payloadLen;
+
+				payload = (int)buf;
+			}
+			else if (i == 2) buf = mess->mav2.incompFlag;
+			else if (i == 3) buf = mess->mav2.compFlag;
+			else if (i == 4) buf = mess->mav2.packetSeq;
+			else if (i == 5) buf = mess->mav2.systemID;
+			else if (i == 6) buf = mess->mav2.compID;
+			else if (i < 10) buf = mess->mav2.messageID[i - 7];		
+			else if (i < 10 + payload) buf = mess->mav2.payload[i - 10];
+			else if (i < 12 + payload) buf = mess->mav2.crc[i - 10 - payload];
+			else buf = mess->mav2.signature[i - 12 - payload];
+		}
+
+		printf("%02x ", buf);
+
+	}
+
+	printf("\n");
+}
+
+/*
+ * Print out a TLOG message.
+ * Inputs: message to print
+ * Outputs: none
+ */
+static void printMessageTlog(tlogMessage_t *mess) {
+	// Variable declarations.
+	int i, len, payload;
+	uint8_t buf;
+	bool mav1, mav2;
+
+	// Check argument.
+	if (mess == NULL) {
+		fprintf(stderr, "Invalid argument.\n");
+		return;
+	}
+	
+	len = 0;
+	mav1 = mav2 = false;
+
+	// Detect type of message.
+	if (mess->mav.mav1.mavCode == 0xfe) {
+		mav1 = true;
+		len = (int)mess->mav.mav1.payloadLen + 16;
+	}
+	else if (mess->mav.mav2.mavCode == 0xfd) {
+		mav2 = true;
+		len = (int)mess->mav.mav2.payloadLen + 20;
+		if (mess->mav.mav2.signedMess) len += 13;
+	}
+
+	printf("Message: \n" );
+	
+	for (i = 0; i < len; i++) {
+		if (i < 8) buf = mess->header.bytes[i];
+								 
+		// Depending on the messsage type, set the respective fields.
+		if (mav1 && i >= 8) {
+			if (i == 8) buf = mess->mav.mav1.mavCode;
+			else if (i == 9) {
+				buf = mess->mav.mav1.payloadLen;
+
+				payload = (int)buf;
+
+			}
+			else if (i == 10) buf =  mess->mav.mav1.packetSeq;
+			else if (i == 11) buf = mess->mav.mav1.systemID;
+			else if (i == 12) buf = mess->mav.mav1.compID;
+			else if (i == 13) buf = mess->mav.mav1.messageID;		
+			else if (i < 14 + payload) buf = mess->mav.mav1.payload[i - 14];
+			else buf = mess->mav.mav1.crc[i - 14 - payload];		
+		}
+		else if (mav2 && i >= 8) {
+			if (i == 8) buf = mess->mav.mav2.mavCode;
+			else if (i == 9) {
+				buf = mess->mav.mav2.payloadLen;
+
+				payload = (int)buf;
+			}
+			else if (i == 10) buf = mess->mav.mav2.incompFlag;
+			else if (i == 11) buf = mess->mav.mav2.compFlag;
+			else if (i == 12) buf = mess->mav.mav2.packetSeq;
+			else if (i == 13) buf = mess->mav.mav2.systemID;
+			else if (i == 14) buf = mess->mav.mav2.compID;
+			else if (i < 18) buf = mess->mav.mav2.messageID[i - 15];		
+			else if (i < 18 + payload) buf = mess->mav.mav2.payload[i - 18];
+			else if (i < 20 + payload) buf = mess->mav.mav2.crc[i - 18 - payload];
+			else buf = mess->mav.mav2.signature[i - 20 - payload];
+		}
+
+		printf("%02x ", buf);
+
+	}
+
+	printf("\n");
+}
+
+/*
+ * Write a PCAP message to a file.
+ * Inputs: message to write, file to write to
+ * Outputs: none
+ */
+static void writeMessageToFilePcap(pcapMessage_t *mess, FILE *fp) {
+	// Variable declarations.
+	int i, len, payload;
+	uint8_t buf;
+	bool mav1, mav2;
+
+	// Check arguments.
+	if (mess == NULL || fp == NULL) {
+		fprintf(stderr, "Invalid argument(s).\n");
+		return;
+	}
+	
+	len = toInt24le(mess->prh.capturedPacketLength) + 16;
+	mav1 = mav2 = false;
+	
+	// Detect type of message.
+	if (mess->mav.mav1.mavCode == 0xfe) mav1 = true;
+	else if (mess->mav.mav2.mavCode == 0xfd) mav2 = true;
+	
+	for (i = 0; i < len; i++) {
+		if (i < 4) buf = mess->prh.timeS[i];
+		else if (i < 8) buf = mess->prh.timeUNS[i - 4];
+		else if (i < 12) buf = mess->prh.capturedPacketLength[i - 8];
+		else if (i < 16) buf = mess->prh.originalPacketLength[i - 12];
+		else if (i < 20) buf = mess->eth.messageFam[i - 16];
+		else if (i == 20) buf = mess->eth.iphl;
+		else if (i == 21) buf = mess->eth.dsf;
+		else if (i < 24) buf = mess->eth.totalLength[i - 22];
+		else if (i < 26) buf = mess->eth.id[i - 24];
+		else if (i < 28) buf = mess->eth.ffOffset[i - 26];
+		else if (i == 28) buf = mess->eth.ttl;
+		else if (i == 29) buf = mess->eth.protocol;
+		else if (i < 32) buf = mess->eth.headerChecksum[i - 30];
+		else if (i < 36) buf = mess->eth.sourceAddr[i - 32];
+		else if (i < 40) buf = mess->eth.destAddr[i - 36];
+		else if (i < 42) buf = mess->eth.sourcePort[i - 40];
+		else if (i < 44) buf = mess->eth.destPort[i - 42];
+		else if (i < 46) buf = mess->eth.length[i - 44];
+		else if (i < 48) buf = mess->eth.checkSum[i - 46];
+	
+		// Depending on the messsage type, set the respective fields.
+		if (mav1 && i >= 48) {
+			if (i == 48) buf = mess->mav.mav1.mavCode;
+			else if (i == 49) {
+				buf = mess->mav.mav1.payloadLen;
+
+				payload = (int)buf;
+
+			}
+			else if (i == 50) buf =  mess->mav.mav1.packetSeq;
+			else if (i == 51) buf = mess->mav.mav1.systemID;
+			else if (i == 52) buf = mess->mav.mav1.compID;
+			else if (i == 53) buf = mess->mav.mav1.messageID;		
+			else if (i < 54 + payload) buf = mess->mav.mav1.payload[i - 54];
+			else buf = mess->mav.mav1.crc[i - 54 - payload];		
+		}
+		else if (mav2 && i >= 48) {
+			if (i == 48) buf = mess->mav.mav2.mavCode;
+			else if (i == 49) {
+				buf = mess->mav.mav2.payloadLen;
+
+				payload = (int)buf;
+			}
+			else if (i == 50) buf = mess->mav.mav2.incompFlag;
+			else if (i == 51) buf = mess->mav.mav2.compFlag;
+			else if (i == 52) buf = mess->mav.mav2.packetSeq;
+			else if (i == 53) buf = mess->mav.mav2.systemID;
+			else if (i == 54) buf = mess->mav.mav2.compID;
+			else if (i < 58) buf = mess->mav.mav2.messageID[i - 55];		
+			else if (i < 58 + payload) buf = mess->mav.mav2.payload[i - 58];
+			else if (i < 60 + payload) buf = mess->mav.mav2.crc[i - 58 - payload];
+			else buf = mess->mav.mav2.signature[i - 60 - payload];
+		}
+
+		if (fwrite(&buf, sizeof(buf), 1, fp) != 1)
+			fprintf(stderr, "Error writing byte %02x to file.\n", buf);
+
+	}
+}
+
+/*
+ * Write a MAVLink message to a file.
+ * Inputs: message to write, file to write to
+ * Outputs: none
+ */
+static void writeMessageToFileMav(mavMessage_t *mess, FILE *fp) {
+	// Variable declarations.
+	int i, len, payload;
+	uint8_t buf;
+	bool mav1, mav2;
+
+	// Check arguments.
+	if (mess == NULL || fp == NULL) {
+		fprintf(stderr, "Invalid argument(s).\n");
+		return;
+	}
+	
+	len = 0;
+	mav1 = mav2 = false;
+	
+	// Detect type of message.
+	if (mess->mav1.mavCode == 0xfe) {
+		mav1 = true;
+		len = (int)mess->mav1.payloadLen + 8;
+	}
+	else if (mess->mav2.mavCode == 0xfd) {
+		mav2 = true;
+		len = (int)mess->mav2.payloadLen + 12;
+		if (mess->mav2.signedMess) len += 13;
+	}
+
+	for (i = 0; i < len; i++) {
+		// Depending on the messsage type, set the respective fields.
+		if (mav1) {
+			if (i == 0) buf = mess->mav1.mavCode;
+			else if (i == 1) {
+				buf = mess->mav1.payloadLen;
+
+				payload = (int)buf;
+
+			}
+			else if (i == 2) buf = mess->mav1.packetSeq;
+			else if (i == 3) buf = mess->mav1.systemID;
+			else if (i == 4) buf = mess->mav1.compID;
+			else if (i == 5) buf = mess->mav1.messageID;		
+			else if (i < 6 + payload) buf = mess->mav1.payload[i - 6];
+			else buf = mess->mav1.crc[i - 6 - payload];		
+		}
+		else if (mav2) {
+			if (i == 0) buf = mess->mav2.mavCode;
+			else if (i == 1) {
+				buf = mess->mav2.payloadLen;
+
+				payload = (int)buf;
+			}
+			else if (i == 2) buf = mess->mav2.incompFlag;
+			else if (i == 3) buf = mess->mav2.compFlag;
+			else if (i == 4) buf = mess->mav2.packetSeq;
+			else if (i == 5) buf = mess->mav2.systemID;
+			else if (i == 6) buf = mess->mav2.compID;
+			else if (i < 10) buf = mess->mav2.messageID[i - 7];		
+			else if (i < 10 + payload) buf = mess->mav2.payload[i - 10];
+			else if (i < 12 + payload) buf = mess->mav2.crc[i - 10 - payload];
+			else buf = mess->mav2.signature[i - 12 - payload];
+		}
+
+		if (fwrite(&buf, sizeof(buf), 1, fp) != 1)
+			fprintf(stderr, "Error writing byte %02x to file.\n", buf);
+
+	}
+}
+
+/*
+ * Write a TLOG message to a file.
+ * Inputs: message to write, file to write to
+ * Outputs: none
+ */
+static void writeMessageToFileTlog(tlogMessage_t *mess, FILE *fp) {
+	// Variable declarations.
+	int i, len, payload;
+	uint8_t buf;
+	bool mav1, mav2;
+
+	// Check argument.
+	if (mess == NULL || fp == NULL) {
+		fprintf(stderr, "Invalid argument(s).\n");
+		return;
+	}
+	
+	len = 0;
+	mav1 = mav2 = false;
+	
+	// Detect type of message.
+	if (mess->mav.mav1.mavCode == 0xfe) {
+		mav1 = true;
+		len = (int)mess->mav.mav1.payloadLen + 16;
+	}
+	else if (mess->mav.mav2.mavCode == 0xfd) {
+		mav2 = true;
+		len = (int)mess->mav.mav2.payloadLen + 20;
+		if (mess->mav.mav2.signedMess) len += 13;
+	}
+
+	for (i = 0; i < len; i++) {
+		if (i < 8) buf = mess->header.bytes[i];
+								 
+		// Depending on the messsage type, set the respective fields.
+		if (mav1 && i >= 8) {
+			if (i == 8) buf = mess->mav.mav1.mavCode;
+			else if (i == 9) {
+				buf = mess->mav.mav1.payloadLen;
+
+				payload = (int)buf;
+
+			}
+			else if (i == 10) buf =  mess->mav.mav1.packetSeq;
+			else if (i == 11) buf = mess->mav.mav1.systemID;
+			else if (i == 12) buf = mess->mav.mav1.compID;
+			else if (i == 13) buf = mess->mav.mav1.messageID;		
+			else if (i < 14 + payload) buf = mess->mav.mav1.payload[i - 14];
+			else buf = mess->mav.mav1.crc[i - 14 - payload];		
+		}
+		else if (mav2 && i >= 8) {
+			if (i == 8) buf = mess->mav.mav2.mavCode;
+			else if (i == 9) {
+				buf = mess->mav.mav2.payloadLen;
+
+				payload = (int)buf;
+			}
+			else if (i == 10) buf = mess->mav.mav2.incompFlag;
+			else if (i == 11) buf = mess->mav.mav2.compFlag;
+			else if (i == 12) buf = mess->mav.mav2.packetSeq;
+			else if (i == 13) buf = mess->mav.mav2.systemID;
+			else if (i == 14) buf = mess->mav.mav2.compID;
+			else if (i < 18) buf = mess->mav.mav2.messageID[i - 15];		
+			else if (i < 18 + payload) buf = mess->mav.mav2.payload[i - 18];
+			else buf = mess->mav.mav2.crc[i - 18 - payload];		
+		}
+
+		if (fwrite(&buf, sizeof(buf), 1, fp) != 1)
+			fprintf(stderr, "Error writing byte %02x to file.\n", buf);
+	}
+
+}
+
+/*
+ * Convert a TLOG message to a MAVLink message.
+ * Inputs: TLOG message
+ * Outputs: MAVLink message; NULL if unsuccessful
+ */
+static mavMessage_t *tlogMessToMav(tlogMessage_t *tMess) {
+	// Varaible declarations.
+	mavMessage_t *mess;
+	int i, len, payload;
+	bool mav1, mav2;
+
+	// Check arguments.
+	if (tMess == NULL) {
+		fprintf(stderr, "Invalid argument.\n");
+		return NULL;
+	}
+
+	len = 0;
+	mav1 = mav2 = false;
+	
+	// Check type of message.
+	if (tMess->mav.mav1.mavCode == 0xfe) {
+		mav1 = true;
+		len = tMess->mav.mav1.payloadLen + 8;
+	}
+	else if (tMess->mav.mav2.mavCode == 0xfd) {
+		mav2 = true;
+		len = tMess->mav.mav2.payloadLen + 12;
+		if (tMess->mav.mav2.signedMess) len += 13;
+	}
+		
+	// Allocate space for new MAVlink message.
+	if ((mess = (mavMessage_t *)malloc(sizeof(mavMessage_t))) == NULL) {
+		fprintf(stderr, "Memory allocation failed.\n");
+		return NULL;
+	}
+
+	// Copy over all of the fields.
+	for (i = 0; i < len; i++) {
+		// Depending on the messsage type, set the respective fields.
+		if (mav1) {
+			if (i == 0) mess->mav1.mavCode = tMess->mav.mav1.mavCode;
+			else if (i == 1) {
+				mess->mav1.payloadLen = tMess->mav.mav1.payloadLen;
+				
+				payload = (int)mess->mav1.payloadLen;
+
+				if ((mess->mav1.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
+					fprintf(stderr, "Memory allocation failed.\n");
+					return NULL;
+				}				
+				
+			}
+			else if (i == 2) mess->mav1.packetSeq = tMess->mav.mav1.packetSeq;
+			else if (i == 3) mess->mav1.systemID = tMess->mav.mav1.systemID;
+			else if (i == 4) mess->mav1.compID = tMess->mav.mav1.compID;
+			else if (i == 5) mess->mav1.messageID = tMess->mav.mav1.messageID;
+			else if (i < 6 + payload) mess->mav1.payload[i - 6] = tMess->mav.mav1.payload[i - 6];
+			else mess->mav1.crc[i - 6 - payload] = tMess->mav.mav1.crc[i - 6 - payload];		
+		}
+		else if (mav2) {
+			if (i == 0) {
+				mess->mav2.mavCode = tMess->mav.mav2.mavCode;
+				mess->mav2.signedMess = tMess->mav.mav2.signedMess;
+			}
+			else if (i == 1) {
+				mess->mav2.payloadLen = tMess->mav.mav2.payloadLen;
+
+				payload = (int)mess->mav2.payloadLen;
+				
+				if ((mess->mav2.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
+					fprintf(stderr, "Memory allocation failed.\n");
+					return NULL;
+				}
+			}
+			else if (i == 2) mess->mav2.incompFlag = tMess->mav.mav2.incompFlag;
+			else if (i == 3) mess->mav2.compFlag = tMess->mav.mav2.compFlag;
+			else if (i == 4) mess->mav2.packetSeq = tMess->mav.mav2.packetSeq;
+			else if (i == 5) mess->mav2.systemID = tMess->mav.mav2.systemID;
+			else if (i == 6) mess->mav2.compID = tMess->mav.mav2.compID;
+			else if (i < 10) mess->mav2.messageID[i - 7] = tMess->mav.mav2.messageID[i - 7];
+			else if (i < 10 + payload) mess->mav2.payload[i - 10] = tMess->mav.mav2.payload[i - 10];
+			else if (i < 12 + payload) mess->mav2.crc[i - 10 - payload] = tMess->mav.mav2.crc[i - 10 - payload];
+			else mess->mav2.signature[i - 12 - payload] = tMess->mav.mav2.signature[i - 12 - payload];
+		}
+	}
+	return mess;
+}
+
+/*
+ * Convert a TLOG message to a PCAP message.
+ * Inputs: TLOG message
+ * Outputs: PCAP message; NULL if unsuccessful
+ */
+static pcapMessage_t *tlogMessToPcap(tlogMessage_t *tMess) {
+	// Variable declarations.
+	int len, mavLen, i, payload;
+	bool mav1, mav2;
+	pcapMessage_t *mess;
+	struct timeval tv;
+	
+	// Check arguments.
+	if (tMess == NULL) {
+		fprintf(stderr, "Invalid argument.\n");
+		return NULL;
+	}
+
+	len = 0;
+	mav1 = mav2 = false;
+	
+	// Check type of message.
+	if (tMess->mav.mav1.mavCode == 0xfe) {
+		mav1 = true;
+		len = tMess->mav.mav1.payloadLen + 8;
+	}
+	else if (tMess->mav.mav2.mavCode == 0xfd) {
+		mav2 = true;
+		len = tMess->mav.mav2.payloadLen + 12;
+		if (tMess->mav.mav2.signedMess) len += 13;
+	}
+		
+	// Allocate space for new MAVlink message.
+	if ((mess = (pcapMessage_t *)malloc(sizeof(pcapMessage_t))) == NULL) {
+		fprintf(stderr, "Memory allocation failed.\n");
+		return NULL;
+	}
+
+	// Get the time stamp and insert it.
+	gettimeofday(&tv, NULL);
+	fromInt32le(tv.tv_sec, mess->prh.timeS);
+	fromInt32le(tv.tv_usec, mess->prh.timeUNS);
+
+	// Set length.
+	if (mav1) len = tMess->mav.mav1.payloadLen + 40;
+	else if (mav2) len = tMess->mav.mav2.payloadLen + 44;
+
+	fromInt32le(len, mess->prh.capturedPacketLength);
+	fromInt32le(len, mess->prh.originalPacketLength);
+	
+	// Fill in ethernet header.
+	fromInt32le(2, mess->eth.messageFam);
+	mess->eth.iphl = 0x45;
+	mess->eth.dsf = 0;
+	fromInt16be(len - 4, mess->eth.totalLength);
+	mess->eth.id[0] = 0;
+	mess->eth.id[1] = 0;
+	mess->eth.ffOffset[0] = 0;
+	mess->eth.ffOffset[1] = 0;
+	mess->eth.ttl = 0x40;
+	mess->eth.protocol = 0x11;
+	mess->eth.headerChecksum[0] = 0;
+	mess->eth.headerChecksum[1] = 0;
+	mess->eth.sourceAddr[0] = 0x7f;
+	mess->eth.sourceAddr[1] = 0;
+	mess->eth.sourceAddr[2] = 0;
+	mess->eth.sourceAddr[3] = 0x01;
+	mess->eth.destAddr[0] = 0x7f;
+	mess->eth.destAddr[1] = 0;
+	mess->eth.destAddr[2] = 0;
+	mess->eth.destAddr[3] = 0x01;
+	mess->eth.sourcePort[0] = 0x38;
+	mess->eth.sourcePort[1] = 0xd6;
+	mess->eth.destPort[0] = 0x38;
+	mess->eth.destPort[1] = 0xf4;
+	mess->eth.checkSum[0] = 0;
+	fromInt16be(len - 24, mess->eth.length);
+	mess->eth.checkSum[1] = 0;
+
+	// Extract length fo the MAAVLink message
+	if (tMess->mav.mav1.mavCode == 0xfe) mavLen = tMess->mav.mav1.payloadLen + 8;
+	else if (tMess->mav.mav2.mavCode == 0xfd)	mavLen = tMess->mav.mav2.payloadLen + 12;
+	
+	// Copy over all of the fields
+	for (i = 0; i < mavLen; i++) {
+		// Depending on the messsage type, set the respective fields.
+		if (mav1) {
+			if (i == 0) mess->mav.mav1.mavCode = tMess->mav.mav1.mavCode;
+			else if (i == 1) {
+				mess->mav.mav1.payloadLen = tMess->mav.mav1.payloadLen;
+				
+				payload = (int)mess->mav.mav1.payloadLen;
+
+				if ((mess->mav.mav1.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
+					fprintf(stderr, "Memory allocation failed.\n");
+					return NULL;
+				}				
+				
+			}
+			else if (i == 2) mess->mav.mav1.packetSeq = tMess->mav.mav1.packetSeq;
+			else if (i == 3) mess->mav.mav1.systemID = tMess->mav.mav1.systemID;
+			else if (i == 4) mess->mav.mav1.compID = tMess->mav.mav1.compID;
+			else if (i == 5) mess->mav.mav1.messageID = tMess->mav.mav1.messageID;
+			else if (i < 6 + payload) mess->mav.mav1.payload[i - 6] = tMess->mav.mav1.payload[i - 6];
+			else mess->mav.mav1.crc[i - 6 - payload] = tMess->mav.mav1.crc[i - 6 - payload];		
+		}
+		else if (mav2) {
+			if (i == 0) {
+				mess->mav.mav2.mavCode = tMess->mav.mav2.mavCode;
+				mess->mav.mav2.signedMess = tMess->mav.mav2.signedMess;
+			}
+			else if (i == 1) {
+				mess->mav.mav2.payloadLen = tMess->mav.mav2.payloadLen;
+
+				payload = (int)mess->mav.mav2.payloadLen;
+				
+				if ((mess->mav.mav2.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
+					fprintf(stderr, "Memory allocation failed.\n");
+					return NULL;
+				}
+			}
+			else if (i == 2) mess->mav.mav2.incompFlag = tMess->mav.mav2.incompFlag;
+			else if (i == 3) mess->mav.mav2.compFlag = tMess->mav.mav2.compFlag;
+			else if (i == 4) mess->mav.mav2.packetSeq = tMess->mav.mav2.packetSeq;
+			else if (i == 5) mess->mav.mav2.systemID = tMess->mav.mav2.systemID;
+			else if (i == 6) mess->mav.mav2.compID = tMess->mav.mav2.compID;
+			else if (i < 10) mess->mav.mav2.messageID[i - 7] = tMess->mav.mav2.messageID[i - 7];
+			else if (i < 10 + payload) mess->mav.mav2.payload[i - 10] = tMess->mav.mav2.payload[i - 10];
+			else if (i < 12 + payload) mess->mav.mav2.crc[i - 10 - payload] = tMess->mav.mav2.crc[i - 10 - payload];
+			else mess->mav.mav2.signature[i - 12 - payload] = tMess->mav.mav2.signature[i - 12 - payload];
+		}
+	}
+
+	return mess;
+	
+}
+
+/*
+ * Convert a PCAP message to a MAVLink message.
+ * Inputs: PCAP message
+ * Outputs: MAVLink message; NULL if unsuccessful
+ */
+static mavMessage_t *pcapMessToMav(pcapMessage_t *pMess) {
+	// Variable declarations.
+	mavMessage_t *mess;
+	int i, len, payload;
+	bool mav1, mav2;
+
+	// Check arguments.
+	if (pMess == NULL) {
+		fprintf(stderr, "Invalid argument.\n");
+		return NULL;
+	}
+
+	len = 0;
+	mav1 = mav2 = false;
+	
+	// Check type of message.
+	if (pMess->mav.mav1.mavCode == 0xfe) {
+		mav1 = true;
+		len = pMess->mav.mav1.payloadLen + 8;
+	}
+	else if (pMess->mav.mav2.mavCode == 0xfd) {
+		mav2 = true;
+		len = pMess->mav.mav2.payloadLen + 12;
+		if (pMess->mav.mav2.signedMess) len += 13;
+	}
+		
+	// Allocate space for new MAVlink message.
+	if ((mess = (mavMessage_t *)malloc(sizeof(mavMessage_t))) == NULL) {
+		fprintf(stderr, "Memory allocation failed.\n");
+		return NULL;
+	}
+
+	// Copy over all of the fields.
+	for (i = 0; i < len; i++) {
+		// Depending on the messsage type, set the respective fields.
+		if (mav1) {
+			if (i == 0) mess->mav1.mavCode = pMess->mav.mav1.mavCode;
+			else if (i == 1) {
+				mess->mav1.payloadLen = pMess->mav.mav1.payloadLen;
+				
+				payload = (int)mess->mav1.payloadLen;
+
+				if ((mess->mav1.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
+					fprintf(stderr, "Memory allocation failed.\n");
+					return NULL;
+				}				
+				
+			}
+			else if (i == 2) mess->mav1.packetSeq = pMess->mav.mav1.packetSeq;
+			else if (i == 3) mess->mav1.systemID = pMess->mav.mav1.systemID;
+			else if (i == 4) mess->mav1.compID = pMess->mav.mav1.compID;
+			else if (i == 5) mess->mav1.messageID = pMess->mav.mav1.messageID;
+			else if (i < 6 + payload) mess->mav1.payload[i - 6] = pMess->mav.mav1.payload[i - 6];
+			else mess->mav1.crc[i - 6 - payload] = pMess->mav.mav1.crc[i - 6 - payload];		
+		}
+		else if (mav2) {
+			if (i == 0) {
+				mess->mav2.mavCode = pMess->mav.mav2.mavCode;
+				mess->mav2.signedMess = pMess->mav.mav2.signedMess;
+			}
+			else if (i == 1) {
+				mess->mav2.payloadLen = pMess->mav.mav2.payloadLen;
+
+				payload = (int)mess->mav2.payloadLen;
+				
+				if ((mess->mav2.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
+					fprintf(stderr, "Memory allocation failed.\n");
+					return NULL;
+				}
+			}
+			else if (i == 2) mess->mav2.incompFlag = pMess->mav.mav2.incompFlag;
+			else if (i == 3) mess->mav2.compFlag = pMess->mav.mav2.compFlag;
+			else if (i == 4) mess->mav2.packetSeq = pMess->mav.mav2.packetSeq;
+			else if (i == 5) mess->mav2.systemID = pMess->mav.mav2.systemID;
+			else if (i == 6) mess->mav2.compID = pMess->mav.mav2.compID;
+			else if (i < 10) mess->mav2.messageID[i - 7] = pMess->mav.mav2.messageID[i - 7];
+			else if (i < 10 + payload) mess->mav2.payload[i - 10] = pMess->mav.mav2.payload[i - 10];
+			else if (i < 12 + payload) mess->mav2.crc[i - 10 - payload] = pMess->mav.mav2.crc[i - 10 - payload];
+			else mess->mav2.signature[i - 12 - payload] = pMess->mav.mav2.signature[i - 12 - payload];
+		}
+	}
+	return mess;
 }
 
 /*
@@ -264,51 +1183,13 @@ static void freePayloadTlog(void *data) {
 }
 
 /*
- * Convert from integer to 16 bit hexadecimal (little endian).
- * Inputs: integer value, array in which to store hex number
- * Outputs: none
- */
-
-static void fromInt16be(int num, uint8_t arr[]) {
-	arr[1] = num % 256;
-	num /= 256;
-	arr[0] = num % 256;
-	
-}
-
-/*
- * Convert from integer to 32 bit hexadecimal (little endian).
- * Inputs: integer value, array in which to store hex number
- * Outputs: none
- */
-static void fromInt32le(int num, uint8_t arr[]) {
-	arr[0] = num % 256;
-	num /= 256;
-	arr[1] = num % 256;
-	num /= 256;
-	arr[2] = num % 256;
-	num /= 256;
-	arr[3] = num % 256;
-	
-}
-
-/*
- * Convert from 24 bit hexadecimal (little endian) to integer.
- * Inputs: array containing hex digits.
- * Outputs: integer enquvalent.
- */
-static int toInt24le(uint8_t *arr) {
-	return (int)arr[0] + (int)arr[1]*256 + (int)arr[2]*4096;
-}
-
-/*
  * Read a pcap file (header and all messages.
  * Inputs: input file
  * Outputs: pcap file data structure; NULL if unsuccessful
  */
 pcap_t *readFilePcap(FILE *ifile) {
 	// Variable declarations.
-	pcap_t *pcap;
+	pPcap_t *pcap;
 	int i, payload, bytesRead;
 	pcapMessage_t *mess;
 	uint8_t buf;
@@ -321,7 +1202,7 @@ pcap_t *readFilePcap(FILE *ifile) {
 	}
 
 	// Allocate memory and initialise pcap data structure.
-	if ((pcap = (pcap_t *)malloc(sizeof(pcap_t))) == NULL) {
+	if ((pcap = (pPcap_t *)malloc(sizeof(pPcap_t))) == NULL) {
 		fprintf(stderr, "Error allocating memory.\n");
 		return NULL;
 	}
@@ -443,7 +1324,7 @@ pcap_t *readFilePcap(FILE *ifile) {
 		}
 	}
 
-	return pcap;
+	return (pcap_t *)pcap;
 }
 
 /*
@@ -453,7 +1334,7 @@ pcap_t *readFilePcap(FILE *ifile) {
  */
 mavlink_t *readFileMav(FILE *ifile) {
 	// Variable declarations.
-	mavlink_t *mav;
+	pMavlink_t *mav;
 	int i, payload, bytesRead;
 	mavMessage_t *mess;
 	uint8_t buf;
@@ -466,7 +1347,7 @@ mavlink_t *readFileMav(FILE *ifile) {
 	}
 
 	// Allocate memory and initialise pcap data structure.
-	if ((mav = (mavlink_t *)malloc(sizeof(mavlink_t))) == NULL) {
+	if ((mav = (pMavlink_t *)malloc(sizeof(pMavlink_t))) == NULL) {
 		fprintf(stderr, "Error allocating memory.\n");
 		return NULL;
 	}
@@ -559,7 +1440,7 @@ mavlink_t *readFileMav(FILE *ifile) {
 		}
 	}
 
-	return mav;
+	return (mavlink_t *)mav;
 }
 
 
@@ -570,7 +1451,7 @@ mavlink_t *readFileMav(FILE *ifile) {
  */
 tlog_t *readFileTlog(FILE *ifile) {
 	// Variable declarations.
-	tlog_t *tlog;
+	pTlog_t *tlog;
 	int i, payload, bytesRead;
 	tlogMessage_t *mess;
 	uint8_t buf;
@@ -583,7 +1464,7 @@ tlog_t *readFileTlog(FILE *ifile) {
 	}
 
 	// Allocate memory and initialise pcap data structure.
-	if ((tlog = (tlog_t *)malloc(sizeof(tlog_t))) == NULL) {
+	if ((tlog = (pTlog_t *)malloc(sizeof(pTlog_t))) == NULL) {
 		fprintf(stderr, "Error allocating memory.\n");
 		return NULL;
 	}
@@ -676,247 +1557,7 @@ tlog_t *readFileTlog(FILE *ifile) {
 		}
 	}
 
-	return tlog;
-}
-
-/*
- * Print out a message including its PCAP wrappers.
- * Inputs: message to print
- * Outputs: none.
- */
-void printMessagePcap(pcapMessage_t *mess) {
-	// Variable declarations.
-	int i, len, payload;
-	uint8_t buf;
-	bool mav1, mav2;
-
-	// Check argument.
-	if (mess == NULL) {
-		fprintf(stderr, "Invalid argument.\n");
-		return;
-	}
-
-	len = toInt24le(mess->prh.capturedPacketLength) + 16;
-	mav1 = mav2 = false;
-	
-	// Detect type of message.
-	if (mess->mav.mav1.mavCode == 0xfe) mav1 = true;
-	else if (mess->mav.mav2.mavCode == 0xfd) mav2 = true;
-
-	printf("Message: \n" );
-	
-	for (i = 0; i < len; i++) {
-		if (i < 4) buf = mess->prh.timeS[i];
-		else if (i < 8) buf = mess->prh.timeUNS[i - 4];
-		else if (i < 12) buf = mess->prh.capturedPacketLength[i - 8];
-		else if (i < 16) buf = mess->prh.originalPacketLength[i - 12];
-		else if (i < 20) buf = mess->eth.messageFam[i - 16];
-		else if (i == 20) buf = mess->eth.iphl;
-		else if (i == 21) buf = mess->eth.dsf;
-		else if (i < 24) buf = mess->eth.totalLength[i - 22];
-		else if (i < 26) buf = mess->eth.id[i - 24];
-		else if (i < 28) buf = mess->eth.ffOffset[i - 26];
-		else if (i == 28) buf = mess->eth.ttl;
-		else if (i == 29) buf = mess->eth.protocol;
-		else if (i < 32) buf = mess->eth.headerChecksum[i - 30];
-		else if (i < 36) buf = mess->eth.sourceAddr[i - 32];
-		else if (i < 40) buf = mess->eth.destAddr[i - 36];
-		else if (i < 42) buf = mess->eth.sourcePort[i - 40];
-		else if (i < 44) buf = mess->eth.destPort[i - 42];
-		else if (i < 46) buf = mess->eth.length[i - 44];
-		else if (i < 48) buf = mess->eth.checkSum[i - 46];
-	
-		// Depending on the messsage type, set the respective fields.
-		if (mav1 && i >= 48) {
-			if (i == 48) buf = mess->mav.mav1.mavCode;
-			else if (i == 49) {
-				buf = mess->mav.mav1.payloadLen;
-
-				payload = (int)buf;
-
-			}
-			else if (i == 50) buf =  mess->mav.mav1.packetSeq;
-			else if (i == 51) buf = mess->mav.mav1.systemID;
-			else if (i == 52) buf = mess->mav.mav1.compID;
-			else if (i == 53) buf = mess->mav.mav1.messageID;		
-			else if (i < 54 + payload) buf = mess->mav.mav1.payload[i - 54];
-			else buf = mess->mav.mav1.crc[i - 54 - payload];		
-		}
-		else if (mav2 && i >= 48) {
-			if (i == 48) buf = mess->mav.mav2.mavCode;
-			else if (i == 49) {
-				buf = mess->mav.mav2.payloadLen;
-
-				payload = (int)buf;
-			}
-			else if (i == 50) buf = mess->mav.mav2.incompFlag;
-			else if (i == 51) buf = mess->mav.mav2.compFlag;
-			else if (i == 52) buf = mess->mav.mav2.packetSeq;
-			else if (i == 53) buf = mess->mav.mav2.systemID;
-			else if (i == 54) buf = mess->mav.mav2.compID;
-			else if (i < 58) buf = mess->mav.mav2.messageID[i - 55];		
-			else if (i < 58 + payload) buf = mess->mav.mav2.payload[i - 58];
-			else if (i < 60 + payload) buf = mess->mav.mav2.crc[i - 58 - payload];
-			else buf = mess->mav.mav2.signature[i - 60 - payload];
-		}
-
-		printf("%02x ", buf);
-
-	}
-
-	printf("\n");
-}
-
-/*
- * Print out a MAVLink message.
- * Inputs: message to print
- * Outputs: none
- */
-void printMessageMav(mavMessage_t *mess) {
-	// Variable declarations.
-	int i, len, payload;
-	uint8_t buf;
-	bool mav1, mav2;
-
-	// Check argument.
-	if (mess == NULL) {
-		fprintf(stderr, "Invalid argument.\n");
-		return;
-	}
-
-	len = 0;
-	mav1 = mav2 = false;
-	
-	// Detect type of message.
-	if (mess->mav1.mavCode == 0xfe) {
-		mav1 = true;
-		len = (int)mess->mav1.payloadLen + 8;
-	}
-	else if (mess->mav2.mavCode == 0xfd) {
-		mav2 = true;
-		len = (int)mess->mav2.payloadLen + 12;
-		if (mess->mav2.signedMess) len += 13;
-	}
-
-	printf("Message: \n" );
-	
-	for (i = 0; i < len; i++) {
-		// Depending on the messsage type, set the respective fields.
-		if (mav1) {
-			if (i == 0) buf = mess->mav1.mavCode;
-			else if (i == 1) {
-				buf = mess->mav1.payloadLen;
-
-				payload = (int)buf;
-
-			}
-			else if (i == 2) buf = mess->mav1.packetSeq;
-			else if (i == 3) buf = mess->mav1.systemID;
-			else if (i == 4) buf = mess->mav1.compID;
-			else if (i == 5) buf = mess->mav1.messageID;		
-			else if (i < 6 + payload) buf = mess->mav1.payload[i - 6];
-			else buf = mess->mav1.crc[i - 6 - payload];		
-		}
-		else if (mav2) {
-			if (i == 0) buf = mess->mav2.mavCode;
-			else if (i == 1) {
-				buf = mess->mav2.payloadLen;
-
-				payload = (int)buf;
-			}
-			else if (i == 2) buf = mess->mav2.incompFlag;
-			else if (i == 3) buf = mess->mav2.compFlag;
-			else if (i == 4) buf = mess->mav2.packetSeq;
-			else if (i == 5) buf = mess->mav2.systemID;
-			else if (i == 6) buf = mess->mav2.compID;
-			else if (i < 10) buf = mess->mav2.messageID[i - 7];		
-			else if (i < 10 + payload) buf = mess->mav2.payload[i - 10];
-			else if (i < 12 + payload) buf = mess->mav2.crc[i - 10 - payload];
-			else buf = mess->mav2.signature[i - 12 - payload];
-		}
-
-		printf("%02x ", buf);
-
-	}
-
-	printf("\n");
-}
-
-/*
- * Print out a TLOG message.
- * Inputs: message to print
- * Outputs: none
- */
-void printMessageTlog(tlogMessage_t *mess) {
-	// Variable declarations.
-	int i, len, payload;
-	uint8_t buf;
-	bool mav1, mav2;
-
-	// Check argument.
-	if (mess == NULL) {
-		fprintf(stderr, "Invalid argument.\n");
-		return;
-	}
-	
-	len = 0;
-	mav1 = mav2 = false;
-
-	// Detect type of message.
-	if (mess->mav.mav1.mavCode == 0xfe) {
-		mav1 = true;
-		len = (int)mess->mav.mav1.payloadLen + 16;
-	}
-	else if (mess->mav.mav2.mavCode == 0xfd) {
-		mav2 = true;
-		len = (int)mess->mav.mav2.payloadLen + 20;
-		if (mess->mav.mav2.signedMess) len += 13;
-	}
-
-	printf("Message: \n" );
-	
-	for (i = 0; i < len; i++) {
-		if (i < 8) buf = mess->header.bytes[i];
-								 
-		// Depending on the messsage type, set the respective fields.
-		if (mav1 && i >= 8) {
-			if (i == 8) buf = mess->mav.mav1.mavCode;
-			else if (i == 9) {
-				buf = mess->mav.mav1.payloadLen;
-
-				payload = (int)buf;
-
-			}
-			else if (i == 10) buf =  mess->mav.mav1.packetSeq;
-			else if (i == 11) buf = mess->mav.mav1.systemID;
-			else if (i == 12) buf = mess->mav.mav1.compID;
-			else if (i == 13) buf = mess->mav.mav1.messageID;		
-			else if (i < 14 + payload) buf = mess->mav.mav1.payload[i - 14];
-			else buf = mess->mav.mav1.crc[i - 14 - payload];		
-		}
-		else if (mav2 && i >= 8) {
-			if (i == 8) buf = mess->mav.mav2.mavCode;
-			else if (i == 9) {
-				buf = mess->mav.mav2.payloadLen;
-
-				payload = (int)buf;
-			}
-			else if (i == 10) buf = mess->mav.mav2.incompFlag;
-			else if (i == 11) buf = mess->mav.mav2.compFlag;
-			else if (i == 12) buf = mess->mav.mav2.packetSeq;
-			else if (i == 13) buf = mess->mav.mav2.systemID;
-			else if (i == 14) buf = mess->mav.mav2.compID;
-			else if (i < 18) buf = mess->mav.mav2.messageID[i - 15];		
-			else if (i < 18 + payload) buf = mess->mav.mav2.payload[i - 18];
-			else if (i < 20 + payload) buf = mess->mav.mav2.crc[i - 18 - payload];
-			else buf = mess->mav.mav2.signature[i - 20 - payload];
-		}
-
-		printf("%02x ", buf);
-
-	}
-
-	printf("\n");
+	return (tlog_t *)tlog;
 }
 
 /*
@@ -924,15 +1565,19 @@ void printMessageTlog(tlogMessage_t *mess) {
  * Inputs: PCAP file
  * Outputs: none
  */
-void printFilePcap(pcap_t *pcap) {	
+void printFilePcap(pcap_t *pcapP) {	
 	// Variable declarations.
 	int i;
+	pPcap_t *pcap;
 
 	// Check argument.
-	if (pcap == NULL) {
+	if (pcapP == NULL) {
 		fprintf(stderr, "Invalid argument.\n");
 		return;
 	}
+
+	// Coerce.
+	pcap = (pPcap_t *)pcapP;
 	
 	// First print header.
 	printf("Header: ");
@@ -952,12 +1597,18 @@ void printFilePcap(pcap_t *pcap) {
  * Inputs: MAVLink file
  * Outputs: none
  */
-void printFileMav(mavlink_t *mav) {
+void printFileMav(mavlink_t *mavP) {
+	// Variable declarations.
+	pMavlink_t *mav;
+	
 	// Check argument.
-	if (mav == NULL) {
+	if (mavP == NULL) {
 		fprintf(stderr, "Invalid argument.\n");
 		return;
 	}
+
+	// Coerce.
+	mav = (pMavlink_t *)mavP;
 	
 	// Now print each message.
 	vectorApply(mav->messages, printFuncMav);
@@ -969,12 +1620,18 @@ void printFileMav(mavlink_t *mav) {
  * Inputs: TLOG file
  * Outputs: none
  */
-void printFileTlog(tlog_t *tlog) {
+void printFileTlog(tlog_t *tlogP) {
+	// Variable declarations.
+	pTlog_t *tlog;
+	
 	// Check argument.
-	if (tlog == NULL) {
+	if (tlogP == NULL) {
 		fprintf(stderr, "Invalid argument.\n");
 		return;
 	}
+
+	// Coerce.
+	tlog = (pTlog_t *)tlogP;
 	
 	// Now print each message.
 	vectorApply(tlog->messages, printFuncTlog);
@@ -982,251 +1639,26 @@ void printFileTlog(tlog_t *tlog) {
 }
 
 /*
- * Write a PCAP message to a file.
- * Inputs: message to write, file to write to
- * Outputs: none
- */
-void writeMessageToFilePcap(pcapMessage_t *mess, FILE *fp) {
-	// Variable declarations.
-	int i, len, payload;
-	uint8_t buf;
-	bool mav1, mav2;
-
-	// Check arguments.
-	if (mess == NULL || fp == NULL) {
-		fprintf(stderr, "Invalid argument(s).\n");
-		return;
-	}
-	
-	len = toInt24le(mess->prh.capturedPacketLength) + 16;
-	mav1 = mav2 = false;
-	
-	// Detect type of message.
-	if (mess->mav.mav1.mavCode == 0xfe) mav1 = true;
-	else if (mess->mav.mav2.mavCode == 0xfd) mav2 = true;
-	
-	for (i = 0; i < len; i++) {
-		if (i < 4) buf = mess->prh.timeS[i];
-		else if (i < 8) buf = mess->prh.timeUNS[i - 4];
-		else if (i < 12) buf = mess->prh.capturedPacketLength[i - 8];
-		else if (i < 16) buf = mess->prh.originalPacketLength[i - 12];
-		else if (i < 20) buf = mess->eth.messageFam[i - 16];
-		else if (i == 20) buf = mess->eth.iphl;
-		else if (i == 21) buf = mess->eth.dsf;
-		else if (i < 24) buf = mess->eth.totalLength[i - 22];
-		else if (i < 26) buf = mess->eth.id[i - 24];
-		else if (i < 28) buf = mess->eth.ffOffset[i - 26];
-		else if (i == 28) buf = mess->eth.ttl;
-		else if (i == 29) buf = mess->eth.protocol;
-		else if (i < 32) buf = mess->eth.headerChecksum[i - 30];
-		else if (i < 36) buf = mess->eth.sourceAddr[i - 32];
-		else if (i < 40) buf = mess->eth.destAddr[i - 36];
-		else if (i < 42) buf = mess->eth.sourcePort[i - 40];
-		else if (i < 44) buf = mess->eth.destPort[i - 42];
-		else if (i < 46) buf = mess->eth.length[i - 44];
-		else if (i < 48) buf = mess->eth.checkSum[i - 46];
-	
-		// Depending on the messsage type, set the respective fields.
-		if (mav1 && i >= 48) {
-			if (i == 48) buf = mess->mav.mav1.mavCode;
-			else if (i == 49) {
-				buf = mess->mav.mav1.payloadLen;
-
-				payload = (int)buf;
-
-			}
-			else if (i == 50) buf =  mess->mav.mav1.packetSeq;
-			else if (i == 51) buf = mess->mav.mav1.systemID;
-			else if (i == 52) buf = mess->mav.mav1.compID;
-			else if (i == 53) buf = mess->mav.mav1.messageID;		
-			else if (i < 54 + payload) buf = mess->mav.mav1.payload[i - 54];
-			else buf = mess->mav.mav1.crc[i - 54 - payload];		
-		}
-		else if (mav2 && i >= 48) {
-			if (i == 48) buf = mess->mav.mav2.mavCode;
-			else if (i == 49) {
-				buf = mess->mav.mav2.payloadLen;
-
-				payload = (int)buf;
-			}
-			else if (i == 50) buf = mess->mav.mav2.incompFlag;
-			else if (i == 51) buf = mess->mav.mav2.compFlag;
-			else if (i == 52) buf = mess->mav.mav2.packetSeq;
-			else if (i == 53) buf = mess->mav.mav2.systemID;
-			else if (i == 54) buf = mess->mav.mav2.compID;
-			else if (i < 58) buf = mess->mav.mav2.messageID[i - 55];		
-			else if (i < 58 + payload) buf = mess->mav.mav2.payload[i - 58];
-			else if (i < 60 + payload) buf = mess->mav.mav2.crc[i - 58 - payload];
-			else buf = mess->mav.mav2.signature[i - 60 - payload];
-		}
-
-		if (fwrite(&buf, sizeof(buf), 1, fp) != 1)
-			fprintf(stderr, "Error writing byte %02x to file.\n", buf);
-
-	}
-}
-
-/*
- * Write a MAVLink message to a file.
- * Inputs: message to write, file to write to
- * Outputs: none
- */
-void writeMessageToFileMav(mavMessage_t *mess, FILE *fp) {
-	// Variable declarations.
-	int i, len, payload;
-	uint8_t buf;
-	bool mav1, mav2;
-
-	// Check arguments.
-	if (mess == NULL || fp == NULL) {
-		fprintf(stderr, "Invalid argument(s).\n");
-		return;
-	}
-	
-	len = 0;
-	mav1 = mav2 = false;
-	
-	// Detect type of message.
-	if (mess->mav1.mavCode == 0xfe) {
-		mav1 = true;
-		len = (int)mess->mav1.payloadLen + 8;
-	}
-	else if (mess->mav2.mavCode == 0xfd) {
-		mav2 = true;
-		len = (int)mess->mav2.payloadLen + 12;
-		if (mess->mav2.signedMess) len += 13;
-	}
-
-	for (i = 0; i < len; i++) {
-		// Depending on the messsage type, set the respective fields.
-		if (mav1) {
-			if (i == 0) buf = mess->mav1.mavCode;
-			else if (i == 1) {
-				buf = mess->mav1.payloadLen;
-
-				payload = (int)buf;
-
-			}
-			else if (i == 2) buf = mess->mav1.packetSeq;
-			else if (i == 3) buf = mess->mav1.systemID;
-			else if (i == 4) buf = mess->mav1.compID;
-			else if (i == 5) buf = mess->mav1.messageID;		
-			else if (i < 6 + payload) buf = mess->mav1.payload[i - 6];
-			else buf = mess->mav1.crc[i - 6 - payload];		
-		}
-		else if (mav2) {
-			if (i == 0) buf = mess->mav2.mavCode;
-			else if (i == 1) {
-				buf = mess->mav2.payloadLen;
-
-				payload = (int)buf;
-			}
-			else if (i == 2) buf = mess->mav2.incompFlag;
-			else if (i == 3) buf = mess->mav2.compFlag;
-			else if (i == 4) buf = mess->mav2.packetSeq;
-			else if (i == 5) buf = mess->mav2.systemID;
-			else if (i == 6) buf = mess->mav2.compID;
-			else if (i < 10) buf = mess->mav2.messageID[i - 7];		
-			else if (i < 10 + payload) buf = mess->mav2.payload[i - 10];
-			else if (i < 12 + payload) buf = mess->mav2.crc[i - 10 - payload];
-			else buf = mess->mav2.signature[i - 12 - payload];
-		}
-
-		if (fwrite(&buf, sizeof(buf), 1, fp) != 1)
-			fprintf(stderr, "Error writing byte %02x to file.\n", buf);
-
-	}
-}
-
-/*
- * Write a TLOG message to a file.
- * Inputs: message to write, file to write to
- * Outputs: none
- */
-void writeMessageToFileTlog(tlogMessage_t *mess, FILE *fp) {
-	// Variable declarations.
-	int i, len, payload;
-	uint8_t buf;
-	bool mav1, mav2;
-
-	// Check argument.
-	if (mess == NULL || fp == NULL) {
-		fprintf(stderr, "Invalid argument(s).\n");
-		return;
-	}
-	
-	len = 0;
-	mav1 = mav2 = false;
-	
-	// Detect type of message.
-	if (mess->mav.mav1.mavCode == 0xfe) {
-		mav1 = true;
-		len = (int)mess->mav.mav1.payloadLen + 16;
-	}
-	else if (mess->mav.mav2.mavCode == 0xfd) {
-		mav2 = true;
-		len = (int)mess->mav.mav2.payloadLen + 20;
-		if (mess->mav.mav2.signedMess) len += 13;
-	}
-
-	for (i = 0; i < len; i++) {
-		if (i < 8) buf = mess->header.bytes[i];
-								 
-		// Depending on the messsage type, set the respective fields.
-		if (mav1 && i >= 8) {
-			if (i == 8) buf = mess->mav.mav1.mavCode;
-			else if (i == 9) {
-				buf = mess->mav.mav1.payloadLen;
-
-				payload = (int)buf;
-
-			}
-			else if (i == 10) buf =  mess->mav.mav1.packetSeq;
-			else if (i == 11) buf = mess->mav.mav1.systemID;
-			else if (i == 12) buf = mess->mav.mav1.compID;
-			else if (i == 13) buf = mess->mav.mav1.messageID;		
-			else if (i < 14 + payload) buf = mess->mav.mav1.payload[i - 14];
-			else buf = mess->mav.mav1.crc[i - 14 - payload];		
-		}
-		else if (mav2 && i >= 8) {
-			if (i == 8) buf = mess->mav.mav2.mavCode;
-			else if (i == 9) {
-				buf = mess->mav.mav2.payloadLen;
-
-				payload = (int)buf;
-			}
-			else if (i == 10) buf = mess->mav.mav2.incompFlag;
-			else if (i == 11) buf = mess->mav.mav2.compFlag;
-			else if (i == 12) buf = mess->mav.mav2.packetSeq;
-			else if (i == 13) buf = mess->mav.mav2.systemID;
-			else if (i == 14) buf = mess->mav.mav2.compID;
-			else if (i < 18) buf = mess->mav.mav2.messageID[i - 15];		
-			else if (i < 18 + payload) buf = mess->mav.mav2.payload[i - 18];
-			else buf = mess->mav.mav2.crc[i - 18 - payload];		
-		}
-
-		if (fwrite(&buf, sizeof(buf), 1, fp) != 1)
-			fprintf(stderr, "Error writing byte %02x to file.\n", buf);
-	}
-
-}
-
-/*
  * Write the entire contents of a PCAP file structure to a file.
  * Inputs: PCAP file, file to write to
  * Outputs: none
  */
-void writeToFilePcap(pcap_t *pcap, FILE *fp) {
+void writeToFilePcap(pcap_t *pcapP, FILE *fp) {
 	// Variable declarations.
 	int i;
 	uint8_t buf;
+	pPcap_t *pcap;
 	
 	// Check argument.
-	if (pcap == NULL || fp == NULL) {
+	if (pcapP == NULL || fp == NULL) {
 		fprintf(stderr, "Invalid argument(s).\n");
 		return;
 	}
-	
+
+	// Coerce.
+	pcap = (pPcap_t *)pcapP;
+
+	// Write PCAP file header.
 	for (i = 0; i < 24; i++) {
 		buf = pcap->header[i];
 		
@@ -1247,12 +1679,18 @@ void writeToFilePcap(pcap_t *pcap, FILE *fp) {
  * Inputs: MAVLink file, file to write to
  * Outputs: none
  */
-void writeToFileMav(mavlink_t *mav, FILE *fp) {
+void writeToFileMav(mavlink_t *mavP, FILE *fp) {
+	// Variable declarations.
+	pMavlink_t *mav;
+	
 	// Check argument.
-	if (mav == NULL || fp == NULL) {
+	if (mavP == NULL || fp == NULL) {
 		fprintf(stderr, "Invalid argument(s).\n");
 		return;
 	}
+
+	// Coerce.
+	mav = (pMavlink_t *)mavP;
 	
 	// Set global variable to keeptrack of file.
 	file = fp;
@@ -1266,12 +1704,18 @@ void writeToFileMav(mavlink_t *mav, FILE *fp) {
  * Inputs: TLOG file, file to write to
  * Outputs: none
  */
-void writeToFileTlog(tlog_t *tlog, FILE *fp) {
+void writeToFileTlog(tlog_t *tlogP, FILE *fp) {
+	// Variable declarations.
+	pTlog_t *tlog;
+	
 	// Check argument.
-	if (tlog == NULL || fp == NULL) {
+	if (tlogP == NULL || fp == NULL) {
 		fprintf(stderr, "Invalid argument(s).\n");
 		return;
 	}
+
+	// Coerce.
+	tlog = (pTlog_t *)tlogP;
 	
 	// Set global variable to keeptrack of file.
 	file = fp;
@@ -1286,7 +1730,19 @@ void writeToFileTlog(tlog_t *tlog, FILE *fp) {
  * Inputs: PCAP file
  * Outputs: none
  */
-void freePcap(pcap_t *pcap) {
+void freePcap(pcap_t *pcapP) {
+	// Variable declarations.
+	pPcap_t *pcap;
+
+	// Check arguments.
+	if (pcapP == NULL) {
+		fprintf(stderr, "Invalid argument.\n");
+		return;
+	}
+
+	// Coerce.
+	pcap = (pPcap_t *)pcapP;
+
 	// Free payloads of each message.
 	vectorApply(pcap->messages, freePayloadPcap);
 
@@ -1306,7 +1762,19 @@ void freePcap(pcap_t *pcap) {
  * Inputs: MAVLink file
  * Outputs: none
  */
-void freeMav(mavlink_t *mav)  {
+void freeMav(mavlink_t *mavP)  {
+	// Variable declarations.
+	pMavlink_t *mav;
+
+	// Check arguments.
+	if (mavP == NULL) {
+		fprintf(stderr, "Invalid argument.\n");
+		return;
+	}
+
+	// Coerce.
+	mav = (pMavlink_t *)mavP;
+	
 	// Free payloads of each message.
 	vectorApply(mav->messages, freePayloadMav);
 
@@ -1326,7 +1794,19 @@ void freeMav(mavlink_t *mav)  {
  * Inputs: TLOG file
  * Outputs: none
  */
-void freeTlog(tlog_t *tlog) {
+void freeTlog(tlog_t *tlogP) {
+	// Variable declarations.
+	pTlog_t *tlog;
+
+	// Check arguments.
+	if (tlogP == NULL) {
+		fprintf(stderr, "Invalid argument.\n");
+		return;
+	}
+
+	// Coerce.
+	tlog = (pTlog_t *)tlogP;
+	
 	// Free payloads of each message.
 	vectorApply(tlog->messages, freePayloadTlog);
 
@@ -1346,21 +1826,25 @@ void freeTlog(tlog_t *tlog) {
  * Inputs: TLOG file structure
  * Outputs: MAVLink file structure; NUKLL if unsuccessful
  */
-mavlink_t *tlogToMav(tlog_t *tlog) {
+mavlink_t *tlogToMav(tlog_t *tlogP) {
 	// Variable declarations.
-	mavlink_t *mav;
+	pTlog_t *tlog;
+	pMavlink_t *mav;
 	mavMessage_t *mess;
 	tlogMessage_t *tMess;
 	int i;
 	
 	// Check arguments.
-	if (tlog == NULL) {
+	if (tlogP == NULL) {
 		fprintf(stderr, "Invalid argument.\n");
 		return NULL;
 	}
 
+	// Coerce.
+	tlog = (pTlog_t *)tlogP;
+
 	// Allcoate memory for MAVLink file structure.
-	if ((mav = (mavlink_t *)malloc(sizeof(mavlink_t))) == NULL) {
+	if ((mav = (pMavlink_t *)malloc(sizeof(pMavlink_t))) == NULL) {
 		fprintf(stderr, "Memory allocation failed.\n");
 		return NULL;
 	}
@@ -1386,7 +1870,7 @@ mavlink_t *tlogToMav(tlog_t *tlog) {
 		
 	}
 
-	return mav;
+	return (mavlink_t *)mav;
 }
 
 /*
@@ -1394,21 +1878,25 @@ mavlink_t *tlogToMav(tlog_t *tlog) {
  * Inputs: TLOG file structure
  * Outputs: PCAP file structure; NUKLL if unsuccessful
  */
-pcap_t *tlogToPcap(tlog_t *tlog) {
+pcap_t *tlogToPcap(tlog_t *tlogP) {
 	// Variable declarations.
-	pcap_t *pcap;
+	pTlog_t *tlog;
+	pPcap_t *pcap;
 	pcapMessage_t *pMess;
 	tlogMessage_t *tMess;
 	int i;
 
 	// Check arguments.
-	if (tlog == NULL) {
+	if (tlogP == NULL) {
 		fprintf(stderr, "Invalid argument.\n");
 		return NULL;
 	}
 
+	// Coerce.
+	tlog = (pTlog_t *)tlogP;
+
 	// Allocate space for pacp file structure.
-	if ((pcap = (pcap_t *)malloc(sizeof(pcap_t))) == NULL) {
+	if ((pcap = (pPcap_t *)malloc(sizeof(pPcap_t))) == NULL) {
 		fprintf(stderr, "Memory allocation failed.\n");
 		return NULL;
 	}
@@ -1445,7 +1933,7 @@ pcap_t *tlogToPcap(tlog_t *tlog) {
 			fprintf(stderr, "Insertion into vector failed.\n");
 	}
 	
-	return pcap;
+	return (pcap_t *)pcap;
 	
 }
 	
@@ -1454,21 +1942,25 @@ pcap_t *tlogToPcap(tlog_t *tlog) {
  * Inputs: PCAP file structure
  * Outputs: MAVLink file structure; NUKLL if unsuccessful
  */
-mavlink_t *pcapToMav(pcap_t *pcap) {
+mavlink_t *pcapToMav(pcap_t *pcapP) {
 	// Variable declarations.
-	mavlink_t *mav;
+	pPcap_t *pcap;
+	pMavlink_t *mav;
 	mavMessage_t *mess;
 	pcapMessage_t *pMess;
 	int i;
 	
 	// Check arguments.
-	if (pcap == NULL) {
+	if (pcapP == NULL) {
 		fprintf(stderr, "Invalid argument.\n");
 		return NULL;
 	}
 
+	// Coerce.
+	pcap = (pPcap_t *)pcapP;
+
 	// Allcoate memory for MAVLink file structure.
-	if ((mav = (mavlink_t *)malloc(sizeof(mavlink_t))) == NULL) {
+	if ((mav = (pMavlink_t *)malloc(sizeof(pMavlink_t))) == NULL) {
 		fprintf(stderr, "Memory allocation failed.\n");
 		return NULL;
 	}
@@ -1494,322 +1986,7 @@ mavlink_t *pcapToMav(pcap_t *pcap) {
 
 	}
 
-	return mav;
-}
-
-/*
- * Convert a TLOG message to a MAVLink message.
- * Inputs: TLOG message
- * Outputs: MAVLink message; NULL if unsuccessful
- */
-mavMessage_t *tlogMessToMav(tlogMessage_t *tMess) {
-	// Varaible declarations.
-	mavMessage_t *mess;
-	int i, len, payload;
-	bool mav1, mav2;
-
-	// Check arguments.
-	if (tMess == NULL) {
-		fprintf(stderr, "Invalid argument.\n");
-		return NULL;
-	}
-
-	len = 0;
-	mav1 = mav2 = false;
-	
-	// Check type of message.
-	if (tMess->mav.mav1.mavCode == 0xfe) {
-		mav1 = true;
-		len = tMess->mav.mav1.payloadLen + 8;
-	}
-	else if (tMess->mav.mav2.mavCode == 0xfd) {
-		mav2 = true;
-		len = tMess->mav.mav2.payloadLen + 12;
-		if (tMess->mav.mav2.signedMess) len += 13;
-	}
-		
-	// Allocate space for new MAVlink message.
-	if ((mess = (mavMessage_t *)malloc(sizeof(mavMessage_t))) == NULL) {
-		fprintf(stderr, "Memory allocation failed.\n");
-		return NULL;
-	}
-
-	// Copy over all of the fields.
-	for (i = 0; i < len; i++) {
-		// Depending on the messsage type, set the respective fields.
-		if (mav1) {
-			if (i == 0) mess->mav1.mavCode = tMess->mav.mav1.mavCode;
-			else if (i == 1) {
-				mess->mav1.payloadLen = tMess->mav.mav1.payloadLen;
-				
-				payload = (int)mess->mav1.payloadLen;
-
-				if ((mess->mav1.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
-					fprintf(stderr, "Memory allocation failed.\n");
-					return NULL;
-				}				
-				
-			}
-			else if (i == 2) mess->mav1.packetSeq = tMess->mav.mav1.packetSeq;
-			else if (i == 3) mess->mav1.systemID = tMess->mav.mav1.systemID;
-			else if (i == 4) mess->mav1.compID = tMess->mav.mav1.compID;
-			else if (i == 5) mess->mav1.messageID = tMess->mav.mav1.messageID;
-			else if (i < 6 + payload) mess->mav1.payload[i - 6] = tMess->mav.mav1.payload[i - 6];
-			else mess->mav1.crc[i - 6 - payload] = tMess->mav.mav1.crc[i - 6 - payload];		
-		}
-		else if (mav2) {
-			if (i == 0) {
-				mess->mav2.mavCode = tMess->mav.mav2.mavCode;
-				mess->mav2.signedMess = tMess->mav.mav2.signedMess;
-			}
-			else if (i == 1) {
-				mess->mav2.payloadLen = tMess->mav.mav2.payloadLen;
-
-				payload = (int)mess->mav2.payloadLen;
-				
-				if ((mess->mav2.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
-					fprintf(stderr, "Memory allocation failed.\n");
-					return NULL;
-				}
-			}
-			else if (i == 2) mess->mav2.incompFlag = tMess->mav.mav2.incompFlag;
-			else if (i == 3) mess->mav2.compFlag = tMess->mav.mav2.compFlag;
-			else if (i == 4) mess->mav2.packetSeq = tMess->mav.mav2.packetSeq;
-			else if (i == 5) mess->mav2.systemID = tMess->mav.mav2.systemID;
-			else if (i == 6) mess->mav2.compID = tMess->mav.mav2.compID;
-			else if (i < 10) mess->mav2.messageID[i - 7] = tMess->mav.mav2.messageID[i - 7];
-			else if (i < 10 + payload) mess->mav2.payload[i - 10] = tMess->mav.mav2.payload[i - 10];
-			else if (i < 12 + payload) mess->mav2.crc[i - 10 - payload] = tMess->mav.mav2.crc[i - 10 - payload];
-			else mess->mav2.signature[i - 12 - payload] = tMess->mav.mav2.signature[i - 12 - payload];
-		}
-	}
-	return mess;
-}
-
-/*
- * Convert a TLOG message to a PCAP message.
- * Inputs: TLOG message
- * Outputs: PCAP message; NULL if unsuccessful
- */
-pcapMessage_t *tlogMessToPcap(tlogMessage_t *tMess) {
-	// Variable declarations.
-	int len, mavLen, i, payload;
-	bool mav1, mav2;
-	pcapMessage_t *mess;
-	struct timeval tv;
-	
-	// Check arguments.
-	if (tMess == NULL) {
-		fprintf(stderr, "Invalid argument.\n");
-		return NULL;
-	}
-
-	len = 0;
-	mav1 = mav2 = false;
-	
-	// Check type of message.
-	if (tMess->mav.mav1.mavCode == 0xfe) {
-		mav1 = true;
-		len = tMess->mav.mav1.payloadLen + 8;
-	}
-	else if (tMess->mav.mav2.mavCode == 0xfd) {
-		mav2 = true;
-		len = tMess->mav.mav2.payloadLen + 12;
-		if (tMess->mav.mav2.signedMess) len += 13;
-	}
-		
-	// Allocate space for new MAVlink message.
-	if ((mess = (pcapMessage_t *)malloc(sizeof(pcapMessage_t))) == NULL) {
-		fprintf(stderr, "Memory allocation failed.\n");
-		return NULL;
-	}
-
-	// Get the time stamp and insert it.
-	gettimeofday(&tv, NULL);
-	fromInt32le(tv.tv_sec, mess->prh.timeS);
-	fromInt32le(tv.tv_usec, mess->prh.timeUNS);
-
-	// Set length.
-	if (mav1) len = tMess->mav.mav1.payloadLen + 40;
-	else if (mav2) len = tMess->mav.mav2.payloadLen + 44;
-
-	fromInt32le(len, mess->prh.capturedPacketLength);
-	fromInt32le(len, mess->prh.originalPacketLength);
-	
-	// Fill in ethernet header.
-	fromInt32le(2, mess->eth.messageFam);
-	mess->eth.iphl = 0x45;
-	mess->eth.dsf = 0;
-	fromInt16be(len - 4, mess->eth.totalLength);
-	mess->eth.id[0] = 0;
-	mess->eth.id[1] = 0;
-	mess->eth.ffOffset[0] = 0;
-	mess->eth.ffOffset[1] = 0;
-	mess->eth.ttl = 0x40;
-	mess->eth.protocol = 0x11;
-	mess->eth.headerChecksum[0] = 0;
-	mess->eth.headerChecksum[1] = 0;
-	mess->eth.sourceAddr[0] = 0x7f;
-	mess->eth.sourceAddr[1] = 0;
-	mess->eth.sourceAddr[2] = 0;
-	mess->eth.sourceAddr[3] = 0x01;
-	mess->eth.destAddr[0] = 0x7f;
-	mess->eth.destAddr[1] = 0;
-	mess->eth.destAddr[2] = 0;
-	mess->eth.destAddr[3] = 0x01;
-	mess->eth.sourcePort[0] = 0x38;
-	mess->eth.sourcePort[1] = 0xd6;
-	mess->eth.destPort[0] = 0x38;
-	mess->eth.destPort[1] = 0xf4;
-	mess->eth.checkSum[0] = 0;
-	fromInt16be(len - 24, mess->eth.length);
-	mess->eth.checkSum[1] = 0;
-
-	// Extract length fo the MAAVLink message
-	if (tMess->mav.mav1.mavCode == 0xfe) mavLen = tMess->mav.mav1.payloadLen + 8;
-	else if (tMess->mav.mav2.mavCode == 0xfd)	mavLen = tMess->mav.mav2.payloadLen + 12;
-	
-	// Copy over all of the fields
-	for (i = 0; i < mavLen; i++) {
-		// Depending on the messsage type, set the respective fields.
-		if (mav1) {
-			if (i == 0) mess->mav.mav1.mavCode = tMess->mav.mav1.mavCode;
-			else if (i == 1) {
-				mess->mav.mav1.payloadLen = tMess->mav.mav1.payloadLen;
-				
-				payload = (int)mess->mav.mav1.payloadLen;
-
-				if ((mess->mav.mav1.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
-					fprintf(stderr, "Memory allocation failed.\n");
-					return NULL;
-				}				
-				
-			}
-			else if (i == 2) mess->mav.mav1.packetSeq = tMess->mav.mav1.packetSeq;
-			else if (i == 3) mess->mav.mav1.systemID = tMess->mav.mav1.systemID;
-			else if (i == 4) mess->mav.mav1.compID = tMess->mav.mav1.compID;
-			else if (i == 5) mess->mav.mav1.messageID = tMess->mav.mav1.messageID;
-			else if (i < 6 + payload) mess->mav.mav1.payload[i - 6] = tMess->mav.mav1.payload[i - 6];
-			else mess->mav.mav1.crc[i - 6 - payload] = tMess->mav.mav1.crc[i - 6 - payload];		
-		}
-		else if (mav2) {
-			if (i == 0) {
-				mess->mav.mav2.mavCode = tMess->mav.mav2.mavCode;
-				mess->mav.mav2.signedMess = tMess->mav.mav2.signedMess;
-			}
-			else if (i == 1) {
-				mess->mav.mav2.payloadLen = tMess->mav.mav2.payloadLen;
-
-				payload = (int)mess->mav.mav2.payloadLen;
-				
-				if ((mess->mav.mav2.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
-					fprintf(stderr, "Memory allocation failed.\n");
-					return NULL;
-				}
-			}
-			else if (i == 2) mess->mav.mav2.incompFlag = tMess->mav.mav2.incompFlag;
-			else if (i == 3) mess->mav.mav2.compFlag = tMess->mav.mav2.compFlag;
-			else if (i == 4) mess->mav.mav2.packetSeq = tMess->mav.mav2.packetSeq;
-			else if (i == 5) mess->mav.mav2.systemID = tMess->mav.mav2.systemID;
-			else if (i == 6) mess->mav.mav2.compID = tMess->mav.mav2.compID;
-			else if (i < 10) mess->mav.mav2.messageID[i - 7] = tMess->mav.mav2.messageID[i - 7];
-			else if (i < 10 + payload) mess->mav.mav2.payload[i - 10] = tMess->mav.mav2.payload[i - 10];
-			else if (i < 12 + payload) mess->mav.mav2.crc[i - 10 - payload] = tMess->mav.mav2.crc[i - 10 - payload];
-			else mess->mav.mav2.signature[i - 12 - payload] = tMess->mav.mav2.signature[i - 12 - payload];
-		}
-	}
-
-	return mess;
-	
-}
-
-/*
- * Convert a PCAP message to a MAVLink message.
- * Inputs: PCAP message
- * Outputs: MAVLink message; NULL if unsuccessful
- */
-mavMessage_t *pcapMessToMav(pcapMessage_t *pMess) {
-	// Variable declarations.
-	mavMessage_t *mess;
-	int i, len, payload;
-	bool mav1, mav2;
-
-	// Check arguments.
-	if (pMess == NULL) {
-		fprintf(stderr, "Invalid argument.\n");
-		return NULL;
-	}
-
-	len = 0;
-	mav1 = mav2 = false;
-	
-	// Check type of message.
-	if (pMess->mav.mav1.mavCode == 0xfe) {
-		mav1 = true;
-		len = pMess->mav.mav1.payloadLen + 8;
-	}
-	else if (pMess->mav.mav2.mavCode == 0xfd) {
-		mav2 = true;
-		len = pMess->mav.mav2.payloadLen + 12;
-		if (pMess->mav.mav2.signedMess) len += 13;
-	}
-		
-	// Allocate space for new MAVlink message.
-	if ((mess = (mavMessage_t *)malloc(sizeof(mavMessage_t))) == NULL) {
-		fprintf(stderr, "Memory allocation failed.\n");
-		return NULL;
-	}
-
-	// Copy over all of the fields.
-	for (i = 0; i < len; i++) {
-		// Depending on the messsage type, set the respective fields.
-		if (mav1) {
-			if (i == 0) mess->mav1.mavCode = pMess->mav.mav1.mavCode;
-			else if (i == 1) {
-				mess->mav1.payloadLen = pMess->mav.mav1.payloadLen;
-				
-				payload = (int)mess->mav1.payloadLen;
-
-				if ((mess->mav1.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
-					fprintf(stderr, "Memory allocation failed.\n");
-					return NULL;
-				}				
-				
-			}
-			else if (i == 2) mess->mav1.packetSeq = pMess->mav.mav1.packetSeq;
-			else if (i == 3) mess->mav1.systemID = pMess->mav.mav1.systemID;
-			else if (i == 4) mess->mav1.compID = pMess->mav.mav1.compID;
-			else if (i == 5) mess->mav1.messageID = pMess->mav.mav1.messageID;
-			else if (i < 6 + payload) mess->mav1.payload[i - 6] = pMess->mav.mav1.payload[i - 6];
-			else mess->mav1.crc[i - 6 - payload] = pMess->mav.mav1.crc[i - 6 - payload];		
-		}
-		else if (mav2) {
-			if (i == 0) {
-				mess->mav2.mavCode = pMess->mav.mav2.mavCode;
-				mess->mav2.signedMess = pMess->mav.mav2.signedMess;
-			}
-			else if (i == 1) {
-				mess->mav2.payloadLen = pMess->mav.mav2.payloadLen;
-
-				payload = (int)mess->mav2.payloadLen;
-				
-				if ((mess->mav2.payload = (uint8_t *)malloc(sizeof(uint8_t)*payload)) == NULL) {
-					fprintf(stderr, "Memory allocation failed.\n");
-					return NULL;
-				}
-			}
-			else if (i == 2) mess->mav2.incompFlag = pMess->mav.mav2.incompFlag;
-			else if (i == 3) mess->mav2.compFlag = pMess->mav.mav2.compFlag;
-			else if (i == 4) mess->mav2.packetSeq = pMess->mav.mav2.packetSeq;
-			else if (i == 5) mess->mav2.systemID = pMess->mav.mav2.systemID;
-			else if (i == 6) mess->mav2.compID = pMess->mav.mav2.compID;
-			else if (i < 10) mess->mav2.messageID[i - 7] = pMess->mav.mav2.messageID[i - 7];
-			else if (i < 10 + payload) mess->mav2.payload[i - 10] = pMess->mav.mav2.payload[i - 10];
-			else if (i < 12 + payload) mess->mav2.crc[i - 10 - payload] = pMess->mav.mav2.crc[i - 10 - payload];
-			else mess->mav2.signature[i - 12 - payload] = pMess->mav.mav2.signature[i - 12 - payload];
-		}
-	}
-	return mess;
+	return (mavlink_t *)mav;
 }
 
 /*
@@ -1817,17 +1994,21 @@ mavMessage_t *pcapMessToMav(pcapMessage_t *pMess) {
  * Inputs: PCAP file structure
  * Outputs: none
  */
-void countIDSPcap(pcap_t *pcap) {
+void countIDSPcap(pcap_t *pcapP) {
 	// Variable declarations.
+	pPcap_t *pcap;
 	vector_t *ids;
 	int i, id, *idp;
 	pcapMessage_t *mess;
 	
 	// Check arguments.
-	if (pcap == NULL) {
+	if (pcapP == NULL) {
 		fprintf(stderr, "Invalid argument.\n");
 		return;
 	}
+
+	// Coerce.
+	pcap = (pPcap_t *)pcapP;
 	
 	// Initialise vector
 	if ((ids = vectorInit()) == NULL) {
@@ -1872,17 +2053,21 @@ void countIDSPcap(pcap_t *pcap) {
  * Inputs: MAVLink file structure
  * Outputs: none
  */
-void countIDSMav(mavlink_t *mav) {
+void countIDSMav(mavlink_t *mavP) {
 	// Variable declarations.
+	pMavlink_t *mav;
 	vector_t *ids;
 	int i, id, *idp;
 	mavMessage_t *mess;
 	
 	// Check arguments.
-	if (mav == NULL) {
+	if (mavP == NULL) {
 		fprintf(stderr, "Invalid argument.\n");
 		return;
 	}
+
+	// Coerce.
+	mav = (pMavlink_t *)mavP;
 	
 	// Initialise vector
 	if ((ids = vectorInit()) == NULL) {
@@ -1927,17 +2112,21 @@ void countIDSMav(mavlink_t *mav) {
  * Inputs: TLOG file structure
  * Outputs: none
  */
-void countIDSTlog(tlog_t *tlog) {
+void countIDSTlog(tlog_t *tlogP) {
 	// Variable declarations.
+	pTlog_t *tlog;
 	vector_t *ids;
 	int i, id, *idp;
 	tlogMessage_t *mess;
 	
 	// Check arguments.
-	if (tlog == NULL) {
+	if (tlogP == NULL) {
 		fprintf(stderr, "Invalid argument.\n");
 		return;
 	}
+
+	// Coerce.
+	tlog = (pTlog_t *)tlogP;
 	
 	// Initialise vector
 	if ((ids = vectorInit()) == NULL) {
@@ -1982,21 +2171,25 @@ void countIDSTlog(tlog_t *tlog) {
  * Inputs: PCAP file, vector of IDs
  * Outputs: MAVLink file; NULL if unsuccessful
  */
-mavlink_t *extractByIdPcapToMav(pcap_t *pcap, vector_t *ids) {
+mavlink_t *extractByIdPcapToMav(pcap_t *pcapP, vector_t *ids) {
 	// Variable declarations.
-	mavlink_t *mav;
+	pPcap_t *pcap;
+	pMavlink_t *mav;
 	mavMessage_t *mess;
 	pcapMessage_t *pMess;
 	int i, id;
 	
 	// Check arguments.
-	if (pcap == NULL || ids == NULL) {
+	if (pcapP == NULL || ids == NULL) {
 		fprintf(stderr, "Invalid argument(s).\n");
 		return NULL;
 	}
 
+	// Coerce.
+	pcap = (pPcap_t *)pcapP;
+
 	// Allocate memory for MAVLink file.
-	if ((mav = (mavlink_t *)malloc(sizeof(mavlink_t))) == NULL) {
+	if ((mav = (pMavlink_t *)malloc(sizeof(pMavlink_t))) == NULL) {
 		fprintf(stderr, "Memory allocation failed.\n");
 		return NULL;
 	}
@@ -2030,5 +2223,5 @@ mavlink_t *extractByIdPcapToMav(pcap_t *pcap, vector_t *ids) {
 				fprintf(stderr, "Error inserting message into vector.\n");
 		}
 	}
-	return mav;
+	return (mavlink_t *)mav;
 }
