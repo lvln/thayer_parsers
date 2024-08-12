@@ -71,6 +71,7 @@ typedef struct mav2Message {
 	uint8_t messageID[3];
 	uint8_t *payload;
 	uint8_t crc[2];
+	bool signedMess;
 	uint8_t signature[13];
 } mav2Message_t;
 

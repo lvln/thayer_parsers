@@ -312,7 +312,7 @@ pcap_t *readFilePcap(FILE *ifile) {
 	int i, payload, bytesRead;
 	pcapMessage_t *mess;
 	uint8_t buf;
-	bool mav1, mav2;
+	bool mav1, mav2, signedMess;
 
 	// Check argument.
 	if (ifile == NULL) {
@@ -355,7 +355,7 @@ pcap_t *readFilePcap(FILE *ifile) {
 				return NULL;
 			}
 
-			mav1 = mav2 = false;
+			mav1 = mav2 = signedMess = false;
 		}
 		
 		if (i < 4) mess->prh.timeS[i] = buf;
@@ -412,20 +412,27 @@ pcap_t *readFilePcap(FILE *ifile) {
 					return NULL;
 				}
 			}
-			else if (i == 50) mess->mav.mav2.incompFlag = buf;
+			else if (i == 50) {
+				mess->mav.mav2.incompFlag = buf;
+
+				// Detect a signed message.
+				if (buf != 0) signedMess = mess->mav.mav2.signedMess = true;
+				else mess->mav.mav2.signedMess = false;
+			}
 			else if (i == 51) mess->mav.mav2.compFlag = buf;
 			else if (i == 52) mess->mav.mav2.packetSeq = buf;
 			else if (i == 53) mess->mav.mav2.systemID = buf;
 			else if (i == 54) mess->mav.mav2.compID = buf;
 			else if (i < 58) mess->mav.mav2.messageID[i - 55] = buf;		
 			else if (i < 58 + payload) mess->mav.mav2.payload[i - 58] = buf;
-			else mess->mav.mav2.crc[i - 58 - payload] = buf;		
+			else if (i < 60 + payload) mess->mav.mav2.crc[i - 58 - payload] = buf;
+			else mess->mav.mav2.signature[i - 60 - payload] = buf;
 		}
 
 		i++;
 
 		// If the end of a message has been reached.
-		if (((i == 56 + payload && mav1) || (i == 60 + payload && mav2)) && payload != 0) {
+		if (((i == 56 + payload && mav1) || (i == 60 + payload && mav2 && !signedMess) || (i == 73 + payload && mav2 && signedMess)) && payload != 0) {
 			// Insert message into vector.
 			if (vectorInsertBack(pcap->messages, mess) != 0)
 				fprintf(stderr, "Error inserting into vector.\n");
@@ -450,7 +457,7 @@ mavlink_t *readFileMav(FILE *ifile) {
 	int i, payload, bytesRead;
 	mavMessage_t *mess;
 	uint8_t buf;
-	bool mav1, mav2;
+	bool mav1, mav2, signedMess;
 
 	// Check argument.
 	if (ifile == NULL) {
@@ -482,7 +489,7 @@ mavlink_t *readFileMav(FILE *ifile) {
 				return NULL;
 			}
 
-			mav1 = mav2 = false;
+			mav1 = mav2 = signedMess = false;
 			
 			if (buf == 0xfe) mav1 = true;
 			else if (buf == 0xfd) mav2 = true;
@@ -521,20 +528,27 @@ mavlink_t *readFileMav(FILE *ifile) {
 					return NULL;
 				}
 			}
-			else if (i == 2) mess->mav2.incompFlag = buf;
+			else if (i == 2) {
+				mess->mav2.incompFlag = buf;
+
+				// Detect is signed message.
+				if (buf != 0) signedMess = mess->mav2.signedMess = true;
+				else mess->mav2.signedMess = false;
+			}
 			else if (i == 3) mess->mav2.compFlag = buf;
 			else if (i == 4) mess->mav2.packetSeq = buf;
 			else if (i == 5) mess->mav2.systemID = buf;
 			else if (i == 6) mess->mav2.compID = buf;
 			else if (i < 10) mess->mav2.messageID[i - 7] = buf;		
 			else if (i < 10 + payload) mess->mav2.payload[i - 10] = buf;
-			else mess->mav2.crc[i - 10 - payload] = buf;		
+			else if (i < 12 + payload) mess->mav2.crc[i - 10 - payload] = buf;
+			else mess->mav2.signature[i - 12 - payload] = buf;
 		}
 
 		i++;
 
 		// If the end of a message has been reached.
-		if (((i == 8 + payload && mav1) || (i == 12 + payload && mav2)) && payload != 0) {
+		if (((i == 8 + payload && mav1) || (i == 12 + payload && mav2 && !signedMess) || (i == 25 + payload && mav2 && signedMess)) && payload != 0) {
 			// Insert message into vector.
 			if (vectorInsertBack(mav->messages, mess) != 0)
 				fprintf(stderr, "Error inserting into vector.\n");
@@ -560,7 +574,7 @@ tlog_t *readFileTlog(FILE *ifile) {
 	int i, payload, bytesRead;
 	tlogMessage_t *mess;
 	uint8_t buf;
-	bool mav1, mav2;
+	bool mav1, mav2, signedMess;
 
 	// Check argument.
 	if (ifile == NULL) {
@@ -592,7 +606,7 @@ tlog_t *readFileTlog(FILE *ifile) {
 				return NULL;
 			}
 
-			mav1 = mav2 = false;
+			mav1 = mav2 = signedMess = false;
 		}
 		
 		if (i < 8) mess->header.bytes[i] = buf;
@@ -631,20 +645,27 @@ tlog_t *readFileTlog(FILE *ifile) {
 					return NULL;
 				}
 			}
-			else if (i == 10) mess->mav.mav2.incompFlag = buf;
+			else if (i == 10) {
+				mess->mav.mav2.incompFlag = buf;
+
+				// Detect if signed message.
+				if (buf != 0) signedMess = mess->mav.mav2.signedMess = true;
+				else mess->mav.mav2.signedMess = false;
+			}
 			else if (i == 11) mess->mav.mav2.compFlag = buf;
 			else if (i == 12) mess->mav.mav2.packetSeq = buf;
 			else if (i == 13) mess->mav.mav2.systemID = buf;
 			else if (i == 14) mess->mav.mav2.compID = buf;
 			else if (i < 18) mess->mav.mav2.messageID[i - 15] = buf;		
 			else if (i < 18 + payload) mess->mav.mav2.payload[i - 18] = buf;
-			else mess->mav.mav2.crc[i - 18 - payload] = buf;		
+			else if (i < 20 + payload) mess->mav.mav2.crc[i - 18 - payload] = buf;
+			else mess->mav.mav2.signature[i - 20 - payload] = buf;
 		}
 
 		i++;
 
 		// If the end of a message has been reached.
-		if (((i == 16 + payload && mav1) || (i == 20 + payload && mav2)) && payload != 0) {
+		if (((i == 16 + payload && mav1) || (i == 20 + payload && mav2 && !signedMess) || (i == 33 + payload && mav2 && signedMess)) && payload != 0) {
 			// Insert message into vector.
 			if (vectorInsertBack(tlog->messages, (void *)mess) != 0)
 				fprintf(stderr, "Error inserting into vector.\n");
@@ -676,15 +697,11 @@ void printMessagePcap(pcapMessage_t *mess) {
 	}
 
 	len = toInt24le(mess->prh.capturedPacketLength) + 16;
-
-	if (mess->mav.mav1.mavCode == 0xfe) {
-		mav1 = true;
-		mav2 = false;
-	}
-	else if (mess->mav.mav2.mavCode == 0xfd) {
-		mav1 = false;
-		mav2 = true;
-	}
+	mav1 = mav2 = false;
+	
+	// Detect type of message.
+	if (mess->mav.mav1.mavCode == 0xfe) mav1 = true;
+	else if (mess->mav.mav2.mavCode == 0xfd) mav2 = true;
 
 	printf("Message: \n" );
 	
@@ -739,7 +756,8 @@ void printMessagePcap(pcapMessage_t *mess) {
 			else if (i == 54) buf = mess->mav.mav2.compID;
 			else if (i < 58) buf = mess->mav.mav2.messageID[i - 55];		
 			else if (i < 58 + payload) buf = mess->mav.mav2.payload[i - 58];
-			else buf = mess->mav.mav2.crc[i - 58 - payload];		
+			else if (i < 60 + payload) buf = mess->mav.mav2.crc[i - 58 - payload];
+			else buf = mess->mav.mav2.signature[i - 60 - payload];
 		}
 
 		printf("%02x ", buf);
@@ -767,16 +785,17 @@ void printMessageMav(mavMessage_t *mess) {
 	}
 
 	len = 0;
-
+	mav1 = mav2 = false;
+	
+	// Detect type of message.
 	if (mess->mav1.mavCode == 0xfe) {
 		mav1 = true;
-		mav2 = false;
 		len = (int)mess->mav1.payloadLen + 8;
 	}
 	else if (mess->mav2.mavCode == 0xfd) {
-		mav1 = false;
 		mav2 = true;
 		len = (int)mess->mav2.payloadLen + 12;
+		if (mess->mav2.signedMess) len += 13;
 	}
 
 	printf("Message: \n" );
@@ -812,7 +831,8 @@ void printMessageMav(mavMessage_t *mess) {
 			else if (i == 6) buf = mess->mav2.compID;
 			else if (i < 10) buf = mess->mav2.messageID[i - 7];		
 			else if (i < 10 + payload) buf = mess->mav2.payload[i - 10];
-			else buf = mess->mav2.crc[i - 10 - payload];		
+			else if (i < 12 + payload) buf = mess->mav2.crc[i - 10 - payload];
+			else buf = mess->mav2.signature[i - 12 - payload];
 		}
 
 		printf("%02x ", buf);
@@ -840,16 +860,17 @@ void printMessageTlog(tlogMessage_t *mess) {
 	}
 	
 	len = 0;
-	
+	mav1 = mav2 = false;
+
+	// Detect type of message.
 	if (mess->mav.mav1.mavCode == 0xfe) {
 		mav1 = true;
-		mav2 = false;
 		len = (int)mess->mav.mav1.payloadLen + 16;
 	}
 	else if (mess->mav.mav2.mavCode == 0xfd) {
-		mav1 = false;
 		mav2 = true;
-		len = (int)mess->mav.mav1.payloadLen + 20;
+		len = (int)mess->mav.mav2.payloadLen + 20;
+		if (mess->mav.mav2.signedMess) len += 13;
 	}
 
 	printf("Message: \n" );
@@ -887,7 +908,8 @@ void printMessageTlog(tlogMessage_t *mess) {
 			else if (i == 14) buf = mess->mav.mav2.compID;
 			else if (i < 18) buf = mess->mav.mav2.messageID[i - 15];		
 			else if (i < 18 + payload) buf = mess->mav.mav2.payload[i - 18];
-			else buf = mess->mav.mav2.crc[i - 18 - payload];		
+			else if (i < 20 + payload) buf = mess->mav.mav2.crc[i - 18 - payload];
+			else buf = mess->mav.mav2.signature[i - 20 - payload];
 		}
 
 		printf("%02x ", buf);
@@ -977,15 +999,11 @@ void writeMessageToFilePcap(pcapMessage_t *mess, FILE *fp) {
 	}
 	
 	len = toInt24le(mess->prh.capturedPacketLength) + 16;
-
-	if (mess->mav.mav1.mavCode == 0xfe) {
-		mav1 = true;
-		mav2 = false;
-	}
-	else if (mess->mav.mav2.mavCode == 0xfd) {
-		mav1 = false;
-		mav2 = true;
-	}
+	mav1 = mav2 = false;
+	
+	// Detect type of message.
+	if (mess->mav.mav1.mavCode == 0xfe) mav1 = true;
+	else if (mess->mav.mav2.mavCode == 0xfd) mav2 = true;
 	
 	for (i = 0; i < len; i++) {
 		if (i < 4) buf = mess->prh.timeS[i];
@@ -1038,7 +1056,8 @@ void writeMessageToFilePcap(pcapMessage_t *mess, FILE *fp) {
 			else if (i == 54) buf = mess->mav.mav2.compID;
 			else if (i < 58) buf = mess->mav.mav2.messageID[i - 55];		
 			else if (i < 58 + payload) buf = mess->mav.mav2.payload[i - 58];
-			else buf = mess->mav.mav2.crc[i - 58 - payload];		
+			else if (i < 60 + payload) buf = mess->mav.mav2.crc[i - 58 - payload];
+			else buf = mess->mav.mav2.signature[i - 60 - payload];
 		}
 
 		if (fwrite(&buf, sizeof(buf), 1, fp) != 1)
@@ -1065,16 +1084,17 @@ void writeMessageToFileMav(mavMessage_t *mess, FILE *fp) {
 	}
 	
 	len = 0;
-
+	mav1 = mav2 = false;
+	
+	// Detect type of message.
 	if (mess->mav1.mavCode == 0xfe) {
 		mav1 = true;
-		mav2 = false;
 		len = (int)mess->mav1.payloadLen + 8;
 	}
 	else if (mess->mav2.mavCode == 0xfd) {
-		mav1 = false;
 		mav2 = true;
 		len = (int)mess->mav2.payloadLen + 12;
+		if (mess->mav2.signedMess) len += 13;
 	}
 
 	for (i = 0; i < len; i++) {
@@ -1108,7 +1128,8 @@ void writeMessageToFileMav(mavMessage_t *mess, FILE *fp) {
 			else if (i == 6) buf = mess->mav2.compID;
 			else if (i < 10) buf = mess->mav2.messageID[i - 7];		
 			else if (i < 10 + payload) buf = mess->mav2.payload[i - 10];
-			else buf = mess->mav2.crc[i - 10 - payload];		
+			else if (i < 12 + payload) buf = mess->mav2.crc[i - 10 - payload];
+			else buf = mess->mav2.signature[i - 12 - payload];
 		}
 
 		if (fwrite(&buf, sizeof(buf), 1, fp) != 1)
@@ -1135,16 +1156,17 @@ void writeMessageToFileTlog(tlogMessage_t *mess, FILE *fp) {
 	}
 	
 	len = 0;
+	mav1 = mav2 = false;
 	
+	// Detect type of message.
 	if (mess->mav.mav1.mavCode == 0xfe) {
 		mav1 = true;
-		mav2 = false;
 		len = (int)mess->mav.mav1.payloadLen + 16;
 	}
 	else if (mess->mav.mav2.mavCode == 0xfd) {
-		mav1 = false;
 		mav2 = true;
-		len = (int)mess->mav.mav1.payloadLen + 20;
+		len = (int)mess->mav.mav2.payloadLen + 20;
+		if (mess->mav.mav2.signedMess) len += 13;
 	}
 
 	for (i = 0; i < len; i++) {
@@ -1503,6 +1525,7 @@ mavMessage_t *tlogMessToMav(tlogMessage_t *tMess) {
 	else if (tMess->mav.mav2.mavCode == 0xfd) {
 		mav2 = true;
 		len = tMess->mav.mav2.payloadLen + 12;
+		if (tMess->mav.mav2.signedMess) len += 13;
 	}
 		
 	// Allocate space for new MAVlink message.
@@ -1535,7 +1558,10 @@ mavMessage_t *tlogMessToMav(tlogMessage_t *tMess) {
 			else mess->mav1.crc[i - 6 - payload] = tMess->mav.mav1.crc[i - 6 - payload];		
 		}
 		else if (mav2) {
-			if (i == 0) mess->mav2.mavCode = tMess->mav.mav2.mavCode;
+			if (i == 0) {
+				mess->mav2.mavCode = tMess->mav.mav2.mavCode;
+				mess->mav2.signedMess = tMess->mav.mav2.signedMess;
+			}
 			else if (i == 1) {
 				mess->mav2.payloadLen = tMess->mav.mav2.payloadLen;
 
@@ -1553,7 +1579,8 @@ mavMessage_t *tlogMessToMav(tlogMessage_t *tMess) {
 			else if (i == 6) mess->mav2.compID = tMess->mav.mav2.compID;
 			else if (i < 10) mess->mav2.messageID[i - 7] = tMess->mav.mav2.messageID[i - 7];
 			else if (i < 10 + payload) mess->mav2.payload[i - 10] = tMess->mav.mav2.payload[i - 10];
-			else mess->mav2.crc[i - 10 - payload] = tMess->mav.mav2.crc[i - 10 - payload];
+			else if (i < 12 + payload) mess->mav2.crc[i - 10 - payload] = tMess->mav.mav2.crc[i - 10 - payload];
+			else mess->mav2.signature[i - 12 - payload] = tMess->mav.mav2.signature[i - 12 - payload];
 		}
 	}
 	return mess;
@@ -1588,6 +1615,7 @@ pcapMessage_t *tlogMessToPcap(tlogMessage_t *tMess) {
 	else if (tMess->mav.mav2.mavCode == 0xfd) {
 		mav2 = true;
 		len = tMess->mav.mav2.payloadLen + 12;
+		if (tMess->mav.mav2.signedMess) len += 13;
 	}
 		
 	// Allocate space for new MAVlink message.
@@ -1665,7 +1693,10 @@ pcapMessage_t *tlogMessToPcap(tlogMessage_t *tMess) {
 			else mess->mav.mav1.crc[i - 6 - payload] = tMess->mav.mav1.crc[i - 6 - payload];		
 		}
 		else if (mav2) {
-			if (i == 0) mess->mav.mav2.mavCode = tMess->mav.mav2.mavCode;
+			if (i == 0) {
+				mess->mav.mav2.mavCode = tMess->mav.mav2.mavCode;
+				mess->mav.mav2.signedMess = tMess->mav.mav2.signedMess;
+			}
 			else if (i == 1) {
 				mess->mav.mav2.payloadLen = tMess->mav.mav2.payloadLen;
 
@@ -1683,7 +1714,8 @@ pcapMessage_t *tlogMessToPcap(tlogMessage_t *tMess) {
 			else if (i == 6) mess->mav.mav2.compID = tMess->mav.mav2.compID;
 			else if (i < 10) mess->mav.mav2.messageID[i - 7] = tMess->mav.mav2.messageID[i - 7];
 			else if (i < 10 + payload) mess->mav.mav2.payload[i - 10] = tMess->mav.mav2.payload[i - 10];
-			else mess->mav.mav2.crc[i - 10 - payload] = tMess->mav.mav2.crc[i - 10 - payload];
+			else if (i < 12 + payload) mess->mav.mav2.crc[i - 10 - payload] = tMess->mav.mav2.crc[i - 10 - payload];
+			else mess->mav.mav2.signature[i - 12 - payload] = tMess->mav.mav2.signature[i - 12 - payload];
 		}
 	}
 
@@ -1719,6 +1751,7 @@ mavMessage_t *pcapMessToMav(pcapMessage_t *pMess) {
 	else if (pMess->mav.mav2.mavCode == 0xfd) {
 		mav2 = true;
 		len = pMess->mav.mav2.payloadLen + 12;
+		if (pMess->mav.mav2.signedMess) len += 13;
 	}
 		
 	// Allocate space for new MAVlink message.
@@ -1751,7 +1784,10 @@ mavMessage_t *pcapMessToMav(pcapMessage_t *pMess) {
 			else mess->mav1.crc[i - 6 - payload] = pMess->mav.mav1.crc[i - 6 - payload];		
 		}
 		else if (mav2) {
-			if (i == 0) mess->mav2.mavCode = pMess->mav.mav2.mavCode;
+			if (i == 0) {
+				mess->mav2.mavCode = pMess->mav.mav2.mavCode;
+				mess->mav2.signedMess = pMess->mav.mav2.signedMess;
+			}
 			else if (i == 1) {
 				mess->mav2.payloadLen = pMess->mav.mav2.payloadLen;
 
@@ -1769,7 +1805,8 @@ mavMessage_t *pcapMessToMav(pcapMessage_t *pMess) {
 			else if (i == 6) mess->mav2.compID = pMess->mav.mav2.compID;
 			else if (i < 10) mess->mav2.messageID[i - 7] = pMess->mav.mav2.messageID[i - 7];
 			else if (i < 10 + payload) mess->mav2.payload[i - 10] = pMess->mav.mav2.payload[i - 10];
-			else mess->mav2.crc[i - 10 - payload] = pMess->mav.mav2.crc[i - 10 - payload];
+			else if (i < 12 + payload) mess->mav2.crc[i - 10 - payload] = pMess->mav.mav2.crc[i - 10 - payload];
+			else mess->mav2.signature[i - 12 - payload] = pMess->mav.mav2.signature[i - 12 - payload];
 		}
 	}
 	return mess;
