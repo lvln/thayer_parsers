@@ -25,7 +25,7 @@ vector_t *vectorInit(void);
 /*
  * Free the vector itself and everything in it.
  * Inputs: vector to free
- * OUtputs: none
+ * Outputs: none
  */
 void vectorFree(vector_t *vp);
 
