@@ -119,6 +119,13 @@ mavlink_t *tlogToMav(tlog_t *tlogP);
 pcap_t *tlogToPcap(tlog_t *tlogP);
 
 /*
+ * Convert a MAVLink file structure to a PCAP file structure.
+ * Inputs: MAVLink file structure
+ * Outputs: PCAP file structure; NUKLL if unsuccessful
+ */
+pcap_t *mavToPcap(mavlink_t *mavP);
+
+/*
  * Convert a PCAP file structure to a MAVLink file structure.
  * Inputs: PCAP file structure
  * Outputs: MAVLink file structure; NUKLL if unsuccessful
@@ -161,6 +168,13 @@ mavlink_t *extractByIdPcapToMav(pcap_t *pcapP, vector_t *ids);
 mavlink_t *extractByIdTlogToMav(tlog_t *tlogP, vector_t *ids);
 
 /*
+ * Extract all messages of a given ID(s) from a MAVLink file and place in a MAVLink file.
+ * Inputs: MAVLink file, vector of IDs
+ * Outputs: MAVLink file; NULL if unsuccessful
+ */
+mavlink_t *extractByIdMavToMav(mavlink_t *mavP, vector_t *ids);
+
+/*
  * Extract messages of a given number in the message sequence (indexed base 1).
  * Inputs: PCAP file, vector of message numbers
  * Outputs: MAVLink file; NULL if unsuccessful
@@ -174,8 +188,23 @@ mavlink_t *extractByNumberPcapToMav(pcap_t *pcapP, vector_t *numbers);
  */
 mavlink_t *extractByNumberTlogToMav(tlog_t *tlogP, vector_t *numbers);
 
-/* Generate a full suite of tests for a given messageID.
+/*
+ * Extract messages of a given number in the message sequence (indexed base 1).
+ * Inputs: MAVLink file, vector of message numbers
+ * Outputs: MAVLink file; NULL if unsuccessful
+ */
+mavlink_t *extractByNumberMavToMav(mavlink_t *mavP, vector_t *numbers);
+
+/*
+ * Generate a full suite of tests for a given messageID.
  * Inputs: message ID, initial pass test number, initial fail test number
  * Outputs: none
  */
 void generateTests(int messageID, int passSeed, int failSeed);
+
+/*
+ * Gwenerate a smaller suite of tests for a given message id.
+ * Inputs: message ID, initial pass test number, initial fail test number
+ * Outputs: none
+ */
+void generateTestsShort(int messageID, int passSeed, int failSeed);
