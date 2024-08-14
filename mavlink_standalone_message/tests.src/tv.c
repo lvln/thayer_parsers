@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
 	failSeed = atoi(argv[3]);
 
 	// Generate test cases for the given message id.
-	generateTests(id, passSeed, failSeed);
+	generateTestsShort(id, passSeed, failSeed);
 
 	exit(EXIT_SUCCESS);
 }

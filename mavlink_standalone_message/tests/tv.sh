@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Clean out the current directory.
+# Clean out directory
 make clean > /dev/null
 
-# Copy the tests over from tests.src
-cp -rf ../tests.src/* . &> /dev/null
+# Import tests from tests.src
+cp -rf ../tests.src/pass.* ../tests.src/fail.* . &> /dev/null

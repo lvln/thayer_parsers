@@ -86,5 +86,5 @@ done
 # Return to the tests directory, clean out all the test files and copy over the smaller suite of test files.
 pushd ../tests/
 make clean > /dev/null
-cp ../tests.src/* ./ > /dev/null
+cp ../tests.src/pass.* ../tests.src/fail.* ./ > /dev/null
 popd
