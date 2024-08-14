@@ -10,13 +10,20 @@ popd () {
 
 # Check number of arguments
 if [ $# != 1 ] && [ $# != 0 ]; then
-		echo "usage: mavlinktest.sh [-v]"
+		echo "usage: mavlinktest.sh [-v|-h]"
 		exit
 fi
 
 # Check arguments are valid
-if [ $# == 1 ] && [ $1 != "-v" ]; then
-		echo "usage: mavlinktest.sh [-v]"
+if [ $# == 1 ] && ( [ $1 != "-v" ] && [ $1 != "-h" ] ); then
+		echo "usage: mavlinktest.sh [-v|-h]"
+		exit
+fi
+
+# Print out a help statement if -h flag was used.
+if [ $# == 1 ] && [ $1 == "-h" ]; then
+		echo "usage: mavlinktest.sh [-v|-h]"
+		echo "[-v] flag prints out results of passing and failing tests; absence only prints out results of failing tests"
 		exit
 fi
 
@@ -31,103 +38,7 @@ make clean > /dev/null
 make > /dev/null
 
 # Generate tests for SCALED_PRESSURE message
-./tv 29
-
-# Start a counter for the message number
-let msgNum=3
-
-if [ -e ${SRCDIR}/run1.pcap ]; then
-		pushd ${SRCDIR}
-		make clean > /dev/null
-		make > /dev/null
-		
-		# Extract all SCALED_PRESURE messages and store them in a temporary file
-		./extractbymessageid run1.pcap temp.mav 29 > /dev/null
-
-		# Count messages in the temporary file
-		./countmessages ./temp.mav > foo
-		NUMMESS=$(cat foo)
-		rm foo > /dev/null
-
-		# Create a test in a unique file for each message
-		for (( i = 1; i <= NUMMESS; i++ )); do
-				./extractbymessagenumber ./temp.mav pass.${msgNum} ${i} > /dev/null
-				let msgNum++
-		done
-
-		# Clean out source directory and remove temporary files
-		make clean > /dev/null
-		rm temp.mav > /dev/null
-		popd
-fi
-
-if [ -e ${SRCDIR}/run2.pcap ]; then
-		pushd ${SRCDIR}
-		make clean > /dev/null
-		make > /dev/null
-		
-		# Extract all SCALED_PRESURE messages and store them in a temporary file
-		./extractbymessageid run2.pcap temp.mav 29 >/dev/null
-
-		# Count messages in the temporary file
-		./countmessages ./temp.mav > foo
-		NUMMESS=$(cat foo)
-		rm foo > /dev/null
-
-		# Create a test in a unique file for each message
-		for (( i = 1; i <= NUMMESS; i++ )); do
-				./extractbymessagenumber ./temp.mav pass.${msgNum} ${i} > /dev/null
-				let msgNum++
-		done
-
-		# CLean out the course directory and remove temporary files
-		make clean > /dev/null
-		rm temp.mav  > /dev/null
-		popd
-fi
-
-# Move passing tests to tests directory
-mv ${SRCDIR}/pass.* . > /dev/null
-
-# Create an empty file
-touch fail.1
-
-# Bring over an EVENT message and place it in a failing test file
-if [ -e ${SRCDIR}/run1.pcap ]; then
-		pushd ${SRCDIR}
-		make clean > /dev/null
-		make > /dev/null
-		
-		# Extract all SCALED_PRESURE messages and store them in a temporary file
-		./extractbymessagenumber run1.pcap fail.2 65 > /dev/null
-
-		# Move message over to tests directory
-		mv fail.2 ../../mavlink_standalone_message/tests/ > /dev/null
-
-		# Clean out source directory
-		make clean > /dev/null
-		popd
-fi
-
-# Create fialing test file with more than 1 SCALED_PRESSURE message
-if [ -e ${SRCDIR}/run1.pcap ]; then
-		pushd ${SRCDIR}
-		make clean > /dev/null
-		make > /dev/null
-		
-		# Extract more than one SCALED_PRESSURE message
-		./extractbymessageid run1.pcap fail.3 29 > /dev/null
-
-		# Move messages over
-		mv fail.3 ../../mavlink_standalone_message/tests/ > /dev/null
-
-		# Clean out directory
-		make clean > /dev/null
-		popd
-fi
-
-# Generate failing test cases
-./tvshort > /dev/null
+./tv 29 1 1
 
 # Move back into xbnf direcotry
 popd
@@ -172,7 +83,8 @@ for f in ../tests/fail.*; do
 		fi
 done
 
-# Return to the tests direcotry and clean out all test files
+# Return to the tests directory, clean out all the test files and copy over the smaller suite of test files.
 pushd ../tests/
 make clean > /dev/null
+cp ../tests.src/* ./ > /dev/null
 popd

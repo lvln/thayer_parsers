@@ -13,19 +13,21 @@
 
 int main(int argc, char **argv) {
 	// Variable declarations.
-	int id;	
+	int id, passSeed, failSeed;	
 
 	// Check number of arguments.
-	if (argc != 2) {
+	if (argc != 4) {
 		printf("usage: tv msgID\n");
 		exit(EXIT_FAILURE);
 	}
 
 	// Convert string to integer.
 	id = atoi(argv[1]);
+	passSeed = atoi(argv[2]);
+	failSeed = atoi(argv[3]);
 
 	// Generate test cases for the given message id.
-	generateTests(id);
+	generateTests(id, passSeed, failSeed);
 
 	exit(EXIT_SUCCESS);
 }
