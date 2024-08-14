@@ -1,5 +1,5 @@
 /* 
- * tv.c -- creates test cases for a given message based on its message id
+1;95;0c * tv.c -- creates test cases for a given message based on its message id
  *         creates passing and failing tests for every byte value in every payload field, as well as header field
  * 
  * Author: Joshua M. Meise
@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
 
 	// Check number of arguments.
 	if (argc != 4) {
-		printf("usage: tv msgID\n");
+		printf("usage: tv msgID passSeed failSeed\n");
 		exit(EXIT_FAILURE);
 	}
 
