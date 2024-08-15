@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
 
 	// Check number of arguments.
 	if (argc != 4) {
-		printf("usage: tv msgID\n");
+		printf("usage: tv msgID passSeed failSeed\n");
 		exit(EXIT_FAILURE);
 	}
 
