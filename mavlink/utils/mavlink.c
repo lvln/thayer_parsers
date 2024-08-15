@@ -39,6 +39,7 @@
 #define MISSION_CURRENT 42
 #define MISSION_REQUEST_LIST 43
 #define MISSION_COUNT 44
+#define MISSION_CLEAR_ALL 45
 #define MISSION_ITEM_REACHED 46
 #define MISSION_ACK 47
 #define GPS_GLOBAL_ORIGIN 49
@@ -91,6 +92,7 @@
 #define MISSION_CURRENT_LEN 18
 #define MISSION_REQUEST_LIST_LEN 3
 #define MISSION_COUNT_LEN 9
+#define MISSION_CLEAR_ALL_LEN 3
 #define MISSION_ITEM_REACHED_LEN 2
 #define MISSION_ACK_LEN 8 
 #define GPS_GLOBAL_ORIGIN_LEN 20
@@ -1882,6 +1884,27 @@ static void generateEnumTests(int msgID, int ind, mavMessage_t mess, int maxLen,
 				fprintf(stderr, "Problem inserting value to vector.\n");
 		}
 		break;
+	case MISSION_CLEAR_ALL:
+		if (ind == 2) {
+			// Fill vector with enumerations.
+			for (i = 0; i <= 2; i++) {
+				if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
+					fprintf(stderr, "Memory allocation failed.\n");
+					return;
+				}
+				*ins = (uint8_t)i;
+				if (vectorInsertBack(vec, (void *)ins) != 0)
+					fprintf(stderr, "Problem inserting value to vector.\n");
+			}
+			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
+				fprintf(stderr, "Memory allocation failed.\n");
+				return;
+			}
+			*ins = (uint8_t)255;
+			if (vectorInsertBack(vec, (void *)ins) != 0)
+				fprintf(stderr, "Problem inserting value to vector.\n");
+		}
+		break;
 	case MISSION_ACK:
 		if (ind == 2) {
 			// Fill vector with enumerations.
@@ -2528,8 +2551,8 @@ static vector_t *initialiseMessageType(int msgID, int *maxLenM1, int *maxLenM2) 
 		if (vectorInsertBack(enFields, (void *)ins) != 0)
 			fprintf(stderr, "Error inserting value to vector.\n");
 
-		*maxLenM1 = MISSION_REQUEST_LIST - 1;
-		*maxLenM2 = MISSION_REQUEST_LIST;
+		*maxLenM1 = MISSION_REQUEST_LIST_LEN - 1;
+		*maxLenM2 = MISSION_REQUEST_LIST_LEN;
 		break;
 	case MISSION_COUNT:
 		if ((ins = (int *)malloc(sizeof(int))) == NULL) {
@@ -2542,6 +2565,18 @@ static vector_t *initialiseMessageType(int msgID, int *maxLenM1, int *maxLenM2) 
 
 		*maxLenM1 = MISSION_COUNT_LEN - 5;
 		*maxLenM2 = MISSION_COUNT_LEN;
+		break;
+	case MISSION_CLEAR_ALL:
+		if ((ins = (int *)malloc(sizeof(int))) == NULL) {
+			fprintf(stderr, "Memory allocation failed.\n");
+			return NULL;
+		}
+		*ins = 2;
+		if (vectorInsertBack(enFields, (void *)ins) != 0)
+			fprintf(stderr, "Error inserting value to vector.\n");
+
+		*maxLenM1 = MISSION_CLEAR_ALL_LEN - 1;
+		*maxLenM2 = MISSION_CLEAR_ALL_LEN;
 		break;
 	case MISSION_ITEM_REACHED:
 		*maxLenM1 = *maxLenM2 = MISSION_ITEM_REACHED_LEN;
@@ -4095,7 +4130,203 @@ mavlink_t *extractByIdMavToMav(mavlink_t *mavP, vector_t *ids) {
 	}
 	return (mavlink_t *)mav;
 }
+
+/*
+ * Extract a single message of a given ID(s) from a PCAP file and place in a MAVLink file.
+ * Inputs: PCAP file, vector of IDs
+ * Outputs: MAVLink file; NULL if unsuccessful
+ */
+mavlink_t *extractOneByIdPcapToMav(pcap_t *pcapP, vector_t *ids) {
+	// Variable declarations.
+	pPcap_t *pcap;
+	pMavlink_t *mav;
+	mavMessage_t *mess;
+	pcapMessage_t *pMess;
+	int i, id;
+	bool found;
 	
+	// Check arguments.
+	if (pcapP == NULL || ids == NULL) {
+		fprintf(stderr, "Invalid argument(s).\n");
+		return NULL;
+	}
+
+	// Coerce.
+	pcap = (pPcap_t *)pcapP;
+
+	// Allocate memory for MAVLink file.
+	if ((mav = (pMavlink_t *)malloc(sizeof(pMavlink_t))) == NULL) {
+		fprintf(stderr, "Memory allocation failed.\n");
+		return NULL;
+	}
+
+	// Initialise message vector.
+	if ((mav->messages = vectorInit()) == NULL) {
+		fprintf(stderr, "Vector initialisation failed.\n");
+		return NULL;
+	}
+
+	found = false;
+	
+	// Check if each message's ID is in the vector
+	for (i = 0; i < vectorGetSize(pcap->messages) && !found; i++) {
+		// Extract message.
+		if ((pMess = (pcapMessage_t *)vectorGetElement(pcap->messages, i)) == NULL)
+			fprintf(stderr, "Error extracting message from vector.\n");
+
+		// Get id.
+		if (pMess->mav.mav1.mavCode == 0xfe)
+			id = (int)pMess->mav.mav1.messageID;
+		else if (pMess->mav.mav2.mavCode == 0xfd)
+			id = toInt24le(pMess->mav.mav2.messageID);
+		
+		// Check if ID is to be extracted.
+		if (vectorContains(ids, compareInt, (void *)&id)) {
+			// Extract message and insert into MAVLink file.
+			if ((mess = pcapMessToMav(pMess)) == NULL)
+				fprintf(stderr, "Error extracting message.\n");
+
+			// Add message to MAVLink vector.
+			if (vectorInsertBack(mav->messages, (void *)mess) != 0)
+				fprintf(stderr, "Error inserting message into vector.\n");
+
+			// Message has been found.
+			found = true;
+		}
+	}
+	return (mavlink_t *)mav;
+}
+
+/*
+ * Extract a single message of a given ID(s) from a TLOG file and place in a MAVLink file.
+ * Inputs: TLOG file, vector of IDs
+ * Outputs: MAVLink file; NULL if unsuccessful
+ */
+mavlink_t *extractOneByIdTlogToMav(tlog_t *tlogP, vector_t *ids) {
+	// Variable declarations.
+	pTlog_t *tlog;
+	pMavlink_t *mav;
+	mavMessage_t *mess;
+	tlogMessage_t *tMess;
+	int i, id;
+	bool found;
+	
+	// Check arguments.
+	if (tlogP == NULL || ids == NULL) {
+		fprintf(stderr, "Invalid argument(s).\n");
+		return NULL;
+	}
+
+	// Coerce.
+	tlog = (pTlog_t *)tlogP;
+
+	// Allocate memory for MAVLink file.
+	if ((mav = (pMavlink_t *)malloc(sizeof(pMavlink_t))) == NULL) {
+		fprintf(stderr, "Memory allocation failed.\n");
+		return NULL;
+	}
+
+	// Initialise message vector.
+	if ((mav->messages = vectorInit()) == NULL) {
+		fprintf(stderr, "Vector initialisation failed.\n");
+		return NULL;
+	}
+
+	found = false;
+	
+	// Check if each message's ID is in the vector
+	for (i = 0; i < vectorGetSize(tlog->messages) && !found; i++) {
+		// Extract message.
+		if ((tMess = (tlogMessage_t *)vectorGetElement(tlog->messages, i)) == NULL)
+			fprintf(stderr, "Error extracting message from vector.\n");
+
+		// Get id.
+		if (tMess->mav.mav1.mavCode == 0xfe)
+			id = (int)tMess->mav.mav1.messageID;
+		else if (tMess->mav.mav2.mavCode == 0xfd)
+			id = toInt24le(tMess->mav.mav2.messageID);
+		
+		// Check if ID is to be extracted.
+		if (vectorContains(ids, compareInt, (void *)&id)) {
+			// Extract message and insert into MAVLink file.
+			if ((mess = tlogMessToMav(tMess)) == NULL)
+				fprintf(stderr, "Error extracting message.\n");
+
+			// Add message to MAVLink vector.
+			if (vectorInsertBack(mav->messages, (void *)mess) != 0)
+				fprintf(stderr, "Error inserting message into vector.\n");
+
+			// Message has been found.
+			found = true;
+		}
+	}
+	return (mavlink_t *)mav;
+}
+
+/*
+ * Extract a single message of a given ID(s) from a MAVLink file and place in a MAVLink file.
+ * Inputs: MAVLink file, vector of IDs
+ * Outputs: MAVLink file; NULL if unsuccessful
+ */
+mavlink_t *extractOneByIdMavToMav(mavlink_t *mavP, vector_t *ids) {
+	// Variable declarations.
+	pMavlink_t *m, *mav;
+	mavMessage_t *mMess, *mess;
+	int i, id;
+	bool found;
+	
+	// Check arguments.
+	if (mavP == NULL || ids == NULL) {
+		fprintf(stderr, "Invalid argument(s).\n");
+		return NULL;
+	}
+
+	// Coerce.
+	m = (pMavlink_t *)mavP;
+
+	// Allocate memory for MAVLink file.
+	if ((mav = (pMavlink_t *)malloc(sizeof(pMavlink_t))) == NULL) {
+		fprintf(stderr, "Memory allocation failed.\n");
+		return NULL;
+	}
+
+	// Initialise message vector.
+	if ((mav->messages = vectorInit()) == NULL) {
+		fprintf(stderr, "Vector initialisation failed.\n");
+		return NULL;
+	}
+
+	found = false;
+	
+	// Check if each message's ID is in the vector
+	for (i = 0; i < vectorGetSize(m->messages) && !found; i++) {
+		// Extract message.
+		if ((mMess = (mavMessage_t *)vectorGetElement(m->messages, i)) == NULL)
+			fprintf(stderr, "Error extracting message from vector.\n");
+
+		// Get id.
+		if (mMess->mav1.mavCode == 0xfe)
+			id = (int)mMess->mav1.messageID;
+		else if (mMess->mav2.mavCode == 0xfd)
+			id = toInt24le(mMess->mav2.messageID);
+		
+		// Check if ID is to be extracted.
+		if (vectorContains(ids, compareInt, (void *)&id)) {
+			// Extract message and insert into MAVLink file.
+			if ((mess = mavMessToMav(mMess)) == NULL)
+				fprintf(stderr, "Error extracting message.\n");
+
+			// Add message to MAVLink vector.
+			if (vectorInsertBack(mav->messages, (void *)mess) != 0)
+				fprintf(stderr, "Error inserting message into vector.\n");
+
+			// Message has been found.
+			found = true;
+		}
+	}
+	return (mavlink_t *)mav;
+}
+
 
 /*
  * Extract messages of a given number in the message sequence (indexed base 1).
@@ -4939,7 +5170,7 @@ void generateTestsShort(int msgID, int passSeed, int failSeed) {
 
 		// Generate failing test for payload length.
 		old = mess.mav1.payloadLen;
-		mess.mav1.payloadLen = (uint8_t)old + 0x01;
+		mess.mav1.payloadLen = old + 0x01;
 
 		// Generate a single failing test.
 		sprintf(fname, "fail.%d", failSeed++);
@@ -4957,7 +5188,7 @@ void generateTestsShort(int msgID, int passSeed, int failSeed) {
 
 		// Generate passing test for packet sequence.
 		old = mess.mav1.packetSeq;
-		mess.mav1.packetSeq = (uint8_t)old + 0x01;
+		mess.mav1.packetSeq = old + 0x01;
 
 		// Generate a single passing test.
 		sprintf(fname, "pass.%d", passSeed++);

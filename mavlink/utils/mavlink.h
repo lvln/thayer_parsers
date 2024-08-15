@@ -168,6 +168,27 @@ mavlink_t *extractByIdPcapToMav(pcap_t *pcapP, vector_t *ids);
 mavlink_t *extractByIdTlogToMav(tlog_t *tlogP, vector_t *ids);
 
 /*
+ * Extract a single message of a given ID(s) from a MAVLink file and place in a MAVLink file.
+ * Inputs: MAVLink file, vector of IDs
+ * Outputs: MAVLink file; NULL if unsuccessful
+ */
+mavlink_t *extractOneByIdMavToMav(mavlink_t *mavP, vector_t *ids);
+
+/*
+ * Extract a single message of a given ID(s) from a PCAP file and place in a MAVLink file.
+ * Inputs: PCAP file, vector of IDs
+ * Outputs: MAVLink file; NULL if unsuccessful
+ */
+mavlink_t *extractOneByIdPcapToMav(pcap_t *pcapP, vector_t *ids);
+
+/*
+ * Extract a single message of a given ID(s) from a TLOG file and place in a MAVLink file.
+ * Inputs: TLOG file, vector of IDs
+ * Outputs: MAVLink file; NULL if unsuccessful
+ */
+mavlink_t *extractOneByIdTlogToMav(tlog_t *tlogP, vector_t *ids);
+
+/*
  * Extract all messages of a given ID(s) from a MAVLink file and place in a MAVLink file.
  * Inputs: MAVLink file, vector of IDs
  * Outputs: MAVLink file; NULL if unsuccessful
