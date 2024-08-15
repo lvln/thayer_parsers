@@ -5579,3 +5579,75 @@ void generateTestsShort(int msgID, int passSeed, int failSeed) {
 	vectorFree(enFields);
 	
 }
+
+/*
+ * Generate a single passing test for a given message type.
+ * Inputs: message ID, pass test number
+ * Outputs: none
+ */
+void generateSingleTest(int msgID, int passSeed) {
+	// Variable declarations.
+	int maxLenM1, maxLenM2, i;
+	FILE *fp;
+	char fname[50];
+	vector_t *enFields;
+	mavMessage_t mess;
+	uint8_t randomByte;
+	
+	// Seed a random number generator.
+	srand(time(NULL));
+
+	// Initialise the given message type.
+	if ((enFields = initialiseMessageType(msgID, &maxLenM1, &maxLenM2)) == NULL) {
+		fprintf(stderr, "Error initialising message type.\n");
+		return;
+	}
+		
+	// Create a MAVLINK 2 message with random byte values in wildcard fields and all other fields fixed.
+	mess.mav2.mavCode = 0xfd;
+	mess.mav2.payloadLen = (uint8_t)maxLenM2;
+	mess.mav2.incompFlag = 0;
+	mess.mav2.compFlag = 0;
+	mess.mav2.packetSeq = (uint8_t)(rand() % 256);
+	mess.mav2.systemID = (uint8_t)(rand() % 256);
+	mess.mav2.compID = (uint8_t)(rand() % 256);
+	fromInt24le(msgID, mess.mav2.messageID);
+	
+	// Allocate memory for the payload.
+	if ((mess.mav2.payload = (uint8_t *)malloc(sizeof(uint8_t)*maxLenM2)) == NULL)
+		fprintf(stderr, "Memory allocation failed.\n");
+	
+	// Fill payload bytes.
+	for (i = 0; i < maxLenM2; i++) {
+		// Generate a random byte for wildcard fields.
+		randomByte = (uint8_t)(rand() % 256);
+
+		// Differentiate between ennumerated and non-ennumerated fields.
+		if (!(vectorContains(enFields, compareInt, (void *)&i))) mess.mav2.payload[i] = randomByte;
+		else mess.mav2.payload[i] = fillEnumInRange(msgID, i);
+	}
+		
+	// Fill in the crc with random bytes.
+	mess.mav2.crc[0] = (uint8_t)(rand() % 256);
+	mess.mav2.crc[1] = (uint8_t)(rand() % 256);
+	mess.mav2.signedMess = false;
+	
+	// Generate a single passing test.
+	sprintf(fname, "pass.%d", passSeed++);
+	
+	if ((fp = fopen(fname, "wb")) == NULL) {
+		fprintf(stderr, "Failed to open file.\n");
+		return;
+	}
+	
+	writeMessageToFileMav(&mess, fp);
+	
+	fclose(fp);
+	
+	free(mess.mav2.payload);
+	
+	// Clean up memory.
+	vectorApply(enFields, free);
+	vectorFree(enFields);
+	
+}

@@ -229,3 +229,10 @@ void generateTests(int messageID, int passSeed, int failSeed);
  * Outputs: none
  */
 void generateTestsShort(int messageID, int passSeed, int failSeed);
+
+/*
+ * Generate a single passing test for a given message type.
+ * Inputs: message ID, pass test number
+ * Outputs: none
+ */
+void generateSingleTest(int msgID, int passSeed);
