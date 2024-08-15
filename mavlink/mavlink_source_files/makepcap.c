@@ -1,5 +1,5 @@
 /* 
- * makemav.c --- creates a file with only MAVlink messages given an input file of a PCAP or TLOG file
+ * makepcap.c --- creates a file with only PCAP messages given an input file of a PCAP or MAVLink file
  * 
  * Author: Joshua M. Meise
  * Created: 07-23-2024
@@ -18,11 +18,11 @@ int main(int argc, char **argv) {
 	pcap_t *p;
 	tlog_t *t;
 	mavlink_t *m;
-	bool pcap, tlog;
+	bool mav, tlog;
 	
 	// Check number of argumnets.
 	if (argc != 3) {
-		fprintf(stderr, "usage: makemav inputFile [.tlog|.pcap] outputFile[.mav]\n");
+		fprintf(stderr, "usage: makepcap inputFile [.mav|.tlog] outputFile[.pcap]\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -32,30 +32,28 @@ int main(int argc, char **argv) {
 		exit(EXIT_FAILURE);
 	}
 	
-	pcap = tlog = false;
+	mav = tlog = false;
 	
 	// Check end of file name to see extension; default to TLOG file.
 	if (strlen(argv[1]) > 5) {
-		if (strcmp(&argv[1][strlen(argv[1]) - 5], ".pcap") == 0)
-			pcap = true;
-		else if (strcmp(&argv[1][strlen(argv[1]) - 5], ".tlog") == 0)
+		if (strcmp(&argv[1][strlen(argv[1]) - 5], ".tlog") == 0)
 			tlog = true;
 	}
-	if (!tlog && !pcap) tlog = true;
+	if (!tlog) mav = true;
 	
 	// Convert to MAVLink.
-	if (pcap) {
-		if ((p = readFilePcap(fp)) == NULL) {
+	if (mav) {
+		if ((m = readFileMav(fp)) == NULL) {
 			fprintf(stderr, "Failed to read file.\n");
 			exit(EXIT_FAILURE);
 		}
 		
-		if ((m = pcapToMav(p)) == NULL) {
+		if ((p = mavToPcap(m)) == NULL) {
 			fprintf(stderr, "Failed to convert to MAVLink.\n");
 			exit(EXIT_FAILURE);
 		}
 
-		freePcap(p);
+		freeMav(m);
 	}
 	else if (tlog) {
 		if ((t = readFileTlog(fp)) == NULL) {
@@ -63,7 +61,7 @@ int main(int argc, char **argv) {
 			exit(EXIT_FAILURE);
 		}
 
-		if ((m = tlogToMav(t)) == NULL) {
+		if ((p = tlogToPcap(t)) == NULL) {
 			fprintf(stderr, "Failed to convert to MAVLink.\n");
 			exit(EXIT_FAILURE);
 		}
@@ -80,9 +78,9 @@ int main(int argc, char **argv) {
 	}
 	
 	// Write messages to file.
-	writeToFileMav(m, fp);
+	writeToFilePcap(p, fp);
 	
 	fclose(fp);
-	freeMav(m);
+	freePcap(p);
 	exit(EXIT_SUCCESS);
 }

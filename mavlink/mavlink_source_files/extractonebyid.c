@@ -1,8 +1,8 @@
 /* 
- * extractbymessagenumber.c --- extracts all messages of a given message number in the sequence from a given file and outputs to a MAVLink file
+ * extractonebyid.c --- extracts a single message by ID and places it in a .mav file
  * 
  * Author: Joshua M. Meise
- * Created: 07-25-2024
+ * Created: 08-15-2024
  * Version: 1.0
  * 
  */
@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
 	
 	// Check number of arguments.
 	if (argc < 4) {
-		fprintf(stderr, "usage: extractbymessageid inputFile[.mav|.pcap|.tlog] outputFile[.mav] number[s]\n");
+		fprintf(stderr, "usage: extractonebyid inputFile[.mav|.pcap|.tlog] outputFile[.mav] messageID[s]\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 		exit(EXIT_FAILURE);
 	}
 	
-	// Extract which message numbers are to be extacted.
+	// Extract which message ids are to be extacted.
 	for (i = 0; i < argc - 3; i++) {
 		if ((num = atoi(argv[i + 3])) < 0) {
 			printf("Neagtive index.\n");
@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
 		
 		// Insert to vector.
 		if (vectorInsertBack(vec, (void *)ins) != 0)
-			fprintf(stderr, "Vetor insertion failed.\n");
+			fprintf(stderr, "Vector insertion failed.\n");
 	}
 	
 	// Depending on type of file extract the messages and place into MAVLink structure.
@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
 			exit(EXIT_FAILURE);
 		}
 		
-		if ((out = extractByNumberPcapToMav(p, vec)) == NULL) {
+		if ((out = extractOneByIdPcapToMav(p, vec)) == NULL) {
 			fprintf(stderr, "Error extracting messages.\n");
 			exit(EXIT_FAILURE);
 		}
@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
 			exit(EXIT_FAILURE);
 		}
 
-		if ((out = extractByNumberTlogToMav(t, vec)) == NULL) {
+		if ((out = extractOneByIdTlogToMav(t, vec)) == NULL) {
 			fprintf(stderr, "Error extracting messages.\n");
 			exit(EXIT_FAILURE);
 		}
@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
 			exit(EXIT_FAILURE);
 		}
 
-		if ((out = extractByNumberMavToMav(m, vec)) == NULL) {
+		if ((out = extractOneByIdMavToMav(m, vec)) == NULL) {
 			fprintf(stderr, "Error extracting messages.\n");
 			exit(EXIT_FAILURE);
 		}
