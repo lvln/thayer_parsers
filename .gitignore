@@ -1,7 +1,7 @@
 *.o
 *~
 *.a
-.backup/*
+*/.backup
 \#*\#
 *.log
 *.jou
@@ -9,14 +9,15 @@
 *.tab.*
 *output*
 *.xml
-unused
+*.orig
+*/unused
+*/gmr_counts
 .DS_Store
 .logindata
+RESULTS
 */bison/gmr
 */hmr/hmr
 */xbnf/gmr
 */xbnf/gmr.y
 xbnf/bison/xbnf
 abnf/bison/abnf
-*/*/gmr_counts
-RESULTS/*
