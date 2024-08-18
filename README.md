@@ -7,14 +7,15 @@ with BNF and implemented through
 [Bison](https://www.gnu.org/software/bison), with equivalent grammars
 expressed and implemented through
 [Hammer](https://gitlab.special-circumstanc.es/hammer/hammer), a
-parser combinator framework under development through the [DARPA
-SafeDocs](https://www.darpa.mil/program/safe-documents) program. In
+parser combinator framework under development through the
+[DARPA SafeDocs](https://www.darpa.mil/program/safe-documents) program. In
 addition, an extended version of BNF -- xBNF -- is also explored that
 captures core concepts from Hammer. It is implemented as a
 preprocessor, written in BNF, implemented with Bison.
 
-All parsers provided are operational; A set of test vectors is
-provided for each. In general test vectors are generated automatically where possible.
+All parsers listed here are operational; others represent works in
+progress. A set of test vectors is provided for each. In general test
+vectors are generated automatically where possible.
 
 The exploration restricts attention based on the following high-value
 attributes:
@@ -92,48 +93,64 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 ## Regression Testing:
 
-**./cleanall.sh** -- clean out all the parsers  
-**./makeall.sh** -- build all the parsers  
-**./runall.sh** -- run all the parsers (results in RESULTS directory)  
-**./run.sh <parser>** -- run one parser (e.g. run.sh jnum)  
+&emsp;**./cleanall.sh** -- clean out all the parsers  
+&emsp;**./makeall.sh** -- build all the parsers  
+&emsp;**./runall.sh** -- run all the parsers (results in RESULTS directory)  
+&emsp;**./run.sh <parser>** -- run one parser (e.g. run.sh jnum)  
 
 
 ## Parser Directories:
 
-**bin0** -- trivial binary test -- a sequence of uint8 values 0,34,93  
-**bin1** -- a sequence containing every binary unint8 value 0 to 255  
-**bin2** -- any uint8 byte  
-**gmr0** -- trivial 5-rule ASCII grammar (subset of gmr1)  
-**gmr1** -- 9-rule ASCII grammar described by Satya Kiran Popuri [_here_](https://www.cs.uic.edu/~spopuri/cparser.html)  
-**jnum** -- json number parser  
-**jstring** -- json string parser  
-**json** -- json parser with everything but unicode  
-**unicode** -- binary unicode parser  
-**json.unicode** -- binary json with unicode parser  
-**command** -- binary command parser  
-**response** -- binary response parser  
-**bugs** -- Hammer implementation issues  
-**mavlink** -- MAVLink parser as well as all MAVLink-related source files  
-**mavlink_standalone_message** -- MAVLink single message parser for one message type  
-**mavlink_single_message_repeat** -- MAVLink parser for zero or more messages of one message type  
-**mavlink_three_messages** -- MAVLink parser for three dirrerent message types  
+#### <ins>Simple Examples</ins>
+
+&emsp;**gmr0** -- trivial 5-rule ASCII grammar (subset of gmr1)  
+&emsp;**gmr1** -- 9-rule ASCII grammar described by Satya Kiran Popuri [_here_](https://www.cs.uic.edu/~spopuri/cparser.html)  
+&emsp;**usps** -- simple ASCII grammar for US Mail addresses  
+&emsp;**bin0** -- trivial binary test -- a sequence of uint8 values 0,34,93  
+&emsp;**bin1** -- a sequence containing every binary unint8 value 0 to 255  
+&emsp;**bin2** -- parsing any uint8 byte as a wildcard  
+&emsp;**command** -- simple binary command parser with wildcards  
+&emsp;**response** -- simple binary response parser with wildcards  
+
+#### <ins>JSON parser tutorial</ins> -- a sequence of parsers that incrementally build to a full [_JSON_](http://www.json.org) grammar
+
+&emsp;**jnum** -- json number parser  
+&emsp;**jstring** -- json string parser  
+&emsp;**junicode** -- binary unicode parser  
+&emsp;**json** -- json parser with everything but unicode  
+&emsp;**json.unicode** -- binary json with unicode parser  
+
+#### <ins>MAVLINK parser tutorial</ins> -- a sequence of parsers that incrementally build toward a MAVLINK parser
+
+&emsp;**mavlink_standalone_message** -- MAVLink single message parser for one message type  
+&emsp;**mavlink_single_message_repeat** -- MAVLink parser for zero or more messages of one message type  
+&emsp;**mavlink_three_messages** -- MAVLink parser for three dirrerent message types  
+&emsp;**mavlink** -- MAVLink parser as well as all MAVLink-related source files  
+
+#### <ins>Other Non-trivial Examples<ins>
+
+&emsp;**http** -- parser for Hypertext Transfer Protocol as per RFC 7230  
+&emsp;**url** -- parser for Uniform Resource Locators as per RFC 3986  
+&emsp;**J1939** -- parser for J1939 protocol  
+
 
 ### Parser Subdirectories
 
 Each parser directory may contain subdirectories:  
 
-**bison** -- the working bison version of the grammar  
-**xbnf** -- the working xbnf version of the grammar  
-**hmr** -- the hammer verion of the grammar  
-**tests** -- test vectors (pass.N for valid inputs; fail.N for invalid inputs)  
-**tests.src** -- a directory for generating and installing test vectors in tests  
+&emsp;**bison** -- the working bison version of the grammar  
+&emsp;**xbnf** -- the working xbnf version of the grammar  
+&emsp;**hmr** -- the hammer verion of the grammar  
+&emsp;**tests** -- test vectors (pass.N for valid inputs; fail.N for invalid inputs)  
+&emsp;**tests.src** -- a directory for generating and installing test vectors in tests  
 
 ## Other Directories
 
-**ppxml** -- a routine to generate an xml description of a Hammer parser  
-**xbnf** -- the xbnf pre-processor, written in BNF for Bison  
-**scripts** -- useful bash scripts -- copy them to ~/bin and place in your path  
-**RESULTS** -- each time _runall.sh_ is executed, it places a results file here  
+&emsp;**ppxml** -- a routine to generate an xml description of a Hammer parser  
+&emsp;**xbnf** -- the xbnf pre-processor, written in BNF for Bison  
+&emsp;**scripts** -- useful bash scripts -- copy them to ~/bin and place in your path  
+&emsp;**RESULTS** -- each time _runall.sh_ is executed, it places a results file here  
+&emsp;**bugs** -- Hammer implementation issues  
 
 ## Building a new Grammar (e.g. foo)
 
