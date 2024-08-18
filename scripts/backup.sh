@@ -1,4 +1,5 @@
 #!/bin/bash
+# backup.sh -- saves a couple of copies of whatever is in the local directory
 if [ $# != 0 ] ; then
 		echo "usage: backup.sh"
 		exit -1
@@ -21,7 +22,7 @@ do
 done
 # copy everything to .backup
 shopt -s nullglob
-for f in *.[ch] *.[ly] *.sh *.xbnf *.xml *.cpp *.hpp Makefile README README.md
+for f in *.[ch] *.[ly] *.sh Makefile* README README.md *.cpp *.hpp *.tcl
 do
 		if [ -f $f ] ; then
 				echo "[saving $f]"

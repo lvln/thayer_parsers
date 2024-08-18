@@ -1,4 +1,5 @@
 #!/bin/bash
+# Cleans and makes all parsers
 
 pushd () {
     command pushd "$@" > /dev/null
@@ -28,18 +29,31 @@ make ${MODE} clean
 make ${MODE}
 popd
 
+# make the xbnf pre-processor
 pushd ./xbnf/bison
 echo [xbnf]
 make ${MODE} clean
 make ${MODE}
 popd
 
-# make the hmr grammars
-for DIR in abnf gmr0 gmr1 jnum jstring json bin0 bin1 bin2 unicode command response json.unicode url usps can can/can.pr J1939 http xml mavlink mavlink_standalone_message mavlink_single_message_repeat mavlink_three_messages
+# make the abnf pre-processor -- not yet working
+#pushd ./abnf/bison
+#echo [abnf]
+#make ${MODE} clean
+#popd
+
+# All grammars not listed here are experimental and unused
+# NOTE: DO NOT PUT xbnf or abnf in this list
+for DIR in gmr0 gmr1 usps bin0 bin1 bin2 bin3 command response \
+				 jnum jstring json junicode json.unicode \
+				 mavlink_standalone_message mavlink_single_message_repeat mavlink_three_messages mavlink \
+				 J1939 url http
 do
 		if [ -d ./${DIR}/bison ] ; then
 				pushd ./${DIR}/bison
 				echo [$DIR/bison]
+				rm -f Makefile
+				ln -s ../../Makefile.bison ./Makefile
 				make ${MODE} clean
 				make ${MODE}
 				popd
@@ -48,6 +62,8 @@ do
 		if [ -d ./${DIR}/hmr ] ; then
 				pushd ./${DIR}/hmr
 				echo [$DIR/hmr]
+				rm -f Makefile
+				ln -s ../../Makefile.hmr ./Makefile				
 				make ${MODE} clean
 				make ${MODE}
 				popd
@@ -56,10 +72,11 @@ do
 		if [ -d ./${DIR}/xbnf ] ; then
 				pushd ./${DIR}/xbnf
 				echo [$DIR/xbnf]
+				rm -f Makefile
+				ln -s ../../Makefile.xbnf ./Makefile
 				make ${MODE} clean
 				make ${MODE}
 				popd
 		fi
-
 done
 
