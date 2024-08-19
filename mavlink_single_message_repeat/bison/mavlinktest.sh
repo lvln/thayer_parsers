@@ -30,6 +30,12 @@ fi
 # This is the source directory path
 SRCDIR="../../mavlink/mavlink_source_files"
 
+# Clean and build data processing tools
+pushd ../../mavlink/utils/
+make clean > /dev/null
+make > /dev/null
+popd
+
 # Move into tests direcotry for the purpose of generating tests
 pushd ../tests
 
@@ -87,4 +93,9 @@ done
 pushd ../tests/
 make clean > /dev/null
 cp ../tests.src/pass.* ../tests.src/fail.* . &> /dev/null
+popd
+
+# Clean out utils
+pushd ../../mavlink/utils
+make clean > /dev/null
 popd
