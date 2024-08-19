@@ -1,8 +1,0 @@
-/* Here is the grammar */
-P : optMessage ;
-
-optMessage : /* empty */ | optMessage message ;
-
-message : * A * 'c' ;
-
-A : 'a' | * * ;
