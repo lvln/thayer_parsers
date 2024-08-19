@@ -1,0 +1,8 @@
+HTTP/1.0 301 Moved Permanently
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+

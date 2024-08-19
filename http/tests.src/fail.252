@@ -1,0 +1,4 @@
+DELETE ftp://ftp.is.co.za/rfc/rfc1808.txt# HTTP/1.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+
+Record to delete

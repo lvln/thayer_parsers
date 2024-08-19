@@ -1,0 +1,9 @@
+POST http://a/b/c/g. HTTP1.1
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+
+key1=value1&key2=value2

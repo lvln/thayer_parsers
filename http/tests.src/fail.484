@@ -1,0 +1,13 @@
+HTTP/1.0 403 Forbidden
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Type: application/json
+Content-Type: application
+/json
+
+You do not have permission to access the requested resource.

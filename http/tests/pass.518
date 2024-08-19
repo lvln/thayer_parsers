@@ -1,9 +1,0 @@
-HTTP/1.1 415 Unsupported Media Type
-Host: www.example.com
-Content-Type: application/json
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-Range: 
-

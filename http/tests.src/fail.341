@@ -1,0 +1,13 @@
+OPTIONS http://www.ietf.org/rfc/rfc2396.txt HTT/1.0
+Pragma:
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+

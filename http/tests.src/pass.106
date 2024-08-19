@@ -1,0 +1,9 @@
+POST www.example.com:80 HTTP/1.1
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+Transfer-Encoding: chunked
+Connection: keep-alive
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+
+key1=value1&key2=value2

@@ -1,0 +1,16 @@
+TRACE http://g HTTP1.1
+Host: www.example.com
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Vary:     
+Referer: https://www.example.com/page
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+

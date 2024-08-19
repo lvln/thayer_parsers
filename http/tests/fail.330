@@ -1,4 +1,0 @@
-OPTIONS http://g HTTP/1.0
-WWW-Authenticate: Basic realm="Access to the staging site"
-Pragma :
-

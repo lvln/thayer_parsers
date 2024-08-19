@@ -1,0 +1,11 @@
+GET ** HTTP/2.0
+Connection: keep-alive
+Vary:     
+Range: 
+Pragma:
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+

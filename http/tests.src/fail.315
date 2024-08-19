@@ -1,0 +1,9 @@
+DELET http://a/b/c/..g HTTP/1.0
+Transfer-Encoding: chunked
+Host: www.example.com
+Accept-Language: en-US
+Referer: https://www.example.com/page
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Pragma:
+

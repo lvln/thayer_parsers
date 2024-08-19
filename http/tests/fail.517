@@ -1,6 +1,0 @@
-HTTP/1.0 414 URI Too Long
-WWW-Authenticate: Basic realm="Access to the staging site"
-Range: 
-Host: www.example.com
-Referer: https://www.example.com/page
-Authorization:Basic XMlcrpwYzdyZA==

@@ -1,9 +1,0 @@
-POST example.com:80/~smith/home.html HTTP/1.0
-Accept-Encoding: gzip,
-  deflate,
-   br
-Transfer-Encoding: chunked
-WWW-Authenticate: Basic realm="Access to the staging site"
-Authorization: Basic XMlcrpwYzdyZA==
-
-key1=value1&key2=value2

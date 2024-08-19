@@ -1,8 +1,0 @@
-HTTP/1.0 205 Reset Content
-Connection: keep-alive
-Transfer-Encoding: chunked
-Vary:     
-Accept-Encoding: gzip,
-  deflate,
-   br
-Authorization:Basic XMlcrpwYzdyZA==

@@ -1,0 +1,8 @@
+OPTION http://example.com/data HTTP/1.1
+Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+

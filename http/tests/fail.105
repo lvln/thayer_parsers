@@ -1,8 +1,0 @@
-POST /a/b/ HTTP1.1
-Connection: keep-alive
-Vary:     
-Content-Type: application/json
-Pragma:
-WWW-Authenticate: Basic realm="Access to the staging site"
-
-key1=value1&key2=value2

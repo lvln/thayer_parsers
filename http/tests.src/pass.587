@@ -1,0 +1,4 @@
+HTTP/1.1 510 Not Extended
+Range: 
+Host: www.example.com
+

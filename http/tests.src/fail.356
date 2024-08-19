@@ -1,0 +1,5 @@
+OPTIONS mailto:John.Doe@example.com HTTP/2.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Pragma:
+

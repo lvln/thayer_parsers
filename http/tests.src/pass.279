@@ -1,0 +1,9 @@
+CONNECT http://g HTTP/1.0
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Language: en-US
+Pragma:
+

@@ -1,0 +1,17 @@
+OPTIONS g?y#s HTTP/1.1
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Accept-Encoding: gzip,
+  deflate,
+   br
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
+Accept-Language: en-US
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Referer: https://www.example.com/page
+

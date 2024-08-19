@@ -32,6 +32,8 @@ Headers have the following format:
 * A header *field value*
 * Note: the whole header will appear on a single line as line folds are now obsolete
 
+This grammar is ambiguous when inncluding the optional whitespace at the end of a header field value and this attribute has thus been left out of the grammar.
+
 ## References:
 * [HTTP Dcumentation](https://developer.mozilla.org/en-US/docs/Web/HTTP)
 * [RFC 7230: Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing](https://datatracker.ietf.org/doc/html/rfc7230)

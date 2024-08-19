@@ -1,0 +1,15 @@
+PUT http://example.com/data HTTP/1.0
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Language: en-US
+
+key1=value1&key2=value2

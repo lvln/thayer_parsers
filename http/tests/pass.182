@@ -1,4 +1,0 @@
-PUT http://www.example.com/hello.txt HTTP/2.0
-Connection: keep-alive
-
-key1=value1&key2=value2

@@ -1,0 +1,3 @@
+CONNECT http://example.com HTTP1.1
+Authorization: Basic XMlcrpwYzdyZA==
+

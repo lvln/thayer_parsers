@@ -1,4 +1,0 @@
-HEAD g?y/./x HTTP/2.0
-Content-Length: 123
-WWW-Authenticate: Basic realm="Access to the staging site"
-

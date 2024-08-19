@@ -1,0 +1,11 @@
+DELETE ** HTTP/1.1
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
+Range: 
+Accept-Language: en-US
+Pragma:
+Transfer-Encoding: chunked
+
+Record to delete

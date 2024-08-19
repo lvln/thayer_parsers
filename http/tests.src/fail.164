@@ -1,0 +1,13 @@
+PUT ** HTTP/2.0
+Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Language: en-US
+
+key1=value1&key2=value2

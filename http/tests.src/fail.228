@@ -1,0 +1,9 @@
+DELETE .. HTTP/1.0
+Accept-Encoding: gzip,
+  deflate,
+   br
+Transfer-Encoding: chunked
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+
+Record to delete

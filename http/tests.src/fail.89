@@ -1,0 +1,10 @@
+HEAD /g HTT/1.0
+Referer: https://www.example.com/page
+Pragma:
+Content-Type: application/json
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Range: 
+

@@ -1,0 +1,7 @@
+GET mailto:John.Doe@example.com HTTP/1.1
+Authorization: Basic XMlcrpwYzdyZA==
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+

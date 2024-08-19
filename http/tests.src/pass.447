@@ -1,0 +1,14 @@
+HTTP/2.0 208 Already Reported
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
+Connection: keep-alive
+Transfer-Encoding: chunked
+Vary:     
+Host: www.example.com
+Content-Type: application/json
+Content-Length: 123
+Range: 
+Referer: https://www.example.com/page
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Language: en-US
+

@@ -1,4 +1,0 @@
-DELETE http://example.com HTTP/1.0
-Transfer-Encoding: chunked
-
-Record to delete

@@ -1,9 +1,0 @@
-DELETE http://a/b/c/..g HTTP/1.1
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Language: en-US
-Pragma:
-WWW-Authenticate: Basic realm="Access to the staging site"
-Range: 
-Content-Length: 123
-
-Record to delete

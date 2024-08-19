@@ -1,0 +1,10 @@
+HEAD http://a/b/c/g. HTTP/2.0
+Connection: keep-alive
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+

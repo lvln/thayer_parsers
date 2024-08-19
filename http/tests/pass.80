@@ -1,6 +1,0 @@
-HEAD http://www.example.com/hello.txt HTTP/2.0
-Connection: keep-alive
-Transfer-Encoding: chunked
-Vary:     
-Authorization: Basic XMlcrpwYzdyZA==
-

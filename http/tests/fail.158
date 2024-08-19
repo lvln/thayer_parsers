@@ -1,7 +1,0 @@
-PUT www.example.com:80 HTTP/2.0
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Language: en-US
-Content-Length: 123
-Accept-Encoding :gzip, deflate, br
-
-key1=value1&key2=value2

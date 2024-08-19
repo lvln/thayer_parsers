@@ -1,7 +1,0 @@
-HEAD http://a/b/c/..g HTTP/2.0
-Accept-Encoding: gzip,
-  deflate,
-   br
-WWW-Authenticate: Basic realm="Access to the staging site"
-Host: www.example.com
-

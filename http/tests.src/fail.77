@@ -1,0 +1,6 @@
+HEAD http://a/b/c/.g HTTP1.1
+Range: 
+Transfer-Encoding: chunked
+Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+

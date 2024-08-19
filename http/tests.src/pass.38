@@ -1,0 +1,13 @@
+GET /g HTTP/2.0
+Transfer-Encoding: chunked
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+

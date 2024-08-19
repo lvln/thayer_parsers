@@ -1,7 +1,0 @@
-POST http://g HTT/1.0
-Pragma:
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Accept-Language: en-US
-Transfer-Encoding: chunked
-
-key1=value1&key2=value2

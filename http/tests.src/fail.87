@@ -1,0 +1,16 @@
+PUTT http://www.ietf.org/rfc/rfc2396.txt HTTP/1.0
+Referer: https://www.example.com/page
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+Host: www.example.com
+Range: 
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+

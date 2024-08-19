@@ -1,0 +1,16 @@
+TRACE / HTTP/1.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Transfer-Encoding: chunked
+Accept-Language: en-US
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+

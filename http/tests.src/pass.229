@@ -1,0 +1,10 @@
+DELETE http://a/b/c/.g HTTP/1.1
+Connection: keep-alive
+Content-Type: application/json
+Transfer-Encoding: chunked
+Host: www.example.com
+Pragma:
+Accept-Language: en-US
+Vary:     
+
+Record to delete

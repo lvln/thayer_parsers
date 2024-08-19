@@ -1,4 +1,0 @@
-PUT http://a/b/c/..g HTT/1.0
-Authorization: Basic XMlcrpwYzdyZA==
-
-key1=value1&key2=value2

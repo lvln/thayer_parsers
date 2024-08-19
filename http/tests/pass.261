@@ -1,4 +1,0 @@
-CONNECT www.example.com:80 HTTP/1.0
-Vary:     
-Host: www.example.com
-

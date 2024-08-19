@@ -1,0 +1,22 @@
+OPTIONS http://www.ietf.org/rfc/rfc2396.txt HTTP/1.0
+Host: www.example.com
+Connection: keep-alive
+Content-Length: 123
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Transfer-Encoding: chunked
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length : 123
+

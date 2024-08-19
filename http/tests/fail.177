@@ -1,4 +1,0 @@
-PUT http://g HTTP1.1
-Connection: keep-alive
-
-key1=value1&key2=value2

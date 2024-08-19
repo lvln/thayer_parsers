@@ -1,0 +1,24 @@
+HEAD / HTTP/2.0
+Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Referer: https://www.example.com/page
+Connection: keep-alive
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+Content-Length: 123
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+Content-Type: application/json
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Pragma :
+

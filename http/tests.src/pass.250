@@ -1,0 +1,13 @@
+DELETE / HTTP/1.1
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Referer: https://www.example.com/page
+Connection: keep-alive
+Pragma:
+Range: 
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+
+Record to delete

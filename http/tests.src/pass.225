@@ -1,0 +1,5 @@
+DELETE example.com:80/~smith/home.html HTTP/1.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
+
+Record to delete

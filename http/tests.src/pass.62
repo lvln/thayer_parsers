@@ -1,0 +1,14 @@
+HEAD http://example.com HTTP/2.0
+Authorization: Basic XMlcrpwYzdyZA==
+Pragma:
+Content-Length: 123
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+

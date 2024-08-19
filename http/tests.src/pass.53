@@ -1,0 +1,24 @@
+HEAD /a/b/ HTTP/2.0
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Referer: https://www.example.com/page
+Pragma:
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Connection: keep-alive
+Content-Length: 123
+Vary:     
+Transfer-Encoding: chunked
+Accept-Language: en-US
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Authorization: Basic XMlcrpwYzdyZA==
+

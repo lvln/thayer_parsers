@@ -1,0 +1,5 @@
+HTTP/2.0 2000 OK
+Vary:     
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+

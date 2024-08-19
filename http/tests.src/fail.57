@@ -1,0 +1,8 @@
+HEAD www.example.com:80 HTTP/.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Transfer-Encoding: chunked
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+

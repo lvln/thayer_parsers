@@ -1,0 +1,7 @@
+HTTP/1.0 102 Processing
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length : 123
+

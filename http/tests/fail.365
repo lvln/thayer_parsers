@@ -1,6 +1,0 @@
-TRACE http://a/b/c/..g HTTP/2.
-Authorization: Basic XMlcrpwYzdyZA==
-Content-Length: 123
-Connection: keep-alive
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-

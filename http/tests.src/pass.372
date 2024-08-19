@@ -1,0 +1,19 @@
+TRACE http://example.com/data HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Vary:     
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+

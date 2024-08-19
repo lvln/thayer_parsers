@@ -1,0 +1,11 @@
+HTTP/1.0 511 Network Authentication Required
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Referer: https://www.example.com/page
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+

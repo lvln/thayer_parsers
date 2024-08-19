@@ -1,0 +1,6 @@
+DELETE http://g HTTP/2.0
+Accept-Encoding: gzip,
+  deflate,
+   br
+
+Record to delete

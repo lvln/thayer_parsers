@@ -1,0 +1,8 @@
+HTTP/1.0 102 Processing
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+

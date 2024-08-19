@@ -1,0 +1,4 @@
+CONNECT www.example.com:80 HTTP/.0
+Host: www.example.com
+Referer: https://www.example.com/page
+

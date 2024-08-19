@@ -1,0 +1,10 @@
+GET http://a/b/c/d;p?q HTTP/1.1
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+

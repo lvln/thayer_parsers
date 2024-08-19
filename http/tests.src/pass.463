@@ -1,0 +1,9 @@
+HTTP/1.0 303 See Other
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+

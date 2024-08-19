@@ -1,0 +1,15 @@
+HTTP/1.0 510 Not Extended
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Type: application/json
+Range: 
+Connection: keep-alive
+Transfer-Encoding: chunked
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding :gzip, deflate, br
+

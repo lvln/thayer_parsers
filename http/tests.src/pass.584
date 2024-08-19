@@ -1,0 +1,7 @@
+HTTP/1.1 508 Loop Detected
+Referer: https://www.example.com/page
+Host: www.example.com
+Range: 
+Content-Type: application/json
+Transfer-Encoding: chunked
+

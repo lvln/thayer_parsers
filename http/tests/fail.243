@@ -1,9 +1,0 @@
-PUTT /g HTTP/1.0
-Host: www.example.com
-WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Type: application/json
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Pragma:
-Vary:     
-
-Record to delete

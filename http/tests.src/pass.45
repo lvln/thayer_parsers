@@ -1,0 +1,16 @@
+GET http://a/b/c/g. HTTP/1.0
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Content-Length: 123
+Content-Type: application/json
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+Range: 
+Host: www.example.com
+Accept-Language: en-US
+Connection: keep-alive
+Accept-Encoding: gzip,
+  deflate,
+   br
+

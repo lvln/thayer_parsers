@@ -1,0 +1,12 @@
+OPTIONS http://example.com/data HTTP1.1
+Vary:     
+Range: 
+Pragma:
+Accept-Language: en-US
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+

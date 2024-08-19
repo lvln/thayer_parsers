@@ -1,5 +1,0 @@
-CONNECT http://example.com/data HTTP/1.1
-Range: 
-Host: www.example.com
-Content-Length: 123
-

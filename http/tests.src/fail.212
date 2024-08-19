@@ -1,0 +1,8 @@
+DELETE g HTTP/2.0
+Vary:     
+Referer: https://www.example.com/page
+Content-Type: application/json
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+
+Record to delete

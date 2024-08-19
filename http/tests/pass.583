@@ -1,9 +1,0 @@
-HTTP/1.0 507 Insufficient Storage
-Pragma:
-Authorization: Basic XMlcrpwYzdyZA==
-Host: www.example.com
-WWW-Authenticate: Basic realm="Access to the staging site"
-Accept-Language: en-US
-Range: 
-Content-Type: application/json
-

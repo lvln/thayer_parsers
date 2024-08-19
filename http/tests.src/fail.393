@@ -1,0 +1,3 @@
+TRACE http://www.ietf.org/rfc/rfc2396.txt HTTP/.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+

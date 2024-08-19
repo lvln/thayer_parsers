@@ -1,0 +1,8 @@
+TRACE http://a/b/c/..g HTTP/2.
+Content-Length: 123
+Pragma:
+Vary:     
+Transfer-Encoding: chunked
+Host: www.example.com
+Range: 
+

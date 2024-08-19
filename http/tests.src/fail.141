@@ -1,0 +1,11 @@
+POST /g HTTP1.1
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Transfer-Encoding: chunked
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+Pragma:
+
+key1=value1&key2=value2

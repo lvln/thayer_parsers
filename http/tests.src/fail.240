@@ -1,0 +1,10 @@
+DELETE .. HTTP/1.0
+Host: www.example.com
+Range: 
+Pragma:
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Encoding: gzip,
+  deflate,
+   br
+
+Record to delete

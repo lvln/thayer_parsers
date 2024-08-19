@@ -1,0 +1,17 @@
+TRACE http://example.com/data/ HTTP/1.1
+Accept-Language: en-US
+Referer: https://www.example.com/page
+Host: www.example.com
+Transfer-Encoding: chunked
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Range: 
+Content-Type: application/json
+

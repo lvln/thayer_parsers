@@ -1,0 +1,8 @@
+CONNECT http://www.ietf.org/rfc/rfc2396.txt HTTP/1.1
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Type: application/json
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+

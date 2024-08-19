@@ -1,0 +1,11 @@
+HTTP/1.0 502 Bad Gateway
+Authorization: Basic XMlcrpwYzdyZA==
+Connection: keep-alive
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+
+The server received an invalid response from the upstream server.

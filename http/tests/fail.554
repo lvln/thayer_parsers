@@ -1,9 +1,0 @@
-HTT/1.0 431 Request Header Fields Too Large
-Accept-Encoding: gzip,
-  deflate,
-   br
-Pragma:
-Host: www.example.com
-Content-Length: 123
-Authorization: Basic XMlcrpwYzdyZA==
-

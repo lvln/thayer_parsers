@@ -1,0 +1,9 @@
+CONNEC http://a/b/c/g. HTTP/1.0
+Connection: keep-alive
+Accept-Encoding: gzip,
+  deflate,
+   br
+Transfer-Encoding: chunked
+Content-Length: 123
+
+key1=value1&key2=value2

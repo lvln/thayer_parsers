@@ -1,0 +1,9 @@
+GET http://g HTTP/2.0
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+Referer: https://www.example.com/page
+Accept-Language: en-US
+Content-Length: 123
+

@@ -1,6 +1,0 @@
-TRACE g HTTP/1.0
-WWW-Authenticate: Basic realm="Access to the staging site"
-Pragma:
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Length: 123
-

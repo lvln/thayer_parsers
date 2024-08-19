@@ -1,0 +1,7 @@
+HTTP/2.0 203
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection: keep-alive
+Content-Type: application/json
+Host: www.example.com
+

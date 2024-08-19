@@ -1,5 +1,0 @@
-CONNECT http://example.com/data HTTP/1.0
-Range: 
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-WWW-Authenticate: Basic realm="Access to the staging site"
-

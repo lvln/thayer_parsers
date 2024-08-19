@@ -1,0 +1,3 @@
+GET g?y/./x HTTP/1.1
+Range: 
+

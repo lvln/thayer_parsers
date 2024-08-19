@@ -1,8 +1,0 @@
-HTTP/1.0 502 Bad Gateway
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Host: www.example.com
-Content-Type: application
-/json
-
-The server received an invalid response from the upstream server.

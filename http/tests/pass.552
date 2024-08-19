@@ -1,6 +1,0 @@
-HTTP/2.0 429 Too Many Requests
-Transfer-Encoding: chunked
-Vary:     
-Host: www.example.com
-Authorization: Basic XMlcrpwYzdyZA==
-

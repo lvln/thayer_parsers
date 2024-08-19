@@ -1,4 +1,0 @@
-CONNECT * HTTP/1.0
-Content-Length: 123
-Accept-Language: en-US
-

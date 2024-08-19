@@ -1,6 +1,0 @@
-HEAD ?y HTTP/2.0
-Connection: keep-alive
-Transfer-Encoding: chunked
-Vary:     
-Authorization: Basic XMlcrpwYzdyZA==
-

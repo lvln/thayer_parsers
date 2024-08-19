@@ -1,0 +1,7 @@
+PUT http://example.com/data/ HTTP/1.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Range: 
+Host: www.example.com
+WWW-Authenticate: Basic realm="Access to the staging site"
+
+key1=value1&key2=value2

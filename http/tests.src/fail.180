@@ -1,0 +1,5 @@
+PUT mailto:John.Doe@example.com HTTP/1.0
+Host: www.example.com
+Range: 
+
+key1=value1&key2=value2

@@ -1,0 +1,13 @@
+TRACE ** HTTP/2.0
+Accept-Encoding: gzip,
+  deflate,
+   br
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Content-Type: application/json
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+

@@ -1,0 +1,22 @@
+CONNECT g?y/./x HTTP/1.1
+Range: 
+Connection: keep-alive
+Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
+Vary:     
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Referer: https://www.example.com/page
+Transfer-Encoding: chunked
+Accept-Encoding: gzip,
+  deflate,
+   br
+

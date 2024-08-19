@@ -1,8 +1,0 @@
-DELETE .. HTTP/1.1
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Content-Type: application/json
-Connection: keep-alive
-Authorization: Basic XMlcrpwYzdyZA==
-
-Record to delete

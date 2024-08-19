@@ -1,0 +1,12 @@
+DELETE http://g HTTP/1.1
+Authorization: Basic XMlcrpwYzdyZA==
+Pragma:
+Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Vary:     
+Range: 
+
+Record to delete

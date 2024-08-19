@@ -1,7 +1,0 @@
-POST http://a/b/c/..g HTTP/2.0
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept-Encoding :gzip, deflate, br
-
-key1=value1&key2=value2

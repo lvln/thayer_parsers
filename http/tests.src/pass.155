@@ -1,0 +1,4 @@
+PUT /a/b/ HTTP/2.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+
+key1=value1&key2=value2

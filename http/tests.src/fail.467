@@ -1,0 +1,4 @@
+HTTP/2. 307 Temporary Redirect
+Authorization: Basic XMlcrpwYzdyZA==
+WWW-Authenticate: Basic realm="Access to the staging site"
+

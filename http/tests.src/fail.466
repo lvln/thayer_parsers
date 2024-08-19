@@ -1,0 +1,10 @@
+HTTP/1.0 304 Not Modified
+Content-Length: 123
+Transfer-Encoding: chunked
+Connection: keep-alive
+Pragma:
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+*/*;q=0.8
+

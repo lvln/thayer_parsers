@@ -1,0 +1,14 @@
+HTTP/2.0 Accepted
+Pragma:
+Transfer-Encoding: chunked
+Range: 
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Host: www.example.com
+

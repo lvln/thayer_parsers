@@ -1,0 +1,6 @@
+HTTP/1.1 506 Variant Also Negotiates
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Transfer-Encoding: chunked
+

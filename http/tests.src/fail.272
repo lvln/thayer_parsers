@@ -1,0 +1,18 @@
+CONNECT g?y/./x HTTP/2.0
+Connection: keep-alive
+Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Range: 
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Transfer-Encoding: chunked
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
+

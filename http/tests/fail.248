@@ -1,5 +1,0 @@
-DELETE mailto:John.Doe@example.com HTTP/2.0
-Range: 
-Content-Type: application/json
-
-Record to delete

@@ -1,0 +1,17 @@
+POST http://www.example.org:8080/pub/WWW/TheProject.html HTTP/2.0
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Transfer-Encoding: chunked
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+Vary:     
+Accept-Charset :utf-8,
+ iso-8859-1;q=0.5
+
+key1=value1&key2=value2

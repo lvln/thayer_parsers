@@ -1,0 +1,10 @@
+DELET http://www.ietf.org/rfc/rfc2396.txt HTTP/2.0
+Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Host: www.example.com
+Transfer-Encoding: chunked
+Content-Type: application/json
+

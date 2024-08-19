@@ -1,0 +1,15 @@
+OPTIONS * HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Host: www.example.com
+Vary:     
+Content-Type: application/json
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Length: 123
+Connection: keep-alive
+Transfer-Encoding: chunked
+

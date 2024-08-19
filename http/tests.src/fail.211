@@ -1,0 +1,8 @@
+GES http://a/b/c/..g HTTP/1.1
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Language: en-US
+
+Record to delete

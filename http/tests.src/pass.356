@@ -1,0 +1,5 @@
+OPTIONS * HTTP/2.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Pragma:
+

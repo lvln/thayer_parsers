@@ -1,0 +1,11 @@
+CONNECT http://a/b/c/d;p?q HTTP/1.0
+Pragma:
+Range: 
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+Content-Type: application/json
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+

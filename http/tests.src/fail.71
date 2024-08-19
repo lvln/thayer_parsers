@@ -1,0 +1,4 @@
+OPTION example.com:80/~smith/home.html HTTP/2.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Range: 
+

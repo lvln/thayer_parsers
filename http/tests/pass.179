@@ -1,5 +1,0 @@
-PUT http://a/b/c/.g HTTP/2.0
-Content-Length: 123
-Vary:     
-
-key1=value1&key2=value2
