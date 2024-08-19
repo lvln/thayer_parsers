@@ -14,7 +14,7 @@ The usage of the `mavlinktest.sh` script is: `mavlinktest.sh [-v]` where `-v` in
 * **bison** contains a working parser written in bison the MAVLink grammar
 * **tests** contains a full set of passing and failing tests for the parser
 * **tests.src** contains a backup of the tests currently present in `tests`
-* **mavlink_source_files** contains preprocessors that format the data correctly as well as the PCAP files with data from drone flights
+* **mavlink_source_files** contains preprocessors that format the data correctly as well as the files with data from drone flights
 * **wireshark** contains the Wireshark plugin that dissects MAVLink messages as well as provides some level of statistical analysis on all MAVLink messages in a capture
 * **utils** contains the MAVLink data processing library
 * **lib** contains the compiled libraries

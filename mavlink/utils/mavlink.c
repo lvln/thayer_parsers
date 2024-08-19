@@ -1,4 +1,4 @@
-/* 
+/ 
  * mavlink.c --- implementation of the functions described in mavlink.h
  * 
  * Author: Joshua M. Meise
@@ -4733,7 +4733,7 @@ void generateTests(int msgID, int passSeed, int failSeed) {
 		
 		free(mess.mav1.payload);
 	}
-	
+
 	// Create a MAVLINK 2 message with random byte values in wildcard fields and all other fields fixed.
 	mess.mav2.mavCode = 0xfd;
 	mess.mav2.payloadLen = (uint8_t)maxLenM2;
@@ -4795,7 +4795,7 @@ void generateTests(int msgID, int passSeed, int failSeed) {
 		}
 	}
 	mess.mav2.mavCode = old;
-
+	
 	// Generate failing tests for each payload length.
 	old = mess.mav2.payloadLen;
 	for (i = 1; i <= maxLenM2; i++) {
@@ -4831,7 +4831,7 @@ void generateTests(int msgID, int passSeed, int failSeed) {
 		}
 	}
 	mess.mav2.payloadLen = old;
-		
+
 	// Generate failing tests for incompatibility flag.
 	old = mess.mav2.incompFlag;
 	for (i = 0; i <= 255; i++) {
