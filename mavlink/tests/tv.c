@@ -10,23 +10,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <mavlink.h>
-#include <stdbool.h>
-#include <string.h>
-#include <time.h>
 
 int main(int argc, char **argv) {
 	// Variable declarations.
-	int id;
-	
+	int id, passSeed, failSeed;	
 
-	if (argc != 2) {
-		printf("usage: tv msgID\n");
+	// Check number of arguments.
+	if (argc != 4) {
+		printf("usage: tv msgID passSeed failSeed\n");
 		exit(EXIT_FAILURE);
 	}
 
+	// Convert string to integer.
 	id = atoi(argv[1]);
-	
-	generateTests(id);
+	passSeed = atoi(argv[2]);
+	failSeed = atoi(argv[3]);
+
+	// Generate test cases for the given message id.
+	generateTests(id, passSeed, failSeed);
 
 	exit(EXIT_SUCCESS);
 }

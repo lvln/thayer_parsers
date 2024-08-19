@@ -17,38 +17,6 @@ MAVLink is a lightweight messaging protocol which enables communication between 
 The format of MAVLink messages is defined in the `common.xml` file and can be found [here](https://mavlink.io/en/messages/common.html).
 Accoring to the [MAVLink serialization documentation](https://mavlink.io/en/guide/serialization.html), MAVLink 2.0 truncates empty (zero-filled bytes) at the end of the payload; it will never truncate the first byte of the payload regardless of if it is empty or not. The grammar is thus defined such that it allows for each payload to be any length.
 
-
-**A MAVLink 1.0 message begins with a message-specific message header which is 6 bytes in length.**
-
-* Byte 0: Magic value/version (0xFE for MAVLink 1.0)
-* Byte 1: Payload length (0x10 for SCALED_PRESSURE)
-* Byte 2: Packet sequence
-* Byte 3: System id
-* Byte 4: Component id
-* Byte 5: Message id (0x1D for SCALED_PRESSURE)
-
-**A MAVLink 2.0 message also begins with a message-specific message header which is 10 bytes in length.**
-
-* Byte 0: Magic value/version (0xFD for MAVLink 2.0)
-* Byte 1: Payload length (0x10 for SCALED_PRESSURE)
-* Byte 2: Incompatibility flag (0x01 indicates a signed message)
-* Byte 3: Compatibility flag
-* Byte 4: Packet sequence
-* Byte 5: System id
-* Byte 6: Component id
-* Bytes 7 - 9: Message id (0x00001D for SCALED_PRESSURE)
-
-**The message begins with a message-specific message header which is 10 bytes in length.**
-
-* Byte 0: Magic value/version (always 0xFD for MAVLink 2.0)
-* Byte 1: Payload length
-* Byte 2: Incompatibility flag (0x01 indicates a signed message)
-* Byte 3: Compatibility flag
-* Byte 4: Packet sequence
-* Byte 5: System id
-* Byte 6: Component id
-* Bytes 7 - 9: Message id
-
 **A MAVLink 1.0 message begins with a message-specific message header which is 6 bytes in length.**
 
 * Byte 0: Magic value/version (0xFE for MAVLink 1.0)
