@@ -26,10 +26,9 @@ make > /dev/null
 
 # Generate tests
 ./tv 29 1 1 > /dev/null
-
 # Find the values of pass and fail seed
-let passSeed=($(ls ../tests/pass.* 2>/dev/null | awk -F. '{print $NF}' | sort -n | tail -1) + 1)
-let failSeed=($(ls ../tests/fail.* 2>/dev/null | awk -F. '{print $NF}' | sort -n | tail -1) + 1)
+let passSeed=($(ls ../tests.src/pass.* 2>/dev/null | awk -F. '{print $NF}' | sort -n | tail -1) + 1)
+let failSeed=($(ls ../tests.src/fail.* 2>/dev/null | awk -F. '{print $NF}' | sort -n | tail -1) + 1)
 
 pushd ../../mavlink/mavlink_source_files/
 make clean > /dev/null
