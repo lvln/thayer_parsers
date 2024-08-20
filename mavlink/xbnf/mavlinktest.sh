@@ -27,6 +27,12 @@ if [ $# == 1 ] && [ $1 == "-h" ]; then
 		exit
 fi
 
+# Clean and build utils
+pushd ../utils/
+make clean > /dev/null
+make > /dev/null
+popd
+
 # This is the source directory path.
 SRCDIR="../../mavlink/mavlink_source_files"
 
@@ -99,7 +105,12 @@ for id in "${msgIDs[@]}"; do
 		let failSeed=($(ls ../tests/fail.* 2>/dev/null | awk -F. '{print $NF}' | sort -n | tail -1) + 1)
 done
 
+pushd ../utils/
+make clean > /dev/null
+popd
+
 pushd ../tests/
 make clean > /dev/null
 cp ../tests.src/pass.* ../tests.src/fail.* ./ > /dev/null
 popd
+

@@ -77,10 +77,6 @@ If a MAVLink 2.0 message is signed (incompatibility flag 0x01), it will also con
 
 ## Usage
 
-In the `../mavlink/utils/` directory:
-* `make clean`
-* `make`
-
 In the `../xbnf/bison/` directory:
 * `make clean`
 * `make`

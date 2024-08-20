@@ -1,4 +1,4 @@
-/ 
+/*
  * mavlink.c --- implementation of the functions described in mavlink.h
  * 
  * Author: Joshua M. Meise
