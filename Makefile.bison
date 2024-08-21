@@ -4,6 +4,7 @@
 #
 CFLAGS=-Wall -pedantic -std=c11 -I.
 OFILES=gmr.tab.o lexer.o gmr_tb.o
+GCC=clang
 
 all:	gmr
 
@@ -13,11 +14,11 @@ gmr.tab.c:	gmr.y
 						bison -d -t -v -x gmr.y
 
 %.o:	%.c
-			gcc $(CFLAGS) -c $<
+			$(GCC) $(CFLAGS) -c $<
 
 # build parser from .o files
 gmr:	$(OFILES)
-			gcc $(CFLAGS) $(OFILES) -o gmr
+			$(GCC) $(CFLAGS) $(OFILES) -o gmr
 
 run:	gmr
 			gmrtest.sh

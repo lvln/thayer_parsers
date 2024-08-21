@@ -72,19 +72,31 @@ v2 licence is provided in the file LICENCE-GPL in this repository.
 
 ## Setup ##
 
-Assuming Hammer is installed in some system location
-(e.g. _/usr/local_) and the source is present at some other location
-designated  _< hammer >_ : 
+**Install Tools:**  
+&emsp;sudo apt-get install scons glib-2.0 libglib2.0-dev python3.9 libxml2 libxml2-dev bison  
+
+**Install Hammer:** place the hammer source in a subdirectory < hammer > under some < root > directory:  
+&emsp;cd < hammer >  
+&emsp;scons  
+&emsp;scons test  
+&emsp;sudo scons install  
+
+Assuming Hammer is installed in a system location
+(e.g. _/usr/local_) and the source is present in < hammer >: 
 
 * Copy _< hammer >/src/backends/lr.h_ to _/usr/local/include/hammer/backends/_
 
 * Copy _< hammer >/src/cfgrammar.h_ to _/usr/local/include/hammer/_
 
+* Copy _< hammer >/src/test_suite.h_ to _/usr/local/include/hammer/_
+
 These files are needed by **ppxml** and are not available by default.
 
-The regression testing scripts, contained in the _scripts_ directory,
-must be copied into some directory present in the users PATH
-(e.g. _~/bin_).
+**Install This Repo:** clone this repo under the < root > directory.  
+
+**Install Scripts:** The regression testing scripts, contained in the
+_scripts_ directory, must be copied into some directory present in the
+users PATH (e.g. _~/bin_).
 
 Add the following entries to your .bashrc file:  
 export PATH=.:~/bin:$PATH  
