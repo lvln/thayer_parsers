@@ -1,0 +1,10 @@
+DELETE .. HTTP/2.0
+Referer: https://www.example.com/page
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Connection: keep-alive
+
+Record to delete

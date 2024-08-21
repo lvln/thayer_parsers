@@ -1,0 +1,4 @@
+GET http://example.com/data HTTP/2.0
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+

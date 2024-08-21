@@ -1,0 +1,7 @@
+OPTIONS http://example.com/data/ HTTP/1.1
+Vary:     
+Content-Type: application/json
+Connection: keep-alive
+Content-Length: 123
+Pragma:
+

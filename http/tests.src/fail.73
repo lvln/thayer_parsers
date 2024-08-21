@@ -1,0 +1,3 @@
+HEAD http://g HTTP/2.
+Host: www.example.com
+

@@ -1,0 +1,9 @@
+TRACE www.example.com:80 HTTP/2.0
+Pragma:
+Content-Type: application/json
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Referer: https://www.example.com/page
+

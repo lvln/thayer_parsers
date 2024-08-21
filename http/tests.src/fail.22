@@ -1,0 +1,7 @@
+GET http://g HTTP/1.1
+Host: www.example.com
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Charset :utf-8,
+ iso-8859-1;q=0.5
+

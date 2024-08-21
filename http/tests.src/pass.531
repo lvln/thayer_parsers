@@ -1,0 +1,6 @@
+HTTP/2.0 421 Misdirected Request
+Host: www.example.com
+Accept-Language: en-US
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Connection: keep-alive
+

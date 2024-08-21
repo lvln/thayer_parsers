@@ -1,0 +1,18 @@
+PUT /a/b/ HTTP/1.1
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Pragma:
+Connection: keep-alive
+Vary:     
+Content-Length: 123
+Content-Type: application/json
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Host: www.example.com
+Accept-Language: en-US
+
+key1=value1&key2=value2

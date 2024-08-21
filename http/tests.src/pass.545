@@ -1,0 +1,21 @@
+HTTP/1.1 426 Upgrade Required
+WWW-Authenticate: Basic realm="Access to the staging site"
+Pragma:
+Host: www.example.com
+Range: 
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Content-Length: 123
+Accept-Language: en-US
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Vary:     
+

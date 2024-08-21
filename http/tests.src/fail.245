@@ -1,0 +1,8 @@
+DELETE http://a/b/c/d;p?q HTT/1.0
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+
+Record to delete

@@ -1,7 +1,0 @@
-HTTP/1.0 409 Conflict
-Content-Length: 123
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
- */*;q=0.8
-

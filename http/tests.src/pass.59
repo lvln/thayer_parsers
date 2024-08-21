@@ -1,0 +1,3 @@
+HEAD http://a/b/c/..g HTTP/2.0
+Connection: keep-alive
+

@@ -1,6 +1,0 @@
-DELETE http://a/b/c/g. HTTP/1.0
-Accept-Encoding: gzip,
-  deflate,
-   br
-
-Record to delete

@@ -1,0 +1,7 @@
+HTTP/1.0 304 Not Modified
+Content-Length: 123
+Transfer-Encoding: chunked
+Connection: keep-alive
+Pragma:
+Host: www.example.com
+

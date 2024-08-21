@@ -1,0 +1,12 @@
+OPTIONS http://g HTTP/1.0
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Transfer-Encoding: chunked
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset :utf-8,
+ iso-8859-1;q=0.5
+

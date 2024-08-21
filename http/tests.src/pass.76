@@ -1,0 +1,6 @@
+HEAD http://a/b/c/.g HTTP/1.1
+Content-Length: 123
+Accept-Language: en-US
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+

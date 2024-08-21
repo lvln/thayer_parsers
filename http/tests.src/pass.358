@@ -1,0 +1,10 @@
+TRACE /a/b/ HTTP/1.1
+Vary:     
+Host: www.example.com
+Content-Length: 123
+Range: 
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Referer: https://www.example.com/page
+

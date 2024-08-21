@@ -1,5 +1,0 @@
-DELETE http://a/b/c/g. HTTP/2.0
-Range: 
-Content-Type: application/json
-
-Record to delete

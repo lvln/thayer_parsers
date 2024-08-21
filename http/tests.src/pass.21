@@ -1,0 +1,6 @@
+GET example.com:80/~smith/home.html HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Pragma:
+Content-Length: 123
+

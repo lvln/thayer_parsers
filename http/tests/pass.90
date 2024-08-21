@@ -1,7 +1,0 @@
-HEAD /g HTTP/1.0
-Authorization: Basic XMlcrpwYzdyZA==
-Content-Length: 123
-Transfer-Encoding: chunked
-Host: www.example.com
-Connection: keep-alive
-

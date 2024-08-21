@@ -1,0 +1,11 @@
+HTT/1.0 411 Length Required
+Connection: keep-alive
+Content-Length: 123
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Transfer-Encoding: chunked
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+

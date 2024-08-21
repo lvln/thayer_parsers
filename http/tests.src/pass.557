@@ -1,0 +1,22 @@
+HTTP/1.1 451 Unavailable For Legal Reasons
+Transfer-Encoding: chunked
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Host: www.example.com
+Vary:     
+Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+Referer: https://www.example.com/page
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+

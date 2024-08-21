@@ -30,7 +30,8 @@ Headers have the following format:
 * The header *field name* which is a case insensitive string
 * A colon following the *field name*
 * A header *field value*
-* Note: the whole header will appear on a single line as line folds are now obsolete
+
+This grammar is ambiguous when inncluding the optional whitespace at the end of a header field value and this attribute has thus been left out of the grammar.
 
 ## References:
 * [HTTP Dcumentation](https://developer.mozilla.org/en-US/docs/Web/HTTP)

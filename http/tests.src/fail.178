@@ -1,0 +1,8 @@
+PUT http://a/b/c/.g HTTP/1.1
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Type: application
+/json
+
+key1=value1&key2=value2

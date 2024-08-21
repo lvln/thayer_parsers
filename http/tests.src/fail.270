@@ -1,0 +1,15 @@
+CONNECT http://example.com/data HTTP/1.0
+Connection: keep-alive
+Transfer-Encoding: chunked
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Host: www.example.com
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma :
+

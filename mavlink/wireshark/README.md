@@ -2,7 +2,7 @@
 
 This directory contains the MAVLink dissector for Wireshark with statistical analysis capabilities added.
 
-In please see the MAVLink documentation [here](https://mavlink.io/en/guide/wireshark.html) for instructions on how to generte the `mavlink_2_common.lua` plugin. Once generated, it should be placed in the the directory `Users/user/.local/lib/wireshark/plugins` if working on macOS along with the python script `plotter.py`.
+Please see the MAVLink documentation [here](https://mavlink.io/en/guide/wireshark.html) for instructions on how to generte the `mavlink_2_common.lua` plugin. Once generated, it should be placed in the the directory `Users/user/.local/lib/wireshark/plugins` if working on macOS along with the python script `plotter.py`.
 
 Note: The statistical analysis portion is still a work-in-progress and has been completed for all of the messages captured thus far.
 

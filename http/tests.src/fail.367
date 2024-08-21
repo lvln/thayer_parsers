@@ -1,0 +1,22 @@
+OPTION http://example.com HTTP/1.1
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Pragma:
+Connection: keep-alive
+Content-Length: 123
+Referer: https://www.example.com/page
+Host: www.example.com
+Content-Type: application/json
+Transfer-Encoding: chunked
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Language: en-US
+

@@ -1,0 +1,16 @@
+DELETE http://www.example.com/hello.txt HTTP/2.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Type: application/json
+Content-Length: 123
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
+Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Transfer-Encoding: chunked
+Connection: keep-alive
+Range: 
+
+Record to delete

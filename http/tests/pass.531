@@ -1,8 +1,0 @@
-HTTP/2.0 421 Misdirected Request
-Accept-Encoding: gzip,
-  deflate,
-   br
-Vary:     
-Transfer-Encoding: chunked
-WWW-Authenticate: Basic realm="Access to the staging site"
-

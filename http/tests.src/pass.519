@@ -1,0 +1,24 @@
+HTTP/2.0 415 Unsupported Media Type
+Accept-Language: en-US
+Content-Type: application/json
+Range: 
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Pragma:
+Content-Length: 123
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Authorization: Basic XMlcrpwYzdyZA==
+Connection: keep-alive
+Accept-Encoding: gzip,
+  deflate,
+   br
+Transfer-Encoding: chunked
+Referer: https://www.example.com/page
+Host: www.example.com
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+

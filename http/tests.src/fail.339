@@ -1,0 +1,15 @@
+OPTION http://www.example.org:8080/pub/WWW/TheProject.html HTTP/1.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Vary:     
+Range: 
+Transfer-Encoding: chunked
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+

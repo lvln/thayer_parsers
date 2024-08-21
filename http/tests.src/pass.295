@@ -1,0 +1,10 @@
+CONNECT http://a/b/c/d;p?q HTTP/1.1
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+Connection: keep-alive
+Pragma:
+Range: 
+

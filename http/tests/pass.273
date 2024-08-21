@@ -1,6 +1,0 @@
-CONNECT http://example.com/data/ HTTP/1.0
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Referer: https://www.example.com/page
-

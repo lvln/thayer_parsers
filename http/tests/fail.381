@@ -1,8 +1,0 @@
-TRACE http://g HTTP/2.
-Pragma:
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Type: application/json
-Referer: https://www.example.com/page
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-

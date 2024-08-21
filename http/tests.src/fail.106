@@ -1,0 +1,10 @@
+POST www.example.com:80 HTTP/1.1
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Type: application
+/json
+
+key1=value1&key2=value2

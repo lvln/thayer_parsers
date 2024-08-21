@@ -1,0 +1,17 @@
+DELETE .. HTTP/1.0
+Connection: keep-alive
+Pragma:
+Content-Length: 123
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Referer: https://www.example.com/page
+Range: 
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+
+Record to delete

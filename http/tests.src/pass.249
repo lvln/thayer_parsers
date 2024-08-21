@@ -1,0 +1,7 @@
+DELETE http://a/b/c/g. HTTP/1.0
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+Transfer-Encoding: chunked
+
+Record to delete

@@ -1,8 +1,0 @@
-OPTION http://a/b/c/g. HTTP/1.0
-Authorization: Basic XMlcrpwYzdyZA==
-Content-Type: application/json
-Vary:     
-Transfer-Encoding: chunked
-Host: www.example.com
-
-key1=value1&key2=value2

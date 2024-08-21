@@ -1,4 +1,0 @@
-DELETE http://example.com/data HTTP/.0
-Pragma:
-
-Record to delete

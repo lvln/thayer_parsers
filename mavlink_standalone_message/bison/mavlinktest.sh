@@ -27,8 +27,14 @@ if [ $# == 1 ] && [ $1 == "-h" ]; then
 		exit
 fi
 
-# This is the source directory path
-SRCDIR="../../mavlink/mavlink_source_files"
+# This is the source directory and directory path
+SRCDIR="../../mavlink/mavlink_source_files/"
+
+# Clean and build libraries.
+pushd ../../mavlink/utils/
+make clean > /dev/null
+make > /dev/null
+popd
 
 # Move into the tests directory since it is easiest to build tests in there
 pushd ../tests/
@@ -85,6 +91,10 @@ done
 
 # Return to the tests directory, clean out all the test files and copy over the smaller suite of test files.
 pushd ../tests/
+./tv.sh > /dev/null
+popd
+
+# Clean and build libraries.
+pushd ../../mavlink/utils/
 make clean > /dev/null
-cp ../tests.src/pass.* ../tests.src/fail.* ./ > /dev/null
 popd

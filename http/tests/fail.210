@@ -1,8 +1,0 @@
-DELETE www.example.com:80 HTTP/1.0
-Authorization: Basic XMlcrpwYzdyZA==
-Transfer-Encoding: chunked
-Host: www.example.com
-Content-Type: application/json
-Accept-Encoding :gzip, deflate, br
-
-Record to delete

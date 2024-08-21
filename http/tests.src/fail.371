@@ -1,0 +1,13 @@
+GES http://example.com/data HTTP/2.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Content-Type: application/json
+Pragma:
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept-Language: en-US
+Vary:     
+

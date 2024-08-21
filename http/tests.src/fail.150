@@ -1,0 +1,17 @@
+POST / HTTP/1.0
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+Vary:     
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Pragma:
+Content-Type: application/json
+Range: 
+Content-Length: 123
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Date Tue, 23 Jul 2024 12:00:00 GMT
+
+key1=value1&key2=value2

@@ -1,0 +1,6 @@
+DELET http://g HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Transfer-Encoding: chunked
+Content-Type: application/json
+

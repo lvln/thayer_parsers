@@ -1,9 +1,0 @@
-P : optMessage ;
-
-optMessage : /* empty */ | optMessage message ;
-
-message : WC3  A * * ;
-
-WC3 : * * * ;
-
-A : 'a' ;

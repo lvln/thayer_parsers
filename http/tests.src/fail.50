@@ -1,0 +1,15 @@
+GET * HTTP/2.0
+Accept-Language: en-US
+Referer: https://www.example.com/page
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Vary:     
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization: Basic XMlcrpwYzdyZA==
+Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+:
+

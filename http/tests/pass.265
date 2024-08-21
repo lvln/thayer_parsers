@@ -1,4 +1,0 @@
-CONNECT http://example.com HTTP/1.1
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-

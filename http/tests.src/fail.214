@@ -1,0 +1,6 @@
+DELETE http://example.com HTTP/1.1
+Accept-Encoding: gzip,
+  deflate,
+   br
+Authorization:Basic XMlcrpwYzdyZA==
+Record to delete

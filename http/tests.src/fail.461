@@ -1,0 +1,18 @@
+HTT/1.0 303 See Other
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Language: en-US
+Range: 
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Encoding: gzip,
+  deflate,
+   br
+Transfer-Encoding: chunked
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Type: application/json
+Host: www.example.com
+WWW-Authenticate: Basic realm="Access to the staging site"
+

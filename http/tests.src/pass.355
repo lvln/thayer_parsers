@@ -1,0 +1,16 @@
+OPTIONS * HTTP/1.1
+Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Connection: keep-alive
+Transfer-Encoding: chunked
+WWW-Authenticate: Basic realm="Access to the staging site"
+Content-Length: 123
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+

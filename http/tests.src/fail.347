@@ -1,0 +1,16 @@
+CONNEC http://a/b/c/d;p?q HTTP/2.0
+Pragma:
+Transfer-Encoding: chunked
+Content-Type: application/json
+WWW-Authenticate: Basic realm="Access to the staging site"
+Referer: https://www.example.com/page
+Vary:     
+Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Language: en-US
+Authorization: Basic XMlcrpwYzdyZA==
+Connection: keep-alive
+

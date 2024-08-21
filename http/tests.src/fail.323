@@ -1,0 +1,4 @@
+PUTT http://example.com/data/ HTTP/2.0
+Accept-Language: en-US
+Host: www.example.com
+

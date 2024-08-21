@@ -1,4 +1,0 @@
-TRACE http://a/b/c/d;p?q HTTP/1.0
-Accept-Language: en-US
-Pragma:
-

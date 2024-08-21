@@ -1,0 +1,18 @@
+PUT * HTTP/2.0
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Type: application/json
+Connection: keep-alive
+Pragma:
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Language: en-US
+Range: 
+Host: www.example.com
+
+key1=value1&key2=value2

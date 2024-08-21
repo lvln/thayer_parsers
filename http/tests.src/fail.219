@@ -1,0 +1,15 @@
+GES http://example.com/data HTTP/1.0
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Pragma:
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Transfer-Encoding: chunked
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+
+Record to delete

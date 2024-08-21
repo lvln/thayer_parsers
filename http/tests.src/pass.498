@@ -1,0 +1,8 @@
+HTTP/2.0 408 Request Timeout
+Accept-Language: en-US
+Content-Length: 123
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Vary:     
+

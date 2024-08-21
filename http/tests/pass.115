@@ -1,8 +1,0 @@
-POST http://example.com/data HTTP/1.1
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-WWW-Authenticate: Basic realm="Access to the staging site"
-Vary:     
-Authorization: Basic XMlcrpwYzdyZA==
-
-key1=value1&key2=value2

@@ -1,0 +1,11 @@
+DELETE http://www.example.org:8080/pub/WWW/TheProject.html HTTP/1.0
+Vary:     
+Content-Length: 123
+Content-Type: application/json
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+
+Record to delete

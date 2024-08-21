@@ -1,0 +1,18 @@
+HTTP1.1 406 Not Acceptable
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Accept-Language: en-US
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Content-Length: 123
+Referer: https://www.example.com/page
+

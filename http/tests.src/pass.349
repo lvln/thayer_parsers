@@ -1,0 +1,15 @@
+OPTIONS http://a/b/c/g. HTTP/1.1
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Content-Type: application/json
+Vary:     
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Accept-Language: en-US
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
+Host: www.example.com
+

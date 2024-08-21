@@ -1,0 +1,20 @@
+HTTP/1.0 500 Internal Server Error
+Referer: https://www.example.com/page
+Accept-Language: en-US
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Type: application/json
+Accept-Encoding: gzip,
+  deflate,
+   br
+Transfer-Encoding: chunked
+Range: 
+Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Vary:     
+Host: www.example.com
+Accept-Charset :utf-8,
+ iso-8859-1;q=0.5
+
+An unexpected error occurred on the server.

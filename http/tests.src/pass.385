@@ -1,0 +1,10 @@
+TRACE http://www.example.com/hello.txt HTTP/1.1
+Content-Length: 123
+Content-Type: application/json
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+

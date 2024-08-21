@@ -1,0 +1,13 @@
+PUT ftp://ftp.is.co.za/rfc/rfc1808.txt# HTTP/2.0
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Pragma:
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Content-Length: 123
+
+key1=value1&key2=value2

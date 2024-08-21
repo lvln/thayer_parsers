@@ -1,6 +1,0 @@
-HTTP/1.0 504 Gateway Timeout
-WWW-Authenticate: Basic realm="Access to the staging site"
-Transfer-Encoding: chunked
-Content-Type: application/json
-Range: 
-

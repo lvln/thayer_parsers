@@ -1,2 +1,0 @@
-/* Here is the grammar */
-P : 'a' * 'c' ;

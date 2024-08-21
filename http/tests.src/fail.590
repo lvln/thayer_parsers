@@ -1,0 +1,7 @@
+HTTP/2. 511 Network Authentication Required
+Host: www.example.com
+Range: 
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Language: en-US
+Content-Type: application/json
+

@@ -1,0 +1,10 @@
+HTTP/1.0 426 Upgrade Required
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+Content-Type: application/json
+Referer: https://www.example.com/page
+

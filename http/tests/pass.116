@@ -1,4 +1,0 @@
-POST http://example.com/data HTTP/2.0
-Pragma:
-
-key1=value1&key2=value2

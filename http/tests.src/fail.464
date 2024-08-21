@@ -1,0 +1,6 @@
+HTTP1.1 304 Not Modified
+Host: www.example.com
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Referer: https://www.example.com/page
+

@@ -1,7 +1,0 @@
-DELETE http://g HTTP/1.1
-Connection: keep-alive
-Range: 
-WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Type: application/json
-Authorization:Basic XMlcrpwYzdyZA==
-Record to delete

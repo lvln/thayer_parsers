@@ -1,9 +1,0 @@
-HTTP/2.0 417 Expectation Failed
-Vary:     
-Connection: keep-alive
-Transfer-Encoding: chunked
-Authorization: Basic XMlcrpwYzdyZA==
-Range: 
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-WWW-Authenticate: Basic realm="Access to the staging site"
-

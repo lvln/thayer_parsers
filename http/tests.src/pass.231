@@ -1,0 +1,18 @@
+DELETE http://a/b/c/.g HTTP/1.0
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Language: en-US
+Transfer-Encoding: chunked
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Vary:     
+Host: www.example.com
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Encoding: gzip,
+  deflate,
+   br
+
+Record to delete

@@ -1,9 +1,0 @@
-OPTIONS www.example.com:80 HTTP/1.1
-Content-Length: 123
-Range: 
-Accept-Encoding: gzip,
-  deflate,
-   br
-Date: Tue, 23 Jul 2024 12:00:00 GMT
-Content-Type: application/json
-

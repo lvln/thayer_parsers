@@ -1,0 +1,12 @@
+HTTP/1.0 410 Gone
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Vary:     
+Accept-Language: en-US
+WWW-Authenticate: Basic realm="Access to the staging site"
+Authorization: Basic XMlcrpwYzdyZA==
+Range: 
+

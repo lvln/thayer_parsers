@@ -1,5 +1,0 @@
-PUT /a/b/ HTTP/1.1
-Range: 
-Accept-Encoding :gzip, deflate, br
-
-key1=value1&key2=value2

@@ -1,0 +1,10 @@
+POST example.com:80/~smith/home.html HTTP/1.1
+Content-Length: 123
+Transfer-Encoding: chunked
+Pragma:
+Accept-Language: en-US
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Range: 
+
+key1=value1&key2=value2

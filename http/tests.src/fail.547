@@ -1,0 +1,10 @@
+HTTP/1.0 426 Upgrade Required
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Pragma:
+Content-Type: application/json
+Date Tue, 23 Jul 2024 12:00:00 GMT
+

@@ -1,0 +1,14 @@
+HTTP/2.0 600 Continue
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Pragma:
+Host: www.example.com
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+

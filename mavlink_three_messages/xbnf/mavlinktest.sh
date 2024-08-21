@@ -27,6 +27,12 @@ if [ $# == 1 ] && [ $1 == "-h" ]; then
 		exit
 fi
 
+# Make the data processing library
+pushd ../../mavlink/utils/
+make clean > /dev/null
+make > /dev/null
+popd
+
 # This is the source directory path.
 SRCDIR="../../mavlink/mavlink_source_files"
 
@@ -103,4 +109,9 @@ done
 pushd ../tests/
 make clean > /dev/null
 cp -rf ../tests.src/pass.* ../tests.src/fail.* . &> /dev/null
+popd
+
+# Clean the data processing library
+pushd ../../mavlink/utils/
+make clean > /dev/null
 popd

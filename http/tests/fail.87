@@ -1,4 +1,0 @@
-PUTT http://www.ietf.org/rfc/rfc2396.txt HTTP/1.0
-Host: www.example.com
-Vary:     
-

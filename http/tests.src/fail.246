@@ -1,0 +1,3 @@
+DELETE http://a/b/c/d;p?q HTTP/1.0
+Authorization:Basic XMlcrpwYzdyZA==
+Record to delete

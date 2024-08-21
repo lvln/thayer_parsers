@@ -1,8 +1,0 @@
-HTTP/1.1 414 URI Too Long
-Authorization: Basic XMlcrpwYzdyZA==
-Accept-Encoding: gzip,
-  deflate,
-   br
-Accept-Language: en-US
-Content-Type: application/json
-

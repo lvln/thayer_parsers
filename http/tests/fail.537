@@ -1,8 +1,0 @@
-HTTP/2.0 701 Switching Protocols
-Connection: keep-alive
-Accept-Encoding: gzip,
-  deflate,
-   br
-Range: 
-Pragma:
-

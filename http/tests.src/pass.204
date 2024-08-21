@@ -1,0 +1,7 @@
+PUT * HTTP/1.0
+Content-Length: 123
+Content-Type: application/json
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+
+key1=value1&key2=value2

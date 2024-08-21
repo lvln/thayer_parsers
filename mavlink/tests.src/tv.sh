@@ -14,6 +14,12 @@ if [ $# != 0 ]; then
 		exit
 fi
 
+# Make and clean utils
+pushd ../utils/
+make clean > /dev/null
+make > /dev/null
+popd
+
 # Clean out directory and build executables
 make clean > /dev/null
 make > /dev/null
@@ -71,3 +77,8 @@ popd
 
 # Generate the failing tests
 ./tv > /dev/null
+
+# Clean out utils
+pushd ../utils/
+make clean > /dev/null
+popd

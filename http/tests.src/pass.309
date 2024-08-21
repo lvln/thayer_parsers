@@ -1,0 +1,18 @@
+OPTIONS /a/b/ HTTP/1.0
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Type: application/json
+Vary:     
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Referer: https://www.example.com/page
+Pragma:
+Accept-Encoding: gzip,
+  deflate,
+   br
+Connection: keep-alive
+Content-Length: 123
+Transfer-Encoding: chunked
+

@@ -1,0 +1,9 @@
+POST http://a/b/c/d;p?q HTTP/1.1
+WWW-Authenticate: Basic realm="Access to the staging site"
+Range: 
+Vary:     
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Connection : keep-alive
+
+key1=value1&key2=value2

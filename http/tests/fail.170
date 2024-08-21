@@ -1,8 +1,0 @@
-PUT http://example.com/data/ HTTP/2.0
-Accept-Language: en-US
-Accept: text/html,
- application/xhtml+xml,
- application/xml;q=0.9,
-*/*;q=0.8
-
-key1=value1&key2=value2

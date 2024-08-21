@@ -1,6 +1,0 @@
-HTTP/2.0 304 Not Modified
-Accept-Encoding: gzip,
-  deflate,
-   br
-WWW-Authenticate: Basic realm="Access to the staging site"
-

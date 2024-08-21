@@ -1,9 +1,0 @@
-DELETE http://example.com HTTP/1.1
-Content-Length: 123
-Accept-Charset:utf-8,
- iso-8859-1;q=0.5
-Host: www.example.com
-Accept-Language: en-US
- Range: 
-
-Record to delete

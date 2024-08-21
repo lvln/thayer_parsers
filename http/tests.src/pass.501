@@ -1,0 +1,5 @@
+HTTP/2.0 409 Conflict
+Vary:     
+WWW-Authenticate: Basic realm="Access to the staging site"
+Host: www.example.com
+

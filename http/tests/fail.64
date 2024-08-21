@@ -1,4 +1,0 @@
-HEAD ldap://[2001:db8::7]/c=GB?objectClass?one HTTP/1.1
-Content-Length: 123
-Connection: keep-alive
-

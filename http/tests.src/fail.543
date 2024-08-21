@@ -1,0 +1,9 @@
+HTTP/2.0 204 
+Vary:     
+Host: www.example.com
+Accept-Language: en-US
+Content-Length: 123
+Content-Type: application/json
+Authorization: Basic XMlcrpwYzdyZA==
+Transfer-Encoding: chunked
+

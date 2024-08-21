@@ -1,0 +1,15 @@
+HTTP/1.1 408 Request Timeout
+Transfer-Encoding: chunked
+Range: 
+Vary:     
+Authorization: Basic XMlcrpwYzdyZA==
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Language: en-US
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Referer: https://www.example.com/page
+

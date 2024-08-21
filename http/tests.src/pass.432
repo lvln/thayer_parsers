@@ -1,0 +1,10 @@
+HTTP/2.0 203 Non-Authoritative Information
+WWW-Authenticate: Basic realm="Access to the staging site"
+Connection: keep-alive
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Pragma:
+

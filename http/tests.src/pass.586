@@ -1,0 +1,11 @@
+HTTP/1.0 508 Loop Detected
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Content-Length: 123
+Transfer-Encoding: chunked
+Content-Type: application/json
+Vary:     
+Range: 
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Language: en-US
+

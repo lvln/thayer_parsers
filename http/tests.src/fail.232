@@ -1,0 +1,7 @@
+DELETE g HTTP/1.1
+Host: www.example.com
+Vary:     
+Accept-Language: en-US
+Content-Length: 123
+
+Record to delete

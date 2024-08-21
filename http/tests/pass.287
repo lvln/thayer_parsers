@@ -1,6 +1,0 @@
-CONNECT http://www.example.org:8080/pub/WWW/TheProject.html HTTP/2.0
-Authorization: Basic XMlcrpwYzdyZA==
-WWW-Authenticate: Basic realm="Access to the staging site"
-Content-Length: 123
-Transfer-Encoding: chunked
-

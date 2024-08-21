@@ -1,0 +1,6 @@
+DELETE http://www.ietf.org/rfc/rfc2396.txt HTTP/2.0
+Authorization: Basic XMlcrpwYzdyZA==
+Connection: keep-alive
+Transfer-Encoding: chunked
+
+Record to delete

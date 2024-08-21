@@ -1,0 +1,12 @@
+PUT http://example.com HTTP1.1
+Transfer-Encoding: chunked
+Authorization: Basic XMlcrpwYzdyZA==
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Pragma:
+WWW-Authenticate: Basic realm="Access to the staging site"
+
+key1=value1&key2=value2

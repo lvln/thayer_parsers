@@ -1,8 +1,0 @@
-HTTP/2.0 423 Locked
-Connection: keep-alive
-Accept-Encoding: gzip,
-  deflate,
-   br
-Range: 
-Pragma:
-

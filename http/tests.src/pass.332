@@ -1,0 +1,19 @@
+OPTIONS http://a/b/c/.g HTTP/2.0
+Content-Type: application/json
+Content-Length: 123
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Date: Tue, 23 Jul 2024 12:00:00 GMT
+Accept-Language: en-US
+Host: www.example.com
+Connection: keep-alive
+Authorization: Basic XMlcrpwYzdyZA==
+Accept-Encoding: gzip,
+  deflate,
+   br
+WWW-Authenticate: Basic realm="Access to the staging site"
+Transfer-Encoding: chunked
+Range: 
+

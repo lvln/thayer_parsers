@@ -1,7 +1,0 @@
-CONNECT example.com:80/~smith/home.html HTTP/2.0
-Host: www.example.com
-Range: 
-Vary:     
-Accept-Language: en-US
-Content-Length: 123
-

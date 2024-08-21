@@ -1,8 +1,0 @@
-DELET /a/b/ HTTP/2.0
-Accept-Encoding: gzip,
-  deflate,
-   br
-Connection: keep-alive
-Content-Type: application/json
-Authorization: Basic XMlcrpwYzdyZA==
-

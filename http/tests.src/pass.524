@@ -1,0 +1,18 @@
+HTTP/1.1 417 Expectation Failed
+Range: 
+Content-Length: 123
+Referer: https://www.example.com/page
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+WWW-Authenticate: Basic realm="Access to the staging site"
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Encoding: gzip,
+  deflate,
+   br
+Vary:     
+Transfer-Encoding: chunked
+Connection: keep-alive
+

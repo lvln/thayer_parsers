@@ -1,5 +1,0 @@
-HEAD http://example.com/data/ HTTP/1.0
-Range: 
-Content-Length: 123
-Pragma:
-

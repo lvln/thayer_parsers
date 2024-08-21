@@ -1,0 +1,11 @@
+CONNECT /g HTTP1.1
+Accept: text/html,
+ application/xhtml+xml,
+ application/xml;q=0.9,
+ */*;q=0.8
+Accept-Charset:utf-8,
+ iso-8859-1;q=0.5
+Accept-Language: en-US
+Transfer-Encoding: chunked
+Range: 
+
