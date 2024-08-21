@@ -1,0 +1,13 @@
+P : stle | ttle | sfle | stbe | ttbe | sfbe ;
+
+stle : 'little_endian(0, uint16)' | 'little_endian(65535, uint16)' | 'little_endian(32000, uint16)' | 'little_endian(-32768, int16)' | 'little_endian(32767, int16)' | 'little_endian(0, int16)' ;
+
+ttle : 'little_endian(0, uint32)' | 'little_endian(4294967295, uint32)' | 'little_endian(2000000000, uint32)' | 'little_endian(-2147483648, int32)' | 'little_endian(2147483647, int32)' | 'little_endian(0, int32)' ;
+
+sfle : 'little_endian(0, uint64)' | 'little_endian(18446744073709551615, uint64)' | 'little_endian(9000000000000000000, uint64)' | 'little_endian(-9223372036854775808, int64)' | 'little_endian(9223372036854775807, int64)' | 'little_endian(0, int64)' ;
+
+stbe : 'big_endian(0, uint16)' | 'big_endian(65535, uint16)' | 'big_endian(32000, uint16)' | 'big_endian(-32768, int16)' | 'big_endian(32767, int16)' | 'big_endian(0, int16)' ;
+
+ttbe : 'big_endian(0, uint32)' | 'big_endian(4294967295, uint32)' | 'big_endian(2000000000, uint32)' | 'big_endian(-2147483648, int32)' | 'big_endian(2147483647, int32)' | 'big_endian(0, int32)' ;
+
+sfbe : 'big_endian(0, uint64)' | 'big_endian(18446744073709551615, uint32)' | 'big_endian(9000000000000000000, uint32)' | 'big_endian(-9223372036854775808, int64)' | 'big_endian(9223372036854775807, int64)' | 'big_endian(0, int64)' ;
