@@ -1,7 +1,5 @@
 ## Generates a parser for zero or more MAVLink SCALED_PRESSURE messages
 
-All data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
-
 ## Directory structure
 
 * **xbnf** contains a working parser written in xbnf for a zero or more SCALED_PRESSURE MAVLink messages

@@ -3,8 +3,6 @@
 
 NOTE: This is a grammar for 3 MAVLink messages. It accepts zero or more of any of these messages in any combination.
 
-All data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
-
 ## Directory structure
 
 * **xbnf** contains a working parser written in xbnf for an ATTITUDE message, a GLOBAL\_POSITION\_INT message, a conbination of the two, or no message at all

@@ -1,12 +1,6 @@
 # MAVLink
 
-**Note: Best way to run the full set of tests is to use the `mavlinktest.sh` script inside of the xbnf directory. This allows for each message type to be tested, one at a time. A more limited suite of tests can also be generated using `tv.sh` inside of the `tests` directory.**
-
 This directory contains the complete definition for the MAVLink grammar. Please see `mavlink_1_msg`, `mavlink_3_msgs`, `mavlink_10_msgs`, `mavlink_20_msgs` or `mavlink_30_msgs` for smaller components of the MAVLink grammar.
-
-All data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
-
-The usage of the `mavlinktest.sh` script is: `mavlinktest.sh [-v]` where `-v` indicates verbose output and the result of both passing and failing tests will be printed; non-verbose output only prints the results of failing tests.
 
 ## Directory structure
 

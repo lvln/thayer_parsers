@@ -2,8 +2,6 @@
 
 This directory contains the grammar for 10 MAVLink message types.
 
-All data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
-
 ## Directory structure
 
 * **xbnf** contains a working parser written in xbnf for the MAVLink grammar
