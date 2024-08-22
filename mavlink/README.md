@@ -2,7 +2,7 @@
 
 **Note: Best way to run the full set of tests is to use the `mavlinktest.sh` script inside of the xbnf directory. This allows for each message type to be tested, one at a time. A more limited suite of tests can also be generated using `tv.sh` inside of the `tests` directory.**
 
-This directory contains the complete definition for the MAVLink grammar. Please see `mavlink_standalone_message`, `mavlink_single_message-repeat` or `mavlink_three_messages` for smaller components of the MAVLink grammar.
+This directory contains the complete definition for the MAVLink grammar. Please see `mavlink_1_msg`, `mavlink_3_msgs`, `mavlink_10_msgs`, `mavlink_20_msgs` or `mavlink_30_msgs` for smaller components of the MAVLink grammar.
 
 All data packets were captured in `.pcap` files using Wireshark, a network protocol analyzer.
 
@@ -13,7 +13,7 @@ The usage of the `mavlinktest.sh` script is: `mavlinktest.sh [-v]` where `-v` in
 * **xbnf** contains a working parser written in xbnf for the MAVLink grammar
 * **bison** contains a working parser written in bison the MAVLink grammar
 * **tests** contains a full set of passing and failing tests for the parser
-* **tests.src** contains a backup of the tests currently present in `tests`
+* **tests.src** installs test vectors in `tests`
 * **mavlink_source_files** contains preprocessors that format the data correctly as well as the files with data from drone flights
 * **wireshark** contains the Wireshark plugin that dissects MAVLink messages as well as provides some level of statistical analysis on all MAVLink messages in a capture
 * **utils** contains the MAVLink data processing library
