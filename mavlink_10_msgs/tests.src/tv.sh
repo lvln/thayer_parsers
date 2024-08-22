@@ -79,7 +79,7 @@ popd
 ./tv > /dev/null
 
 # Clean out utils
-pushd ../utils/
+pushd ../../mavlink/utils/
 make clean > /dev/null
 popd
 

@@ -1,6 +1,6 @@
 # MAVLink
 
-This directory contains the complete definition for the MAVLink grammar. Please see `mavlink_1_msg`, `mavlink_3_msgs`, `mavlink_10_msgs`, `mavlink_20_msgs` or `mavlink_30_msgs` for smaller components of the MAVLink grammar.
+This directory contains the complete definition for the MAVLink grammar. Please see `mavlink_1_msg`, `mavlink_3_msgs`, `mavlink_10_msgs`, `mavlink_20_msgs`, `mavlink_30_msgs` or `mavlink_40_msgs` for smaller components of the MAVLink grammar.
 
 ## Directory structure
 
@@ -23,22 +23,22 @@ Accoring to the [MAVLink serialization documentation](https://mavlink.io/en/guid
 **A MAVLink 1.0 message begins with a message-specific message header which is 6 bytes in length.**
 
 * Byte 0: Magic value/version (0xFE for MAVLink 1.0)
-* Byte 1: Payload length (0x10 for SCALED_PRESSURE)
+* Byte 1: Payload length
 * Byte 2: Packet sequence
 * Byte 3: System id
 * Byte 4: Component id
-* Byte 5: Message id (0x1D for SCALED_PRESSURE)
+* Byte 5: Message id
 
 **A MAVLink 2.0 message also begins with a message-specific message header which is 10 bytes in length.**
 
 * Byte 0: Magic value/version (0xFD for MAVLink 2.0)
-* Byte 1: Payload length (0x10 for SCALED_PRESSURE)
+* Byte 1: Payload length
 * Byte 2: Incompatibility flag (0x01 indicates a signed message)
 * Byte 3: Compatibility flag
 * Byte 4: Packet sequence
 * Byte 5: System id
 * Byte 6: Component id
-* Bytes 7 - 9: Message id (0x00001D for SCALED_PRESSURE)
+* Bytes 7 - 9: Message id
 
 **Two message types are defined as follows:**
 

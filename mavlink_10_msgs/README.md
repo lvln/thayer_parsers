@@ -19,26 +19,26 @@ Accoring to the [MAVLink serialization documentation](https://mavlink.io/en/guid
 **A MAVLink 1.0 message begins with a message-specific message header which is 6 bytes in length.**
 
 * Byte 0: Magic value/version (0xFE for MAVLink 1.0)
-* Byte 1: Payload length (0x10 for SCALED_PRESSURE)
+* Byte 1: Payload length
 * Byte 2: Packet sequence
 * Byte 3: System id
 * Byte 4: Component id
-* Byte 5: Message id (0x1D for SCALED_PRESSURE)
+* Byte 5: Message id
 
 **A MAVLink 2.0 message also begins with a message-specific message header which is 10 bytes in length.**
 
 * Byte 0: Magic value/version (0xFD for MAVLink 2.0)
-* Byte 1: Payload length (0x10 for SCALED_PRESSURE)
+* Byte 1: Payload length
 * Byte 2: Incompatibility flag (0x01 indicates a signed message)
 * Byte 3: Compatibility flag
 * Byte 4: Packet sequence
 * Byte 5: System id
 * Byte 6: Component id
-* Bytes 7 - 9: Message id (0x00001D for SCALED_PRESSURE)
+* Bytes 7 - 9: Message id
 
 **One message type is defined as follows:**
 
-* **GLOBAL_POSITION_INT**: The heartbeat message shows that a system or component is present and responding. The type and autopilot fields (along with the message component id), allow the receiving system to treat further messages from this system appropriately (e.g. by laying out the user interface based on the autopilot).
+* **HEARTBEAT**: The heartbeat message shows that a system or component is present and responding. The type and autopilot fields (along with the message component id), allow the receiving system to treat further messages from this system appropriately (e.g. by laying out the user interface based on the autopilot).
   * Bytes 0 - 3: *custom_mode*: a bitfield for use for autopilot-specific flags; `uint32_t`.
   * Byte 4: *type*: vehicle or component type. For a flight controller component the vehicle type (quadrotor, helicopter, etc.). For other components the component type (e.g. camera, gimbal, etc.). This should be used in preference to component id for identifying the component type; `uint8_t`.
   * Byte 5: *autopilot*: autopilot type/class; `uint8_t`.

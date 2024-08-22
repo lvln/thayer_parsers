@@ -1,4 +1,4 @@
-# MAVLink 10 messages
+# MAVLink 20 messages
 
 This directory contains the grammar for 20 MAVLink message types.
 
