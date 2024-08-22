@@ -44,7 +44,8 @@
 	static int sixteen_range[MAXENTRY][2];
 	static int sixteen_enum[MAXENTRY][ENUMMAX];
 	
-	static long long decimal=0; /*number to hold decimal in fwi*/
+	static __int128 decimalS=0; /*number to hold decimal in fwi*/
+	static __int128 decimalUS=0; /*number to hold decimal in fwi*/
 	static int size=16;
 	static bool neg=false;
 	static bool unsign=true; /*default variable for fwi, intially unsigned*/
@@ -251,61 +252,61 @@
 	
 	static void fixed_width(){
 		if (size==16){
-			if (decimal==0 && !ranging) fprintf(xout, "X00 X00 ");
-			else{                                                                                                   
-				if (!unsign && (decimal < -32768 || decimal > 32767) ){  
-					printf("error: invalid entry for int16\n");                                          
-					exit(EXIT_FAILURE);                              
-				}                                      
-				if(unsign && (decimal < 0 || decimal > 65535) ){                                            
-					printf("error: invalid entry for uint16\n");
-					exit(EXIT_FAILURE);          
-				}
-				if (!ranging){
-					uint8_t bytes[2] = {0,0};  
-					memcpy(bytes, &decimal, 2);
-          write_int(bytes);
-				}
+			if (neg && unsign){
+				printf("error: invalid entry for uint16\n");                                          
+				exit(EXIT_FAILURE);                              
 			}
+			if (!unsign && (decimalS < INT16_MIN || decimalS > INT16_MAX) ){  
+				printf("error: invalid entry for int16\n");                                          
+				exit(EXIT_FAILURE);                              
+			}                                      
+			if(unsign && (decimalUS < 0 || decimalUS > UINT16_MAX) ){                                   
+				printf("error: invalid entry for uint16\n");
+				exit(EXIT_FAILURE);          
+			}
+			uint8_t bytes[2] = {0,0};
+      if (!unsign) memcpy(bytes, &decimalUS, 2);
+      else memcpy(bytes, &decimalS, 2);
+      write_int(bytes);
 		}
     if (size==32){
-			if (decimal==0 && !ranging) fprintf(xout, "X00 X00 X00 X00 ");
-			else{                                                                                                   
-				if (!unsign && (decimal < -2147483648 || decimal > 2147483647) ){  
-					printf("error: invalid entry for int32\n");                                          
-					exit(EXIT_FAILURE);                              
-				}                                      
-				if(unsign && (decimal < 0 || decimal > 4294967295) ){                                            
-					printf("error: invalid entry for uint32\n");
-					exit(EXIT_FAILURE);          
-				}
-				if (!ranging){
-					uint8_t bytes[4] = {0,0,0,0};  
-					memcpy(bytes, &decimal, 4);
-          write_int(bytes);
-				}
+			if (neg && unsign){
+				printf("error: invalid entry for uint32\n");   
+				exit(EXIT_FAILURE);                              
 			}
+			if (!unsign && (decimalS < INT32_MIN || decimalS > INT32_MAX) ){  
+				printf("error: invalid entry for int32\n");                                          
+				exit(EXIT_FAILURE);                              
+			}                                      
+			if(unsign && (decimalUS < 0 || decimalUS > UINT32_MAX) ){                                            
+				printf("error: invalid entry for uint32\n");
+				exit(EXIT_FAILURE);          
+			}
+			uint8_t bytes[4] = {0,0,0,0};  
+			if (!unsign) memcpy(bytes, &decimalS, 4);
+      else memcpy(bytes, &decimalUS, 4);
+      write_int(bytes);
 		}
     if (size==64){
-			if (decimal==0 && !ranging) fprintf(xout, "X00 X00 X00 X00 X00 X00 X00 X00 ");
-			else{                                                                                                   
-					if (!unsign && (decimal < -9223372036854775807LL - 1 || decimal > 9223372036854775807) ){  
-					printf("error: invalid entry for int64\n");
-					exit(EXIT_FAILURE);                              
-				}                                      
-				if(unsign && (decimal < 0 || decimal > (uint64_t)18446744073709551615) ){     
-					printf("error: invalid entry for uint64\n");
-					exit(EXIT_FAILURE);          
-				}
-				if (!ranging){
-					uint8_t bytes[8] = {0,0,0,0,0,0,0,0};  
-					memcpy(bytes, &decimal, 8);
-          write_int(bytes);
-				}
+			if (neg && unsign){
+				printf("error: invalid entry for uint64\n");
+				exit(EXIT_FAILURE);                              
 			}
+			if (!unsign && (decimalS < INT64_MIN || decimalS > INT64_MAX) ){  
+				printf("error: invalid entry for int64\n");
+				exit(EXIT_FAILURE);                              
+			}                                      
+			if(unsign && (decimalUS < 0 || decimalUS > UINT64_MAX) ){     
+				printf("error: invalid entry for uint64\n");
+				exit(EXIT_FAILURE);          
+			}
+			uint8_t bytes[8] = {0,0,0,0,0,0,0,0};  
+			if (!unsign) memcpy(bytes, &decimalS, 8);
+      else memcpy(bytes, &decimalUS, 8);
+      write_int(bytes);
 		}
-		hval=decimal;
-		decimal=0;
+		decimalS=0;
+    decimalUS=0;
 	}
 	
 	static void hexout() {
@@ -396,70 +397,6 @@
 				fprintf(xout,"X00 ;\n");                                  
 			else    
 				fprintf(xout,"\'%c\' ;\n", strings[i][j]); 
-				}
-
-		uint8_t bytes[2] = {0,0};
-		
-		if(STrange> 0)
-      fprintf(xout,"\n/* 16 Range Expansions */\n");
-		for(i=0; i<STrange; i++) {   /* for each range -- only valid ranges in table*/    
-      fprintf(xout,"rr__%d : ",i);
-			Bnonterminals++;
-      for(k=0,j=sixteen_range[i][RMIN]; j<sixteen_range[i][RMAX]; k++,j++) {
-				Brules++; Bterminals++;
-        if(k%8==0)                                                              
-          fprintf(xout,"\n  ");                             
-        if(j==0)                             
-          fprintf(xout,"X00 X00 | "); 
-        else{
-					memcpy(bytes, &j, 2);
-          if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 | ", bytes[0]);                            
-					else   
-						fprintf(xout, "\'\\x%02x\' \'\\x%02x\' | ", bytes[0], bytes[1]);
-				}                                                
-      }
-			
-      if(k%8==0)          
-        fprintf(xout,"\n  ");
-			memcpy(bytes, &j, 2);
-			Brules++; Bterminals++;
-			if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 ;\n", bytes[0]);     
-			else                   
-				fprintf(xout, "\'\\x%02x\' \'\\x%02x\' ;\n", bytes[0], bytes[1]);
-		}
-		
-		if(nextSTenum>0) 
-      fprintf(xout,"\n/* 16 Enumeration Expansions */\n");
-    for(i=0; i<nextSTenum; i++) {   /* for each enumeration */   
-      fprintf(xout,"ee__%d : ",i);    
-      j=0;
-      k=0;
-			Bnonterminals++; 
-      Brules++; 
-      while(sixteen_enum[i][j+1]>=0) { /* next element present */    
-        if(k%8==0)   
-          fprintf(xout,"\n  ");     
-        if(sixteen_enum[i][j]==0)             
-          fprintf(xout,"X00 X00 | ");      
-        else{                                                            
-          memcpy(bytes, &j, 2);      
-          if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 | ", bytes[0]);     
-          else   
-            fprintf(xout, "\'\\x%02x\' \'\\x%02x\' | ", bytes[0], bytes[1]);
-				}
-				j++;     
-        k++;          
-      }    
-      if(k%8==0)           
-        fprintf(xout,"\n  ");    
-      if(sixteen_enum[i][j]==0)         
-        fprintf(xout,"X00 X00 ;\n");  
-      else{         
-				memcpy(bytes, &j, 2);                                                                                   
-				if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 | ", bytes[0]); 
-				else 
-					fprintf(xout, "\'\\x%02x\' \'\\x%02x\' | ", bytes[0], bytes[1]);
-			}   
 		}	
 	}
 	
@@ -509,7 +446,7 @@ terminalfw: '\'' fwi '\'' ;
 
 terminalnofw: '\'' termval '\'' ;
 
-fwi : endianness '(' sign number ',' ows type size')' {if (neg) decimal = 0-decimal; fixed_width(); fixedW=true;};
+fwi : endianness '(' type size ',' ows sign number ')' {if (neg && !unsign) decimalS = 0-decimalS; else if (neg && unsign) decimalUS = 0-decimalUS; fixed_width(); fixedW=true;};
 
 type: 'u' 'i' 'n' 't'    {unsign=true;}
     | 'i' 'n' 't'        {unsign=false;}
@@ -527,8 +464,8 @@ size: '1' '6' {size=16;}
 sign: '-'       {neg=true;}
     |/*empty */ {neg=false;};
 
-number: digit        {decimal += $1 - '0' ;}
-      | number digit {decimal*= 10; decimal += $2 - '0' ;}
+number: digit        {if (!unsign) decimalS += $1 - '0'; else decimalUS += $1 - '0';}
+			| number digit {if (!unsign) { decimalS*= 10; decimalS += $2 - '0'; } else { decimalUS*= 10; decimalUS += $2 - '0'; } }
       ;
 
 endianness: le {le=true;}
