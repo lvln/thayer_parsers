@@ -44,8 +44,6 @@ Accoring to the [MAVLink serialization documentation](https://mavlink.io/en/guid
 * Bytes 12 - 13: *temperature*: absolute pressure temperature; *cdegC*; `int16_t`
 * Bytes 14 - 15: *temperature_press_diff*: differential pressure temperature (0, if not available). Report values of 0 (or 1) as 1 cdegC.; *cdegC*; `int16_t`
 
-![SCALED_PRESSURE](./.images/SPImage.jpg)
-  
 All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum (this will be bytes 26 - 27 in an untruncated SCALED_PRESSURE message).
 If a MAVLink 2.0 message is signed (incompatibility flag 0x01), it will also contain a 13 byte signature at the end.
 

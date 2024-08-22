@@ -49,9 +49,7 @@ Accoring to the [MAVLink serialization documentation](https://mavlink.io/en/guid
   * Bytes 22 - 23: *vy*; ground y speed (longitude, positive east); *cm/s*; `int16_t`.
   * Bytes 24 - 25: *vz*; ground z speed (altitude, positive down); *cm/s*; `int16_t`.
   * Bytes 26 - 27: *hdg*; vehicle heading (yaw angle); *cdeg*; `uint16_t`.
-  
-  ![GLOBAL_POSITION_INT](./.images/GPIImage.jpg)
-  
+
 * **ATTITUDE**: The attitude in the aeronautical frame (right-handed, Z-down, Y-right, X-front, ZYX, intrinsic)
   * Bytes 0 - 3: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.
   * Bytes 4 - 07: *roll*; roll angle (-pi..+pi); *rad*; `float`.
@@ -60,8 +58,6 @@ Accoring to the [MAVLink serialization documentation](https://mavlink.io/en/guid
   * Bytes 16 - 19: *rollspeed*; roll angular speed; *rad/s*; `float`.
   * Bytes 20 - 23: *pitchspeed*; pitch angular speed; *rad/s*; `float`.
   * Bytes 24 - 27: *yawspeed*; yaw angular speed; *rad/s*; `float`.
-  
-  ![ATTITUDE](./.images/AttitudeImage.jpg)
 
 * **SCALED_PRESSURE**: The pressure readings for the typical setup of one absolute and differential pressure sensor.
   * Bytes 0 - 3: *time_boot_ms*: the timestamp representing the time since system boot; *ms*; `uint32_t`.
@@ -69,8 +65,6 @@ Accoring to the [MAVLink serialization documentation](https://mavlink.io/en/guid
   * Bytes 8 - 11: *press_diff*: differential pressure; *hPa*; `float`.
   * Bytes 12 - 13: *temperature*: absolute pressure temperature; *cdegC*; `int16_t`.
   * Bytes 14 - 15: *temperature_press_diff*: differential pressure temperature (0, if not available). Report values of 0 (or 1) as 1 cdegC.; *cdegC*; `int16_t`.
-
-  ![SCALED_PRESSURE](./.images/SPImage.jpg)
 
 All data packets are followed by a 2 byte message cyclic redundancy check which acts as a checksum.
 If a MAVLink 2.0 message is signed (incompatibility flag 0x01), it will also contain a 13 byte signature at the end.
