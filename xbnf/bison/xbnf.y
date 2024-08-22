@@ -532,7 +532,6 @@ commentchar : alphanumeric      { fprintf(xout,"%c",(char)$1); }
 uchar: uhex | 'G' | 'H' | 'I' | 'J' 
       | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' 
       | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' ;
-
 lchar: lhex | 'g' | 'h' | 'i' | 'j' 
       | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' 
       | 'u' | 'v' | 'w' | 'x' | 'y' | 'z' ;
