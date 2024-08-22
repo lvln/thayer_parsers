@@ -82,3 +82,13 @@ popd
 pushd ../utils/
 make clean > /dev/null
 popd
+
+pushd ../tests/
+
+# Move tests to tests directory
+make clean > /dev/null
+
+# Import tests from tests.src
+cp -rf ../tests.src/pass.* ../tests.src/fail.* . &> /dev/null
+
+popd

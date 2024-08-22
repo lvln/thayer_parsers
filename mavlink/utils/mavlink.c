@@ -1661,98 +1661,6 @@ static void generateEnumTests(int msgID, int ind, mavMessage_t mess, int maxLen,
 			}
 		}
 		break;
-	case SET_MODE:
-		if (ind == 5) {
-			// Fill vector with enumerations
-			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
-				fprintf(stderr, "Memory allocation failed.\n");
-				return;
-			}
-			*ins = 0;
-			if (vectorInsertBack(vec, (void *)ins) != 0)
-				fprintf(stderr, "Problem inserting value to vector.\n");
-
-			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
-				fprintf(stderr, "Memory allocation failed.\n");
-				return;
-			}
-			*ins = (uint8_t)64;
-			if (vectorInsertBack(vec, (void *)ins) != 0)
-				fprintf(stderr, "Problem inserting value to vector.\n");
-
-			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
-				fprintf(stderr, "Memory allocation failed.\n");
-				return;
-			}
-			*ins = (uint8_t)66;
-			if (vectorInsertBack(vec, (void *)ins) != 0)
-				fprintf(stderr, "Problem inserting value to vector.\n");
-
-			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
-				fprintf(stderr, "Memory allocation failed.\n");
-				return;
-			}
-			*ins = (uint8_t)80;
-			if (vectorInsertBack(vec, (void *)ins) != 0)
-				fprintf(stderr, "Problem inserting value to vector.\n");
-
-			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
-				fprintf(stderr, "Memory allocation failed.\n");
-				return;
-			}
-			*ins = (uint8_t)88;
-			if (vectorInsertBack(vec, (void *)ins) != 0)
-				fprintf(stderr, "Problem inserting value to vector.\n");
-
-			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
-				fprintf(stderr, "Memory allocation failed.\n");
-				return;
-			}
-			*ins = (uint8_t)92;
-			if (vectorInsertBack(vec, (void *)ins) != 0)
-				fprintf(stderr, "Problem inserting value to vector.\n");
-
-			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
-				fprintf(stderr, "Memory allocation failed.\n");
-				return;
-			}
-			*ins = (uint8_t)192;
-			if (vectorInsertBack(vec, (void *)ins) != 0)
-				fprintf(stderr, "Problem inserting value to vector.\n");
-
-			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
-				fprintf(stderr, "Memory allocation failed.\n");
-				return;
-			}
-			*ins = (uint8_t)194;
-			if (vectorInsertBack(vec, (void *)ins) != 0)
-				fprintf(stderr, "Problem inserting value to vector.\n");
-
-			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
-				fprintf(stderr, "Memory allocation failed.\n");
-				return;
-			}
-			*ins = (uint8_t)208;
-			if (vectorInsertBack(vec, (void *)ins) != 0)
-				fprintf(stderr, "Problem inserting value to vector.\n");
-
-			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
-				fprintf(stderr, "Memory allocation failed.\n");
-				return;
-			}
-			*ins = (uint8_t)216;
-			if (vectorInsertBack(vec, (void *)ins) != 0)
-				fprintf(stderr, "Problem inserting value to vector.\n");
-
-			if ((ins = (uint8_t *)malloc(sizeof(uint8_t))) == NULL) {
-				fprintf(stderr, "Memory allocation failed.\n");
-				return;
-			}
-			*ins = (uint8_t)220;
-			if (vectorInsertBack(vec, (void *)ins) != 0)
-				fprintf(stderr, "Problem inserting value to vector.\n");
-		}
-		break;
 	case PARAM_VALUE:
 		if (ind == 24) {
 			// Fill vector with enumerations
@@ -2443,14 +2351,6 @@ static vector_t *initialiseMessageType(int msgID, int *maxLenM1, int *maxLenM2) 
 		*maxLenM1 = *maxLenM2 = LINK_NODE_STATUS_LEN;
 		break;
 	case SET_MODE:
-		if ((ins = (int *)malloc(sizeof(int))) == NULL) {
-			fprintf(stderr, "Memory allocation failed.\n");
-			return NULL;
-		}
-		*ins = 5;
-		if (vectorInsertBack(enFields, (void *)ins) != 0)
-			fprintf(stderr, "Error inserting value to vector.\n");
-		
 		*maxLenM1 = *maxLenM2 = SET_MODE_LEN;
 		break;
 	case PARAM_REQUEST_READ:
