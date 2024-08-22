@@ -1,13 +1,25 @@
-P : stle | ttle | sfle | stbe | ttbe | sfbe ;
+P : stleUS | stleS | ttleUS | ttleS | sfleUS | sfleS | stbeUS | stbeS | ttbeUS | ttbeS | sfbeUS | sfbeS ;
 
-stle : 'little_endian(0, uint16)' | 'little_endian(65535, uint16)' | 'little_endian(32000, uint16)' | 'little_endian(-32768, int16)' | 'little_endian(32767, int16)' | 'little_endian(0, int16)' ;
+stleUS : 'little_endian(1200, uint16)' ;
 
-ttle : 'little_endian(0, uint32)' | 'little_endian(4294967295, uint32)' | 'little_endian(2000000000, uint32)' | 'little_endian(-2147483648, int32)' | 'little_endian(2147483647, int32)' | 'little_endian(0, int32)' ;
+stleS : 'little_endian(-1200, int16)' ;
 
-sfle : 'little_endian(0, uint64)' | 'little_endian(18446744073709551615, uint64)' | 'little_endian(9000000000000000000, uint64)' | 'little_endian(-9223372036854775808, int64)' | 'little_endian(9223372036854775807, int64)' | 'little_endian(0, int64)' ;
+ttleUS : 'little_endian(1300, uint32)' ;
 
-stbe : 'big_endian(0, uint16)' | 'big_endian(65535, uint16)' | 'big_endian(32000, uint16)' | 'big_endian(-32768, int16)' | 'big_endian(32767, int16)' | 'big_endian(0, int16)' ;
+ttleS : 'little_endian(-1300, int32)' ;
 
-ttbe : 'big_endian(0, uint32)' | 'big_endian(4294967295, uint32)' | 'big_endian(2000000000, uint32)' | 'big_endian(-2147483648, int32)' | 'big_endian(2147483647, int32)' | 'big_endian(0, int32)' ;
+sfleUS : 'little_endian(3, uint64)' ;
 
-sfbe : 'big_endian(0, uint64)' | 'big_endian(18446744073709551615, uint32)' | 'big_endian(9000000000000000000, uint32)' | 'big_endian(-9223372036854775808, int64)' | 'big_endian(9223372036854775807, int64)' | 'big_endian(0, int64)' ;
+sfleS : 'little_endian(1, int64)' ;
+
+stbeUS : 'big_endian(1200, uint16)' ;
+
+stbeS : 'big_endian(-1200, int16)' ;
+
+ttbeUS : 'big_endian(1300, uint32)' ;
+
+ttbeS : 'big_endian(-1300, int32)' ;
+
+sfbeUS : 'big_endian(3, uint64)' ;
+
+sfbeS : 'big_endian(1, int64)' ;
