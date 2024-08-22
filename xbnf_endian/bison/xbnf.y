@@ -36,13 +36,6 @@
 	static int strings[MAXENTRY][CHARMAX];   /*any strings that are found within rules*/
 	static int c=0;               /*variable used to hold character value for a string*/
 	static int nstr=0;            /*number of strings */
-
-	/* for uint & int16 ranges and enums*/
-	static int STrange=0;
-	static int nextSTenum;
-  static int STeindex=0;
-	static int sixteen_range[MAXENTRY][2];
-	static int sixteen_enum[MAXENTRY][ENUMMAX];
 	
 	static __int128 decimal=0; /*number to hold decimal in fwi*/
 	static int size=16;
@@ -74,10 +67,6 @@
 			range[i][RMIN] = -1;
 			range[i][RMAX] = -1 ;
 		}
-		for(i=1; i<MAXENTRY; i++) { /* ranges */
-      sixteen_range[i][RMIN] = -1;
-      sixteen_range[i][RMAX] = -1 ;
-    } 
 		for(i=0; i<MAXENTRY; i++) {	/* enumerations */
 			for(j=0; j<ENUMMAX; j++) 
 				enumeration[i][j] = -1;
@@ -89,8 +78,7 @@
 		for(i=0; i<MAXENTRY; i++) { /* strings */      
       for(j=0; j<CHARMAX; j++)                    
         strings[i][j] = -1;   
-    } 
-
+    }
 		
 		/* generate the preamble */
 		fprintf(xout,"%%{\n");
@@ -112,20 +100,19 @@
 	}
 
 	static void setrlow() {
-		if(hval<0 && cval<0 && !fixedW) {
+		if(hval<0 && cval<0) {
 			printf("error: line %d - invalid range start\n",linenum);
 			exit(EXIT_FAILURE);
 		}
 		if(hval>=0) rlow=hval;
   		else rlow=cval;
 		
-		if (fixedW) rlow = hval;
 		hval=-1;										/* reset for next value */
 		cval=-1;
 	}
 	
 	static void setrhigh() {
-		if (hval<0 && cval<0 && !fixedW) {
+		if (hval<0 && cval<0) {
 			printf("error: line %d - invalid range end\n",linenum);
 			exit(EXIT_FAILURE);
 		}
@@ -133,7 +120,7 @@
 			rhigh=hval;
 		else
 			rhigh=cval;
-		if (fixedW) rhigh = hval; 
+
 		hval=-1;										/* reset for next value */
 		cval=-1;
 
@@ -146,12 +133,6 @@
 			fprintf(xout,"r__0");											/* r__0 is anybyte */
 			anybyte=true;													/* at least one use */
 		}
-		else if (size==16 && fixedW){
-			sixteen_range[STrange][RMIN] = rlow;        /* store it */     
-      sixteen_range[STrange][RMAX] = rhigh;    
-      fprintf(xout,"rr__%d",STrange); /* generate a symbol */        
-      STrange++;
-		}
 		else {
 			range[nextrange][RMIN] = rlow;				/* store it */
 			range[nextrange][RMAX] = rhigh;
@@ -159,74 +140,49 @@
 			nextrange++;
 		}
 		ranging=false;
-		fixedW=false;
-	}
-
-
-	static void STenum0(){
-		sixteen_enum[nextSTenum][0]=hval;
-		hval =-1;
-		STeindex=1;
 	}
 	
 	static void setenum0() {
-		if(hval<0 && cval<0 && !fixedW) {
+		if(hval<0 && cval<0) {
 			printf("error: line %d - invalid enumeration\n",linenum);
 			exit(EXIT_FAILURE);
 		}
-		if (size ==16 && fixedW) {STenum0(); return;}
 		
 		if(hval>=0)
 			enumeration[nextenum][0]=hval;
 		else
 			enumeration[nextenum][0]=cval;
 
-		if (fixedW) enumeration[nextenum][0]=hval;
-		
 		hval=-1;
 		cval=-1;
 		eindex=1;
 	}
 
-	static void setSTenum(){
-		sixteen_enum[nextSTenum][STeindex]=hval;
-		hval =-1;
-		STeindex++;
-	}
-
 	static void setnextenum() {
-		if(hval<0 && cval<0 && !fixedW) {
+		if(hval<0 && cval<0) {
 			printf("error: line %d - invalid enumeration\n",linenum);
 			exit(EXIT_FAILURE);
 		}
-		if (size ==16 && fixedW) {setSTenum(); return;}
 		
 		if(hval>=0)
 			enumeration[nextenum][eindex]=hval;
 		else
 			enumeration[nextenum][eindex]=cval;
 		
-		if (fixedW) enumeration[nextenum][eindex]=hval;
 		hval=-1;
 		cval=-1;
 		eindex++;																 
 	}
 
 	static void eend() {
-		if(eindex==1 && size!= 16) {
+		if(eindex==1) {
 			printf("error: line %d - single entry enumeration invalid\n",linenum);
 			exit(EXIT_FAILURE);
 		}
-		if (size==16 && fixedW){
-			fprintf(xout,"ee__%d",nextSTenum);   
-			nextSTenum++;      
-			STeindex=0;
-		}
-		else{
-			fprintf(xout,"e__%d",nextenum);
-			nextenum++; 
-			eindex=0; 
-		}
+		fprintf(xout,"e__%d",nextenum);
+		nextenum++; 
+		eindex=0; 
+
 		ranging=false;
 		fixedW=false;
 	}
@@ -382,71 +338,7 @@
 				fprintf(xout,"X00 ;\n");                                  
 			else    
 				fprintf(xout,"\'%c\' ;\n", strings[i][j]); 
-				}
-
-		uint8_t bytes[2] = {0,0};
-		
-		if(STrange> 0)
-      fprintf(xout,"\n/* 16 Range Expansions */\n");
-		for(i=0; i<STrange; i++) {   /* for each range -- only valid ranges in table*/    
-      fprintf(xout,"rr__%d : ",i);
-			Bnonterminals++;
-      for(k=0,j=sixteen_range[i][RMIN]; j<sixteen_range[i][RMAX]; k++,j++) {
-				Brules++; Bterminals++;
-        if(k%8==0)                                                              
-          fprintf(xout,"\n  ");                             
-        if(j==0)                             
-          fprintf(xout,"X00 X00 | "); 
-        else{
-					memcpy(bytes, &j, 2);
-          if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 | ", bytes[0]);                            
-					else   
-						fprintf(xout, "\'\\x%02x\' \'\\x%02x\' | ", bytes[0], bytes[1]);
-				}                                                
-      }
-			
-      if(k%8==0)          
-        fprintf(xout,"\n  ");
-			memcpy(bytes, &j, 2);
-			Brules++; Bterminals++;
-			if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 ;\n", bytes[0]);     
-			else                   
-				fprintf(xout, "\'\\x%02x\' \'\\x%02x\' ;\n", bytes[0], bytes[1]);
 		}
-		
-		if(nextSTenum>0) 
-      fprintf(xout,"\n/* 16 Enumeration Expansions */\n");
-    for(i=0; i<nextSTenum; i++) {   /* for each enumeration */   
-      fprintf(xout,"ee__%d : ",i);    
-      j=0;
-      k=0;
-			Bnonterminals++; 
-      Brules++; 
-      while(sixteen_enum[i][j+1]>=0) { /* next element present */    
-        if(k%8==0)   
-          fprintf(xout,"\n  ");     
-        if(sixteen_enum[i][j]==0)             
-          fprintf(xout,"X00 X00 | ");      
-        else{                                                            
-          memcpy(bytes, &j, 2);      
-          if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 | ", bytes[0]);     
-          else   
-            fprintf(xout, "\'\\x%02x\' \'\\x%02x\' | ", bytes[0], bytes[1]);
-				}
-				j++;     
-        k++;          
-      }    
-      if(k%8==0)           
-        fprintf(xout,"\n  ");    
-      if(sixteen_enum[i][j]==0)         
-        fprintf(xout,"X00 X00 ;\n");  
-      else{         
-				memcpy(bytes, &j, 2);                                                                                   
-				if (bytes[1] == 0)    fprintf(xout, "\'\\x%02x\' X00 | ", bytes[0]); 
-				else 
-					fprintf(xout, "\'\\x%02x\' \'\\x%02x\' | ", bytes[0], bytes[1]);
-			}   
-		}	
 	}
 	
 	static void print_counts(){
