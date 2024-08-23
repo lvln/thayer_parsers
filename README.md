@@ -134,10 +134,8 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 #### <ins>MAVLINK parser tutorial</ins> -- a sequence of parsers that incrementally build toward a MAVLINK parser
 
-&emsp;**mavlink_standalone_message** -- MAVLink single message parser for one message type  
-&emsp;**mavlink_single_message_repeat** -- MAVLink parser for zero or more messages of one message type  
-&emsp;**mavlink_three_messages** -- MAVLink parser for three dirrerent message types  
-&emsp;**mavlink** -- MAVLink parser as well as all MAVLink-related source files  
+&emsp;**mavlink_N_msgs** -- multiple MAVLink parsers oncreasing complexity  
+&emsp;**mavlink** -- MAVLink parser for Drone Traffic  as well as all MAVLink-related source files  
 
 #### <ins>Other Non-trivial Examples<ins>
 
