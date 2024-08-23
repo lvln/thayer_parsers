@@ -108,35 +108,6 @@ static state_t *getState(FILE *fp, state_t *state) {
 	return state;
 }
 
-static void printTag(void *data) {
-	// Variable declarations.
-	char *tag;
-
-	// Coerce.
-	tag = (char *)data;
-
-	printf("%s\n", tag);
-}
-
-static void printNest(void *data) {
-	// Variable declarations.
-	state_t *state;
-
-	// Coerce.
-	state = (state_t *)data;
-	printf("=====> state %d\n", state->number);
-	vectorApply(state->tags, printTag);
-	
-}
-
-static void print(void *data) {
-	int *i;
-
-	i = (int *)data;
-
-	printf("State %d.\n", *i);
-}
-
 static void freeNest(void *data) {
 	// Variable declarations.
 	state_t *state;
