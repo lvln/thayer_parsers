@@ -6,7 +6,6 @@
 #include <stdint.h>
 #include <string.h>
 #include <inttypes.h>
-#include <netinet/in.h>
 #include <errno.h>
 	
 #define YYDEBUG 1
@@ -473,8 +472,8 @@ size: '1' '6' {size=16;}
 sign: '-'       {neg=true;}
     |/*empty */ {neg=false;};
 
-number: digit        {if (neg) decimalStr[ind++] = '-'; decimalStr[ind++] = $1; check_ind();}
-      | number digit {decimalStr[ind++] = $2;}
+number: digit        {if (neg) decimalStr[ind++] = '-'; decimalStr[ind++] = $1;}
+			| number digit {decimalStr[ind++] = $2; check_ind();}
       ;
 
 endianness: le {le=true;}
