@@ -7,7 +7,10 @@
 %token BYTE
 %%
 /* Here is the grammar */
-P : WC ;
+P : rule1 rule2 ;
 
+rule1 : WC 'a' WC ;
+
+rule2 : /* empty */ | WC ;
 /* Consume byte for wildcard */
 WC : BYTE ;
