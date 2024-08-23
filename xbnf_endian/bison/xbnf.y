@@ -7,13 +7,15 @@
 #include <string.h>
 #include <inttypes.h>
 #include <netinet/in.h>
+#include <errno.h>
 	
 #define YYDEBUG 1
+#define MAXNUM 100              /* max number of digits in number */
 #define MAXENTRY 100						/* max number of separate ranges */
-#define RMIN 0									/* index of min range value  */
+#define RMIN 0									/* index of min range value */
 #define RMAX 1									/* index of max range value */
 #define ENUMMAX 10							/* max number of entries in an enumeration */
-#define CHARMAX 50                 /*max number of characters in a string*/
+#define CHARMAX 50              /* max number of characters in a string */
 
 	int yylex(void);
 	void yyerror(char *s);
@@ -36,8 +38,11 @@
 	static int strings[MAXENTRY][CHARMAX];   /*any strings that are found within rules*/
 	static int c=0;               /*variable used to hold character value for a string*/
 	static int nstr=0;            /*number of strings */
-	
-	static __int128 decimal=0; /*number to hold decimal in fwi*/
+
+  static char decimalStr[MAXNUM]; /* string to read number into */
+  static int ind=0; /* index variable for number string */
+  static int64_t decimalS=0;
+	static uint64_t decimalUS=0; /*number to hold decimal in fwi*/
 	static int size=16;
 	static bool neg=false;
 	static bool unsign=true; /*default variable for fwi, intially unsigned*/
@@ -55,8 +60,9 @@
   static int Bnonterminals=0;
 
 	
-	static void init() {	/* clear the tables */
+	static void init(void) {	/* clear the tables */
 		int i,j;
+		ind=0;
 		linenum=1;
 		range[0][RMIN] = 0;					/* r__0 if used is anybyte */
 		range[0][RMAX] = 255;
@@ -90,7 +96,7 @@
 		fprintf(xout,"%%%%\n");
 	}
 
-	static void rbegin() { /* clear the range indexes */
+	static void rbegin(void) { /* clear the range indexes */
 		rlow = -1;
 		rhigh = -1;
 		cval = -1;
@@ -99,7 +105,7 @@
 		ranging=true;
 	}
 
-	static void setrlow() {
+	static void setrlow(void) {
 		if(hval<0 && cval<0) {
 			printf("error: line %d - invalid range start\n",linenum);
 			exit(EXIT_FAILURE);
@@ -111,7 +117,7 @@
 		cval=-1;
 	}
 	
-	static void setrhigh() {
+	static void setrhigh(void) {
 		if (hval<0 && cval<0) {
 			printf("error: line %d - invalid range end\n",linenum);
 			exit(EXIT_FAILURE);
@@ -142,7 +148,7 @@
 		ranging=false;
 	}
 	
-	static void setenum0() {
+	static void setenum0(void) {
 		if(hval<0 && cval<0) {
 			printf("error: line %d - invalid enumeration\n",linenum);
 			exit(EXIT_FAILURE);
@@ -158,7 +164,7 @@
 		eindex=1;
 	}
 
-	static void setnextenum() {
+	static void setnextenum(void) {
 		if(hval<0 && cval<0) {
 			printf("error: line %d - invalid enumeration\n",linenum);
 			exit(EXIT_FAILURE);
@@ -174,7 +180,7 @@
 		eindex++;																 
 	}
 
-	static void eend() {
+	static void eend(void) {
 		if(eindex==1) {
 			printf("error: line %d - single entry enumeration invalid\n",linenum);
 			exit(EXIT_FAILURE);
@@ -206,51 +212,113 @@
     le = false;
     be = false;
 	}
-	
-	static void fixed_width(){
-		if (size==16){
-			if (!unsign && (decimal < INT16_MIN || decimal > INT16_MAX) ){  
-				printf("error: invalid entry for int16\n");                                          
-	 			exit(EXIT_FAILURE);                              
- 			}                                      
- 			if(unsign && (decimal < 0 || decimal > UINT16_MAX) ){   
-			 	printf("error: invalid entry for uint16\n");
-		 		exit(EXIT_FAILURE);          
-	 		}
-			uint8_t bytes[2] = {0,0};  
-	 		memcpy(bytes, &decimal, 2);
-      write_int(bytes);
+
+  static void convert_int(uint8_t bytes_arr[], int64_t dec, int size) {
+		int i;
+		for (i = 0; i < size; i++) {
+			bytes_arr[i] = dec & 0xff;
+			dec >>= 8;
 		}
-    if (size==32){
-			if (!unsign && (decimal < INT32_MIN || decimal > INT32_MAX) ){  
-				printf("error: invalid entry for int32\n");                                          
-				exit(EXIT_FAILURE);                              
-			}                                      
-			if(unsign && (decimal < 0 || decimal > UINT32_MAX) ){     
-				printf("error: invalid entry for uint32\n");
-				exit(EXIT_FAILURE);          
-			}
-			uint8_t bytes[4] = {0,0,0,0};  
-		  memcpy(bytes, &decimal, 4);
-      write_int(bytes);
+	}
+
+  static void convert_uint(uint8_t bytes_arr[], uint64_t dec, int size) {
+		int i;
+		for (i = 0; i < size; i++) {
+			bytes_arr[i] = dec & 0xff;
+			dec >>= 8;
 		}
-    if (size==64){                                                                                                   
-			if (!unsign && (decimal < INT64_MIN || decimal > INT64_MAX) ){  
-				printf("error: invalid entry for int64\n");
-				exit(EXIT_FAILURE);                              
-		 	}                                      
-			if(unsign && (decimal < 0 || decimal > (uint64_t)UINT64_MAX) ){     
-				printf("error: invalid entry for uint64\n");
-		 		exit(EXIT_FAILURE);          
-	 		}
-			uint8_t bytes[8] = {0,0,0,0,0,0,0,0};  
-			memcpy(bytes, &decimal, 8);
-      write_int(bytes);
-		}
-		decimal=0;
 	}
 	
-	static void hexout() {
+	static void fixed_width(void){
+		char *endptr;
+		decimalStr[ind]='\0';
+		if (size==16){
+			if (unsign && neg) {
+			  printf("error: invalid entry for uint16\n");                              
+	 		  exit(EXIT_FAILURE);
+		  }
+			uint8_t bytes[2] = {0,0};  
+			if (!unsign) {
+				decimalS = strtoll(decimalStr, &endptr, 10);
+				if (*endptr != '\0' || (decimalS < INT16_MIN || decimalS > INT16_MAX) ){  
+				  printf("error: invalid entry for int16\n");                                          
+	 			  exit(EXIT_FAILURE);                              
+ 			  }
+        convert_int(bytes, decimalS, 2);
+      }
+      if (unsign) {
+				decimalUS = strtoull(decimalStr, &endptr, 10);
+ 			  if(*endptr != '\0'|| (decimalUS < 0 || decimalUS > UINT16_MAX) ){   
+			 	  printf("error: invalid entry for uint16\n");
+		 		  exit(EXIT_FAILURE);          
+	 		  }
+        convert_uint(bytes, decimalUS, 2);
+      }
+      write_int(bytes);
+		}
+		if (size==32){
+			if (unsign && neg) {
+			  printf("error: invalid entry for uint32\n");         
+	 		  exit(EXIT_FAILURE);
+		  }
+			uint8_t bytes[4] = {0,0,0,0};
+			if (!unsign) {
+				decimalS = strtoll(decimalStr, &endptr, 10);
+				if (*endptr != '\0' || (decimalS < INT32_MIN || decimalS > INT32_MAX) ){  
+				  printf("error: invalid entry for int32\n");                         
+	 			  exit(EXIT_FAILURE);                              
+ 			  }
+        convert_int(bytes, decimalS, 4);
+      }
+      if (unsign) {
+				decimalUS = strtoull(decimalStr, &endptr, 10);
+ 			  if (*endptr != '\0' || (decimalUS < 0 || decimalUS > UINT32_MAX) ){   
+			 	  printf("error: invalid entry for uint32\n");
+		 		  exit(EXIT_FAILURE);
+	 		  }
+        convert_uint(bytes, decimalUS, 4);
+      }
+      write_int(bytes);
+		}
+    if (size==64){
+			if (unsign && neg) {
+			  printf("error: invalid entry for uint32\n");
+	 		  exit(EXIT_FAILURE);
+		  }
+			uint8_t bytes[8] = {0,0,0,0,0,0,0,0};
+			if (!unsign) {
+				errno = 0;
+				decimalS = strtoll(decimalStr, &endptr, 10);
+				if (*endptr != '\0' || errno == ERANGE){  
+				  printf("error: invalid entry for int64\n");
+	 			  exit(EXIT_FAILURE);           
+ 			  }
+        convert_int(bytes, decimalS, 8);
+      }
+      if (unsign) {
+				errno = 0;
+				decimalUS = strtoull(decimalStr, &endptr, 10);
+ 			  if (*endptr != '\0' || errno == ERANGE){   
+			 	  printf("error: invalid entry for uint64\n");
+		 		  exit(EXIT_FAILURE);
+	 		  }
+        convert_uint(bytes, decimalUS, 8);
+      }
+      write_int(bytes);
+		}
+    ind=0;
+		decimalS=0;
+    decimalUS=0;
+	}
+
+  static void check_ind(void) {
+		if (ind > 99) {
+			printf("error: invalid number entry\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+	
+	static void hexout(void) {
 		if(!ranging) {
 			if(hval==0)
 				fprintf(xout,"X00");
@@ -259,7 +327,7 @@
 		}
 	}
 	
-	static void addrules() {							/* add rules for ranges and enumerations */
+	static void addrules(void) {							/* add rules for ranges and enumerations */
 		int i,j,k;
 		
 		if(anybyte)	i=0;						/* anybyte present, start at 0 */
@@ -341,7 +409,7 @@
 		}
 	}
 	
-	static void print_counts(){
+	static void print_counts(void){
 		counts = fopen("gmr_counts", "w");
 		fprintf(counts,"XBNF %d %d %d ", Xrules, Xterminals, Xnonterminals);    
 		fprintf(counts,"Bison %d %d %d\n", Brules, Bterminals, Bnonterminals);
@@ -379,15 +447,15 @@ c : alphanumeric   { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}
 
 ws: '\t' '\n' '\r' ;
 
-terminal:	terminalfw
-				| terminalnofw
+terminal:	terminalfw {Xterminals++; Bterminals++;}
+				| terminalnofw {Xterminals++; Bterminals++;}
 				;
 
 terminalfw: '\'' fwi '\'' ;
 
 terminalnofw: '\'' termval '\'' ;
 
-fwi : endianness '(' sign number ',' ows type size')' {if (neg) decimal = 0-decimal; fixed_width(); fixedW=true;};
+fwi : endianness '(' sign number ',' ows type size')' {fixed_width(); fixedW=true;};
 
 type: 'u' 'i' 'n' 't'    {unsign=true;}
     | 'i' 'n' 't'        {unsign=false;}
@@ -405,8 +473,8 @@ size: '1' '6' {size=16;}
 sign: '-'       {neg=true;}
     |/*empty */ {neg=false;};
 
-number: digit        {decimal += $1 - '0' ;}
-      | number digit {decimal*= 10; decimal += $2 - '0' ;}
+number: digit        {if (neg) decimalStr[ind++] = '-'; decimalStr[ind++] = $1; check_ind();}
+      | number digit {decimalStr[ind++] = $2;}
       ;
 
 endianness: le {le=true;}
