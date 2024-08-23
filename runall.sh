@@ -20,7 +20,7 @@ touch ./RESULTS/run.${TODAY}
 
 # All grammars not listed here are experimental and unused
 # NOTE: DO NOT PUT xbnf or abnf in this list
-for DIR in gmr0 gmr1 usps bin0 bin1 bin2 bin3 command response \
+for DIR in gmr0 gmr1 usps bin0 bin1 bin2 command response \
 				 jnum jstring json junicode json.unicode \
 				 mavlink_1_msg mavlink_3_msgs mavlink_10_msgs mavlink_20_msgs mavlink_30_msgs mavlink_40_msgs mavlink \
 				 J1939 url http
