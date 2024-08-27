@@ -27,6 +27,12 @@ if [ $# == 1 ] && [ $1 == "-h" ]; then
 		exit
 fi
 
+# Clean and build vector
+pushd ../../xbnf/utils/
+make clean > /dev/null
+make > /dev/null
+popd
+
 # Clean and build utils
 pushd ../../mavlink/utils/
 make clean > /dev/null
@@ -104,6 +110,10 @@ for id in "${msgIDs[@]}"; do
 		let passSeed=($(ls ../tests/pass.* 2>/dev/null | awk -F. '{print $NF}' | sort -n | tail -1) + 1)
 		let failSeed=($(ls ../tests/fail.* 2>/dev/null | awk -F. '{print $NF}' | sort -n | tail -1) + 1)
 done
+
+pushd ../../xbnf/utils/
+make clean > /dev/null
+popd
 
 pushd ../../mavlink/utils/
 make clean > /dev/null
