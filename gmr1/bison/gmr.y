@@ -1,20 +1,17 @@
 %{
-	#define YYDEBUG 1
-	int yylex(void);
-	void yyerror(char *s);
+  #define YYDEBUG 1
+  extern int yylex(void);
+  void yyerror(char *s);
 %}
-
 %token X00
-
+%token BYTE
 %%
 
-/* Here is the grammar */
+L : L ';' E | E ;
 
-L : L ';' E  | E ;
+E : E ',' P | P ;
 
-E : E ',' P  | P ;
+P : 'a' | '(' M ')' ;
 
-P : 'a'  | '(' M ')' ;
+M : /* nothing */ | L ; 
 
-M : /* nothing */  | L ;
-%%

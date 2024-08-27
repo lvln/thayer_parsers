@@ -62,9 +62,6 @@
 	static void init() {	/* clear the tables */
 		int i,j;
 		linenum=1;
-		range[0][RMIN] = 0;					/* r__0 if used is anybyte */
-		range[0][RMAX] = 255;
-		nextrange++;								/* first range is 1 */
 		anybyte=false;							/* anybyte not yet detected */
 		ranging=false;
 		for(i=1; i<MAXENTRY; i++) {	/* ranges */
@@ -92,10 +89,11 @@
 		/* generate the preamble */
 		fprintf(xout,"%%{\n");
 		fprintf(xout,"  #define YYDEBUG 1\n");
-		fprintf(xout,"  int yylex(void);\n");
+		fprintf(xout,"  extern int yylex(void);\n");
 		fprintf(xout,"  void yyerror(char *s);\n");
 		fprintf(xout,"%%}\n");
 		fprintf(xout,"%%token X00\n");
+		fprintf(xout,"%%token BYTE\n");
 		fprintf(xout,"%%%%\n");
 	}
 
@@ -140,7 +138,7 @@
 		}
 
 		if(rlow==0 && rhigh==255) {							/* same as anybyte */
-			fprintf(xout,"r__0");											/* r__0 is anybyte */
+			fprintf(xout,"WC");											/* WC is anybyte (wildcard) */
 			anybyte=true;													/* at least one use */
 		}
 		else if (size==16 && fixedW){
@@ -279,10 +277,13 @@
 	static void addrules() {							/* add rules for ranges and enumerations */
 		int i,j,k;
 		
-		if(anybyte)	i=0;						/* anybyte present, start at 0 */
-		else i=1;									/* otherwise, dont generate range 0 */
+		i=0;
 
-		if(anybyte || nextrange>1)
+		if (anybyte) {
+			fprintf(xout,"\n/* Consume byte for wildcard */\n");
+		  fprintf(xout, "WC : BYTE ;\n");
+		}
+		if(nextrange>0)
 			fprintf(xout,"\n/* Range Expansions */\n");
 		for(; i<nextrange; i++) {		/* for each range -- only valid ranges in table*/
 			fprintf(xout,"r__%d : ",i);
@@ -300,7 +301,7 @@
 				fprintf(xout,"\n  ");
 			fprintf(xout,"\'\\x%02x\' ;\n", (uint8_t) j); Brules++; Bterminals++;
 		}
-		
+
 		if(nextenum>0)
 			fprintf(xout,"\n/* Enumeration Expansions */\n");
 		for(i=0; i<nextenum; i++) {		/* for each enumeration */
@@ -505,7 +506,7 @@ symbolchar : alphanumeric   { fprintf(xout,"%c",(char)$1); }
 					 ;
 
 range : '[' { rbegin(); } elements ']' {Bnonterminals++;} 
-      | '*' { fprintf(xout,"r__0"); anybyte=true; Xnonterminals++;Bnonterminals++;}
+      | '*' { fprintf(xout,"WC"); anybyte=true; Xnonterminals++;Bnonterminals++;}
       ;
 
 elements : ws0 terminal ws0 { setrlow(); } '-' ws0 terminal ws0 { setrhigh(); }
@@ -532,6 +533,7 @@ commentchar : alphanumeric      { fprintf(xout,"%c",(char)$1); }
 uchar: uhex | 'G' | 'H' | 'I' | 'J' 
       | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' 
       | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' ;
+
 lchar: lhex | 'g' | 'h' | 'i' | 'j' 
       | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' 
       | 'u' | 'v' | 'w' | 'x' | 'y' | 'z' ;

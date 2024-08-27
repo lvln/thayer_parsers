@@ -1,14 +1,11 @@
 %{
-	#define YYDEBUG 1
-	int yylex(void);
-	void yyerror(char *s);
+  #define YYDEBUG 1
+  extern int yylex(void);
+  void yyerror(char *s);
 %}
-
 %token X00
-
-
-%% /* The JSON Grammar definition -- no actions are performed */
-
+%token BYTE
+%%
 number: integer fraction exponent ;
 
 integer: digit | onenine digits | '-' digit | '-' onenine digits ;
@@ -23,6 +20,8 @@ digits: digit | digits digit ;
 
 digit: '0' | onenine ;
 
-onenine: '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' ;
-
-%% /* C-Code */
+onenine:     r__0 ; 
+/* Range Expansions */
+r__0 : 
+  '\x31' | '\x32' | '\x33' | '\x34' | '\x35' | '\x36' | '\x37' | '\x38' | 
+  '\x39' ;

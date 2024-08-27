@@ -4,7 +4,8 @@
 #
 CFLAGS=-Wall -pedantic -std=c11 -I.
 OFILES=gmr.tab.o lexer.o gmr_tb.o
-GCC=clang
+PPDIR=../../xbnf/postprocessor
+GCC=gcc
 
 all:	gmr
 
@@ -12,6 +13,7 @@ all:	gmr
 gmr.tab.c:	gmr.y
 #						bison -d -t -v --report=all -x gmr.y
 						bison -d -t -v -x gmr.y
+						$(PPDIR)/addrule gmr.xml gmr.tab.c
 
 %.o:	%.c
 			$(GCC) $(CFLAGS) -c $<

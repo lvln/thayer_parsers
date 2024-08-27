@@ -1,6 +1,8 @@
 
 
-# xbnf -- A preprocessor, written in Bison, that extends Bison BNF.
+# xbnf_skip_wildcard -- A preprocessor, written in Bison, that extends Bison BNF and skips over wildcard bytes instead of processing them
+
+Note: This differs from `xbnf` in that it produces a Bison grammar that skips over wildcards as opposed to comparing them to each byte.
 
 **xbnf** is a Bison parser that extends Bison's BNF to include
 notations for parsing ascii and binary formats. The following notations are provided:

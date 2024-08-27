@@ -1,17 +1,14 @@
 %{
-	#define YYDEBUG 1
-	int yylex(void);
-	void yyerror(char *s);
+  #define YYDEBUG 1
+  extern int yylex(void);
+  void yyerror(char *s);
 %}
-
 %token X00
-
-
-%% /* The JSON Grammar definition -- no actions are performed */
-
+%token BYTE
+%%
 json: element ;
 
-value: object | array | STRING | number | TRUE | FALSE | NULL ;
+value: object | array | STRING | number | s__0 | s__1 | s__2 ;
 
 object: '{' ws '}' | '{' members '}' ;
 
@@ -45,34 +42,55 @@ digits: digit | digits digit ;
 
 digit: '0' | onenine ;
 
-onenine: '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' ;
+onenine: r__0 ;
 
 ws: /* empty */	| ws ' ' | ws '\n' | ws '\t' | ws '\r' ;
 
 escchar: 'b' | 'f' | 'n' | 'r' | 't' | '"' | '\\' | '/' | 'u' hex hex hex hex ;
 
-punct:  ' ' | '!' | '#' | '$' | '%' | '&' | '\'' | '(' | ')' | '*' | '+' 
-      | ',' | '-' | '.' | '/' | ':' | ';' | '<' | '=' | '>' | '?' | '@'
-      | '[' | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~' ;
+punct:  ' ' | '!' | r__1 | r__2 | '[' | r__3 | r__4 ;
 
-lchar: lhex | 'g' | 'h' | 'i' | 'j' 
-      | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' 
-      | 'u' | 'v' | 'w' | 'x' | 'y' | 'z' ;
+lchar: lhex | r__5 ;
 
-uchar: uhex | 'G' | 'H' | 'I' | 'J' 
-      | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' 
-      | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' ;
+uchar: uhex | r__6 ;
 
-uhex: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;
+uhex: r__7 ;
 
-lhex: 'a'| 'b' | 'c' | 'd' | 'e' | 'f' ;
+lhex: r__8 ;
 
 hex: digit | uhex | lhex ;
 
-TRUE: 't' 'r' 'u' 'e' ;
 
-FALSE: 'f' 'a' 'l' 's' 'e' ;
+/* Range Expansions */
+r__0 : 
+  '\x31' | '\x32' | '\x33' | '\x34' | '\x35' | '\x36' | '\x37' | '\x38' | 
+  '\x39' ;
+r__1 : 
+  '\x23' | '\x24' | '\x25' | '\x26' | '\x27' | '\x28' | '\x29' | '\x2a' | 
+  '\x2b' | '\x2c' | '\x2d' | '\x2e' | '\x2f' ;
+r__2 : 
+  '\x3a' | '\x3b' | '\x3c' | '\x3d' | '\x3e' | '\x3f' | '\x40' ;
+r__3 : 
+  '\x5d' | '\x5e' | '\x5f' | '\x60' ;
+r__4 : 
+  '\x7b' | '\x7c' | '\x7d' | '\x7e' | '\x7f' ;
+r__5 : 
+  '\x67' | '\x68' | '\x69' | '\x6a' | '\x6b' | '\x6c' | '\x6d' | '\x6e' | 
+  '\x6f' | '\x70' | '\x71' | '\x72' | '\x73' | '\x74' | '\x75' | '\x76' | 
+  '\x77' | '\x78' | '\x79' | '\x7a' ;
+r__6 : 
+  '\x47' | '\x48' | '\x49' | '\x4a' | '\x4b' | '\x4c' | '\x4d' | '\x4e' | 
+  '\x4f' | '\x50' | '\x51' | '\x52' | '\x53' | '\x54' | '\x55' | '\x56' | 
+  '\x57' | '\x58' | '\x59' | '\x5a' ;
+r__7 : 
+  '\x41' | '\x42' | '\x43' | '\x44' | '\x45' | '\x46' ;
+r__8 : 
+  '\x61' | '\x62' | '\x63' | '\x64' | '\x65' | '\x66' ;
 
-NULL: 'n' 'u' 'l' 'l' ;
-
-%% /* C-Code */
+/* String Expansions */
+s__0 : 
+ 't' 'r' 'u' 'e' ;
+s__1 : 
+ 'f' 'a' 'l' 's' 'e' ;
+s__2 : 
+ 'n' 'u' 'l' 'l' ;

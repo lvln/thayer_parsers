@@ -1,13 +1,11 @@
 %{
-	#define YYDEBUG 1
-	int yylex(void);
-	void yyerror(char *s);
+  #define YYDEBUG 1
+  extern int yylex(void);
+  void yyerror(char *s);
 %}
-
 %token X00
-
+%token BYTE
 %%
-
 P : x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 xa xb xc xd xe xf ;
 
 x0 : X00 '\x01' '\x02' '\x03' '\x04' '\x05' '\x06' '\x07' '\x08' '\x09' '\x0a' '\x0b' '\x0c' '\x0d' '\x0e' '\x0f' ;
@@ -41,7 +39,3 @@ xd : '\xd0' '\xd1' '\xd2' '\xd3' '\xd4' '\xd5' '\xd6' '\xd7' '\xd8' '\xd9' '\xda
 xe : '\xe0' '\xe1' '\xe2' '\xe3' '\xe4' '\xe5' '\xe6' '\xe7' '\xe8' '\xe9' '\xea' '\xeb' '\xec' '\xed' '\xee' '\xef' ;
 
 xf : '\xf0' '\xf1' '\xf2' '\xf3' '\xf4' '\xf5' '\xf6' '\xf7' '\xf8' '\xf9' '\xfa' '\xfb' '\xfc' '\xfd' '\xfe' '\xff' ;
-
-
-%%
-
