@@ -27,6 +27,12 @@ if [ $# == 1 ] && [ $1 == "-h" ]; then
 		exit
 fi
 
+# Clean and build vector
+pushd ../../xbnf/utils/
+make clean > /dev/null
+make > /dev/null
+popd
+
 # Clean and build utils
 pushd ../utils/
 make clean > /dev/null
@@ -106,6 +112,10 @@ for id in "${msgIDs[@]}"; do
 done
 
 pushd ../utils/
+make clean > /dev/null
+popd
+
+pushd ../../xbnf/utils/
 make clean > /dev/null
 popd
 

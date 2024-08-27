@@ -14,6 +14,12 @@ if [ $# != 0 ]; then
 		exit
 fi
 
+# Make and clean vector
+pushd ../../xbnf/utils/
+make clean > /dev/null
+make > /dev/null
+popd
+
 # Make and clean utils
 pushd ../utils/
 make clean > /dev/null
@@ -80,6 +86,11 @@ popd
 
 # Clean out utils
 pushd ../utils/
+make clean > /dev/null
+popd
+
+# Clean vector
+pushd ../../xbnf/utils/
 make clean > /dev/null
 popd
 
