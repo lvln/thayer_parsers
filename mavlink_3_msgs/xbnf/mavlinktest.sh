@@ -27,6 +27,12 @@ if [ $# == 1 ] && [ $1 == "-h" ]; then
 		exit
 fi
 
+# Make the vector module
+pushd ../../xbnf/utils/
+make clean > /dev/null
+make > /dev/null
+popd
+
 # Make the data processing library
 pushd ../../mavlink/utils/
 make clean > /dev/null
@@ -116,5 +122,10 @@ popd
 
 # Clean the data processing library
 pushd ../../mavlink/utils/
+make clean > /dev/null
+popd
+
+# Clean the vector module
+pushd ../../xbnf/utils/
 make clean > /dev/null
 popd
