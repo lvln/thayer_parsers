@@ -17,7 +17,6 @@
  */
 int bitToByte(FILE *ifile, FILE *ofile, int *fieldSizes, int numFields) {
 	// Variable declarations.
-	FILE *ifile, *ofile;
 	int numBits, i, j, bitCnt, bit;
 	uint8_t ibyte, obyte;
 	
@@ -51,16 +50,6 @@ int bitToByte(FILE *ifile, FILE *ofile, int *fieldSizes, int numFields) {
 			else bitCnt++;
 		}
 		
-	}
-	
-	// Read each byte from input file.
-	while (fread(&ibyte, sizeof(uint8_t), 1, ifile) == 1) {
-		// Reset the output byte to 0.
-		obyte = 0;
-		
-		for (i = 0; i < fieldSizes[field]; i++) {
-			
-		}
 	}
 	
 	// Close files.
