@@ -13,7 +13,7 @@ all:	gmr
 gmr.tab.c:	gmr.y
 #						bison -d -t -v --report=all -x gmr.y
 						bison -d -t -v -x gmr.y
-						$(PPDIR)/addrule gmr.xml gmr.tab.c
+						$(PPDIR)/postprocessor gmr.xml gmr.tab.c
 
 %.o:	%.c
 			$(GCC) $(CFLAGS) -c $<

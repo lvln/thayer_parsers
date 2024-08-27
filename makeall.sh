@@ -36,6 +36,20 @@ make ${MODE} clean
 make ${MODE}
 popd
 
+# make the vector library
+pushd ./xbnf/utils
+echo [utils]
+make ${MODE} clean
+make ${MODE}
+popd
+
+# make the postprocessor
+pushd ./xbnf/postprocessor
+echo [postprocessor]
+make ${MODE} clean
+make ${MODE}
+popd
+
 # make the abnf pre-processor -- not yet working
 #pushd ./abnf/bison
 #echo [abnf]

@@ -1,10 +1,11 @@
-CFLAGS=-Wall -pedantic -std=c11 -I../../mavlink/utils -L../../mavlink/lib
+CFLAGS=-Wall -pedantic -std=c11 -I../utils -L../lib
 LIBS=-lutils
+GCC=gcc
 
-all: addrule
+all: postprocessor
 
-addrule: addrule.c
-				 gcc $(CFLAGS) addrule.c $(LIBS) -o $@
+postprocessor: postprocessor.c
+				 			 $(GCC) $(CFLAGS) postprocessor.c $(LIBS) -o $@
 
 clean:
-			rm -f *~ addrule *.o
+			rm -f *~ postprocessor *.o
