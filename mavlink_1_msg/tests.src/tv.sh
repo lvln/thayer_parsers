@@ -14,6 +14,12 @@ if [ $# != 0 ]; then
 		exit
 fi
 
+# Clean out and build vector library
+pushd ../../xbnf/utils/
+make clean > /dev/null
+make > /dev/null
+popd
+
 # Clean out and build library.
 pushd ../../mavlink/utils/
 make clean > /dev/null
@@ -67,6 +73,11 @@ let passSeed++
 
 # Clean out library.
 pushd ../../mavlink/utils/
+make clean > /dev/null
+popd
+
+# Clean out vector library
+pushd ../../xbnf/utils/
 make clean > /dev/null
 popd
 

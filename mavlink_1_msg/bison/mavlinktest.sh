@@ -30,6 +30,12 @@ fi
 # This is the source directory path
 SRCDIR="../../mavlink/mavlink_source_files"
 
+# Clean and make the vector module
+pushd ../../xbnf/utils/
+make clean > /dev/null
+make > /dev/null
+popd
+
 # Clean and build data processing tools
 pushd ../../mavlink/utils/
 make clean > /dev/null
@@ -94,11 +100,16 @@ pushd ../tests/
 make clean > /dev/null
 popd
 
-pushd .../tests.src/
+pushd ../tests.src/
 tv.sh
 popd
 
 # Clean out utils
 pushd ../../mavlink/utils
+make clean > /dev/null
+popd
+
+# Clean out the vector module
+pushd ../../xbnf/utils/
 make clean > /dev/null
 popd
