@@ -15,6 +15,9 @@ __"\<string\>"__ -- A string value.
 
 __\*__ -- Signifying any byte '\x00' to '\xFF'.
 
+__'little_endian(<integer>, <type>)'__ -- Signifying an integer in little-endian representation where <type> is uint16, uint32, uint64, int16, int32 or int64.
+
+__'big_endian(<integer>, <type>)'__ -- Signifying an integer in big-endian representation where <type> is uint16, uint32, uint64, int16, int32 or int64.
 
 ## Usage: xbnf \<infile\> [ -h -d -o \<outfile\>]
 

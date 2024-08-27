@@ -1,1 +1,1 @@
-P : 'big_endian(234, int16)' ;
+P: 'big_endian(0, uint16)' ;
