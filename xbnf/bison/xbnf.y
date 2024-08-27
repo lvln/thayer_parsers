@@ -59,7 +59,7 @@
   static int Bnonterminals=0;
 
 	
-	static void init() {	/* clear the tables */
+	static void init(void) {	/* clear the tables */
 		int i,j;
 		linenum=1;
 		anybyte=false;							/* anybyte not yet detected */
@@ -97,7 +97,7 @@
 		fprintf(xout,"%%%%\n");
 	}
 
-	static void rbegin() { /* clear the range indexes */
+	static void rbegin(void) { /* clear the range indexes */
 		rlow = -1;
 		rhigh = -1;
 		cval = -1;
@@ -106,7 +106,7 @@
 		ranging=true;
 	}
 
-	static void setrlow() {
+	static void setrlow(void) {
 		if(hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid range start\n",linenum);
 			exit(EXIT_FAILURE);
@@ -119,7 +119,7 @@
 		cval=-1;
 	}
 	
-	static void setrhigh() {
+	static void setrhigh(void) {
 		if (hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid range end\n",linenum);
 			exit(EXIT_FAILURE);
@@ -158,13 +158,13 @@
 	}
 
 
-	static void STenum0(){
+	static void STenum0(void){
 		sixteen_enum[nextSTenum][0]=hval;
 		hval =-1;
 		STeindex=1;
 	}
 	
-	static void setenum0() {
+	static void setenum0(void) {
 		if(hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid enumeration\n",linenum);
 			exit(EXIT_FAILURE);
@@ -183,13 +183,13 @@
 		eindex=1;
 	}
 
-	static void setSTenum(){
+	static void setSTenum(void){
 		sixteen_enum[nextSTenum][STeindex]=hval;
 		hval =-1;
 		STeindex++;
 	}
 
-	static void setnextenum() {
+	static void setnextenum(void) {
 		if(hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid enumeration\n",linenum);
 			exit(EXIT_FAILURE);
@@ -207,7 +207,7 @@
 		eindex++;																 
 	}
 
-	static void eend() {
+	static void eend(void) {
 		if(eindex==1 && size!= 16) {
 			printf("error: line %d - single entry enumeration invalid\n",linenum);
 			exit(EXIT_FAILURE);
@@ -226,7 +226,7 @@
 		fixedW=false;
 	}
 	
-	static void fixed_width(){
+	static void fixed_width(void){
 		if (size==8){
 			if (decimal==0 && !ranging) fprintf(xout, "X00 ");
 			else{			
@@ -265,7 +265,7 @@
 		decimal=0;
 	}
 	
-	static void hexout() {
+	static void hexout(void) {
 		if(!ranging) {
 			if(hval==0)
 				fprintf(xout,"X00");
@@ -274,7 +274,7 @@
 		}
 	}
 	
-	static void addrules() {							/* add rules for ranges and enumerations */
+	static void addrules(void) {							/* add rules for ranges and enumerations */
 		int i,j,k;
 		
 		i=0;
@@ -423,7 +423,7 @@
 		}	
 	}
 	
-	static void print_counts(){
+	static void print_counts(void){
 		counts = fopen("gmr_counts", "w");
 		fprintf(counts,"XBNF %d %d %d ", Xrules, Xterminals, Xnonterminals);    
 		fprintf(counts,"Bison %d %d %d\n", Brules, Bterminals, Bnonterminals);

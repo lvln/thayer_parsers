@@ -14,7 +14,7 @@
 #include <string.h>
 #include "gmr.tab.h"
 
-extern int yylex();
+extern int yylex(void);
 extern int yydebug;
 
 void yyerror(char *s)
@@ -252,7 +252,7 @@ void reformat(const uint8_t *msgDict, const uint8_t szMsgDict, const uint8_t *in
 /*
  * Main function where reformatting takes place
  */
-void reformatMain()
+void reformatMain(void)
 {
   uint8_t msgDict[] =	{ 0,8,1,11,1,1,18,1,1,1,2,4,8,0,5,15,1,1,1,7 };//20
   uint8_t dataMsg[64] = {0};

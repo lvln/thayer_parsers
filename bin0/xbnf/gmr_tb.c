@@ -13,8 +13,7 @@
 #include <string.h>
 #include "gmr.tab.h"
 
-
-extern int yylex();
+extern int yylex(void);
 extern int yydebug;
 
 void yyerror(char *s)
