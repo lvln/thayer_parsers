@@ -27,6 +27,12 @@ if [ $# == 1 ] && [ $1 == "-h" ]; then
 		exit
 fi
 
+# Clean and build vector library
+pushd ../../xbnf/utils
+make clean > /dev/null
+make > /dev/null
+popd
+
 # Clean and build utils
 pushd ../../mavlink/utils/
 make clean > /dev/null
@@ -109,6 +115,10 @@ pushd ../../mavlink/utils/
 make clean > /dev/null
 popd
 
+pushd ../../xbnf/utils
+make clean > /dev/null
+popd
+
 pushd ../tests/
 make clean > /dev/null
 popd
@@ -117,3 +127,4 @@ pushd ../tests.src/
 ./tv.sh
 popd
 
+B
