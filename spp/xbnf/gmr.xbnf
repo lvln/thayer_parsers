@@ -1,14 +1,22 @@
 P : packetPrimaryHeader ;
 
-packetPrimaryHeader : packetVersionNumber packetIdentification packetSequenceControl packetDataLength ;
+packetPrimaryHeader : packetPrimaryHeaderNoSecHdr | packetPrimaryHeaderSecHdr ;
+
+packetPrimaryHeaderSecHdr : packetVersionNumber packetIdentificationSecHdr packetSequenceControl packetDataLength ;
+
+packetPrimaryHeaderNoSecHdr : packetVersionNumber packetIdentificationNoSecHdr packetSequenceControl packetDataLength ;
 
 packetVersionNumber : '\x00' ;
 
-packetIdentification : packetType secondaryHeaderFlag applicationProcessId ;
+packetIdentificationNoSecHdr : packetType secondaryHeaderFlagNoSecHdr applicationProcessId ;
+
+packetIdentificationSecHdr : packetType secondaryHeaderFlagSecHdr applicationProcessId ;
 
 packetType : '\x00' | '\x01' ;
 
-secondaryHeaderFlag : '\x00' | '\x01' ;
+secondaryHeaderFlagNoSecHdr : '\x00' ;
+
+secondaryHeaderFlagSecHdr : '\x01' ;
 
 applicationProcessId : * * ;
 

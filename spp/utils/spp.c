@@ -186,14 +186,16 @@ void generateTests(int passSeed, int failSeed) {
 	sppMessage_t mess;
 	FILE *fp;
 	char fname[50];
-
+	int i;
+	uint16_t old;
+	
 	// Seed random number generator.
 	srand(time(NULL));
 
 	// Set the various fields.
 	mess.pph.versionNumber = 0;
 	mess.pph.pktType = 1;
-	mess.pph.secHdrFlag = 1;
+	mess.pph.secHdrFlag = 0;
 	mess.pph.apid = (rand() % (1 << 11));
 	mess.pph.seqFlags = 3;
 	mess.pph.pktSeqOrPn = (rand() % (1 << 14));
@@ -208,15 +210,61 @@ void generateTests(int passSeed, int failSeed) {
 		exit(EXIT_FAILURE);
 	}
 
-	printSppMessage(&mess);
-
 	// Write test to file.
 	writeSppMessageToFile(&mess, fp);
 
 	// Close file.
 	fclose(fp);
 
-	// Generate fialing test cases for all values in version number.
-	//	for (i = 0; i < 
+	// Save the old value of version number.
+	old = mess.pph.versionNumber;
 	
+	// Generate failing test cases for all values in version number.
+	for (i = 1; i <= 7; i++) {
+		mess.pph.versionNumber = i;
+
+		// Generate failing test.
+		sprintf(fname, "./fail.%d", failSeed++);
+		
+		// Open file.
+		if ((fp = fopen(fname, "wb")) == NULL) {
+			fprintf(stderr, "Failed to open file.\n");
+			exit(EXIT_FAILURE);
+		}
+		
+		// Write test to file.
+		writeSppMessageToFile(&mess, fp);
+		
+		// Close file.
+		fclose(fp);
+	}
+
+	// Revert to old value of version number.
+	mess.pph.versionNumber = old;
+
+	// Save the old value of packet type.
+	old = mess.pph.pktType;
+	
+	// Generate passing test case for other value of packet type..
+	mess.pph.pktType = 0;
+	
+	// Generate passing test.
+	sprintf(fname, "./pass.%d", passSeed++);
+		
+	// Open file.
+	if ((fp = fopen(fname, "wb")) == NULL) {
+		fprintf(stderr, "Failed to open file.\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	// Write test to file.
+	writeSppMessageToFile(&mess, fp);
+	
+	// Close file.
+	fclose(fp);
+
+	// Revert to old value of pckaet type.
+	mess.pph.pktType = old;
+	
+
 }

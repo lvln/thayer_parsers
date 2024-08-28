@@ -13,6 +13,12 @@
 #include <string.h>
 #include <stdbool.h>
 
+// Define range structure.
+typedef struct range {
+	int low;
+	int high;
+} range_t;
+
 // Define a structure for a state tag.
 typedef struct state {
 	int number;
@@ -150,12 +156,75 @@ static bool stateContainsByte(vector_t *tags) {
 	return false;
 }
 
+static vector_t *makeRanges(vector_t *byteStates) {
+	// Variable declarations.
+	int *cur, i, prev;
+	vector_t *ranges;
+	range_t *range;
+	
+	// Initialise vector.
+	if ((ranges = vectorInit()) == NULL) {
+		fprintf(stderr, "Unable to initialise vector.\n");
+		return NULL;
+	}
+
+	// Loop through, finding consecutive ranges.
+	for (i = 0; i < vectorGetSize(byteStates); i++) {
+		// Get the value currently stored at the given vector location.
+		if ((cur = (int *)vectorGetElement(byteStates, i)) == NULL) {
+			fprintf(stderr, "Cannot get element from vector.\n");
+			return NULL;
+		}
+
+		// Create a new range and set the low bound on the range.
+		if (i == 0) {
+			if ((range = (range_t *)malloc(sizeof(range_t))) == NULL) {
+				fprintf(stderr, "Memory allocation failed.\n");
+				return NULL;
+			}
+
+			range->low = *cur;
+
+			// Add range into vector.
+			if (vectorInsertBack(ranges, (void *)range) != 0)
+				fprintf(stderr, "Problem inserting range into vector.\n");
+
+		}
+		// If reaching the initial value of a new range.
+		else if (*cur != prev + 1) {
+			// Set the high on the previous range.
+			range->high = prev;
+			
+			// Begin a new range.
+			if ((range = (range_t *)malloc(sizeof(range_t))) == NULL) {
+				fprintf(stderr, "Memory allocation failed.\n");
+				return NULL;
+			}
+
+			range->low = *cur;
+			
+			// Add range into vector.
+			if (vectorInsertBack(ranges, (void *)range) != 0)
+				fprintf(stderr, "Problem inserting range into vector.\n");
+		}
+		
+		prev = *cur;
+	}
+
+	// Set the high on the last range.
+	range->high = prev;
+
+	return ranges;
+	
+}
+
 int main(int argc, char **argv) {
 	// Variable declarations.
 	FILE *fp, *ofile;;
-	vector_t *stateVec, *byteStates;
-	char *tag, c, fileStr[500], newRule[2000000], string[40];
+	vector_t *stateVec, *byteStates, *ranges;
+	char *tag, c, fileStr[500], newRule[2000000], string[100];
 	state_t *state;
+	range_t *range;
 	int i;
 	bool byte, done;
 	
@@ -210,14 +279,34 @@ int main(int argc, char **argv) {
 	}
 
 	if (vectorGetSize(byteStates) > 0) {
+		if ((ranges = makeRanges(byteStates)) == NULL)
+			fprintf(stderr, "Unable to build range.\n");
+
 		strcpy(newRule, "      if (");
-		for (i = 0; i < vectorGetSize(byteStates) - 1; i++) {
-			sprintf(string, "yystate == %d || ", *((int *)vectorGetElement(byteStates, i)));
+		for (i = 0; i < vectorGetSize(ranges) - 1; i++) {
+			// Get range from vector.
+			if ((range = (range_t *)vectorGetElement(ranges, i)) == NULL)
+				fprintf(stderr, "Could not get range from vector.\n");
+
+			// Create rule depending on whether or not it is a range.
+			if (range->low == range->high) sprintf(string, "yystate == %d || ", range->low);
+			else sprintf(string, "(yystate >= %d && yystate <= %d) || ", range->low, range->high);
+			
 			strcpy(newRule + strlen(newRule), string);
 		}
 
-		sprintf(string, "yystate == %d) yychar = BYTE;\n", *((int *)vectorGetElement(byteStates, i)));
+		// Get range from vector.
+		if ((range = (range_t *)vectorGetElement(ranges, i)) == NULL)
+			fprintf(stderr, "Could not get range from vector.\n");
+		
+		// Create rule depending on whether or not it is a range.
+		if (range->low == range->high) sprintf(string, "yystate == %d) yychar = BYTE;\n", range->low);
+		else sprintf(string, "(yystate >= %d && yystate <= %d)) yychar = BYTE;\n", range->low, range->high);
+
 		strcpy(newRule + strlen(newRule), string);
+
+		vectorApply(ranges, free);
+		vectorFree(ranges);
 	}
 
 	if ((fp = fopen(argv[2], "r")) == NULL) {
@@ -239,7 +328,7 @@ int main(int argc, char **argv) {
 		}
 		fprintf(ofile, "%s", fileStr);
 	}
-	
+
 	vectorFree(byteStates);
 	vectorApply(stateVec, freeNest);
 	vectorFree(stateVec);
