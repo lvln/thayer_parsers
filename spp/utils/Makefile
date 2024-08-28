@@ -1,11 +1,11 @@
-CFLAGS=-Wall -pedantic -std=c11 -I. -g
-OFILES=vector.o spp.o
+CFLAGS=-Wall -pedantic -std=c11 -I../../xbnf/utils -I.
+OFILES=spp.o
 
 all:  $(OFILES)
-			ar cr ../lib/libutils.a $(OFILES)
+			ar cr ../lib/libspp.a $(OFILES)
 
 %.o:  %.c %.h
 			gcc $(CFLAGS) -c $<
 
 clean:
-			rm -f *.o ../lib/libutils.a
+			rm -f *.o ../lib/libspp.a

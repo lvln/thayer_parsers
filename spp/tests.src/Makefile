@@ -1,5 +1,5 @@
-CFLAGS=-Wall -pedantic -std=c11 -I../utils -L../lib
-LIBS=-lutils
+CFLAGS=-Wall -pedantic -std=c11 -I../../xbnf/utils -L../../xbnf/lib -I../utils -L../lib
+LIBS=-lutils -lspp
 
 all: tv
 
