@@ -51,9 +51,9 @@ static void printBinary(uint16_t num, int bits) {
 	// Varibale declarations.
 	int i;
 
-	for (i = 0; i < bits; i++) {
-		printf("%d", (num )
-	}
+	for (i = 0; i < bits; i++)
+		printf("%d", ((num >> (bits - 1 - i)) & 1));
+
 }
 
 /*
@@ -62,9 +62,6 @@ static void printBinary(uint16_t num, int bits) {
  * Outputs: none
  */
 static void printSppMessage(sppMessage_t *mess) {
-	// Variable declarations.
-	int i;
-	
 	// Check argument.
 	if (mess == NULL) {
 		fprintf(stderr, "Invalid argument.\n");
@@ -72,8 +69,32 @@ static void printSppMessage(sppMessage_t *mess) {
 	}
 
 	printf("Packet version number: ");
-	
-	
+	printBinary(mess->pph.versionNumber, 3);
+	printf("\n");
+
+	printf("Packet type: ");
+	printBinary(mess->pph.pktType, 1);
+	printf("\n");
+
+	printf("Secondary header flag: ");
+	printBinary(mess->pph.secHdrFlag, 1);
+	printf("\n");
+
+	printf("Application process ID: ");
+	printBinary(mess->pph.apid, 11);
+	printf("\n");
+
+	printf("Sequence flags: ");
+	printBinary(mess->pph.seqFlags, 2);
+	printf("\n");
+
+	printf("Packet sequence count or packet name: ");
+	printBinary(mess->pph.pktSeqOrPn, 14);
+	printf("\n");
+
+	printf("Packet data length: ");
+	printBinary(mess->pph.pktDataLen, 16);
+	printf("\n");
 }
 
 /*
@@ -84,16 +105,28 @@ static void printSppMessage(sppMessage_t *mess) {
 static void writeSppMessageToFile(sppMessage_t *mess, FILE *fp) {
 	// Variable declarations.
 	int i;
-	uint8_t buf;
+	uint8_t buf, byteArray[6];
 	
 	// Check arguments.
 	if (mess == NULL || fp == NULL) {
-		fprintf(stderr, "invalid argument(s).\n");
+		fprintf(stderr, "Invalid argument(s).\n");
 		return;
 	}
 
+	// First initialise array of bytes.
+	for (i = 0; i < 6; i++)
+		byteArray[i] = 0;
+	
+	// Write bit fields to array of bytes.
+	byteArray[0] = (mess->pph.versionNumber << 5) | (mess->pph.pktType << 4) | (mess->pph.secHdrFlag << 3) | (mess->pph.apid >> 8);
+	byteArray[1] = mess->pph.apid & 0xFF;
+	byteArray[2] = (mess->pph.seqFlags << 6) | (mess->pph.pktSeqOrPn >> 8);
+	byteArray[3] = mess->pph.pktSeqOrPn & 0xFF;
+	byteArray[4] = (mess->pph.pktDataLen >> 8) & 0xFF;
+	byteArray[5] = mess->pph.pktDataLen & 0xFF;
+	
 	for (i = 0; i < 6; i++) {
-		buf = mess->packetPrimaryHeader[i];
+		buf = byteArray[i];
 		
 		if (fwrite(&buf, sizeof(uint8_t), 1, fp) != 1)
 			fprintf(stderr, "Error writing byte %02x to file.", buf);
@@ -168,12 +201,14 @@ void generateTests(int passSeed, int failSeed) {
 	
 	// First passing test.
 	sprintf(fname, "./pass.%d", passSeed++);
-
+	
 	// Open file.
 	if ((fp = fopen(fname, "wb")) == NULL) {
 		fprintf(stderr, "Failed to open file.\n");
 		exit(EXIT_FAILURE);
 	}
+
+	printSppMessage(&mess);
 
 	// Write test to file.
 	writeSppMessageToFile(&mess, fp);
@@ -182,6 +217,6 @@ void generateTests(int passSeed, int failSeed) {
 	fclose(fp);
 
 	// Generate fialing test cases for all values in version number.
-	for (i = 0; i < 
+	//	for (i = 0; i < 
 	
 }

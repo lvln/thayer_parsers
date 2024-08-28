@@ -1,15 +1,16 @@
 %{
   #define YYDEBUG 1
-  int yylex(void);
+  extern int yylex(void);
   void yyerror(char *s);
 %}
 %token X00
+%token BYTE
 %%
 P : packetPrimaryHeader ;
 
 packetPrimaryHeader : packetVersionNumber packetIdentification packetSequenceControl packetDataLength ;
 
-packetVersionNumber : X00 X00 X00 ;
+packetVersionNumber : X00 ;
 
 packetIdentification : packetType secondaryHeaderFlag applicationProcessId ;
 
@@ -17,14 +18,16 @@ packetType : X00 | '\x01' ;
 
 secondaryHeaderFlag : X00 | '\x01' ;
 
-applicationProcessId : wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit ;
+applicationProcessId : WC WC ;
 
 packetSequenceControl : sequenceFlags packetSequenceCountOrPacketName ;
 
-sequenceFlags : X00 X00 | X00 '\x01' | '\x01' X00 | '\x01' '\x01' ;
+sequenceFlags : X00 | '\x01' | '\x02' | '\x03' ;
 
-packetSequenceCountOrPacketName : wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit ;
+packetSequenceCountOrPacketName : WC WC ;
 
-packetDataLength : wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit ;
+packetDataLength : WC WC ;
 
-wildCardBit : X00 | '\x01' ;
+
+/* Consume byte for wildcard */
+WC : BYTE ;

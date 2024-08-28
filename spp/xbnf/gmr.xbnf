@@ -2,7 +2,7 @@ P : packetPrimaryHeader ;
 
 packetPrimaryHeader : packetVersionNumber packetIdentification packetSequenceControl packetDataLength ;
 
-packetVersionNumber : '\x00' '\x00' '\x00' ;
+packetVersionNumber : '\x00' ;
 
 packetIdentification : packetType secondaryHeaderFlag applicationProcessId ;
 
@@ -10,14 +10,13 @@ packetType : '\x00' | '\x01' ;
 
 secondaryHeaderFlag : '\x00' | '\x01' ;
 
-applicationProcessId : wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit ;
+applicationProcessId : * * ;
 
 packetSequenceControl : sequenceFlags packetSequenceCountOrPacketName ;
 
-sequenceFlags : '\x00' '\x00' | '\x00' '\x01' | '\x01' '\x00' | '\x01' '\x01' ;
+sequenceFlags : '\x00' | '\x01' | '\x02' | '\x03' ;
 
-packetSequenceCountOrPacketName : wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit ;
+packetSequenceCountOrPacketName : * * ;
 
-packetDataLength : wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit wildCardBit ;
+packetDataLength : * * ;
 
-wildCardBit : '\x00' | '\x01' ;
