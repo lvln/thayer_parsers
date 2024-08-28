@@ -1,10 +1,9 @@
 %{
   #define YYDEBUG 1
-  extern int yylex(void);
+  int yylex(void);
   void yyerror(char *s);
 %}
 %token X00
-%token BYTE
 %%
 P : optMessage ;
 optMessage : /* empty */ | optMessage message ;
@@ -92,22 +91,22 @@ spMH13S : ml13S SPCODEM2 ;
 spMH14S : ml14S SPCODEM2 ;
 spMH15S : ml15S SPCODEM2 ;
 spMH16S : ml16S SPCODEM2 ;
-spPL01 : WC ;
-spPL02 : WC WC ;
-spPL03 : WC WC WC ;
-spPL04 : WC WC WC WC ;
-spPL05 : WC WC WC WC WC ;
-spPL06 : WC WC WC WC WC WC ;
-spPL07 : WC WC WC WC WC WC WC ;
-spPL08 : WC WC WC WC WC WC WC WC ;
-spPL09 : WC WC WC WC WC WC WC WC WC ;
-spPL10 : WC WC WC WC WC WC WC WC WC WC ;
-spPL11 : WC WC WC WC WC WC WC WC WC WC WC ;
-spPL12 : WC WC WC WC WC WC WC WC WC WC WC WC ;
-spPL13 : WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-spPL14 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-spPL15 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-spPL16 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
+spPL01 : r__0 ;
+spPL02 : r__0 r__0 ;
+spPL03 : r__0 r__0 r__0 ;
+spPL04 : r__0 r__0 r__0 r__0 ;
+spPL05 : r__0 r__0 r__0 r__0 r__0 ;
+spPL06 : r__0 r__0 r__0 r__0 r__0 r__0 ;
+spPL07 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+spPL08 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+spPL09 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+spPL10 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+spPL11 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+spPL12 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+spPL13 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+spPL14 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+spPL15 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+spPL16 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
 
 /* ATTITUDE (30) */
 attM1 : ml28M1 ATTCODEM1 attPL28 ;
@@ -225,34 +224,34 @@ attMH25S : ml25S ATTCODEM2 ;
 attMH26S : ml26S ATTCODEM2 ;
 attMH27S : ml27S ATTCODEM2 ;
 attMH28S : ml28S ATTCODEM2 ;
-attPL01 : WC ;
-attPL02 : WC WC ;
-attPL03 : WC WC WC ;
-attPL04 : WC WC WC WC ;
-attPL05 : WC WC WC WC WC ;
-attPL06 : WC WC WC WC WC WC ;
-attPL07 : WC WC WC WC WC WC WC ;
-attPL08 : WC WC WC WC WC WC WC WC ;
-attPL09 : WC WC WC WC WC WC WC WC WC ;
-attPL10 : WC WC WC WC WC WC WC WC WC WC ;
-attPL11 : WC WC WC WC WC WC WC WC WC WC WC ;
-attPL12 : WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL13 : WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL14 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL15 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL16 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL17 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL18 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL19 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL20 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL21 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL22 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL23 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL24 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL25 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL26 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL27 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-attPL28 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
+attPL01 : r__0 ;
+attPL02 : r__0 r__0 ;
+attPL03 : r__0 r__0 r__0 ;
+attPL04 : r__0 r__0 r__0 r__0 ;
+attPL05 : r__0 r__0 r__0 r__0 r__0 ;
+attPL06 : r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL07 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL08 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL09 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL10 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL11 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL12 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL13 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL14 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL15 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL16 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL17 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL18 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL19 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL20 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL21 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL22 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL23 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL24 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL25 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL26 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL27 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+attPL28 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
 
 /* GLOBAL_POSITION_INT (33) */
 gpiM1 : ml28M1 GPICODEM1 gpiPL28 ;
@@ -370,34 +369,34 @@ gpiMH25S : ml25S GPICODEM2 ;
 gpiMH26S : ml26S GPICODEM2 ;
 gpiMH27S : ml27S GPICODEM2 ;
 gpiMH28S : ml28S GPICODEM2 ;
-gpiPL01 : WC ;
-gpiPL02 : WC WC ;
-gpiPL03 : WC WC WC ;
-gpiPL04 : WC WC WC WC ;
-gpiPL05 : WC WC WC WC WC ;
-gpiPL06 : WC WC WC WC WC WC ;
-gpiPL07 : WC WC WC WC WC WC WC ;
-gpiPL08 : WC WC WC WC WC WC WC WC ;
-gpiPL09 : WC WC WC WC WC WC WC WC WC ;
-gpiPL10 : WC WC WC WC WC WC WC WC WC WC ;
-gpiPL11 : WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL12 : WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL13 : WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL14 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL15 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL16 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL17 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL18 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL19 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL20 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL21 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL22 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL23 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL24 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL25 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL26 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL27 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
-gpiPL28 : WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC WC ;
+gpiPL01 : r__0 ;
+gpiPL02 : r__0 r__0 ;
+gpiPL03 : r__0 r__0 r__0 ;
+gpiPL04 : r__0 r__0 r__0 r__0 ;
+gpiPL05 : r__0 r__0 r__0 r__0 r__0 ;
+gpiPL06 : r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL07 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL08 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL09 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL10 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL11 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL12 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL13 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL14 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL15 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL16 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL17 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL18 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL19 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL20 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL21 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL22 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL23 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL24 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL25 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL26 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL27 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
+gpiPL28 : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
 
 /* header starter for MAVLink 1 messages */
 ml14M1 : MAV1CODE LEN14 messageHeaderTailM1 ;
@@ -511,12 +510,44 @@ LEN28 : '\x1c' ;
 incompFlagUS : X00 ;  /* incompatibility flag for unsigned message */
 incompFlagS : '\x01' ; /* incompatinility flag for signed message */
 compFlag : X00 ; /* compatibility flag */
-packetSequence : WC ;
-sysID : WC ; /* system ID  */
-compID : WC ; /* component ID */
+packetSequence : r__0 ;
+sysID : r__0 ; /* system ID  */
+compID : r__0 ; /* component ID */
 
-crc : WC WC ;
-sig : WC WC WC WC WC WC WC WC WC WC WC WC WC ;
+crc : r__0 r__0 ;
+sig : r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;
 
-/* Consume byte for wildcard */
-WC : BYTE ;
+/* Range Expansions */
+r__0 : 
+  X00 | '\x01' | '\x02' | '\x03' | '\x04' | '\x05' | '\x06' | '\x07' | 
+  '\x08' | '\x09' | '\x0a' | '\x0b' | '\x0c' | '\x0d' | '\x0e' | '\x0f' | 
+  '\x10' | '\x11' | '\x12' | '\x13' | '\x14' | '\x15' | '\x16' | '\x17' | 
+  '\x18' | '\x19' | '\x1a' | '\x1b' | '\x1c' | '\x1d' | '\x1e' | '\x1f' | 
+  '\x20' | '\x21' | '\x22' | '\x23' | '\x24' | '\x25' | '\x26' | '\x27' | 
+  '\x28' | '\x29' | '\x2a' | '\x2b' | '\x2c' | '\x2d' | '\x2e' | '\x2f' | 
+  '\x30' | '\x31' | '\x32' | '\x33' | '\x34' | '\x35' | '\x36' | '\x37' | 
+  '\x38' | '\x39' | '\x3a' | '\x3b' | '\x3c' | '\x3d' | '\x3e' | '\x3f' | 
+  '\x40' | '\x41' | '\x42' | '\x43' | '\x44' | '\x45' | '\x46' | '\x47' | 
+  '\x48' | '\x49' | '\x4a' | '\x4b' | '\x4c' | '\x4d' | '\x4e' | '\x4f' | 
+  '\x50' | '\x51' | '\x52' | '\x53' | '\x54' | '\x55' | '\x56' | '\x57' | 
+  '\x58' | '\x59' | '\x5a' | '\x5b' | '\x5c' | '\x5d' | '\x5e' | '\x5f' | 
+  '\x60' | '\x61' | '\x62' | '\x63' | '\x64' | '\x65' | '\x66' | '\x67' | 
+  '\x68' | '\x69' | '\x6a' | '\x6b' | '\x6c' | '\x6d' | '\x6e' | '\x6f' | 
+  '\x70' | '\x71' | '\x72' | '\x73' | '\x74' | '\x75' | '\x76' | '\x77' | 
+  '\x78' | '\x79' | '\x7a' | '\x7b' | '\x7c' | '\x7d' | '\x7e' | '\x7f' | 
+  '\x80' | '\x81' | '\x82' | '\x83' | '\x84' | '\x85' | '\x86' | '\x87' | 
+  '\x88' | '\x89' | '\x8a' | '\x8b' | '\x8c' | '\x8d' | '\x8e' | '\x8f' | 
+  '\x90' | '\x91' | '\x92' | '\x93' | '\x94' | '\x95' | '\x96' | '\x97' | 
+  '\x98' | '\x99' | '\x9a' | '\x9b' | '\x9c' | '\x9d' | '\x9e' | '\x9f' | 
+  '\xa0' | '\xa1' | '\xa2' | '\xa3' | '\xa4' | '\xa5' | '\xa6' | '\xa7' | 
+  '\xa8' | '\xa9' | '\xaa' | '\xab' | '\xac' | '\xad' | '\xae' | '\xaf' | 
+  '\xb0' | '\xb1' | '\xb2' | '\xb3' | '\xb4' | '\xb5' | '\xb6' | '\xb7' | 
+  '\xb8' | '\xb9' | '\xba' | '\xbb' | '\xbc' | '\xbd' | '\xbe' | '\xbf' | 
+  '\xc0' | '\xc1' | '\xc2' | '\xc3' | '\xc4' | '\xc5' | '\xc6' | '\xc7' | 
+  '\xc8' | '\xc9' | '\xca' | '\xcb' | '\xcc' | '\xcd' | '\xce' | '\xcf' | 
+  '\xd0' | '\xd1' | '\xd2' | '\xd3' | '\xd4' | '\xd5' | '\xd6' | '\xd7' | 
+  '\xd8' | '\xd9' | '\xda' | '\xdb' | '\xdc' | '\xdd' | '\xde' | '\xdf' | 
+  '\xe0' | '\xe1' | '\xe2' | '\xe3' | '\xe4' | '\xe5' | '\xe6' | '\xe7' | 
+  '\xe8' | '\xe9' | '\xea' | '\xeb' | '\xec' | '\xed' | '\xee' | '\xef' | 
+  '\xf0' | '\xf1' | '\xf2' | '\xf3' | '\xf4' | '\xf5' | '\xf6' | '\xf7' | 
+  '\xf8' | '\xf9' | '\xfa' | '\xfb' | '\xfc' | '\xfd' | '\xfe' | '\xff' ;

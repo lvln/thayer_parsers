@@ -34,24 +34,6 @@ echo [xbnf]
 make ${MODE} clean
 popd
 
-# clean the vector library
-pushd ./xbnf/utils
-echo [utils]
-make ${MODE} clean
-popd
-
-# clean the bit to byte conversion library
-pushd ./xbnf/bittobyte
-echo [bittobyte]
-make ${MODE} clean
-popd
-
-# clean the postprocessor
-pushd ./xbnf/postprocessor
-echo [postprocessor]
-make ${MODE} clean
-popd
-
 # make the abnf pre-processor -- not yet working
 #pushd ./abnf/bison
 #echo [abnf]

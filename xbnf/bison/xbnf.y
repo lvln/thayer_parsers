@@ -59,9 +59,12 @@
   static int Bnonterminals=0;
 
 	
-	static void init(void) {	/* clear the tables */
+	static void init() {	/* clear the tables */
 		int i,j;
 		linenum=1;
+		range[0][RMIN] = 0;					/* r__0 if used is anybyte */
+		range[0][RMAX] = 255;
+		nextrange++;								/* first range is 1 */
 		anybyte=false;							/* anybyte not yet detected */
 		ranging=false;
 		for(i=1; i<MAXENTRY; i++) {	/* ranges */
@@ -89,15 +92,14 @@
 		/* generate the preamble */
 		fprintf(xout,"%%{\n");
 		fprintf(xout,"  #define YYDEBUG 1\n");
-		fprintf(xout,"  extern int yylex(void);\n");
+		fprintf(xout,"  int yylex(void);\n");
 		fprintf(xout,"  void yyerror(char *s);\n");
 		fprintf(xout,"%%}\n");
 		fprintf(xout,"%%token X00\n");
-		fprintf(xout,"%%token BYTE\n");
 		fprintf(xout,"%%%%\n");
 	}
 
-	static void rbegin(void) { /* clear the range indexes */
+	static void rbegin() { /* clear the range indexes */
 		rlow = -1;
 		rhigh = -1;
 		cval = -1;
@@ -106,7 +108,7 @@
 		ranging=true;
 	}
 
-	static void setrlow(void) {
+	static void setrlow() {
 		if(hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid range start\n",linenum);
 			exit(EXIT_FAILURE);
@@ -119,7 +121,7 @@
 		cval=-1;
 	}
 	
-	static void setrhigh(void) {
+	static void setrhigh() {
 		if (hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid range end\n",linenum);
 			exit(EXIT_FAILURE);
@@ -138,7 +140,7 @@
 		}
 
 		if(rlow==0 && rhigh==255) {							/* same as anybyte */
-			fprintf(xout,"WC");											/* WC is anybyte (wildcard) */
+			fprintf(xout,"r__0");											/* r__0 is anybyte */
 			anybyte=true;													/* at least one use */
 		}
 		else if (size==16 && fixedW){
@@ -158,13 +160,13 @@
 	}
 
 
-	static void STenum0(void){
+	static void STenum0(){
 		sixteen_enum[nextSTenum][0]=hval;
 		hval =-1;
 		STeindex=1;
 	}
 	
-	static void setenum0(void) {
+	static void setenum0() {
 		if(hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid enumeration\n",linenum);
 			exit(EXIT_FAILURE);
@@ -183,13 +185,13 @@
 		eindex=1;
 	}
 
-	static void setSTenum(void){
+	static void setSTenum(){
 		sixteen_enum[nextSTenum][STeindex]=hval;
 		hval =-1;
 		STeindex++;
 	}
 
-	static void setnextenum(void) {
+	static void setnextenum() {
 		if(hval<0 && cval<0 && !fixedW) {
 			printf("error: line %d - invalid enumeration\n",linenum);
 			exit(EXIT_FAILURE);
@@ -207,7 +209,7 @@
 		eindex++;																 
 	}
 
-	static void eend(void) {
+	static void eend() {
 		if(eindex==1 && size!= 16) {
 			printf("error: line %d - single entry enumeration invalid\n",linenum);
 			exit(EXIT_FAILURE);
@@ -226,7 +228,7 @@
 		fixedW=false;
 	}
 	
-	static void fixed_width(void){
+	static void fixed_width(){
 		if (size==8){
 			if (decimal==0 && !ranging) fprintf(xout, "X00 ");
 			else{			
@@ -265,7 +267,7 @@
 		decimal=0;
 	}
 	
-	static void hexout(void) {
+	static void hexout() {
 		if(!ranging) {
 			if(hval==0)
 				fprintf(xout,"X00");
@@ -274,16 +276,13 @@
 		}
 	}
 	
-	static void addrules(void) {							/* add rules for ranges and enumerations */
+	static void addrules() {							/* add rules for ranges and enumerations */
 		int i,j,k;
 		
-		i=0;
+		if(anybyte)	i=0;						/* anybyte present, start at 0 */
+		else i=1;									/* otherwise, dont generate range 0 */
 
-		if (anybyte) {
-			fprintf(xout,"\n/* Consume byte for wildcard */\n");
-		  fprintf(xout, "WC : BYTE ;\n");
-		}
-		if(nextrange>0)
+		if(anybyte || nextrange>1)
 			fprintf(xout,"\n/* Range Expansions */\n");
 		for(; i<nextrange; i++) {		/* for each range -- only valid ranges in table*/
 			fprintf(xout,"r__%d : ",i);
@@ -301,7 +300,7 @@
 				fprintf(xout,"\n  ");
 			fprintf(xout,"\'\\x%02x\' ;\n", (uint8_t) j); Brules++; Bterminals++;
 		}
-
+		
 		if(nextenum>0)
 			fprintf(xout,"\n/* Enumeration Expansions */\n");
 		for(i=0; i<nextenum; i++) {		/* for each enumeration */
@@ -423,7 +422,7 @@
 		}	
 	}
 	
-	static void print_counts(void){
+	static void print_counts(){
 		counts = fopen("gmr_counts", "w");
 		fprintf(counts,"XBNF %d %d %d ", Xrules, Xterminals, Xnonterminals);    
 		fprintf(counts,"Bison %d %d %d\n", Brules, Bterminals, Bnonterminals);
@@ -506,7 +505,7 @@ symbolchar : alphanumeric   { fprintf(xout,"%c",(char)$1); }
 					 ;
 
 range : '[' { rbegin(); } elements ']' {Bnonterminals++;} 
-      | '*' { fprintf(xout,"WC"); anybyte=true; Xnonterminals++;Bnonterminals++;}
+      | '*' { fprintf(xout,"r__0"); anybyte=true; Xnonterminals++;Bnonterminals++;}
       ;
 
 elements : ws0 terminal ws0 { setrlow(); } '-' ws0 terminal ws0 { setrhigh(); }
@@ -533,7 +532,6 @@ commentchar : alphanumeric      { fprintf(xout,"%c",(char)$1); }
 uchar: uhex | 'G' | 'H' | 'I' | 'J' 
       | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' 
       | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' ;
-
 lchar: lhex | 'g' | 'h' | 'i' | 'j' 
       | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' 
       | 'u' | 'v' | 'w' | 'x' | 'y' | 'z' ;

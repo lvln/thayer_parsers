@@ -36,27 +36,6 @@ make ${MODE} clean
 make ${MODE}
 popd
 
-# make the vector library
-pushd ./xbnf/utils
-echo [utils]
-make ${MODE} clean
-make ${MODE}
-popd
-
-# make the bit to byte conversion library
-pushd ./xbnf/bittobyte
-echo [bittobyte]
-make ${MODE} clean
-make ${MODE}
-popd
-
-# make the postprocessor
-pushd ./xbnf/postprocessor
-echo [postprocessor]
-make ${MODE} clean
-make ${MODE}
-popd
-
 # make the abnf pre-processor -- not yet working
 #pushd ./abnf/bison
 #echo [abnf]
@@ -68,7 +47,6 @@ popd
 for DIR in gmr0 gmr1 usps bin0 bin1 bin2 command response \
 				 jnum jstring json junicode json.unicode \
 				 mavlink_1_msg mavlink_3_msgs mavlink_10_msgs mavlink_20_msgs mavlink_30_msgs mavlink_40_msgs mavlink \
-				 spp \
 				 J1939 url http
 do
 		if [ -d ./${DIR}/bison ] ; then

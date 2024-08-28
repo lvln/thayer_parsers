@@ -1,10 +1,9 @@
 %{
   #define YYDEBUG 1
-  extern int yylex(void);
+  int yylex(void);
   void yyerror(char *s);
 %}
 %token X00
-%token BYTE
 %%
 P : x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 xa xb xc xd xe xf ;
 

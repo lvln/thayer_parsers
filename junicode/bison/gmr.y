@@ -1,26 +1,25 @@
 %{
   #define YYDEBUG 1
-  extern int yylex(void);
+  int yylex(void);
   void yyerror(char *s);
 %}
 %token X00
-%token BYTE
 %%
 
 P : one | two | three | four ;				/* 1, 2, 3, or 4 byte */                                               
                                                                                                  
-one :    r__0 ;									/* h_ch_range(0x00,0x7F) */                           
+one :    r__1 ;									/* h_ch_range(0x00,0x7F) */                           
                                                                                                  
-two : r__1 r ;					    /* h_ch_range(0xC2,0xDF),h_ch_range(0x80,0xBF) */                                      
+two : r__2 r ;					    /* h_ch_range(0xC2,0xDF),h_ch_range(0x80,0xBF) */                                      
                                                                                                  
-three :  r__2 r r ;        /* h_ch_range(0xE0,0xEF),h_ch_range(0x80,0xBF),h_ch_range(0x80,0xBF) */             
+three :  r__3 r r ;        /* h_ch_range(0xE0,0xEF),h_ch_range(0x80,0xBF),h_ch_range(0x80,0xBF) */             
                                                                                                  
-four : r__3 r r r ;                                                                                 
+four : r__4 r r r ;                                                                                 
                                                                                                  
-r : r__4 ;                  /* h_ch_range(0x80,0xBF) */
+r : r__5 ;                  /* h_ch_range(0x80,0xBF) */
 
 /* Range Expansions */
-r__0 : 
+r__1 : 
   X00 | '\x01' | '\x02' | '\x03' | '\x04' | '\x05' | '\x06' | '\x07' | 
   '\x08' | '\x09' | '\x0a' | '\x0b' | '\x0c' | '\x0d' | '\x0e' | '\x0f' | 
   '\x10' | '\x11' | '\x12' | '\x13' | '\x14' | '\x15' | '\x16' | '\x17' | 
@@ -37,18 +36,18 @@ r__0 :
   '\x68' | '\x69' | '\x6a' | '\x6b' | '\x6c' | '\x6d' | '\x6e' | '\x6f' | 
   '\x70' | '\x71' | '\x72' | '\x73' | '\x74' | '\x75' | '\x76' | '\x77' | 
   '\x78' | '\x79' | '\x7a' | '\x7b' | '\x7c' | '\x7d' | '\x7e' | '\x7f' ;
-r__1 : 
+r__2 : 
   '\xc2' | '\xc3' | '\xc4' | '\xc5' | '\xc6' | '\xc7' | '\xc8' | '\xc9' | 
   '\xca' | '\xcb' | '\xcc' | '\xcd' | '\xce' | '\xcf' | '\xd0' | '\xd1' | 
   '\xd2' | '\xd3' | '\xd4' | '\xd5' | '\xd6' | '\xd7' | '\xd8' | '\xd9' | 
   '\xda' | '\xdb' | '\xdc' | '\xdd' | '\xde' | '\xdf' ;
-r__2 : 
+r__3 : 
   '\xe0' | '\xe1' | '\xe2' | '\xe3' | '\xe4' | '\xe5' | '\xe6' | '\xe7' | 
   '\xe8' | '\xe9' | '\xea' | '\xeb' | '\xec' | '\xed' | '\xee' | '\xef' ;
-r__3 : 
+r__4 : 
   '\xf0' | '\xf1' | '\xf2' | '\xf3' | '\xf4' | '\xf5' | '\xf6' | '\xf7' | 
   '\xf8' | '\xf9' | '\xfa' | '\xfb' | '\xfc' | '\xfd' | '\xfe' | '\xff' ;
-r__4 : 
+r__5 : 
   '\x80' | '\x81' | '\x82' | '\x83' | '\x84' | '\x85' | '\x86' | '\x87' | 
   '\x88' | '\x89' | '\x8a' | '\x8b' | '\x8c' | '\x8d' | '\x8e' | '\x8f' | 
   '\x90' | '\x91' | '\x92' | '\x93' | '\x94' | '\x95' | '\x96' | '\x97' | 
