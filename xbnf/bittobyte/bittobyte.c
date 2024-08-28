@@ -35,6 +35,7 @@ int bitToByte(FILE *ifile, FILE *ofile, int *fieldSizes, int numFields) {
 		numBytes = (numBits - 1)/8;
 		
 		for (j = 0; j < numBits; j++) {
+			// Read another byte each time 8 bits have been extracted.
 			if (bitCnt == 0)
 				if (fread(&ibyte, sizeof(uint8_t), 1, ifile) != 1)
 					fprintf(stderr, "Byte not read.\n");
@@ -47,10 +48,11 @@ int bitToByte(FILE *ifile, FILE *ofile, int *fieldSizes, int numFields) {
 			
 			// Shift the bit into the output byte.
 			obyte |= bit << (numBits - 1 - j - 8*numBytes);
-			
+
+			// Once 8 bts have been extracted, write byte to file.
 			if (bitCnt == 7) {
 				bitCnt = 0;
-
+				
 				if (fwrite(&obyte, sizeof(uint8_t), 1, ofile) != 1)
 					fprintf(stderr, "Problem writing byte %02x to file.\n", obyte);
 				
@@ -59,10 +61,17 @@ int bitToByte(FILE *ifile, FILE *ofile, int *fieldSizes, int numFields) {
 			}
 			else bitCnt++;
 		}
+
+		// Write to file is the relevant number of bits have been extracted and have not yet reached the en fo the input byte.
 		if (bitCnt != 0)
 			if (fwrite(&obyte, sizeof(uint8_t), 1, ofile) != 1)
 				fprintf(stderr, "Problem writing byte %02x to file.\n", obyte);
 	}
+
+	// Write the remainder of the bytes to file.
+	while (fread(&ibyte, sizeof(uint8_t), 1, ifile) == 1)
+		if (fwrite(&ibyte, sizeof(uint8_t), 1, ofile) != 1)
+			fprintf(stderr, "Problem writing byte %02x to file.\n", ibyte);
 	
 	return 0;
 }
