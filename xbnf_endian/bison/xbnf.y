@@ -1091,71 +1091,94 @@
 		 
 %%
 
-bnf: { init(); } rules ws0 { addrules(); print_counts();}
+bnf: { init(); } rules ws0 { addrules(); print_counts(); }
  
-rules: rule | rules rule ;
+rules: rule
+		 | rules rule
+		 ;
 
-rule : ws0 nonterminal ws0 ':' { fprintf(xout,":"); } rhs ';' { fprintf(xout,";"); } | ws0 comment ;
+rule: ws0 nonterminal ws0 ':' { fprintf(xout,":"); } rhs ';' { fprintf(xout,";"); }
+		| ws0 comment
+		;
 
-rhs : terms ws1 {Xrules++; Brules++; } | rhs '|' { fprintf(xout,"|" ); } terms ws1 {Xrules++; Brules++;};
+rhs: terms ws1
+   | rhs '|' { fprintf(xout,"|" ); } terms ws1
+	 ;
 
-terms : /* empty */ | terms ws1 term ;
+terms: /* empty */
+		 | terms ws1 term
+		 ;
 
-term : terminal | nonterminal | range | comment | string ;
+term: terminal
+		| nonterminal
+	  | range
+	  | comment
+		| string
+		;
 
-string : '"' letters '"' {c = 0; fprintf(xout,"s__%d", nstr); nstr++; Xnonterminals++; Bnonterminals++;};
+string: '"' letters '"' { c = 0; fprintf(xout,"s__%d", nstr); nstr++; }
+			;
 
-letters : c | letters c ;
+letters: c
+			 | letters c
+			 ;
 
-c : alphanumeric   { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}  
-  | punct          { cval = $1; strings[nstr][c] = cval; c++; cval = -1;}
-  | ws             { cval = $1; strings[nstr][c] = cval; c++; cval = -1;} 
+c : alphanumeric   { cval = $1; strings[nstr][c] = cval; c++; cval = -1; }  
+  | punct          { cval = $1; strings[nstr][c] = cval; c++; cval = -1; }
+  | ws             { cval = $1; strings[nstr][c] = cval; c++; cval = -1; } 
   | '\\' escchar   { cval = $2; strings[nstr][c] = '\\'; strings[nstr][c+1] = cval; c=c+2; cval=-1; }
   ;
 
-ws: '\t' '\n' '\r' ;
+ws: '\t' '\n' '\r'
+	;
 
-terminal:	terminalfw {Xterminals++; Bterminals++;}
-				| terminalnofw {Xterminals++; Bterminals++;}
+terminal:	terminalfw
+				| terminalnofw
 				;
 
-terminalfw: '\'' termvalfw '\'' ;
-
-terminalnofw: '\'' termvalnofw '\'' ;
-
-fwirange: endianness '(' sign fullnumber ws0 ',' ws0 sign fullnumber ws0 ',' ws0 type size ')' {setfwrlow(); setfwrhigh();} ;
-
-fwi : endianness '(' sign fullnumber ws0 ',' ws0 type size ')' {fixed_width(); fixedW=true;} ;
-
-type: 'u' 'i' 'n' 't'    {unsign=true;}
-    | 'i' 'n' 't'        {unsign=false;}
-    ;
-
-size: '1' '6' {size=16;}
-    | '3' '2' {size=32;}
-    | '6' '4' {size=64;}
-    ;
-
-sign: '-'       {neg=true;}
-    |/*empty */ {neg=false;};
-
-fullnumber : number {decimalstr[nnum][i] = '\0'; i = 0; nnum++; } ;
-
-number: digit        {if (neg) decimalstr[nnum][i++] = '-'; decimalstr[nnum][i++] = $1;}
-			| number digit {decimalstr[nnum][i++] = $2; check_index();}
-      ;
-
-endianness: le {le=true;}
-					| be {be=true;}
+terminalfw: '\'' termvalfw '\''
 					;
 
-le: 'l' 'i' 't' 't' 'l' 'e' '_' 'e' 'n' 'd' 'i' 'a' 'n' ;
+terminalnofw: '\'' termvalnofw '\''
+						;
 
-be: 'b' 'i' 'g' '_' 'e' 'n' 'd' 'i' 'a' 'n' ;
+fwirange: be '(' sign fullnumber ws0 ',' ws0 sign fullnumber ws0 ',' ws0 type size ')' { setfwrlow(); setfwrhigh(); }
+				;
 
-termvalfw : fwi | fwirange ;
+fwi: type size '(' sign fullnumber ')' {le = true; fixed_width(); fixedW=true;}
+	 | type size be '(' sign fullnumber ')' {be = true; fixed_width(); fixedW=true;}
+	 ;
 
-termvalnofw : charval | hexval ;
+type: 'u' 'i' 'n' 't'    { unsign = true; }
+    | 'i' 'n' 't'        { unsign = false; }
+    ;
+
+size: '1' '6' { size = 16; }
+    | '3' '2' { size = 32; }
+    | '6' '4' { size = 64; }
+    ;
+
+sign: '-'         { neg = true; }
+    | /*empty */  { neg = false; }
+		;
+
+fullnumber: number { decimalstr[nnum][i] = '\0'; i = 0; nnum++; }
+				  ;
+
+number: digit        { if (neg) decimalstr[nnum][i++] = '-'; decimalstr[nnum][i++] = $1; }
+			| number digit { decimalstr[nnum][i++] = $2; check_index(); }
+      ;
+
+be: 'b' 'e'
+	;
+
+termvalfw: fwi
+				 | fwirange
+				 ;
+
+termvalnofw: charval
+					 | hexval
+					 ;
 
 charval: alphanumeric       { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
        | punct              { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
@@ -1163,30 +1186,38 @@ charval: alphanumeric       { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(cha
        | '\\' escchar       { cval = $2; if(!ranging) fprintf(xout,"\'\\%c\'",(char)$2); }
 			 ;
 
-alphanumeric: uchar | lchar | digit ;
+alphanumeric: uchar
+						| lchar
+						| digit
+						;
 
-hexval: '\\' 'x' { hval=0; } hexdigit { hval=16*hval; } hexdigit { hexout(); } ;
+hexval: '\\' 'x' { hval = 0; } hexdigit { hval = 16*hval; } hexdigit { hexout(); }
+      ;
 
 hexdigit: digit             { hval += $1 - '0'; }
         | uhex              { hval += $1 - 'A' + 10; }
         | lhex              { hval += $1 - 'a' + 10; }
         ;
 
-nonterminal : symbolchars {Xnonterminals++; Bnonterminals++;};
-symbolchars : symbolchar | symbolchars symbolchar ;
+nonterminal: symbolchars
+           ;
 
-symbolchar : alphanumeric   { fprintf(xout,"%c",(char)$1); }
-           | '_'            { fprintf(xout,"_"); }
-					 | '.'            { fprintf(xout,"."); }
+symbolchars: symbolchar
+					 | symbolchars symbolchar
 					 ;
 
-range : '[' { rbegin(); } elements ']' {Bnonterminals++;} 
-      | '*' { fprintf(xout,"r__0"); anybyte=true; Xnonterminals++;Bnonterminals++;}
-      ;
+symbolchar: alphanumeric   { fprintf(xout,"%c",(char)$1); }
+          | '_'            { fprintf(xout,"_"); }
+					| '.'            { fprintf(xout,"."); }
+					;
 
-elements : ws0 terminalnofw ws0 { setrlow(); } '-' ws0 terminalnofw ws0 { setrhigh(); }
-         |  enumeration { eend(); }
-         ;
+range: '[' { rbegin(); } elements ']'
+     | '*' { fprintf(xout,"r__0"); anybyte = true; }
+     ;
+
+elements: ws0 terminalnofw ws0 { setrlow(); } '-' ws0 terminalnofw ws0 { setrhigh(); }
+        | enumeration { eend(); }
+        ;
 
 enumeration : ws0 terminalnofw ws0 { setenum0(); } | enumeration ',' ws0 terminal ws0 { setnextenum(); } ;
 

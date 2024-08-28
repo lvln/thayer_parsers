@@ -22,25 +22,31 @@ if [ $# == 1 ] && [ $1 == "-s" ]; then
 		unset MODE
 fi
 
-# make the ppxl library
+# clean the ppxl library
 pushd ./ppxml
 echo [ppxml]
 make ${MODE} clean
 popd
 
-# make the xbnf pre-processor
+# clean the xbnf pre-processor
 pushd ./xbnf/bison
 echo [xbnf]
 make ${MODE} clean
 popd
 
-# make the vector library
+# clean the vector library
 pushd ./xbnf/utils
 echo [utils]
 make ${MODE} clean
 popd
 
-# make the postprocessor
+# clean the bit to byte conversion library
+pushd ./xbnf/bittobyte
+echo [bittobyte]
+make ${MODE} clean
+popd
+
+# clean the postprocessor
 pushd ./xbnf/postprocessor
 echo [postprocessor]
 make ${MODE} clean
@@ -57,6 +63,7 @@ popd
 for DIR in gmr0 gmr1 usps bin0 bin1 bin2 command response \
 				 jnum jstring json junicode json.unicode \
 				 mavlink_1_msg mavlink_3_msgs mavlink_10_msgs mavlink_20_msgs mavlink_30_msgs mavlink_40_msgs mavlink \
+				 spp \
 				 J1939 url http
 do
 		if [ -d ./${DIR}/bison ] ; then

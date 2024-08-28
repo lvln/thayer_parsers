@@ -2,9 +2,10 @@
 # THE STANDARD BISON MAKEFILE -- DO NOT CHANGE OR MOVE THIS FILE
 # This file is used to clean, make, or run all Bison parsers
 #
-CFLAGS=-Wall -pedantic -std=c11 -I.
+CFLAGS=-Wall -pedantic -std=c11 -I../../xbnf/bittobyte -I.
 OFILES=gmr.tab.o lexer.o gmr_tb.o
 PPDIR=../../xbnf/postprocessor
+LIBS=-L../../xbnf/lib -lbittobyte
 GCC=gcc
 
 all:	gmr
@@ -20,7 +21,7 @@ gmr.tab.c:	gmr.y
 
 # build parser from .o files
 gmr:	$(OFILES)
-			$(GCC) $(CFLAGS) $(OFILES) -o gmr
+			$(GCC) $(CFLAGS) $(OFILES) $(LIBS) -o gmr
 
 run:	gmr
 			gmrtest.sh

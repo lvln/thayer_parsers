@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 /*
  * Converts a binary file containing bit fields to a binary file containing byte fields.
@@ -17,7 +18,7 @@
  */
 int bitToByte(FILE *ifile, FILE *ofile, int *fieldSizes, int numFields) {
 	// Variable declarations.
-	int numBits, i, j, bitCnt, bit;
+	int numBits, numBytes, i, j, bitCnt, bit;
 	uint8_t ibyte, obyte;
 	
 	// Check arguments.
@@ -31,12 +32,13 @@ int bitToByte(FILE *ifile, FILE *ofile, int *fieldSizes, int numFields) {
 	for (i = 0; i < numFields; i++) {
 		numBits = fieldSizes[i];
 		obyte = 0;
+		numBytes = (numBits - 1)/8;
 		
 		for (j = 0; j < numBits; j++) {
 			if (bitCnt == 0)
-				if (fread(&ibyte, sizeof(uint8_t), i, ifile) != 1)
+				if (fread(&ibyte, sizeof(uint8_t), 1, ifile) != 1)
 					fprintf(stderr, "Byte not read.\n");
-
+			
 			// Extract most significant bit.
 			bit = (ibyte >> 7) & 1;
 
@@ -44,17 +46,23 @@ int bitToByte(FILE *ifile, FILE *ofile, int *fieldSizes, int numFields) {
 			ibyte <<= 1;
 			
 			// Shift the bit into the output byte.
-			obyte |= bit << (numBits - 1 - j);
+			obyte |= bit << (numBits - 1 - j - 8*numBytes);
 			
-			if (bitCnt == 7) bitCnt = 0;
+			if (bitCnt == 7) {
+				bitCnt = 0;
+
+				if (fwrite(&obyte, sizeof(uint8_t), 1, ofile) != 1)
+					fprintf(stderr, "Problem writing byte %02x to file.\n", obyte);
+				
+				obyte = 0;
+				numBytes--;
+			}
 			else bitCnt++;
 		}
-		
+		if (bitCnt != 0)
+			if (fwrite(&obyte, sizeof(uint8_t), 1, ofile) != 1)
+				fprintf(stderr, "Problem writing byte %02x to file.\n", obyte);
 	}
-	
-	// Close files.
-	fclose(ifile);
-	fclose(ofile);
 	
 	return 0;
 }
