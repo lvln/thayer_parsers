@@ -15,9 +15,9 @@ __"\<string\>"__ -- A string value.
 
 __\*__ -- Signifying any byte '\x00' to '\xFF'.
 
-__'little_endian(<integer>, <type>)'__ -- Signifying an integer in little-endian representation where <type> is uint16, uint32, uint64, int16, int32 or int64.
+__'<type>(<integer>)'__ -- Signifying an integer in network byte order (big-endian representation) where <type> is uint8, uint16, uint32, uint64, int8, int16, int32 or int64.
 
-__'big_endian(<integer>, <type>)'__ -- Signifying an integer in big-endian representation where <type> is uint16, uint32, uint64, int16, int32 or int64.
+__'little_endian(<integer>, <type>)'__ -- Signifying an integer in little-endian representation where <type> is uint16, uint32, uint64, int16, int32 or int64.
 
 ## Usage: xbnf \<infile\> [ -h -d -o \<outfile\>]
 
@@ -42,6 +42,14 @@ __P : ['\x1f', '\x00', 'a', ']', '\0xfe'] ;__ -- accepts the hexadecimal
 __P : ['a' - 'f'] * '\x00' ;__ -- accepts a sequence: any value in the range
   _a_ and _f_, followed by anybyte (_x00_ to _xff_), followed by a
   zero byte (_x00_).
+  
+__P : 'uint32(500)' ;__ -- accepts the 32 bit unsigned integer 500 in network byte order (big-endian representation) - _x00_ _x00_ _x01_ _xf4_.
 
-Note that whitespace is allowed in any range or enumeration.
+__P : 'little_endian(500, int64)' ;__ -- accepts the 64 bit signed integer 500 in little-endian representation - _xf4_ _x01_ _x00_ _x00_ _x00_ _x00_ _x00_ _x00_.
+  
+__P : ['uint16(0)' - 'uint16(10)'] ;__ -- accepts any unsigned 16 bit integer with values between 0 and 10 in network byte order (big-endian representation).
+
+__P : ['little_endian(-5, int32)' - 'little_endian(10, int32)'] ;__ -- accepts any signed 32 bit integer with values between -5 and 10 in little-endian representation.
+
+Note that whitespace is allowed in any range or enumeration amd fixed width ingeters are not accepted in enumerations.
 
