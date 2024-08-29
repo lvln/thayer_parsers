@@ -1,1 +1,1 @@
-P: 'little_endian(18446744073709551615, uint64)' ;
+P: 'little_endian(65535, uint16)' ;

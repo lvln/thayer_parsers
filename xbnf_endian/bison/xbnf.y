@@ -569,6 +569,30 @@
 	
 	static void fixed_width(void){
 		char *endptr;
+		if (size == 8) {
+			if (unsign && neg) {
+			  printf("error: invalid entry for uint8\n");   
+	 		  exit(EXIT_FAILURE);
+		  }
+			uint8_t bytes[1] = {0};
+			if (!unsign) {
+				decimalsig = strtoll(decimalstr[0], &endptr, 10);
+				if (*endptr != '\0' || (decimalsig < INT8_MIN || decimalsig > INT8_MAX) ) {
+				  printf("error: invalid entry for int8\n");
+	 			  exit(EXIT_FAILURE);
+ 			  }
+        convert_int(bytes, decimalsig, 1);
+      }
+      if (unsign) {
+				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
+ 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT8_MAX)){   
+			 	  printf("error: invalid entry for uint8\n");
+		 		  exit(EXIT_FAILURE);          
+	 		  }
+        convert_uint(bytes, decimalunsig, 1);
+      }
+      write_int(bytes);
+		}
 		if (size == 16) {
 			if (unsign && neg) {
 			  printf("error: invalid entry for uint16\n");                              
@@ -589,7 +613,7 @@
 			 	  printf("error: invalid entry for uint16\n");
 		 		  exit(EXIT_FAILURE);          
 	 		  }
-        convert_uint(bytes, decimalsig, 2);
+        convert_uint(bytes, decimalunsig, 2);
       }
       write_int(bytes);
 		}
@@ -1132,31 +1156,28 @@ c : alphanumeric   { cval = $1; strings[nstr][c] = cval; c++; cval = -1; }
 ws: '\t' '\n' '\r'
 	;
 
-terminal:	terminalfw
-				| terminalnofw
+terminal: '\'' termval '\''
 				;
 
-terminalfw: '\'' termvalfw '\''
-					;
-
-terminalnofw: '\'' termvalnofw '\''
-						;
-
-fwirange: be '(' sign fullnumber ws0 ',' ws0 sign fullnumber ws0 ',' ws0 type size ')' { setfwrlow(); setfwrhigh(); }
-				;
-
-fwi: type size '(' sign fullnumber ')' {le = true; fixed_width(); fixedW=true;}
-	 | type size be '(' sign fullnumber ')' {be = true; fixed_width(); fixedW=true;}
+fwi: type sizebe '(' sign fullnumber ')'         {be = true; fixed_width(); fixedW=true;}
+| le '(' sign fullnumber ws0 ',' ws0 type sizele ')'  {le = true; fixed_width(); fixedW=true;}
 	 ;
 
 type: 'u' 'i' 'n' 't'    { unsign = true; }
     | 'i' 'n' 't'        { unsign = false; }
     ;
 
-size: '1' '6' { size = 16; }
-    | '3' '2' { size = 32; }
-    | '6' '4' { size = 64; }
-    ;
+
+sizele: '1' '6' { size = 16; }
+      | '3' '2' { size = 32; }
+    	| '6' '4' { size = 64; }
+      ;
+
+sizebe: '8'     { size = 8; }
+			| '1' '6' { size = 16; }
+      | '3' '2' { size = 32; }
+    	| '6' '4' { size = 64; }
+      ;
 
 sign: '-'         { neg = true; }
     | /*empty */  { neg = false; }
@@ -1169,21 +1190,18 @@ number: digit        { if (neg) decimalstr[nnum][i++] = '-'; decimalstr[nnum][i+
 			| number digit { decimalstr[nnum][i++] = $2; check_index(); }
       ;
 
-be: 'b' 'e'
+le: 'l' 'i' 't' 't' 'l' 'e' '_' 'e' 'n' 'd' 'i' 'a' 'n'
 	;
 
-termvalfw: fwi
-				 | fwirange
-				 ;
+termval: charval
+			 | hexval
+			 | fwi
+			 ;
 
-termvalnofw: charval
-					 | hexval
-					 ;
-
-charval: alphanumeric       { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
-       | punct              { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
-       | '"'                { cval = $1; if(!ranging) fprintf(xout,"\'%c\'",(char)$1); }
-       | '\\' escchar       { cval = $2; if(!ranging) fprintf(xout,"\'\\%c\'",(char)$2); }
+charval: alphanumeric       { cval = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
+       | punct              { cval = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
+       | '"'                { cval = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
+       | '\\' escchar       { cval = $2; if (!ranging) fprintf(xout, "\'\\%c\'", (char)$2); }
 			 ;
 
 alphanumeric: uchar
@@ -1206,63 +1224,81 @@ symbolchars: symbolchar
 					 | symbolchars symbolchar
 					 ;
 
-symbolchar: alphanumeric   { fprintf(xout,"%c",(char)$1); }
-          | '_'            { fprintf(xout,"_"); }
-					| '.'            { fprintf(xout,"."); }
+symbolchar: alphanumeric   { fprintf(xout, "%c", (char)$1); }
+          | '_'            { fprintf(xout, "_"); }
+					| '.'            { fprintf(xout, "."); }
 					;
 
 range: '[' { rbegin(); } elements ']'
      | '*' { fprintf(xout,"r__0"); anybyte = true; }
      ;
 
-elements: ws0 terminalnofw ws0 { setrlow(); } '-' ws0 terminalnofw ws0 { setrhigh(); }
+elements: ws0 terminal ws0 { setrlow(); } '-' ws0 terminal ws0 { setrhigh(); }
         | enumeration { eend(); }
         ;
 
-enumeration : ws0 terminalnofw ws0 { setenum0(); } | enumeration ',' ws0 terminal ws0 { setnextenum(); } ;
+enumeration: ws0 terminal ws0 { setenum0(); } | enumeration ',' ws0 terminal ws0 { setnextenum(); }
+           ;
 
 /* echo comments */
 comment: '/' '*' { fprintf(xout,"/*"); } commentchars '*' '/' { fprintf(xout,"*/"); }
        ;
-commentchars : commentchar | commentchars commentchar ;
-commentchar : alphanumeric      { fprintf(xout,"%c",(char)$1); }
-            | '*' { fprintf(xout,"%c",(char)$1); }
-            | '(' { fprintf(xout,"%c",(char)$1); }
-            | ')' { fprintf(xout,"%c",(char)$1); }
-            | '-' { fprintf(xout,"%c",(char)$1); }
-            | ',' { fprintf(xout,"%c",(char)$1); } 
-            | '\''{ fprintf(xout,"%c",(char)$1); }
-            | '_' { fprintf(xout,"%c",(char)$1); } 
+
+commentchars: commentchar
+						| commentchars commentchar
+						;
+
+commentchar : alphanumeric      { fprintf(xout, "%c", (char)$1); }
+            | '*'               { fprintf(xout, "%c", (char)$1); }
+            | '('               { fprintf(xout, "%c", (char)$1); }
+            | ')'               { fprintf(xout, "%c", (char)$1); }
+            | '-'               { fprintf(xout, "%c", (char)$1); }
+            | ','               { fprintf(xout, "%c", (char)$1); } 
+            | '\''              { fprintf(xout, "%c", (char)$1); }
+            | '_'               { fprintf(xout, "%c", (char)$1); } 
             | wschar /* already output */
             ;
 
 uchar: uhex | 'G' | 'H' | 'I' | 'J' 
       | 'K' | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' 
-      | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z' ;
+      | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z'
+			;
 
 lchar: lhex | 'g' | 'h' | 'i' | 'j' 
       | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' 
-      | 'u' | 'v' | 'w' | 'x' | 'y' | 'z' ;
+      | 'u' | 'v' | 'w' | 'x' | 'y' | 'z'
+			;
 
-uhex: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;
-lhex: 'a'| 'b' | 'c' | 'd' | 'e' | 'f' ;
+uhex: 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
+		;
+
+lhex: 'a'| 'b' | 'c' | 'd' | 'e' | 'f'
+	  ;
 
 punct:  ' ' | '!' | '#' | '$' | '%' | '&' | '\'' | '(' | ')' | '*' | '+' 
-      | ',' | '-' | '.' | '/' | ':' | ';' | '<' | '=' | '>' | '?' | '@'
-      | '[' | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~' ;
+     | ',' | '-' | '.' | '/' | ':' | ';' | '<' | '=' | '>' | '?' | '@'
+     | '[' | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~'
+     ;
 
-escchar: 'b' | 'f' | 'n' | 'r' | 't' | '\"' | '\\' | '/' | 'v' | '?' | 'a' | 'e';
+escchar: 'b' | 'f' | 'n' | 'r' | 't' | '\"' | '\\' | '/' | 'v' | '?' | 'a' | 'e'
+			 ;
 
-digit: '0' | onenine ;
-onenine: '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9' ;
+digit: '0' | onenine
+		 ;
+
+onenine: '1' | '2' | '3' | '4' | '5'| '6' | '7' | '8' | '9'
+			 ;
 
 
-ws0: /* empty */ | ws1 ;
-ws1: wschar | ws1 wschar ;
+ws0: /* empty */ | ws1
+	 ;
+
+ws1: wschar | ws1 wschar
+	 ;
 
 /* echo whitespace */
-wschar :  ' '   { fprintf(xout," "); } 
-       | '\n'   { linenum++; fprintf(xout,"\n"); } 
-       | '\t'   { fprintf(xout,"\t"); } 
-       | '\r'   { fprintf(xout,"\r"); } 
-			 ;
+wschar:  ' '   { fprintf(xout," "); } 
+      | '\n'   { linenum++; fprintf(xout,"\n"); } 
+      | '\t'   { fprintf(xout,"\t"); } 
+      | '\r'   { fprintf(xout,"\r"); } 
+			;
