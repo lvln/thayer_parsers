@@ -29,12 +29,14 @@
   static int nextir16le = 0;                      /* number of 2 byte signed little endian ranges */
   static int nextir32le = 0;                      /* number of 4 byte signed little endian ranges */
   static int nextir64le = 0;                      /* number of 8 byte signed little endian ranges */
+  static int nextir8be = 0;                       /* number of 1 byte signed big endian ranges */
   static int nextir16be = 0;                      /* number of 2 byte signed big endian ranges */
   static int nextir32be = 0;                      /* number of 4 byte signed big endian ranges */
   static int nextir64be = 0;                      /* number of 8 byte signed big endian ranges */
   static int nextuir16le = 0;                     /* number of 2 byte unsigned little endian ranges */
   static int nextuir32le = 0;                     /* number of 4 byte unsigned little endian ranges */
   static int nextuir64le = 0;                     /* number of 8 byte unsigned little endian ranges */
+  static int nextuir8be = 0;                      /* number of 1 byte unsigned big endian ranges */
   static int nextuir16be = 0;                     /* number of 2 byte unsigned big endian ranges */
   static int nextuir32be = 0;                     /* number of 4 byte unsigned big endian ranges */
   static int nextuir64be = 0;                     /* number of 8 byte unsigned big endian ranges */
@@ -46,18 +48,21 @@
   static int64_t int16lerange[MAXENTRY][2];			  /* the ranges for signed 2 byte little endian */
   static int64_t int32lerange[MAXENTRY][2];			  /* the ranges for signed 4 byte little endian */
   static int64_t int64lerange[MAXENTRY][2];			  /* the ranges for signed 8 byte little endian */
+  static int64_t int8berange[MAXENTRY][2];			  /* the ranges for signed 1 byte big endian */
   static int64_t int16berange[MAXENTRY][2];			  /* the ranges for signed 2 byte big endian */
   static int64_t int32berange[MAXENTRY][2];			  /* the ranges for signed 4 byte big endian */
   static int64_t int64berange[MAXENTRY][2];			  /* the ranges for signed 8 byte big endian */
   static uint64_t uint16lerange[MAXENTRY][2];			/* the ranges for unsigned 2 byte little endian */
   static uint64_t uint32lerange[MAXENTRY][2];			/* the ranges for unsigned 4 byte little endian */
   static uint64_t uint64lerange[MAXENTRY][2];			/* the ranges for unsigned 8 byte little endian */
+  static uint64_t uint8berange[MAXENTRY][2];			/* the ranges for unsigned 1 byte big endian */
   static uint64_t uint16berange[MAXENTRY][2];			/* the ranges for unsigned 2 byte big endian */
   static uint64_t uint32berange[MAXENTRY][2];			/* the ranges for unsigned 4 byte big endian */
   static uint64_t uint64berange[MAXENTRY][2];			/* the ranges for unsigned 8 byte big endian */
 	static int enumeration[MAXENTRY][ENUMMAX];      /* the enumerations */
 	static bool anybyte = false;		                /* true if anybytes is used in the grammar */
 	static bool ranging = false;		                /* true if insize a range */
+  static bool fixedwidth = false;                 /* true if current ranging a fixed width integer */
 	static int strings[MAXENTRY][CHARMAX];          /* any strings that are found within rules */
 	static int c = 0;                               /* variable used to hold character value for a string */
 	static int nstr = 0;                            /* number of strings */
@@ -67,25 +72,19 @@
   static int i = 0;                               /* index variable for number string */
   static int64_t decimalsig = 0;
 	static uint64_t decimalunsig = 0;     
-	static int size = 16;
+	static int size = 8;
 	static bool neg = false;
 	static bool unsign = true; /*default variable for fwi, intially unsigned*/
-	static bool fixedW = false;
   static bool le = false;
   static bool be = false;
-
-	static FILE* counts;
-	static int Xrules = 0;
-	static int Xterminals = 0;
-	static int Xnonterminals = 0;
-
-	static int Brules = 0;
-	static int Bterminals = 0;
-  static int Bnonterminals = 0;
+  static int lowsize = 8;
+  static bool lowunsign = true;
+  static int lowle = false;
+  static int lowbe = false;
 
 	/* clear the tables */
 	static void init(void) {
-		int i,j;
+		int i ,j;
 		linenum = 1;
 		range[0][RMIN] = 0;					          /* r__0 if used is anybyte */
 		range[0][RMAX] = 255;
@@ -95,10 +94,6 @@
 		for (i = 1; i < MAXENTRY; i++) {	    /* ranges */
 			range[i][RMIN] = -1;
 			range[i][RMAX] = -1 ;
-		}
-    for (i = 1; i < MAXENTRY; i++) {	    /* 2 byte little endian ranges */
-			int16lerange[i][RMIN] = -1;
-			int16lerange[i][RMAX] = -1 ;
 		}
 		for(i = 0; i < MAXENTRY; i++) {	      /* enumerations */
 			for(j = 0; j < ENUMMAX; j++) 
@@ -129,50 +124,6 @@
 		ranging=true;
 	}
 
-	static void setrlow(void) {
-		if (hval < 0 && cval < 0) {
-			printf("error: line %d - invalid range start\n", linenum);
-			exit(EXIT_FAILURE);
-		}
-		if (hval >= 0) rlow=hval;
-  		else rlow = cval;
-		
-		hval = -1;										/* reset for next value */
-		cval = -1;
-	}
-	
-	static void setrhigh(void) {
-		if (hval < 0 && cval < 0) {
-			printf("error: line %d - invalid range end\n", linenum);
-			exit(EXIT_FAILURE);
-		}
-		if(hval >= 0)
-			rhigh = hval;
-		else
-			rhigh = cval;
-
-		hval = -1;										/* reset for next value */
-		cval = -1;
-
-		if (rhigh <= rlow) {          /* legal range */
-			printf("error: line %d - invalid range [%d-%d] -- low to high required\n", linenum, rlow, rhigh);
-			exit(EXIT_FAILURE);
-		}
-
-		if (rlow == 0 && rhigh == 255) {				/* same as anybyte */
-			fprintf(xout, "r__0");								/* r__0 is anybyte */
-			anybyte = true;												/* at least one use */
-		}
-		else {
-			range[nextrange][RMIN] = rlow;				/* store it */
-			range[nextrange][RMAX] = rhigh;
-			fprintf(xout, "r__%d", nextrange);    /* generate a symbol */
-			nextrange++;
-		}
-		ranging = false;
-	}
-
-
 	static void setfwrlow(void) {
 		char *endptr;
 		if (size == 16 && le) {
@@ -191,7 +142,7 @@
       if (unsign) {
 				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
  			  if (*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX)) {   
-			 	  printf("error: invalid range start\n");
+						printf("error: line %d - invalid range start\n", linenum);
 		 		  exit(EXIT_FAILURE);          
 	 		  }
         uint16lerange[nextuir16le][0] = decimalunsig;
@@ -213,7 +164,7 @@
       if (unsign) {
 				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
  			  if (*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT32_MAX)) {
-			 	  printf("error: invalid range start\n");
+						printf("error: line %d - invalid range start\n", linenum);
 		 		  exit(EXIT_FAILURE);          
 	 		  }
         uint32lerange[nextuir32le][0] = decimalunsig;
@@ -237,10 +188,32 @@
 				errno = 0;
 				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
  			  if (*endptr != '\0'|| errno == ERANGE) {
-			 	  printf("error: invalid range start\n");
+						printf("error: line %d - invalid range start\n", linenum);
 		 		  exit(EXIT_FAILURE);          
 	 		  }
         uint64lerange[nextuir64le][0] = decimalunsig;
+      }
+		}
+    if (size == 8 && be) {
+			if (unsign && neg) {
+				printf("error: line %d - invalid range start\n", linenum);
+	 		  exit(EXIT_FAILURE);
+		  }
+			if (!unsign) {
+				decimalsig = strtoll(decimalstr[0], &endptr, 10);
+				if (*endptr != '\0' || (decimalsig < INT8_MIN || decimalsig > INT8_MAX)) {
+					printf("error: line %d - invalid range start\n", linenum);
+	 			  exit(EXIT_FAILURE);
+ 			  }
+        int8berange[nextir8be][0] = decimalsig;
+      }
+      if (unsign) {
+				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
+ 			  if (*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT8_MAX)) {   
+						printf("error: line %d - invalid range start\n", linenum);
+		 		  exit(EXIT_FAILURE);          
+	 		  }
+        uint8berange[nextuir8be][0] = decimalunsig;
       }
 		}
 		if (size == 16 && be) {
@@ -259,7 +232,7 @@
       if (unsign) {
 				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
  			  if (*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX)) {   
-			 	  printf("error: invalid range start\n");
+						printf("error: line %d - invalid range start\n", linenum);
 		 		  exit(EXIT_FAILURE);          
 	 		  }
         uint16berange[nextuir16be][0] = decimalunsig;
@@ -281,7 +254,7 @@
       if (unsign) {
 				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
  			  if (*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT32_MAX)) {
-			 	  printf("error: invalid range start\n");
+						printf("error: line %d - invalid range start\n", linenum);
 		 		  exit(EXIT_FAILURE);          
 	 		  }
         uint32berange[nextuir32be][0] = decimalunsig;
@@ -305,19 +278,32 @@
 				errno = 0;
 				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
  			  if (*endptr != '\0'|| errno == ERANGE) {
-			 	  printf("error: invalid range start\n");
+						printf("error: line %d - invalid range start\n", linenum);
 		 		  exit(EXIT_FAILURE);          
 	 		  }
         uint64berange[nextuir64be][0] = decimalunsig;
       }
 		}
+    lowsize = size;
+    if (le) lowle = true;
+    if (be) lowbe = true;
+    if (unsign) lowunsign = true;
+    else lowunsign = false;
 
+    le = false;
+    be = false;
     decimalsig = 0;
     decimalunsig = 0;
 	}
 	
 	static void setfwrhigh(void) {
     char *endptr;
+		
+		if (lowsize != size || (lowle && !le) || (lowbe && !be) || (lowunsign && !unsign) || (!lowunsign && unsign)) {
+			printf("error: line %d - invalid range end\n", linenum);
+			exit(EXIT_FAILURE);
+		}
+
 		if (size == 16 && le) {
 			if (unsign && neg) {
 				printf("error: line %d - invalid range end\n", linenum);
@@ -335,7 +321,7 @@
       }
       if (unsign) {
 					decimalunsig = strtoull(decimalstr[1], &endptr, 10);
- 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX) || decimalsig < uint16lerange[nextuir32le][0]) {   
+ 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX) || decimalunsig < uint16lerange[nextuir32le][0]) {   
 					printf("error: line %d - invalid range end\n", linenum);
 		 		  exit(EXIT_FAILURE);
 	 		  }
@@ -361,7 +347,7 @@
       }
       if (unsign) {
 				decimalunsig = strtoull(decimalstr[1], &endptr, 10);
- 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX) || decimalsig < uint32lerange[nextuir32le][0]){   
+ 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX) || decimalunsig < uint32lerange[nextuir32le][0]){   
 					printf("error: line %d - invalid range end\n", linenum);
 		 		  exit(EXIT_FAILURE);
 	 		  }
@@ -388,13 +374,39 @@
       }
       if (unsign) {
 				decimalunsig = strtoull(decimalstr[1], &endptr, 10);
- 			  if(*endptr != '\0'|| errno == ERANGE || decimalsig < uint64lerange[nextuir64le][0]) {
+ 			  if(*endptr != '\0'|| errno == ERANGE || decimalunsig < uint64lerange[nextuir64le][0]) {
 					printf("error: line %d - invalid range end\n", linenum);
 		 		  exit(EXIT_FAILURE);
 	 		  }
         uint64lerange[nextuir64le][1] = decimalunsig;
 		    fprintf(xout, "uir64le__%d", nextuir64le);
 		    nextuir64le++;
+      }
+		}
+		if (size == 8 && be) {
+			if (unsign && neg) {
+				printf("error: line %d - invalid range end\n", linenum);
+	 		  exit(EXIT_FAILURE);
+		  }
+			if (!unsign) {
+				decimalsig = strtoll(decimalstr[1], &endptr, 10);
+				if (*endptr != '\0' || (decimalsig < INT8_MIN || decimalsig > INT8_MAX) || decimalsig < int8berange[nextir8be][0]) {
+					printf("error: line %d - invalid range end\n", linenum);
+	 			  exit(EXIT_FAILURE);
+ 			  }
+        int16berange[nextir8be][1] = decimalsig;
+		    fprintf(xout, "ir8be__%d", nextir8be);
+		    nextir8be++;
+      }
+      if (unsign) {
+				decimalunsig = strtoull(decimalstr[1], &endptr, 10);
+ 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT8_MAX) || decimalunsig < uint8berange[nextuir8be][0]) {
+					printf("error: line %d - invalid range end\n", linenum);
+		 		  exit(EXIT_FAILURE);
+	 		  }
+        uint8berange[nextuir8be][1] = decimalunsig;
+		    fprintf(xout, "uir8be__%d", nextuir8be);
+		    nextuir8be++;
       }
 		}
 		if (size == 16 && be) {
@@ -414,7 +426,7 @@
       }
       if (unsign) {
 				decimalunsig = strtoull(decimalstr[1], &endptr, 10);
- 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX) || decimalsig < uint16berange[nextuir32be][0]) {   
+ 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX) || decimalunsig < uint16berange[nextuir16be][0]) {   
 					printf("error: line %d - invalid range end\n", linenum);
 		 		  exit(EXIT_FAILURE);
 	 		  }
@@ -440,7 +452,7 @@
       }
       if (unsign) {
 				decimalunsig = strtoull(decimalstr[1], &endptr, 10);
- 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX) || decimalsig < uint32berange[nextuir32be][0]){   
+ 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT32_MAX) || decimalunsig < uint32berange[nextuir32be][0]) {
 					printf("error: line %d - invalid range end\n", linenum);
 		 		  exit(EXIT_FAILURE);
 	 		  }
@@ -467,7 +479,7 @@
       }
       if (unsign) {
 				decimalunsig = strtoull(decimalstr[1], &endptr, 10);
- 			  if(*endptr != '\0'|| errno == ERANGE || decimalsig < uint64berange[nextuir64be][0]) {
+ 			  if(*endptr != '\0'|| errno == ERANGE || decimalunsig < uint64berange[nextuir64be][0]) {
 					printf("error: line %d - invalid range end\n", linenum);
 		 		  exit(EXIT_FAILURE);
 	 		  }
@@ -479,11 +491,60 @@
 
     decimalsig = 0;
     decimalunsig = 0;
+    fixedwidth = false;
     nnum = 0;
     le = false;
     be = false;
 	}
 
+	static void setrlow(void) {
+		if (!fixedwidth) {
+			if (hval < 0 && cval < 0) {
+			  printf("error: line %d - invalid range start\n", linenum);
+			  exit(EXIT_FAILURE);
+		  }
+		  if (hval >= 0 && !fixedwidth) rlow=hval;
+  	  else rlow = cval;
+		
+		  hval = -1;										/* reset for next value */
+		  cval = -1;
+    }
+    else setfwrlow();
+	}
+	
+	static void setrhigh(void) {
+		if (!fixedwidth) {
+  		if (hval < 0 && cval < 0) {
+  			printf("error: line %d - invalid range end\n", linenum);
+	  		exit(EXIT_FAILURE);
+  		}
+	  	if(hval >= 0)
+		  	rhigh = hval;
+  		else
+	  		rhigh = cval;
+
+  		hval = -1;										/* reset for next value */
+	  	cval = -1;
+
+  		if (rhigh <= rlow) {          /* legal range */
+  			printf("error: line %d - invalid range [%d-%d] -- low to high required\n", linenum, rlow, rhigh);
+	  		exit(EXIT_FAILURE);
+  		}
+
+	  	if (rlow == 0 && rhigh == 255) {				/* same as anybyte */
+		  	fprintf(xout, "r__0");								/* r__0 is anybyte */
+			  anybyte = true;												/* at least one use */
+  		}
+	  	else {
+  			range[nextrange][RMIN] = rlow;				/* store it */
+	  		range[nextrange][RMAX] = rhigh;
+		  	fprintf(xout, "r__%d", nextrange);    /* generate a symbol */
+			  nextrange++;
+  		}
+    }
+    else setfwrhigh();
+	  ranging = false;
+	}
 	
 	static void setenum0(void) {
 		if (hval < 0 && cval < 0) {
@@ -569,114 +630,117 @@
 	
 	static void fixed_width(void){
 		char *endptr;
-		if (size == 8) {
-			if (unsign && neg) {
-			  printf("error: invalid entry for uint8\n");   
-	 		  exit(EXIT_FAILURE);
-		  }
-			uint8_t bytes[1] = {0};
-			if (!unsign) {
-				decimalsig = strtoll(decimalstr[0], &endptr, 10);
-				if (*endptr != '\0' || (decimalsig < INT8_MIN || decimalsig > INT8_MAX) ) {
-				  printf("error: invalid entry for int8\n");
-	 			  exit(EXIT_FAILURE);
- 			  }
-        convert_int(bytes, decimalsig, 1);
-      }
-      if (unsign) {
-				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
- 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT8_MAX)){   
-			 	  printf("error: invalid entry for uint8\n");
-		 		  exit(EXIT_FAILURE);          
-	 		  }
-        convert_uint(bytes, decimalunsig, 1);
-      }
-      write_int(bytes);
-		}
-		if (size == 16) {
-			if (unsign && neg) {
-			  printf("error: invalid entry for uint16\n");                              
-	 		  exit(EXIT_FAILURE);
-		  }
-			uint8_t bytes[2] = {0, 0};  
-			if (!unsign) {
-				decimalsig = strtoll(decimalstr[0], &endptr, 10);
-				if (*endptr != '\0' || (decimalsig < INT16_MIN || decimalsig > INT16_MAX) ) {
-				  printf("error: invalid entry for int16\n");
-	 			  exit(EXIT_FAILURE);
- 			  }
-        convert_int(bytes, decimalsig, 2);
-      }
-      if (unsign) {
-				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
- 			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX) ){   
-			 	  printf("error: invalid entry for uint16\n");
-		 		  exit(EXIT_FAILURE);          
-	 		  }
-        convert_uint(bytes, decimalunsig, 2);
-      }
-      write_int(bytes);
-		}
-		if (size == 32) {
-			if (unsign && neg) {
-			  printf("error: invalid entry for uint32\n");         
-	 		  exit(EXIT_FAILURE);
-		  }
-			uint8_t bytes[4] = {0, 0, 0, 0};
-			if (!unsign) {
-				decimalsig = strtoll(decimalstr[0], &endptr, 10);
-				if (*endptr != '\0' || (decimalsig < INT32_MIN || decimalsig > INT32_MAX) ){  
-				  printf("error: invalid entry for int32\n");          
-	 			  exit(EXIT_FAILURE);
- 			  }
-        convert_int(bytes, decimalsig, 4);
-      }
-      if (unsign) {
-				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
- 			  if (*endptr != '\0' || (decimalunsig < 0 || decimalunsig > UINT32_MAX) ){   
-			 	  printf("error: invalid entry for uint32\n");
-		 		  exit(EXIT_FAILURE);
-	 		  }
-        convert_uint(bytes, decimalunsig, 4);
-      }
-      write_int(bytes);
-		}
-    if (size == 64) {
-			if (unsign && neg) {
-			  printf("error: invalid entry for uint32\n");
-	 		  exit(EXIT_FAILURE);
-		  }
-			uint8_t bytes[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-			if (!unsign) {
-				errno = 0;
-				decimalsig = strtoll(decimalstr[0], &endptr, 10);
-				if (*endptr != '\0' || errno == ERANGE){  
-				  printf("error: invalid entry for int64\n");
-	 			  exit(EXIT_FAILURE);           
- 			  }
-        convert_int(bytes, decimalsig, 8);
-      }
-      if (unsign) {
-				errno = 0;
-				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
- 			  if (*endptr != '\0' || errno == ERANGE){   
-			 	  printf("error: invalid entry for uint64\n");
-		 		  exit(EXIT_FAILURE);
-	 		  }
-        convert_uint(bytes, decimalunsig, 8);
-      }
-      write_int(bytes);
-		}
-    le = false;
-    be = false;
-    nnum=0;
-		decimalsig=0;
-    decimalunsig=0;
+		if (!ranging) {
+  		if (size == 8) {
+	  		if (unsign && neg) {
+						printf("error: line %d - invalid entry for uint8\n", linenum);
+	 		    exit(EXIT_FAILURE);
+  		  }
+  			uint8_t bytes[1] = {0};
+	  		if (!unsign) {
+		  		decimalsig = strtoll(decimalstr[0], &endptr, 10);
+			  	if (*endptr != '\0' || (decimalsig < INT8_MIN || decimalsig > INT8_MAX) ) {
+							printf("error: line %d - invalid entry for int8\n", linenum);
+	 			    exit(EXIT_FAILURE);
+   			  }
+          convert_int(bytes, decimalsig, 1);
+        }
+        if (unsign) {
+				  decimalunsig = strtoull(decimalstr[0], &endptr, 10);
+   			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT8_MAX)){   
+							printf("error: line %d - invalid entry for uint8\n", linenum);
+		   		  exit(EXIT_FAILURE);          
+	 		    }
+          convert_uint(bytes, decimalunsig, 1);
+        }
+        write_int(bytes);
+  		}
+	  	if (size == 16) {
+		  	if (unsign && neg) {
+						printf("error: line %d - invalid entry for uint16\n", linenum);    
+  	 		    exit(EXIT_FAILURE);
+	  	  }
+		  	uint8_t bytes[2] = {0, 0};  
+			  if (!unsign) {
+  				decimalsig = strtoll(decimalstr[0], &endptr, 10);
+  				if (*endptr != '\0' || (decimalsig < INT16_MIN || decimalsig > INT16_MAX) ) {
+							printf("error: line %d - invalid entry for int16\n", linenum);
+  	 			  exit(EXIT_FAILURE);
+   			  }
+          convert_int(bytes, decimalsig, 2);
+        }
+        if (unsign) {
+  				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
+   			  if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX) ){   
+							printf("error: line %d - invalid entry for uint16\n", linenum);
+  		 		  exit(EXIT_FAILURE);          
+  	 		  }
+          convert_uint(bytes, decimalunsig, 2);
+        }
+        write_int(bytes);
+  		}
+  		if (size == 32) {
+  			if (unsign && neg) {
+						printf("error: line %d - invalid entry for uint32\n", linenum);
+  	 		  exit(EXIT_FAILURE);
+  		  }
+  			uint8_t bytes[4] = {0, 0, 0, 0};
+  			if (!unsign) {
+  				decimalsig = strtoll(decimalstr[0], &endptr, 10);
+  				if (*endptr != '\0' || (decimalsig < INT32_MIN || decimalsig > INT32_MAX) ){  
+							printf("error: line %d - invalid entry for int32\n", linenum);          
+  	 			  exit(EXIT_FAILURE);
+   			  }
+          convert_int(bytes, decimalsig, 4);
+        }
+        if (unsign) {
+  				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
+   			  if (*endptr != '\0' || (decimalunsig < 0 || decimalunsig > UINT32_MAX) ){   
+							printf("error: line %d - invalid entry for uint32\n", linenum);
+  		 		  exit(EXIT_FAILURE);
+  	 		  }
+          convert_uint(bytes, decimalunsig, 4);
+        }
+        write_int(bytes);
+  		}
+      if (size == 64) {
+  			if (unsign && neg) {
+						printf("error: line %d - invalid entry for uint32\n", linenum);
+  	 		  exit(EXIT_FAILURE);
+  		  }
+  			uint8_t bytes[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+  			if (!unsign) {
+  				errno = 0;
+  				decimalsig = strtoll(decimalstr[0], &endptr, 10);
+  				if (*endptr != '\0' || errno == ERANGE){  
+							printf("error: line %d - invalid entry for int64\n", linenum);
+  	 			  exit(EXIT_FAILURE);           
+   			  }
+          convert_int(bytes, decimalsig, 8);
+        }
+        if (unsign) {
+  				errno = 0;
+  				decimalunsig = strtoull(decimalstr[0], &endptr, 10);
+   			  if (*endptr != '\0' || errno == ERANGE){   
+							printf("error: line %d -invalid entry for uint64\n", linenum);
+  		 		  exit(EXIT_FAILURE);
+  	 		  }
+          convert_uint(bytes, decimalunsig, 8);
+        }
+        write_int(bytes);
+  		}
+      le = false;
+      be = false;
+      fixedwidth = false;
+      nnum=0;
+  		decimalsig=0;
+      decimalunsig=0;
+    }
 	}
 
   static void check_index(void) {
 		if (i > 99) {
-			printf("error: invalid number entry\n");
+				printf("error: line %d - invalid number entry\n", linenum);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -695,6 +759,7 @@
 		int i ,j, k;
 		int64_t l;
 		uint64_t m;
+
 		if (anybyte) i = 0;					/* anybyte present, start at 0 */
 		else i = 1;									/* otherwise, dont generate range 0 */
 
@@ -702,10 +767,7 @@
 			fprintf(xout, "\n/* Range Expansions */\n");
 		for ( ; i < nextrange; i++) {
 			fprintf(xout, "r__%d : ", i);
-			Bnonterminals++; 
 			for (k=0, j = range[i][RMIN]; j < range[i][RMAX]; k++, j++) {
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
 				if (j == 0)
@@ -716,8 +778,6 @@
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			fprintf(xout, "\'\\x%02x\' ;\n", (uint8_t)j);
-      Brules++;
-      Bterminals++;
 		}
 
     if (nextir16le > 0)
@@ -726,11 +786,8 @@
 			uint8_t bytes[2] = {0, 0};
 			size = 16;
 			fprintf(xout, "ir16le__%d : ", i);
-			Bnonterminals++;
 			for (k=0, l = int16lerange[i][RMIN]; l < int16lerange[i][RMAX]; k++, l++) {
 				le = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_int(bytes, l, 2);
@@ -742,8 +799,6 @@
       convert_int(bytes, l, 2);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     le = false;
 
@@ -753,11 +808,8 @@
 			uint8_t bytes[2] = {0, 0};
 			size = 16;
 			fprintf(xout, "uir16le__%d : ", i);
-			Bnonterminals++;
 			for (k=0, m = uint16lerange[i][RMIN]; m < uint16lerange[i][RMAX]; k++, m++) {
 				le = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_uint(bytes, m, 2);
@@ -769,8 +821,6 @@
       convert_uint(bytes, m, 2);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     le = false;
 
@@ -780,11 +830,8 @@
 			uint8_t bytes[4] = {0, 0, 0, 0};
 			size = 32;
 			fprintf(xout, "ir32le__%d : ", i);
-			Bnonterminals++;
 			for (k=0, l = int32lerange[i][RMIN]; l < int32lerange[i][RMAX]; k++, l++) {
 				le = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_int(bytes, l, 4);
@@ -796,8 +843,6 @@
       convert_int(bytes, l, 4);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     le = false;
 
@@ -807,11 +852,8 @@
 			uint8_t bytes[4] = {0, 0, 0, 0};
 			size = 32;
 			fprintf(xout, "uir32le__%d : ", i);
-			Bnonterminals++;
 			for (k=0, m = uint32lerange[i][RMIN]; m < uint32lerange[i][RMAX]; k++, m++) {
 				le = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_uint(bytes, m, 4);
@@ -823,8 +865,6 @@
       convert_uint(bytes, m, 4);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     le = false;
 
@@ -834,11 +874,8 @@
 			uint8_t bytes[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 			size = 64;
 			fprintf(xout, "ir64le__%d : ", i);
-			Bnonterminals++;
 			for (k=0, l = int64lerange[i][RMIN]; l < int64lerange[i][RMAX]; k++, l++) {
 				le = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_int(bytes, l, 8);
@@ -850,8 +887,6 @@
       convert_int(bytes, l, 8);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     le = false;
 
@@ -861,11 +896,8 @@
 			uint8_t bytes[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 			size = 64;
 			fprintf(xout, "uir64le__%d : ", i);
-			Bnonterminals++;
 			for (k=0, m = uint64lerange[i][RMIN]; m < uint64lerange[i][RMAX]; k++, m++) {
 				le = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_uint(bytes, m, 8);
@@ -877,10 +909,52 @@
       convert_uint(bytes, m, 8);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     le = false;
+
+    if (nextir8be > 0)
+			fprintf(xout, "\n/* int8 Big Endian Range Expansions */\n");
+		for (i = 0 ; i < nextir8be; i++) {	
+			uint8_t bytes[1] = {0};
+			size = 8;
+			fprintf(xout, "ir8be__%d : ", i);
+			for (k=0, l = int8berange[i][RMIN]; l < int8berange[i][RMAX]; k++, l++) {
+				be = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+        convert_int(bytes, l, 1);
+        write_int(bytes);
+				fprintf(xout, " | ");
+			}
+			if (k%8 == 0)
+				fprintf(xout, "\n  ");
+      convert_int(bytes, l, 1);
+      write_int(bytes);
+			fprintf(xout, ";\n");
+		}
+    be = false;
+
+    if (nextuir8be > 0)
+			fprintf(xout, "\n/* uint8 Big Endian Range Expansions */\n");
+		for (i = 0 ; i < nextuir8be; i++) {
+			uint8_t bytes[1] = {0};
+			size = 8;
+			fprintf(xout, "uir8be__%d : ", i);
+			for (k=0, m = uint8berange[i][RMIN]; m < uint8berange[i][RMAX]; k++, m++) {
+				be = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+        convert_uint(bytes, m, 1);
+        write_int(bytes);
+				fprintf(xout, " | ");
+			}
+			if (k%8 == 0)
+				fprintf(xout, "\n  ");
+      convert_uint(bytes, m, 1);
+      write_int(bytes);
+			fprintf(xout, ";\n");
+		}
+    be = false;
 
     if (nextir16be > 0)
 			fprintf(xout, "\n/* int16 Big Endian Range Expansions */\n");
@@ -888,11 +962,8 @@
 			uint8_t bytes[2] = {0, 0};
 			size = 16;
 			fprintf(xout, "ir16be__%d : ", i);
-			Bnonterminals++;
 			for (k=0, l = int16berange[i][RMIN]; l < int16berange[i][RMAX]; k++, l++) {
 				be = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_int(bytes, l, 2);
@@ -904,8 +975,6 @@
       convert_int(bytes, l, 2);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     be = false;
 
@@ -915,11 +984,8 @@
 			uint8_t bytes[2] = {0, 0};
 			size = 16;
 			fprintf(xout, "uir16be__%d : ", i);
-			Bnonterminals++;
 			for (k=0, m = uint16berange[i][RMIN]; m < uint16berange[i][RMAX]; k++, m++) {
 				be = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_uint(bytes, m, 2);
@@ -931,8 +997,6 @@
       convert_uint(bytes, m, 2);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     be = false;
 
@@ -942,11 +1006,8 @@
 			uint8_t bytes[4] = {0, 0, 0, 0};
 			size = 32;
 			fprintf(xout, "ir32be__%d : ", i);
-			Bnonterminals++;
 			for (k=0, l = int32berange[i][RMIN]; l < int32berange[i][RMAX]; k++, l++) {
 				be = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_int(bytes, l, 4);
@@ -958,8 +1019,6 @@
       convert_int(bytes, l, 4);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     be = false;
 
@@ -969,11 +1028,8 @@
 			uint8_t bytes[4] = {0, 0, 0, 0};
 			size = 32;
 			fprintf(xout, "uir32be__%d : ", i);
-			Bnonterminals++;
 			for (k=0, m = uint32berange[i][RMIN]; m < uint32berange[i][RMAX]; k++, m++) {
 				be = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_uint(bytes, m, 4);
@@ -985,8 +1041,6 @@
       convert_uint(bytes, m, 4);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     be = false;
 
@@ -996,11 +1050,8 @@
 			uint8_t bytes[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 			size = 64;
 			fprintf(xout, "ir64be__%d : ", i);
-			Bnonterminals++;
 			for (k=0, l = int64berange[i][RMIN]; l < int64berange[i][RMAX]; k++, l++) {
 				be = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_int(bytes, l, 8);
@@ -1012,8 +1063,6 @@
       convert_int(bytes, l, 8);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     be = false;
 
@@ -1023,11 +1072,8 @@
 			uint8_t bytes[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 			size = 64;
 			fprintf(xout, "uir64be__%d : ", i);
-			Bnonterminals++;
 			for (k=0, m = uint64berange[i][RMIN]; m < uint64berange[i][RMAX]; k++, m++) {
 				be = true;
-				Brules++;
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
         convert_uint(bytes, m, 8);
@@ -1039,8 +1085,6 @@
       convert_uint(bytes, m, 8);
       write_int(bytes);
 			fprintf(xout, ";\n");
-      Brules++;
-      Bterminals++;
 		}
     be = false;
 		
@@ -1050,8 +1094,6 @@
 			fprintf(xout, "e__%d : ", i);
 			j = 0;
 			k = 0;
-			Bnonterminals++;
-			Brules++;
 		  while (enumeration[i][j+1] >= 0) {	           /* next element present */
 				if (k%8 == 0)
 					fprintf(xout, "\n  ");
@@ -1076,10 +1118,7 @@
 			fprintf(xout, "s__%d : ", i);
 			j = 0;
 			k = 0;
-			Bnonterminals++;
-			Brules++;
 			while (strings[i][j+1] >= 0){
-				Bterminals++;
 				if (k%8 == 0)
 					fprintf(xout, "\n ");
 				if(strings[i][j] == 0)
@@ -1091,8 +1130,7 @@
 				j++;
 				k++;
 			}
-			Bterminals++;
-			if (k%8 == 0)                     
+			if (k%8 == 0) 
 				fprintf(xout, "\n  ");    
 			if (strings[i][j] == 0)                                                                               
 				fprintf(xout, "X00 ;\n");
@@ -1100,14 +1138,7 @@
 				fprintf(xout, "\'%c\' ;\n", strings[i][j]);
 		}
 	}
-	
-	static void print_counts(void){
-		counts = fopen("gmr_counts", "w");
-		fprintf(counts, "XBNF %d %d %d ", Xrules, Xterminals, Xnonterminals);
-		fprintf(counts, "Bison %d %d %d\n", Brules, Bterminals, Bnonterminals);
-		fclose(counts);
-	}
-	
+		
 %}	
 
 	
@@ -1115,7 +1146,7 @@
 		 
 %%
 
-bnf: { init(); } rules ws0 { addrules(); print_counts(); }
+bnf: { init(); } rules ws0 { addrules(); }
  
 rules: rule
 		 | rules rule
@@ -1150,7 +1181,7 @@ letters: c
 c : alphanumeric   { cval = $1; strings[nstr][c] = cval; c++; cval = -1; }  
   | punct          { cval = $1; strings[nstr][c] = cval; c++; cval = -1; }
   | ws             { cval = $1; strings[nstr][c] = cval; c++; cval = -1; } 
-  | '\\' escchar   { cval = $2; strings[nstr][c] = '\\'; strings[nstr][c+1] = cval; c=c+2; cval=-1; }
+  | '\\' escchar   { cval = $2; strings[nstr][c] = '\\'; strings[nstr][c+1] = cval; c = c + 2; cval = -1; }
   ;
 
 ws: '\t' '\n' '\r'
@@ -1159,8 +1190,8 @@ ws: '\t' '\n' '\r'
 terminal: '\'' termval '\''
 				;
 
-fwi: type sizebe '(' sign fullnumber ')'         {be = true; fixed_width(); fixedW=true;}
-| le '(' sign fullnumber ws0 ',' ws0 type sizele ')'  {le = true; fixed_width(); fixedW=true;}
+fwi: type sizebe '(' sign fullnumber ')'         {be = true; fixedwidth = true; fixed_width(); }
+   | le '(' sign fullnumber ws0 ',' ws0 type sizele ')'  {le = true; fixedwidth = true; fixed_width(); }
 	 ;
 
 type: 'u' 'i' 'n' 't'    { unsign = true; }
@@ -1241,7 +1272,7 @@ enumeration: ws0 terminal ws0 { setenum0(); } | enumeration ',' ws0 terminal ws0
            ;
 
 /* echo comments */
-comment: '/' '*' { fprintf(xout,"/*"); } commentchars '*' '/' { fprintf(xout,"*/"); }
+comment: '/' '*' { fprintf(xout, "/*"); } commentchars '*' '/' { fprintf(xout, "*/"); }
        ;
 
 commentchars: commentchar
