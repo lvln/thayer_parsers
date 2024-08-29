@@ -1,8 +1,6 @@
 
 
-# xbnf_skip_wildcard -- A preprocessor, written in Bison, that extends Bison BNF and skips over wildcard bytes instead of processing them
-
-Note: This differs from `xbnf` in that it produces a Bison grammar that skips over wildcards as opposed to comparing them to each byte.
+# xbnf -- A preprocessor, written in Bison, that extends Bison BNF.
 
 **xbnf** is a Bison parser that extends Bison's BNF to include
 notations for parsing ascii and binary formats. The following notations are provided:
@@ -17,6 +15,9 @@ __"\<string\>"__ -- A string value.
 
 __\*__ -- Signifying any byte '\x00' to '\xFF'.
 
+__'little_endian(<integer>, <type>)'__ -- Signifying an integer in little-endian representation where <type> is uint16, uint32, uint64, int16, int32 or int64.
+
+__'big_endian(<integer>, <type>)'__ -- Signifying an integer in big-endian representation where <type> is uint16, uint32, uint64, int16, int32 or int64.
 
 ## Usage: xbnf \<infile\> [ -h -d -o \<outfile\>]
 
