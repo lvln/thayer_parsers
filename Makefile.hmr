@@ -7,7 +7,7 @@ CFLAGS= -Wall -pedantic -std=c11 \
 				-I/usr/local/include -L/usr/local/lib\
 				-I../../ppxml -L../../ppxml
 LIBS= -lppxml -lhammer -lglib-2.0 
-GCC=clang
+GCC=gcc
 
 all:		
 				$(GCC) $(CFLAGS) parser.c -o hmr $(LIBS)
