@@ -357,7 +357,7 @@ static void setfwrhigh(void) {
 				printf("error: line %d - invalid range end\n", linenum);
 				exit(EXIT_FAILURE);
 			}
-			int16berange[nextir8be][1] = decimalsig;
+			int8berange[nextir8be][1] = decimalsig;
 			fprintf(xout, "ir8be__%d", nextir8be);
 			if (int8berange[nextir8be][0] == INT8_MIN && int8berange[nextir8be][1] == INT8_MAX) anybyte = true;
 			nextir8be++;
@@ -838,7 +838,7 @@ void addrules(void) {
 		uint8_t bytes[2] = {0, 0};
 		size = 16;
 		fprintf(xout, "uir16le__%d : ", i);
-		if (uint16lerange[i][0] == 0 && uint16lerange[i][1] == INT16_MAX)
+		if (uint16lerange[i][0] == 0 && uint16lerange[i][1] == UINT16_MAX)
 			fprintf(xout, "r__0 r__0 ;\n");
 		else {
 			for (k=0, m = uint16lerange[i][RMIN]; m < uint16lerange[i][RMAX]; k++, m++) {
