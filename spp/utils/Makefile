@@ -9,4 +9,4 @@ all:  $(OFILES)
 			gcc $(CFLAGS) -c $<
 
 clean:
-			rm -f *.o ../lib/libspp.a ../lib/libbittobyte.o
+			rm -f *.o ../lib/libspp.a ../lib/libbittobyte.a

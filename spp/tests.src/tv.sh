@@ -20,10 +20,15 @@ make clean > /dev/null
 make > /dev/null
 popd
 
-# Make and clean utils
+# Make and clean fuzzer
 pushd ../utils/
 make clean > /dev/null
 make > /dev/null
+popd
+
+# Clean test directory
+pushd ../tests/
+make clean > /dev/null
 popd
 
 # Clean out directory and build executables
@@ -32,6 +37,15 @@ make > /dev/null
 
 # Generate tests
 ./tv 1 1
+
+# Convert tewsts to byte-based tests and deposit in tests directory
+for f in pass.*; do
+		./converttobyte ${f} ../tests/${f}
+done
+
+for f in fail.*; do
+		./converttobyte ${f} ../tests/${f}
+done
 
 # Clean out utils
 pushd ../utils/
@@ -43,12 +57,3 @@ pushd ../../utils/
 make clean > /dev/null
 popd
 
-pushd ../tests/
-
-# Move tests to tests directory
-make clean > /dev/null
-
-# Import tests from tests.src
-cp -rf ../tests.src/pass.* ../tests.src/fail.* . &> /dev/null
-
-popd
