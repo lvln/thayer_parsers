@@ -12,14 +12,14 @@ sfleUS : 'little_endian(3, uint64)' ;
 
 sfleS : 'little_endian(1, int64)' ;
 
-stbeUS : 'big_endian(1200, uint16)' ;
+stbeUS : 'uint16(1200)' ;
 
-stbeS : 'big_endian(-1200, int16)' ;
+stbeS : 'int16(-1200)' ;
 
-ttbeUS : 'big_endian(1300, uint32)' ;
+ttbeUS : 'uint32(1300)' ;
 
-ttbeS : 'big_endian(-1300, int32)' ;
+ttbeS : 'int32(-1300)' ;
 
-sfbeUS : 'big_endian(3, uint64)' ;
+sfbeUS : 'uint64(3)' ;
 
-sfbeS : 'big_endian(1, int64)' ;
+sfbeS : 'int64(1)' ;

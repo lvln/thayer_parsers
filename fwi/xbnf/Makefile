@@ -4,13 +4,13 @@
 #
 CFLAGS=-Wall -pedantic -std=c11 -I.
 OFILES=gmr.tab.o lexer.o gmr_tb.o
-XBNF=../../xbnf_endian/bison
+XBNF=../../xbnf/bison
+GCC=gcc
 
 all:				gmr
 
 gmr.y:			gmr.xbnf
 						$(XBNF)/xbnf gmr.xbnf -o gmr.y
-
 
 # bison: side effect: generates gmr.xml
 gmr.tab.c:	gmr.y
@@ -18,18 +18,14 @@ gmr.tab.c:	gmr.y
 						bison -d -t -v -x gmr.y
 
 %.o:	%.c
-			gcc $(CFLAGS) -c $<
+			$(GCC) $(CFLAGS) -c $<
 
 # build parser from .o files
 gmr:	$(OFILES)
-			gcc $(CFLAGS) $(OFILES) -o gmr
+			$(GCC) $(CFLAGS) $(OFILES) -o gmr
 
 run:	gmr
 			gmrtest.sh
 
 clean:
 			rm -f *~ *.o gmr.tab.* gmr.output gmr.xml gmr gmr.y
-
-
-
-
