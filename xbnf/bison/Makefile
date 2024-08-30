@@ -1,5 +1,5 @@
 CFLAGS=-Wall -pedantic -std=c11 -I.
-OFILES=xbnf.tab.o lexer.o xbnf_tb.o
+OFILES=xbnf.tab.o lexer.o xbnf_tb.o xbnftobison.o
 
 all:				xbnf
 
