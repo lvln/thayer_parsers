@@ -1,11 +1,11 @@
 CFLAGS=-Wall -pedantic -std=c11 -I. -g
-OFILES=bittobyte.o
+OFILES=vector.o
 
 all:  $(OFILES)
-			ar cr ../lib/libbittobyte.a $(OFILES)
+			ar cr ../lib/libutils.a $(OFILES)
 
 %.o:  %.c %.h
 			gcc $(CFLAGS) -c $<
 
 clean:
-			rm -f *.o ../lib/libbittobyte.a
+			rm -f *.o ../lib/libutils.a

@@ -15,7 +15,7 @@ if [ $# != 0 ]; then
 fi
 
 # Make the vector libeary
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 make > /dev/null
 popd
@@ -98,7 +98,7 @@ make clean > /dev/null
 popd
 
 # Clean the vector libeary
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 popd
 

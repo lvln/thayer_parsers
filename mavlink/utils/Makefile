@@ -1,4 +1,4 @@
-CFLAGS=-Wall -pedantic -std=c11 -I../../xbnf/utils -I.
+CFLAGS=-Wall -pedantic -std=c11 -I../../utils -I.
 OFILES=mavlink.o
 
 all:  $(OFILES)

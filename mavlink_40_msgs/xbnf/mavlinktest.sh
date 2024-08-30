@@ -28,7 +28,7 @@ if [ $# == 1 ] && [ $1 == "-h" ]; then
 fi
 
 # Clean and build vector
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 make > /dev/null
 popd
@@ -111,7 +111,7 @@ for id in "${msgIDs[@]}"; do
 		let failSeed=($(ls ../tests/fail.* 2>/dev/null | awk -F. '{print $NF}' | sort -n | tail -1) + 1)
 done
 
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 popd
 

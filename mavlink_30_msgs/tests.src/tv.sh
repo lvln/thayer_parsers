@@ -15,7 +15,7 @@ if [ $# != 0 ]; then
 fi
 
 # Make and clean vector module
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 make > /dev/null
 popd
@@ -85,7 +85,7 @@ popd
 ./tv > /dev/null
 
 # Clean vector module
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 popd
 

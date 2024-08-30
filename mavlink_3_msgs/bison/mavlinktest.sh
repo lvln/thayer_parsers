@@ -28,7 +28,7 @@ if [ $# == 1 ] && [ $1 == "-h" ]; then
 fi
 
 # Make the vector module
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 make > /dev/null
 popd
@@ -126,6 +126,6 @@ make clean > /dev/null
 popd
 
 # Clean the vector module
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 popd

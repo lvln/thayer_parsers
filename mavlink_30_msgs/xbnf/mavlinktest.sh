@@ -28,7 +28,7 @@ if [ $# == 1 ] && [ $1 == "-h" ]; then
 fi
 
 # Clean and build vector
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 make > /dev/null
 popd
@@ -115,7 +115,7 @@ pushd ../../mavlink/utils/
 make clean > /dev/null
 popd
 
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 popd
 
