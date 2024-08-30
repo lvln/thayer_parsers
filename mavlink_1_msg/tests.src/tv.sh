@@ -15,7 +15,7 @@ if [ $# != 0 ]; then
 fi
 
 # Clean out and build vector library
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 make > /dev/null
 popd
@@ -77,7 +77,7 @@ make clean > /dev/null
 popd
 
 # Clean out vector library
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 popd
 

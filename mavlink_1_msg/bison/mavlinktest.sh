@@ -31,7 +31,7 @@ fi
 SRCDIR="../../mavlink/mavlink_source_files"
 
 # Clean and make the vector module
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 make > /dev/null
 popd
@@ -101,7 +101,7 @@ make clean > /dev/null
 popd
 
 pushd ../tests.src/
-tv.sh
+./tv.sh
 popd
 
 # Clean out utils
@@ -110,6 +110,6 @@ make clean > /dev/null
 popd
 
 # Clean out the vector module
-pushd ../../xbnf/utils/
+pushd ../../utils/
 make clean > /dev/null
 popd
