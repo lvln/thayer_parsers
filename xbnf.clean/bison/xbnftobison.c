@@ -307,7 +307,7 @@ static void setfwrhigh(void) {
 		}
 		if (unsign) {
 			decimalunsig = strtoull(decimalstr[1], &endptr, 10);
-			if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT16_MAX) || decimalunsig < uint32lerange[nextuir32le][0]){   
+			if(*endptr != '\0'|| (decimalunsig < 0 || decimalunsig > UINT32_MAX) || decimalunsig < uint32lerange[nextuir32le][0]){   
 				printf("error: line %d - invalid range end\n", linenum);
 				exit(EXIT_FAILURE);
 			}
@@ -342,7 +342,7 @@ static void setfwrhigh(void) {
 			}
 			uint64lerange[nextuir64le][1] = decimalunsig;
 			fprintf(xout, "uir64le__%d", nextuir64le);
-			if (uint64lerange[nextuir64le][0] == INT64_MIN && uint64lerange[nextuir64le][1] == UINT64_MAX) anybyte = true;
+			if (uint64lerange[nextuir64le][0] == 0 && uint64lerange[nextuir64le][1] == UINT64_MAX) anybyte = true;
 			nextuir64le++;
 		}
 	}
@@ -944,7 +944,7 @@ void addrules(void) {
 		fprintf(xout, "uir64le__%d : ", i);
 		if (uint64lerange[i][0] == 0 && uint64lerange[i][1] == UINT64_MAX)
 			fprintf(xout, "r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;\n");
-		{
+		else {
 			for (k=0, m = uint64lerange[i][RMIN]; m < uint64lerange[i][RMAX]; k++, m++) {
 				le = true;
 				if (k%8 == 0)
@@ -1046,7 +1046,7 @@ void addrules(void) {
 		uint8_t bytes[2] = {0, 0};
 		size = 16;
 		fprintf(xout, "uir16be__%d : ", i);
-		if (uint16berange[i][0] == 0 && uint16berange[i][1] == UINT8_MAX)
+		if (uint16berange[i][0] == 0 && uint16berange[i][1] == UINT16_MAX)
 			fprintf(xout, "r__0 r__0 ;\n");
 		else {
 			for (k=0, m = uint16berange[i][RMIN]; m < uint16berange[i][RMAX]; k++, m++) {
