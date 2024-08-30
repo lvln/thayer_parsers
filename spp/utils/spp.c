@@ -152,6 +152,23 @@ static void writeFuncSpp(void *data) {
 }
 
 /*
+ * Callback function to print message.
+ * Inputs: pointer to message to print
+ * Outputs: none
+ */
+static void printFuncSpp(void *data) {
+	// Variable declarations.
+	sppMessage_t *mess;
+
+	// Coerce.
+	mess =(sppMessage_t *)data;
+
+	// Write message to file.
+	printSppMessage(mess);
+
+}
+
+/*
  * Write SPP test to file.
  * Inputs: SPP data structure, file to which to write
  * Outputs: none
@@ -177,6 +194,28 @@ void writeSppToFile(spp_t *spp, FILE *fp) {
 }
 
 /*
+ * Print SPP messgaes.
+ * Inputs: SPP data structure
+ * Outputs: none
+ */
+void printSpp(spp_t *spp) {
+	// Variable declarations.
+	sppPrivate_t *sppP;
+
+	// Check arguments.
+	if (spp == NULL) {
+		fprintf(stderr, "Invalid argument.\n");
+		return;
+	}
+
+	// Coerce into valid datatype.
+	sppP = (sppPrivate_t *)spp;
+
+	// Write each message to a file.
+	vectorApply(sppP->messages, printFuncSpp);
+}
+
+/*
  * Generate tests for SPP messages.
  * Inputs: pass seed, fail seed
  * Outputs: none
@@ -197,7 +236,7 @@ void generateTests(int passSeed, int failSeed) {
 	mess.pph.pktType = 1;
 	mess.pph.secHdrFlag = 0;
 	mess.pph.apid = (rand() % (1 << 11));
-	mess.pph.seqFlags = 3;
+	mess.pph.seqFlags = 0;
 	mess.pph.pktSeqOrPn = (rand() % (1 << 14));
 	mess.pph.pktDataLen = (rand() % (1 << 16));
 	
@@ -265,6 +304,95 @@ void generateTests(int passSeed, int failSeed) {
 
 	// Revert to old value of pckaet type.
 	mess.pph.pktType = old;
+
+	// Generate further passing test on APID.
+	old = mess.pph.apid;
+
+	mess.pph.apid = (rand() % (1 << 11));
 	
+	// Generate passing test.
+	sprintf(fname, "./pass.%d", passSeed++);
+	
+	// Open file.
+	if ((fp = fopen(fname, "wb")) == NULL) {
+		fprintf(stderr, "Failed to open file.\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	// Write test to file.
+	writeSppMessageToFile(&mess, fp);
+	
+	// Close file.
+	fclose(fp);
+
+	mess.pph.apid = old;
+
+	// Generate further passing tests on sequence flags.
+	old = mess.pph.seqFlags;
+
+	for (i = 1; i <= 3; i++) {
+		mess.pph.seqFlags = i;
+
+		// Generate passing test.
+		sprintf(fname, "./pass.%d", passSeed++);
+		
+		// Open file.
+		if ((fp = fopen(fname, "wb")) == NULL) {
+			fprintf(stderr, "Failed to open file.\n");
+			exit(EXIT_FAILURE);
+		}
+		
+		// Write test to file.
+		writeSppMessageToFile(&mess, fp);
+		
+		// Close file.
+		fclose(fp);
+	}
+
+	mess.pph.seqFlags = old;
+
+	// Generate further passing test on pcaket sequence numbe or packet name.
+	old = mess.pph.pktSeqOrPn;
+
+	mess.pph.pktSeqOrPn = (rand() % (1 << 14));
+	
+	// Generate passing test.
+	sprintf(fname, "./pass.%d", passSeed++);
+	
+	// Open file.
+	if ((fp = fopen(fname, "wb")) == NULL) {
+		fprintf(stderr, "Failed to open file.\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	// Write test to file.
+	writeSppMessageToFile(&mess, fp);
+	
+	// Close file.
+	fclose(fp);
+
+	mess.pph.pktSeqOrPn = old;
+
+	// Generate further passing test on packet data length.
+	old = mess.pph.pktDataLen;
+
+	mess.pph.pktDataLen = (rand() % (1 << 16));
+	
+	// Generate passing test.
+	sprintf(fname, "./pass.%d", passSeed++);
+	
+	// Open file.
+	if ((fp = fopen(fname, "wb")) == NULL) {
+		fprintf(stderr, "Failed to open file.\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	// Write test to file.
+	writeSppMessageToFile(&mess, fp);
+	
+	// Close file.
+	fclose(fp);
+
+	mess.pph.pktDataLen = old;
 
 }

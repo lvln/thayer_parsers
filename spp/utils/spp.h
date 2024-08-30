@@ -22,6 +22,12 @@ typedef void spp_t;
  */
 void writeSppToFile(spp_t *spp, FILE *fp);
 
+/*
+ * Print SPP messgaes.
+ * Inputs: SPP data structure
+ * Outputs: none
+ */
+void printSpp(spp_t *spp);
 
 /*
  * Generate tests for SPP messages.
