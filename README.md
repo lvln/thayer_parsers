@@ -164,6 +164,8 @@ Each parser directory may contain subdirectories:
 ## Other Directories
 
 &emsp;**ppxml** -- a routine to generate an xml description of a Hammer parser  
+&emsp;**utils** -- vector module used in MAVLink and Space Packet Protocol fuzzers  
+&emsp;**lib** -- compiled library  
 &emsp;**xbnf** -- the xbnf pre-processor, written in BNF for Bison  
 &emsp;**scripts** -- useful bash scripts -- copy them to ~/bin and place in your path  
 &emsp;**RESULTS** -- each time _runall.sh_ is executed, it places a results file here  
