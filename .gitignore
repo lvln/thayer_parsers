@@ -15,7 +15,7 @@ ls*.o
 .DS_Store
 .logindata
 .#*
-RESULTS
+
 */bison/gmr
 */hmr/hmr
 */xbnf/gmr
