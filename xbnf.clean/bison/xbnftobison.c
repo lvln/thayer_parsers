@@ -452,6 +452,8 @@ static void setfwrhigh(void) {
 	nnum = 0;
 	le = false;
 	be = false;
+	lowle = false;
+	lowbe = false;
 }
 
 /* writes integer in hex */
