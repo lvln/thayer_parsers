@@ -128,6 +128,8 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 &emsp;**bin2** -- parsing any uint8 byte as a wildcard  
 &emsp;**command** -- simple binary command parser with wildcards  
 &emsp;**response** -- simple binary response parser with wildcards  
+&emsp;**fwi** -- simple binary parser for fixed-width integers  
+&emsp;**fwi_range** -- simple binary parser for fixed-width integer ranges  
 
 #### <ins>JSON parser tutorial</ins> -- a sequence of parsers that incrementally build to a full [_JSON_](http://www.json.org) grammar
 
