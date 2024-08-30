@@ -495,6 +495,8 @@
     nnum = 0;
     le = false;
     be = false;
+    lowle = false;
+    lowbe = false;
 	}
 
 	static void setrlow(void) {
