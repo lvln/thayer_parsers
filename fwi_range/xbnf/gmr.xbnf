@@ -1,0 +1,9 @@
+P : zerotothree | twototen | onetothree | tentofifteen ;
+
+zerotothree : [ 'little_endian(0, uint16)' - 'little_endian(3, uint16)' ] ;
+
+twototen : [ 'int64(-2)' - 'int64(10)' ] ;
+
+onetothree : [ 'little_endian(-1, int32)' - 'little_endian(3, int32)' ] ;
+
+tentofifteen : [ 'uint8(10)' - 'uint8(15)' ] ;
