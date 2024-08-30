@@ -274,6 +274,7 @@ static void setfwrhigh(void) {
 			}
 			int16lerange[nextir16le][1] = decimalsig;
 			fprintf(xout, "ir16le__%d", nextir16le);
+			if (int16lerange[nextir16le][0] == INT16_MIN && int16lerange[nextir16le][1] == INT16_MAX) anybyte = true;
 			nextir16le++;
 		}
 		if (unsign) {
@@ -284,6 +285,7 @@ static void setfwrhigh(void) {
 			}
 			uint16lerange[nextuir16le][1] = decimalunsig;
 			fprintf(xout, "uir16le__%d", nextuir16le);
+			if (uint16lerange[nextuir16le][0] == 0 && uint16lerange[nextuir16le][1] == UINT16_MAX) anybyte = true;
 			nextuir16le++;
 		}
 	}
@@ -300,6 +302,7 @@ static void setfwrhigh(void) {
 			}
 			int32lerange[nextir32le][1] = decimalsig;
 			fprintf(xout, "ir32le__%d", nextir32le);
+			if (int32lerange[nextir32le][0] == INT32_MIN && int32lerange[nextir32le][1] == INT32_MAX) anybyte = true;
 			nextir32le++;
 		}
 		if (unsign) {
@@ -310,6 +313,7 @@ static void setfwrhigh(void) {
 			}
 			uint32lerange[nextuir32le][1] = decimalunsig;
 			fprintf(xout, "uir32le__%d", nextuir32le);
+			if (uint32lerange[nextuir32le][0] == 0 && uint32lerange[nextuir32le][1] == UINT32_MAX) anybyte = true;
 			nextuir32le++;
 		}
 	}
@@ -327,6 +331,7 @@ static void setfwrhigh(void) {
 			}
 			int64lerange[nextir64le][1] = decimalsig;
 			fprintf(xout, "ir64le__%d", nextir64le);
+			if (int64lerange[nextir64le][0] == INT64_MIN && int64lerange[nextir64le][1] == INT64_MAX) anybyte = true;
 			nextir64le++;
 		}
 		if (unsign) {
@@ -337,6 +342,7 @@ static void setfwrhigh(void) {
 			}
 			uint64lerange[nextuir64le][1] = decimalunsig;
 			fprintf(xout, "uir64le__%d", nextuir64le);
+			if (uint64lerange[nextuir64le][0] == INT64_MIN && uint64lerange[nextuir64le][1] == UINT64_MAX) anybyte = true;
 			nextuir64le++;
 		}
 	}
@@ -353,6 +359,7 @@ static void setfwrhigh(void) {
 			}
 			int16berange[nextir8be][1] = decimalsig;
 			fprintf(xout, "ir8be__%d", nextir8be);
+			if (int8berange[nextir8be][0] == INT8_MIN && int8berange[nextir8be][1] == INT8_MAX) anybyte = true;
 			nextir8be++;
 		}
 		if (unsign) {
@@ -363,6 +370,7 @@ static void setfwrhigh(void) {
 			}
 			uint8berange[nextuir8be][1] = decimalunsig;
 			fprintf(xout, "uir8be__%d", nextuir8be);
+			if (uint8berange[nextuir8be][0] == 0 && uint8berange[nextuir8be][1] == UINT8_MAX) anybyte = true;
 			nextuir8be++;
 		}
 	}
@@ -379,6 +387,7 @@ static void setfwrhigh(void) {
 			}
 			int16berange[nextir16be][1] = decimalsig;
 			fprintf(xout, "ir16be__%d", nextir16be);
+			if (int16berange[nextir16be][0] == INT16_MIN && int16berange[nextir16be][1] == INT16_MAX) anybyte = true;
 			nextir16be++;
 		}
 		if (unsign) {
@@ -389,6 +398,7 @@ static void setfwrhigh(void) {
 			}
 			uint16berange[nextuir16be][1] = decimalunsig;
 			fprintf(xout, "uir16be__%d", nextuir16be);
+			if (uint16berange[nextuir16be][0] == 0 && uint16berange[nextuir16be][1] == UINT16_MAX) anybyte = true;
 			nextuir16be++;
 		}
 	}
@@ -405,6 +415,7 @@ static void setfwrhigh(void) {
 			}
 			int32berange[nextir32be][1] = decimalsig;
 			fprintf(xout, "ir32be__%d", nextir32be);
+			if (int32berange[nextir32be][0] == INT32_MIN && int32berange[nextir32be][1] == INT32_MAX) anybyte = true;
 			nextir32be++;
 		}
 		if (unsign) {
@@ -415,6 +426,7 @@ static void setfwrhigh(void) {
 			}
 			uint32berange[nextuir32be][1] = decimalunsig;
 			fprintf(xout, "uir32be__%d", nextuir32be);
+			if (uint32berange[nextuir32be][0] == 0 && uint32berange[nextuir32be][1] == UINT32_MAX) anybyte = true;
 			nextuir32be++;
 		}
 	}
@@ -432,6 +444,7 @@ static void setfwrhigh(void) {
 			}
 			int64berange[nextir64be][1] = decimalsig;
 			fprintf(xout, "ir64be__%d", nextir64be);
+			if (int64berange[nextir64be][0] == INT64_MIN && int64berange[nextir64be][1] == INT64_MAX) anybyte = true;
 			nextir64be++;
 		}
 		if (unsign) {
@@ -442,6 +455,7 @@ static void setfwrhigh(void) {
 			}
 			uint64berange[nextuir64be][1] = decimalunsig;
 			fprintf(xout, "uir64be__%d", nextuir64be);
+			if (uint64berange[nextuir64be][0] == 0 && uint64berange[nextuir64be][1] == UINT64_MAX) anybyte = true;
 			nextuir64be++;
 		}
 	}
@@ -798,21 +812,25 @@ void addrules(void) {
 		uint8_t bytes[2] = {0, 0};
 		size = 16;
 		fprintf(xout, "ir16le__%d : ", i);
-		for (k=0, l = int16lerange[i][RMIN]; l < int16lerange[i][RMAX]; k++, l++) {
-			le = true;
-			if (k%8 == 0)
-				fprintf(xout, "\n  ");
+		if (int16lerange[i][0] == INT16_MIN && int16lerange[i][1] == INT16_MAX)
+			fprintf(xout, "r__0 r__0 ;\n");
+		else {
+			for (k=0, l = int16lerange[i][RMIN]; l < int16lerange[i][RMAX]; k++, l++) {
+				le = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
         convert_int(bytes, l, 2);
         write_int(bytes);
 				fprintf(xout, " | ");
+			}
+			if (k%8 == 0)
+				fprintf(xout, "\n  ");
+			convert_int(bytes, l, 2);
+			write_int(bytes);
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_int(bytes, l, 2);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		le = false;
 	}
-	le = false;
 
 	if (nextuir16le > 0)
 		fprintf(xout, "\n/* uint16 Little Endian Range Expansions */\n");
@@ -820,21 +838,25 @@ void addrules(void) {
 		uint8_t bytes[2] = {0, 0};
 		size = 16;
 		fprintf(xout, "uir16le__%d : ", i);
-		for (k=0, m = uint16lerange[i][RMIN]; m < uint16lerange[i][RMAX]; k++, m++) {
-			le = true;
+		if (uint16lerange[i][0] == 0 && uint16lerange[i][1] == INT16_MAX)
+			fprintf(xout, "r__0 r__0 ;\n");
+		else {
+			for (k=0, m = uint16lerange[i][RMIN]; m < uint16lerange[i][RMAX]; k++, m++) {
+				le = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_uint(bytes, m, 2);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_uint(bytes, m, 2);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_uint(bytes, m, 2);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		le = false;
 	}
-	le = false;
 	
 	if (nextir32le > 0)
 		fprintf(xout, "\n/* int32 Little Endian Range Expansions */\n");
@@ -842,21 +864,25 @@ void addrules(void) {
 		uint8_t bytes[4] = {0, 0, 0, 0};
 		size = 32;
 		fprintf(xout, "ir32le__%d : ", i);
-		for (k=0, l = int32lerange[i][RMIN]; l < int32lerange[i][RMAX]; k++, l++) {
-			le = true;
+		if (int32lerange[i][0] == INT32_MIN && int32lerange[i][1] == INT32_MAX)
+			fprintf(xout, "r__0 r__0 r__0 r__0 ;\n");
+		else {
+			for (k=0, l = int32lerange[i][RMIN]; l < int32lerange[i][RMAX]; k++, l++) {
+				le = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_int(bytes, l, 4);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_int(bytes, l, 4);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_int(bytes, l, 4);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		le = false;
 	}
-	le = false;
 	
 	if (nextuir32le > 0)
 			fprintf(xout, "\n/* uint32 Little Endian Range Expansions */\n");
@@ -864,21 +890,25 @@ void addrules(void) {
 		uint8_t bytes[4] = {0, 0, 0, 0};
 		size = 32;
 		fprintf(xout, "uir32le__%d : ", i);
-		for (k=0, m = uint32lerange[i][RMIN]; m < uint32lerange[i][RMAX]; k++, m++) {
-			le = true;
+		if (uint32lerange[i][0] == 0 && uint32lerange[i][1] == UINT32_MAX)
+			fprintf(xout, "r__0 r__0 r__0 r__0 ;\n");
+		else {
+			for (k=0, m = uint32lerange[i][RMIN]; m < uint32lerange[i][RMAX]; k++, m++) {
+				le = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_uint(bytes, m, 4);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_uint(bytes, m, 4);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_uint(bytes, m, 4);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		le = false;
 	}
-	le = false;
 	
 	if (nextir64le > 0)
 		fprintf(xout, "\n/* int64 Little Endian Range Expansions */\n");
@@ -886,21 +916,25 @@ void addrules(void) {
 		uint8_t bytes[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 		size = 64;
 		fprintf(xout, "ir64le__%d : ", i);
-		for (k=0, l = int64lerange[i][RMIN]; l < int64lerange[i][RMAX]; k++, l++) {
-			le = true;
+		if (int64lerange[i][0] == INT64_MIN && int64lerange[i][1] == INT64_MAX)
+			fprintf(xout, "r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;\n");
+		else {
+			for (k=0, l = int64lerange[i][RMIN]; l < int64lerange[i][RMAX]; k++, l++) {
+				le = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_int(bytes, l, 8);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_int(bytes, l, 8);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_int(bytes, l, 8);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		le = false;
 	}
-	le = false;
 	
 	if (nextuir64le > 0)
 		fprintf(xout, "\n/* uint64 Little Endian Range Expansions */\n");
@@ -908,21 +942,25 @@ void addrules(void) {
 		uint8_t bytes[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 		size = 64;
 		fprintf(xout, "uir64le__%d : ", i);
-		for (k=0, m = uint64lerange[i][RMIN]; m < uint64lerange[i][RMAX]; k++, m++) {
-			le = true;
+		if (uint64lerange[i][0] == 0 && uint64lerange[i][1] == UINT64_MAX)
+			fprintf(xout, "r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;\n");
+		{
+			for (k=0, m = uint64lerange[i][RMIN]; m < uint64lerange[i][RMAX]; k++, m++) {
+				le = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_uint(bytes, m, 8);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_uint(bytes, m, 8);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_uint(bytes, m, 8);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		le = false;
 	}
-	le = false;
 	
 	if (nextir8be > 0)
 		fprintf(xout, "\n/* int8 Big Endian Range Expansions */\n");
@@ -930,21 +968,25 @@ void addrules(void) {
 		uint8_t bytes[1] = {0};
 		size = 8;
 		fprintf(xout, "ir8be__%d : ", i);
-		for (k=0, l = int8berange[i][RMIN]; l < int8berange[i][RMAX]; k++, l++) {
-			be = true;
+		if (int8berange[i][0] == INT8_MIN && int8berange[i][1] == INT8_MAX)
+			fprintf(xout, "r__0 ;\n");
+		else {
+			for (k=0, l = int8berange[i][RMIN]; l < int8berange[i][RMAX]; k++, l++) {
+				be = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_int(bytes, l, 1);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_int(bytes, l, 1);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_int(bytes, l, 1);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		be = false;
 	}
-	be = false;
 	
 	if (nextuir8be > 0)
 		fprintf(xout, "\n/* uint8 Big Endian Range Expansions */\n");
@@ -952,21 +994,25 @@ void addrules(void) {
 		uint8_t bytes[1] = {0};
 		size = 8;
 		fprintf(xout, "uir8be__%d : ", i);
-		for (k=0, m = uint8berange[i][RMIN]; m < uint8berange[i][RMAX]; k++, m++) {
-			be = true;
+		if (uint8berange[i][0] == 0 && uint8berange[i][1] == UINT8_MAX)
+			fprintf(xout, "r__0 ;\n");
+		else {
+			for (k=0, m = uint8berange[i][RMIN]; m < uint8berange[i][RMAX]; k++, m++) {
+				be = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_uint(bytes, m, 1);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_uint(bytes, m, 1);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_uint(bytes, m, 1);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		be = false;
 	}
-	be = false;
 	
 	if (nextir16be > 0)
 		fprintf(xout, "\n/* int16 Big Endian Range Expansions */\n");
@@ -974,21 +1020,25 @@ void addrules(void) {
 		uint8_t bytes[2] = {0, 0};
 		size = 16;
 		fprintf(xout, "ir16be__%d : ", i);
-		for (k=0, l = int16berange[i][RMIN]; l < int16berange[i][RMAX]; k++, l++) {
-			be = true;
+		if (int16berange[i][0] == INT16_MIN && int16berange[i][1] == INT16_MAX)
+			fprintf(xout, "r__0 r__0 ;\n");
+		else {
+			for (k=0, l = int16berange[i][RMIN]; l < int16berange[i][RMAX]; k++, l++) {
+				be = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_int(bytes, l, 2);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_int(bytes, l, 2);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_int(bytes, l, 2);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		be = false;
 	}
-	be = false;
 	
 	if (nextuir16be > 0)
 		fprintf(xout, "\n/* uint16 Big Endian Range Expansions */\n");
@@ -996,21 +1046,25 @@ void addrules(void) {
 		uint8_t bytes[2] = {0, 0};
 		size = 16;
 		fprintf(xout, "uir16be__%d : ", i);
-		for (k=0, m = uint16berange[i][RMIN]; m < uint16berange[i][RMAX]; k++, m++) {
-			be = true;
+		if (uint16berange[i][0] == 0 && uint16berange[i][1] == UINT8_MAX)
+			fprintf(xout, "r__0 r__0 ;\n");
+		else {
+			for (k=0, m = uint16berange[i][RMIN]; m < uint16berange[i][RMAX]; k++, m++) {
+				be = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_uint(bytes, m, 2);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_uint(bytes, m, 2);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_uint(bytes, m, 2);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		be = false;
 	}
-	be = false;
 	
 	if (nextir32be > 0)
 		fprintf(xout, "\n/* int32 Big Endian Range Expansions */\n");
@@ -1018,21 +1072,25 @@ void addrules(void) {
 		uint8_t bytes[4] = {0, 0, 0, 0};
 		size = 32;
 		fprintf(xout, "ir32be__%d : ", i);
-		for (k=0, l = int32berange[i][RMIN]; l < int32berange[i][RMAX]; k++, l++) {
-			be = true;
+		if (int32berange[i][0] == INT32_MIN && int32berange[i][1] == INT32_MAX)
+			fprintf(xout, "r__0 r__0 r__0 r__0 ;\n");
+		else {
+			for (k=0, l = int32berange[i][RMIN]; l < int32berange[i][RMAX]; k++, l++) {
+				be = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_int(bytes, l, 4);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_int(bytes, l, 4);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_int(bytes, l, 4);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		be = false;
 	}
-	be = false;
 	
 	if (nextuir32be > 0)
 		fprintf(xout, "\n/* uint32 Big Endian Range Expansions */\n");
@@ -1040,21 +1098,25 @@ void addrules(void) {
 		uint8_t bytes[4] = {0, 0, 0, 0};
 		size = 32;
 		fprintf(xout, "uir32be__%d : ", i);
-		for (k=0, m = uint32berange[i][RMIN]; m < uint32berange[i][RMAX]; k++, m++) {
-			be = true;
+		if (uint32berange[i][0] == 0 && uint32berange[i][1] == UINT32_MAX)
+			fprintf(xout, "r__0 r__0 r__0 r__0 ;\n");
+		else {
+			for (k=0, m = uint32berange[i][RMIN]; m < uint32berange[i][RMAX]; k++, m++) {
+				be = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_uint(bytes, m, 4);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_uint(bytes, m, 4);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_uint(bytes, m, 4);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		be = false;
 	}
-	be = false;
 	
 	if (nextir64be > 0)
 		fprintf(xout, "\n/* int64 Big Endian Range Expansions */\n");
@@ -1062,21 +1124,25 @@ void addrules(void) {
 		uint8_t bytes[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 		size = 64;
 		fprintf(xout, "ir64be__%d : ", i);
-		for (k=0, l = int64berange[i][RMIN]; l < int64berange[i][RMAX]; k++, l++) {
-			be = true;
+		if (int64berange[i][0] == INT64_MIN && int64berange[i][1] == INT64_MAX)
+			fprintf(xout, "r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;\n");
+		else {
+			for (k=0, l = int64berange[i][RMIN]; l < int64berange[i][RMAX]; k++, l++) {
+				be = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_int(bytes, l, 8);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_int(bytes, l, 8);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_int(bytes, l, 8);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		be = false;
 	}
-	be = false;
 	
 	if (nextuir64be > 0)
 		fprintf(xout, "\n/* uint64 Big Endian Range Expansions */\n");
@@ -1084,21 +1150,25 @@ void addrules(void) {
 		uint8_t bytes[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 		size = 64;
 		fprintf(xout, "uir64be__%d : ", i);
-		for (k=0, m = uint64berange[i][RMIN]; m < uint64berange[i][RMAX]; k++, m++) {
-			be = true;
+		if (uint64berange[i][0] == 0 && uint64berange[i][1] == UINT64_MAX)
+			fprintf(xout, "r__0 r__0 r__0 r__0 r__0 r__0 r__0 r__0 ;\n");
+		else {
+			for (k=0, m = uint64berange[i][RMIN]; m < uint64berange[i][RMAX]; k++, m++) {
+				be = true;
+				if (k%8 == 0)
+					fprintf(xout, "\n  ");
+				convert_uint(bytes, m, 8);
+				write_int(bytes);
+				fprintf(xout, " | ");
+			}
 			if (k%8 == 0)
 				fprintf(xout, "\n  ");
 			convert_uint(bytes, m, 8);
 			write_int(bytes);
-			fprintf(xout, " | ");
+			fprintf(xout, ";\n");
 		}
-		if (k%8 == 0)
-			fprintf(xout, "\n  ");
-		convert_uint(bytes, m, 8);
-		write_int(bytes);
-		fprintf(xout, ";\n");
+		be = false;
 	}
-	be = false;
 	
 	if (nextenum > 0)
 		fprintf(xout, "\n/* Enumeration Expansions */\n");

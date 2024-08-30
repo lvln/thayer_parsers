@@ -1,0 +1,2 @@
+P: [ 'int64(-2)' - 'int64(10)' ] ;
+P: [ 'little_endian(-1, int32)' - 'little_endian(3, int32)' ] ; 
