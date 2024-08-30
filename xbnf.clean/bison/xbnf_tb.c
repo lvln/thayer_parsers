@@ -13,13 +13,13 @@
 #include <string.h>
 #include "xbnf.tab.h"
 
-
 extern int yylex(void);
 extern int yydebug;
+extern int linenum;
 
 void yyerror(char *s)
 {
-	fprintf(stderr, "error: %s\n", s);
+	fprintf(stderr, "error: line %d - %s\n", linenum, s);
 }
 
 FILE* yyin;
