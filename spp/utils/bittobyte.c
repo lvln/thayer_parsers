@@ -18,8 +18,7 @@
  */
 int bitToByte(FILE *ifile, FILE *ofile) {
 	// Variable declarations.
-	int numBits, numBytes, i, j, bitCnt, bit, fieldSizes[7];
-	uint8_t ibyte, obyte;
+	uint8_t numBits, numBytes, i, j, bitCnt, bit, fieldSizes[7], ibyte, obyte;
 	
 	// Check arguments.
 	if (!ifile || !ofile) {
