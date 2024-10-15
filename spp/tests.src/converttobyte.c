@@ -6,10 +6,9 @@
  * Version: 1.0
  * 
  */
-
-#include <bittobyte.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <bittobyte.h>
 
 int main(int argc, char **argv) {
 	// Varibale declarations.

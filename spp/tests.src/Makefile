@@ -1,16 +1,22 @@
-CFLAGS=-Wall -pedantic -std=c11 -I../../utils -L../../lib -I../utils -L../lib
-LIBS=-lutils -lspp -lbittobyte
+CFLAGS=-Wall -pedantic -std=c11 -I.
+OFILES=spp.o bittobyte.o bit2byte.o vector.o
 
-all: tv converttobyte
+all:  $(OFILES) tv converttobyte bit2byte.d
 
-tv: tv.c
-		gcc $(CFLAGS) tv.c $(LIBS) -o $@
+%.o:	%.c %.h
+			gcc $(CFLAGS) -c $<
 
-converttobyte: converttobyte.c
-							 gcc $(CFLAGS) converttobyte.c $(LIBS) -o $@
+tv:
+			gcc $(CFLAGS) vector.o spp.o tv.c -o $@
+
+converttobyte:
+			gcc $(CFLAGS) bittobyte.o converttobyte.c -o $@
+
+bit2byte.d:
+			gcc $(CFLAGS) -DDEBUG bit2byte.c -o bit2byte.d
 
 clean:
-				rm -f *~ tv converttobyte *.o pass.* fail.*
+				rm -f *~ *.o pass.* fail.* bit2byte converttobyte tv
 
 
 

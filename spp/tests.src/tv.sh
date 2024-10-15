@@ -14,46 +14,26 @@ if [ $# != 0 ]; then
 		exit
 fi
 
-# Make and clean vector
-pushd ../../utils/
-make clean > /dev/null
-make > /dev/null
-popd
+# verify a destination exists for the data
+if [ ! -d ./tests ]; then
+		echo "./tests does not exist (link to destination)"
+		exit
+fi
 
-# Make and clean fuzzer
-pushd ../utils/
-make clean > /dev/null
-make > /dev/null
-popd
-
-# Clean test directory
-pushd ../tests/
-make clean > /dev/null
-popd
-
-# Clean out directory and build executables
-make clean > /dev/null
-make > /dev/null
+# clean and build
+make clean
+make
 
 # Generate tests
 ./tv 1 1
 
-# Convert tewsts to byte-based tests and deposit in tests directory
+# Convert tests to byte-based tests and deposit in ./tests directory
+# NOTE: ./tests should be a link to the destination location (e.g. ../tests)
 for f in pass.*; do
-		./converttobyte ${f} ../tests/${f}
+		./converttobyte ${f} ./tests/${f}
 done
 
 for f in fail.*; do
-		./converttobyte ${f} ../tests/${f}
+		./converttobyte ${f} ./tests/${f}
 done
-
-# Clean out utils
-pushd ../utils/
-make clean > /dev/null
-popd
-
-# Clean vector
-pushd ../../utils/
-make clean > /dev/null
-popd
 
