@@ -30,10 +30,10 @@ make
 # Convert tests to byte-based tests and deposit in ./tests directory
 # NOTE: ./tests should be a link to the destination location (e.g. ../tests)
 for f in pass.*; do
-		./converttobyte ${f} ./tests/${f}
+		./bit2byte.d ${f} ./tests/${f}
 done
 
 for f in fail.*; do
-		./converttobyte ${f} ./tests/${f}
+		./bit2byte.d ${f} ./tests/${f}
 done
 
