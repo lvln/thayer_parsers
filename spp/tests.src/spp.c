@@ -31,6 +31,7 @@ typedef struct packetPrimaryHeader {
  */
 typedef struct sppMessage {
 	packetPrimaryHeader_t pph;
+	uint8_t *data;
 } sppMessage_t;
 
 /*
@@ -131,6 +132,13 @@ static void writeSppMessageToFile(sppMessage_t *mess, FILE *fp) {
 		if (fwrite(&buf, sizeof(uint8_t), 1, fp) != 1)
 			fprintf(stderr, "Error writing byte %02x to file.", buf);
 	}
+
+	for (i = 0; i < mess->pph.pktDataLen + 1; i++) {
+		buf = mess->data[i];
+		
+		if (fwrite(&buf, sizeof(uint8_t), 1, fp) != 1)
+			fprintf(stderr, "Error writing byte %02x to file.", buf);
+	}
 	
 }
 
@@ -215,6 +223,76 @@ void printSpp(spp_t *spp) {
 	vectorApply(sppP->messages, printFuncSpp);
 }
 
+/*
+ * Reads SPP message from a binary file.
+ * Inputs: File from which to read.
+ * Outputs: SPP data structure, NULL if unsuccessful
+ */
+spp_t *readSPPFile(FILE *ifile) {
+	// Variable declarations.
+	sppPrivate_t *spp;
+	uint8_t byte;
+	int i, cnt;
+	uint16_t len;
+	
+	// Check arguments.
+	if (ifile == NULL) {
+		fprintf(stderr, "Invalid argument.\n");
+		return NULL;
+	}
+	
+	// Allocate memory for data structure.
+	if ((spp = (sppPrivate_t *)malloc(sizeof(sppPrivate_t))) == NULL) {
+		fprintf(stderr, "Memory allocation failed.\n");
+		return NULL;
+	}
+	
+	// Initialise messages vector.
+	if ((spp->messages = vectorInit()) == NULL) {
+		fprintf(stderr, "Vector initialization failed.\n");
+		return NULL;
+	}
+	
+	i = 0;
+	cnt = 0;
+	
+	// Read all bytes from file.
+	while (fread(&byte, sizeof(byte), 1, ifile) == 1) {
+		if (i == 0) {
+			mess->pph.versionNumber = ((uint16_t)byte >> 5);
+			mess->pph.pktType = ((uint16_t)byte >> 4);
+			mess->pph.secHdrFlag = ((uint16_t)byte >> 3);
+			mess->pph.apid = ((uint16_t)byte & 0x07) << 8;
+		} else if (i == 1) {
+			mess->pph.apid |= (uint16_t)byte;
+		} else if (i == 2) {
+			mess->pph.seqFlags = (uint16_t)byte >> 6;
+			mess->pph.pktSeqOrPn = ((uint16_t)byte & 0x3F) << 8;
+		} else if (i == 3) {
+			mess->pph.pktSeqOrPn |= (uint16_t)byte;
+		} else if (i == 4) {
+			mess->pph.pktDataLen = (uint16_t)byte << 8;
+		} else if (i == 5) {
+			mess->pph.pktDataLen |= (uint16_t)byte;
+
+			if ((mess->data = (uint8_t *)malloc(sizeof(uint8_t)*mess->pph.pktDataLen))== NULL) {
+				fprintf(stderr, "Memoryallocation failed.\n");
+				return NULL;
+			}
+		} else {
+			mess->data[cnt++] = byte;
+		}
+
+		if (cnt == mess->pph.pktDataLen + 1) {
+			cnt = 0;
+			i = 0;
+		} else
+			i++;
+	}
+
+	return (spp_t *)spp;
+}
+		
 /*
  * Generate tests for SPP messages.
  * Inputs: pass seed, fail seed
