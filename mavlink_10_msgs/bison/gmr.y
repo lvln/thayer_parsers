@@ -12,7 +12,7 @@ optMessage : /* empty */ | optMessage message ;
 message : messageM1 | messageUS | messageS ;
 
 /* MAVLink 1 messages have a slightly different header fields and cannot contain a signature */
-messageM1 : messageOptM1 crc ;
+messageM1 : messageOptM1 PL02 ;
 messageOptM1 : hbM1 | ssM1 | stM1 | pingM1 | lnsM1 | smM1 | prrM1 | prlM1 | pvM1 | psM1 ;
 
 /* unsigned messsages contain a header with a payload and finally a checksum */
@@ -131,19 +131,24 @@ genericCodes25to36 : SSCODEM2 | LNSCODEM2 ;
 genericCodes37to43 : SSCODEM2 ;
 
 /* HEARTBEAT (0) */
-hbM1 : ml09M1 HBCODEM1 PL04 hbType hbAutoPilot PL01 hbSysStatus PL01 ;
+hbM1 : ml09M1 HBCODEM1 hb09PL ;
 hbUS : hb05US | hb06US | hb07US | hb08US | hb09US ;
 hbS : hb05S | hb06S | hb07S | hb08S | hb09S ;
-hb05US : ml05US HBCODEM2 PL04 hbType ;
-hb06US : ml06US HBCODEM2 PL04 hbType hbAutoPilot ;
-hb07US : ml07US HBCODEM2 PL04 hbType hbAutoPilot PL01 ;
-hb08US : ml08US HBCODEM2 PL04 hbType hbAutoPilot PL01 hbSysStatus ;
-hb09US : ml09US HBCODEM2 PL04 hbType hbAutoPilot PL01 hbSysStatus PL01 ;
-hb05S : ml05S HBCODEM2 PL04 hbType ;
-hb06S : ml06S HBCODEM2 PL04 hbType hbAutoPilot ;
-hb07S : ml07S HBCODEM2 PL04 hbType hbAutoPilot PL01 ;
-hb08S : ml08S HBCODEM2 PL04 hbType hbAutoPilot PL01 hbSysStatus ;
-hb09S : ml09S HBCODEM2 PL04 hbType hbAutoPilot PL01 hbSysStatus PL01 ;
+hb05US : ml05US HBCODEM2 hb05PL ;
+hb06US : ml06US HBCODEM2 hb06PL ;
+hb07US : ml07US HBCODEM2 hb07PL ;
+hb08US : ml08US HBCODEM2 hb08PL ;
+hb09US : ml09US HBCODEM2 hb09PL ;
+hb05S : ml05S HBCODEM2 hb05PL ;
+hb06S : ml06S HBCODEM2 hb06PL ;
+hb07S : ml07S HBCODEM2 hb07PL ;
+hb08S : ml08S HBCODEM2 hb08PL ;
+hb09S : ml09S HBCODEM2 hb09PL ;
+hb05PL : PL04 hbType ;
+hb06PL : hb05PL hbAutoPilot ;
+hb07PL : hb06PL PL01 ;
+hb08PL : hb07PL hbSysStatus ;
+hb09PL : hb08PL PL01 ;
 hbType :     r__1 ;
 hbAutoPilot :     r__2 ;
 hbSysStatus :     r__3 ;
