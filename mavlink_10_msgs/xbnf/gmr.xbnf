@@ -10,11 +10,11 @@ messageOptM1 : hbM1 | ssM1 | stM1 | pingM1 | lnsM1 | smM1 | prrM1 | prlM1 | pvM1
 
 /* unsigned messsages contain a header with a payload and finally a checksum */
 messageUS : messageOptUS crc ;
-messageOptUS : genericMessUS | hbUS | smUS | pvUS | psUS ;
+messageOptUS : genericMessUS | hbUS | pvUS | psUS ;
 
 /* signed messages contain a header with a payload, followed by a checksum and finally a 13 byte signature */
 messageS : messageOptS crc sig ;
-messageOptS : genericMessS | hbS | smS | pvS | psS ;
+messageOptS : genericMessS | hbS | pvS | psS ;
 
 /* generic unsigned messages - messages with all wildcards in payload */
 genericMessUS : generic01US | generic02US | generic03US | generic04US | generic05US | generic06US | generic07US | generic08US | generic09US | generic10US | generic11US | generic12US | generic13US | generic14US | generic15US | generic16US | generic17US | generic18US | generic19US | generic20US | generic21US | generic22US | generic23US | generic24US | generic25US | generic26US | generic27US | generic28US | generic29US | generic30US | generic31US | generic32US | generic33US | generic34US | generic35US | generic36US | generic37US | generic38US | generic39US | generic40US | generic41US | generic42US | generic43US ;
@@ -27,14 +27,14 @@ generic01US : ml01US genericCodes01to02 PL01 ;
 generic02US : ml02US genericCodes01to02 PL02 ;
 generic03US : ml03US genericCodes03to04 PL03 ;
 generic04US : ml04US genericCodes03to04 PL04 ;
-generic05US : ml05US genericCodes05 PL05 ;
-generic06US : ml06US genericCodes06to12 PL06 ;
-generic07US : ml07US genericCodes06to12 PL07 ;
-generic08US : ml08US genericCodes06to12 PL08 ;
-generic09US : ml09US genericCodes06to12 PL09 ;
-generic10US : ml10US genericCodes06to12 PL10 ;
-generic11US : ml11US genericCodes06to12 PL11 ;
-generic12US : ml12US genericCodes06to12 PL12 ;
+generic05US : ml05US genericCodes05to06 PL05 ;
+generic06US : ml06US genericCodes05to06 PL06 ;
+generic07US : ml07US genericCodes07to12 PL07 ;
+generic08US : ml08US genericCodes07to12 PL08 ;
+generic09US : ml09US genericCodes07to12 PL09 ;
+generic10US : ml10US genericCodes07to12 PL10 ;
+generic11US : ml11US genericCodes07to12 PL11 ;
+generic12US : ml12US genericCodes07to12 PL12 ;
 generic13US : ml13US genericCodes13to14 PL13 ;
 generic14US : ml14US genericCodes13to14 PL14 ;
 generic15US : ml15US genericCodes15to22 PL15 ;
@@ -72,14 +72,14 @@ generic01S : ml01S genericCodes01to02 PL01 ;
 generic02S : ml02S genericCodes01to02 PL02 ;
 generic03S : ml03S genericCodes03to04 PL03 ;
 generic04S : ml04S genericCodes03to04 PL04 ;
-generic05S : ml05S genericCodes05 PL05 ;
-generic06S : ml06S genericCodes06to12 PL06 ;
-generic07S : ml07S genericCodes06to12 PL07 ;
-generic08S : ml08S genericCodes06to12 PL08 ;
-generic09S : ml09S genericCodes06to12 PL09 ;
-generic10S : ml10S genericCodes06to12 PL10 ;
-generic11S : ml11S genericCodes06to12 PL11 ;
-generic12S : ml12S genericCodes06to12 PL12 ;
+generic05S : ml05S genericCodes05to06 PL05 ;
+generic06S : ml06S genericCodes05to06 PL06 ;
+generic07S : ml07S genericCodes07to12 PL07 ;
+generic08S : ml08S genericCodes07to12 PL08 ;
+generic09S : ml09S genericCodes07to12 PL09 ;
+generic10S : ml10S genericCodes07to12 PL10 ;
+generic11S : ml11S genericCodes07to12 PL11 ;
+generic12S : ml12S genericCodes07to12 PL12 ;
 generic13S : ml13S genericCodes13to14 PL13 ;
 generic14S : ml14S genericCodes13to14 PL14 ;
 generic15S : ml15S genericCodes15to22 PL15 ;
@@ -113,14 +113,14 @@ generic42S : ml42S genericCodes37to43 PL42 ;
 generic43S : ml43S genericCodes37to43 PL43 ;
 
 /* codes for generic message payloads of various lengths */
-genericCodes01to02 : HBCODEM2 | SSCODEM2 | STCODEM2 | PINGCODEM2 | LNSCODEM2 | SMCODEM2 | PRRCODEM2 | PRLCODEM2 | PVCODEM2 | PSCODEM2 ;
-genericCodes03to04 : HBCODEM2 | SSCODEM2 | STCODEM2 | PINGCODEM2 | LNSCODEM2 | SMCODEM2 | PRRCODEM2 | PVCODEM2 | PSCODEM2 ;
-genericCodes05 : SSCODEM2 | STCODEM2 | PINGCODEM2 | LNSCODEM2 | SMCODEM2 | PRRCODEM2 | PVCODEM2 | PSCODEM2 ;
-genericCodes06to12 : SSCODEM2 | STCODEM2 | PINGCODEM2 | LNSCODEM2 | PRRCODEM2 | PVCODEM2 | PSCODEM2 ;
-genericCodes13to14 : SSCODEM2 | PINGCODEM2 | LNSCODEM2 | PRRCODEM2 | PVCODEM2 | PSCODEM2 ;
-genericCodes15to22 : SSCODEM2 | LNSCODEM2 | PRRCODEM2 | PVCODEM2 | PSCODEM2 ;
-genericCodes23to24 : SSCODEM2 | LNSCODEM2 | PVCODEM2 ;
-genericCodes25to36 : SSCODEM2 | LNSCODEM2 ;
+genericCodes01to02 : PRLCODEM2 | genericCodes03to04 ;
+genericCodes03to04 : HBCODEM2 | genericCodes05to06 ;
+genericCodes05to06 : SMCODEM2 | genericCodes07to12 ;
+genericCodes07to12 : STCODEM2 | genericCodes13to14 ;
+genericCodes13to14 : PINGCODEM2 | genericCodes15to22 ;
+genericCodes15to22 : PRRCODEM2 | PSCODEM2 | genericCodes23to24 ;
+genericCodes23to24 : PVCODEM2 | genericCodes25to36 ;
+genericCodes25to36 : LNSCODEM2 | genericCodes37to43 ;
 genericCodes37to43 : SSCODEM2 ;
 
 /* HEARTBEAT (0) */
@@ -137,14 +137,11 @@ hb06S : ml06S HBCODEM2 hb06PL ;
 hb07S : ml07S HBCODEM2 hb07PL ;
 hb08S : ml08S HBCODEM2 hb08PL ;
 hb09S : ml09S HBCODEM2 hb09PL ;
-hb05PL : PL04 hbType ;
-hb06PL : hb05PL hbAutoPilot ;
+hb05PL : PL04 e4 ;
+hb06PL : hb05PL e3 ;
 hb07PL : hb06PL PL01 ;
-hb08PL : hb07PL hbSysStatus ;
+hb08PL : hb07PL e2 ;
 hb09PL : hb08PL PL01 ;
-hbType : [ '\x00' - '\x2C' ] ;
-hbAutoPilot : [ '\x00' - '\x14' ] ;
-hbSysStatus : [ '\x00' - '\x08' ] ;
 
 /* SYS_STATUS (1) */
 ssM1 : ml31M1 SSCODEM1 PL31 ;
@@ -159,12 +156,7 @@ pingM1 : ml14M1 PINGCODEM1 PL14 ;
 lnsM1 : ml36M1 LNSCODEM1 PL36 ;
 
 /* SET_MODE (11) */
-smM1 : ml06M1 SMCODEM1 PL05 smBaseMode ;
-smUS : sm06US ;
-smS : sm06S ;
-sm06US : ml06US SMCODEM2 PL05 smBaseMode ;
-sm06S : ml06S SMCODEM2 PL05 smBaseMode ;
-smBaseMode : * ;
+smM1 : ml06M1 SMCODEM1 PL06 ;
 
 /* PARAM_REQUEST_READ (20) */
 prrM1 : ml22M1 PRRCODEM1 PL22 ;
@@ -173,32 +165,32 @@ prrM1 : ml22M1 PRRCODEM1 PL22 ;
 prlM1 : ml02M1 PRLCODEM1 PL02 ;
 
 /* PARAM_VALUE (22) */
-pvM1 : ml25M1 PVCODEM1 PL24 pvType ;
+pvM1 : ml25M1 PVCODEM1 pvPL25 ;
 pvUS : pv25US ;
 pvS : pv25S ;
-pv25US : ml25US PVCODEM2 PL24 pvType ;
-pv25S : ml25S PVCODEM2 PL24 pvType ;
-pvType : [ '\x01' - '\x0A' ] ;
+pv25US : ml25US PVCODEM2 pvPL25 ;
+pv25S : ml25S PVCODEM2 pvPL25 ;
+pvPL25 : PL24 e1 ;
 
 /* PARAM_SET (23) */
-psM1 : ml23M1 PSCODEM1 PL22 psType ;
+psM1 : ml23M1 PSCODEM1 psPL23 ;
 psUS : ps23US ;
 psS : ps23S ;
-ps23US : ml23US PSCODEM2 PL22 psType ;
-ps23S : ml23S PSCODEM2 PL22 psType ;
-psType : [ '\x01' - '\x0A' ] ;
+ps23US : ml23US PSCODEM2 psPL23 ;
+ps23S : ml23S PSCODEM2 psPL23 ;
+psPL23 : PL22 e1 ;
 
 /* header started for MAVLink 1 messages */
-ml02M1 : MAV1CODE '\x02' messageHeaderTailM1 ;
-ml06M1 : MAV1CODE '\x06' messageHeaderTailM1 ;
-ml09M1 : MAV1CODE '\x09' messageHeaderTailM1 ;
-ml12M1 : MAV1CODE '\x0C' messageHeaderTailM1 ;
-ml14M1 : MAV1CODE '\x0E' messageHeaderTailM1 ;
-ml22M1 : MAV1CODE '\x16' messageHeaderTailM1 ;
-ml23M1 : MAV1CODE '\x17' messageHeaderTailM1 ;
-ml25M1 : MAV1CODE '\x19' messageHeaderTailM1 ;
-ml31M1 : MAV1CODE '\x1F' messageHeaderTailM1 ;
-ml36M1 : MAV1CODE '\x24' messageHeaderTailM1 ;
+ml02M1 : MAV1CODE '\x02' PL03 ;
+ml06M1 : MAV1CODE '\x06' PL03 ;
+ml09M1 : MAV1CODE '\x09' PL03 ;
+ml12M1 : MAV1CODE '\x0C' PL03 ;
+ml14M1 : MAV1CODE '\x0E' PL03 ;
+ml22M1 : MAV1CODE '\x16' PL03 ;
+ml23M1 : MAV1CODE '\x17' PL03 ;
+ml25M1 : MAV1CODE '\x19' PL03 ;
+ml31M1 : MAV1CODE '\x1F' PL03 ;
+ml36M1 : MAV1CODE '\x24' PL03 ;
 
 /* header starter for messages of the same length, necessary to remove reduce-reduce conflict since the first token that differentiates in the message header is the message code - unsigned messages */
 ml01US : MAV2CODE '\x01' messageHeaderTailUS ;
@@ -290,11 +282,11 @@ ml41S : MAV2CODE '\x29' messageHeaderTailS ;
 ml42S : MAV2CODE '\x2A' messageHeaderTailS ;
 ml43S : MAV2CODE '\x2B' messageHeaderTailS ;
 
-messageHeaderTailM1 : packetSequence sysID compID ;
-messageHeaderTailUS : incompFlagUS compFlag packetSequence sysID compID ;
-messageHeaderTailS : incompFlagS compFlag packetSequence sysID compID ;
+/* header tail for unsigned and signed MAVLink messages, respectively */
+messageHeaderTailUS : '\x00' '\x00' PL03 ;
+messageHeaderTailS : '\x01' '\x00' PL03 ;
 
-/* wildcard payloads for messages of various lengths */
+/* Tokens */
 PL01 : * ;
 PL02 : PL01 * ;
 PL03 : PL02 * ;
@@ -339,7 +331,6 @@ PL41 : PL40 * ;
 PL42 : PL41 * ;
 PL43 : PL42 * ;
 
-/* Tokens */
 MAV1CODE : '\xFE' ;
 MAV2CODE : '\xFD' ;
 
@@ -366,12 +357,11 @@ PVCODEM2 : PVCODEM1 TWOZEROBYTES ;
 PSCODEM1 : '\x17' ;
 PSCODEM2 : PSCODEM1 TWOZEROBYTES ;
 
-incompFlagUS : '\x00' ;  /* incompatibility flag for unsigned message */
-incompFlagS : '\x01' ;  /* incompatibility flag for signed message */
-compFlag : '\x00' ; /* compatibility flag */
-packetSequence : * ;
-sysID : * ; /* system ID */
-compID : * ; /* component ID */
+/* common enumerated values */
+e1 : [ '\x01' - '\x0A' ] ;
+e2 : [ '\x00' - '\x08' ] ;
+e3 : e2 | [ '\x09' - '\x14' ] ;
+e4 : e3 | [ '\x15' - '\x2C' ] ;
 
 crc : PL02 ;
 sig : PL13 ; 
