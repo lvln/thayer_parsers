@@ -13,7 +13,7 @@ This directory contains a parsser for the packet primary headers of the Space Pa
 
 ## Header structure
 
-The format of the headers for the Space Packet Protocol is defined in Section 4 of the [Space Packet Protocol Recommended Standard](https://public.ccsds.org/Pubs/133x0b2e1.pdf).
+The format of the headers for the Space Packet Protocol is defined in Section 4 of the [Space Packet Protocol Recommended Standard](https://public.ccsds.org/Pubs/133x0b2e2.pdf).
 
 **The packet primary header has the following fields:**
 
