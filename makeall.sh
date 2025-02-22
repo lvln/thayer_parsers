@@ -46,7 +46,7 @@ popd
 # NOTE: DO NOT PUT xbnf or abnf in this list
 for DIR in gmr0 gmr1 usps bin0 bin1 bin2 command response fwi fwi_range \
 				 jnum jstring json junicode json.unicode \
-				 mavlink_1_msg mavlink_3_msgs mavlink_10_msgs mavlink_20_msgs mavlink_30_msgs mavlink_40_msgs mavlink \
+				 mavlink_1_msg mavlink_3_msgs mavlink_10_msgs mavlink \
 				 spp \
 				 J1939 url http
 do
