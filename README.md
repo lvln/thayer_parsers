@@ -149,7 +149,6 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 &emsp;**url** -- parser for Uniform Resource Locators as per RFC 3986  
 &emsp;**http** -- parser for Hypertext Transfer Protocol as per RFC 7230  
 &emsp;**spp** -- parser for the Space Packet Protocol headers  
-&emsp;**J1939** -- parser for J1939 protocol  
 
 ### Parser Subdirectories
 
