@@ -2,11 +2,6 @@
 
 # Parser Experimentation Repository
 
-**Please do not push to the main branch of this repo unless you have
-run the cleanall, makeall, and runall scripts and ensured that they
-operate with no warnings or errors, and that the RESULTS/run.<date> file
-does not contain the word FAIL (i.e. all tests pass).**
-
 This repository explores and compares traditional grammars, described
 with BNF and implemented through
 [Bison](https://www.gnu.org/software/bison), with equivalent grammars
@@ -18,9 +13,10 @@ addition, an extended version of BNF -- xBNF -- is also explored that
 captures core concepts from Hammer. It is implemented as a
 preprocessor, written in BNF, implemented with Bison.
 
-All parsers listed here are operational; others represent works in
-progress. A set of test vectors is provided for each. In general test
-vectors are generated automatically where possible.
+All parsers listed in this README are operational; any others in
+the repository represent works in progress. A set of test vectors is
+provided for each. In general test vectors are generated automatically
+where possible through fuzzing techniques.
 
 The exploration restricts attention based on the following high-value
 attributes:
@@ -43,20 +39,24 @@ scanner (c.f. **ppxml**) is provided.
 lexical analysis through Flex. Instead they pass binary values directly
 to Bison consistent with Hammers byte-by-byte input stream handling.
 
-The repository is structured to allow other emerging **SafeDocs**
+The repository is structured to allow other emerging parser generator
 technologies to be integrated for comparison and leveraged where the
 above attributes are present.
 
 
 ## Acknowledgements ##
 
-This repository is an active collaboration with a number of Dartmouth
-students: _Ellie Baker_ on **ppxml**; _Sarah Korb_ on unicode
-extensions; _Anthony_ and _Brandon Guzman_ on binary parsers.
+This repository is an active collaboration with a number of talented
+Thayer undergraduate students: _Ellie Baker_ on **ppxml**; _Sarah
+Korb_ on unicode extensions; _Anthony_ and _Brandon Guzman_ on binary
+parsers;_Josh Meise_ on endian extensions to xBNF, the Space Packet
+Protocol (spp) and MAVLINK parsers (with and the assoicated drone
+assembly and data collections, analysis, and fuzzing).
 
 We also thank our collaborators at Lockheed-Martin ATL -- Andrew
 Holmes, Chris Miller, and Chuck Winters -- for their many valuable
-inputs and insights.
+inputs and insights. In addition, we thank _Gunnar Pope_ for his work
+on combinator transformations in xBNF.
 
 
 
@@ -144,16 +144,16 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 &emsp;**mavlink_N_msgs** -- multiple MAVLink parsers of increasing complexity  
 &emsp;**mavlink** -- MAVLink parser for Drone Traffic  as well as all MAVLink-related source files  
 
-#### <ins>Other Non-trivial Examples<ins>
+#### <ins>Other Examples<ins>
 
-&emsp;**J1939** -- parser for J1939 protocol  
 &emsp;**url** -- parser for Uniform Resource Locators as per RFC 3986  
 &emsp;**http** -- parser for Hypertext Transfer Protocol as per RFC 7230  
-
+&emsp;**spp** -- parser for the Space Packet Protocol headers  
+&emsp;**J1939** -- parser for J1939 protocol  
 
 ### Parser Subdirectories
 
-Each parser directory may contain subdirectories:  
+Each parser directory typically contains these subdirectories:  
 
 &emsp;**bison** -- the working bison version of the grammar  
 &emsp;**xbnf** -- the working xbnf version of the grammar  
@@ -203,9 +203,9 @@ make xml -- generate xml
 Add entries to the _clearall_, _makeall_, _run_, and _runall_ scripts.  
 
 
-## xbnf -- A preprocessor, written in Bison, that extends Bison BNF.
+## xBNF -- A preprocessor, written in Bison, that extends Bison BNF.
 
-**xbnf** is a Bison parser that extends Bison's BNF to include
+**xBNF** is a Bison parser that extends Bison's BNF to include
 notations for parsing ascii and binary formats. The following notations are provided:
 
 __'\x00'__ -- The terminal symbol for zero in hexadecimal.
