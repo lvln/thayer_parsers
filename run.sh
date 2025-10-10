@@ -61,3 +61,12 @@ if [ -d ${DIR}/xbnf ]; then
 		popd
 		echo "====="
 fi
+
+if [ -d ${DIR}/ddl ]; then
+		pushd ./${DIR}/ddl
+		echo "[ddl: ${DIR}/ddl]"
+		make ${MODE} run
+		popd
+		echo "====="
+fi
+
