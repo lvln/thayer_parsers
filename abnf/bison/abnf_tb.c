@@ -17,7 +17,7 @@
 extern int yylex(void);
 extern int yydebug;
 
-void yyerror(char *s)
+void yyerror(const char *s)
 {
 	fprintf(stderr, "error: %s\n", s);
 }
