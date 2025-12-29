@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+gmr.dfdl.xsd - XML Schema for MAVLINK HEARTBEAT message
+
+
+8-17-2025
+
+--> 
+
+<!-- Import xml library and extensions (namespace sources) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/"
+  xmlns:dfdlx="http://www.ogf.org/dfdl/dfdl-1.0/extensions">
+
+  <xs:include schemaLocation="/org/apache/daffodil/xsd/DFDLGeneralFormat.dfdl.xsd"/>
+
+  <xs:annotation>
+    <xs:appinfo source="http://www.ogf.org/dfdl/">
+      <dfdl:format ref="GeneralFormat" representation="binary"
+        lengthUnits="bytes" byteOrder="bigEndian"/>
+    </xs:appinfo>
+  </xs:annotation>
+
+  <xs:element name="message" type="message_t"/>
+
+  <!-- Top-level message definition -->
+  <xs:complexType name="message_t">
+    <xs:sequence>
+      <xs:element name="stx" type="stx_t"/>
+      <xs:sequence>
+        <xs:element name="M1_hb" type="M1_hb_t"
+          minOccurs="0" maxOccurs="1"
+          dfdl:occursCountKind="expression"
+          dfdl:occursCount="{ if (../stx eq xs:hexBinary('FE')) then 1 else 0 }" />
+        <xs:element name="M2_hb" type="M2_hb_t"
+          minOccurs="0" maxOccurs="1"
+          dfdl:occursCountKind="expression"
+          dfdl:occursCount="{ if (../stx eq xs:hexBinary('FD')) then 1 else 0 }" />
+      </xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- MAVLink 1.0 HEARTBEAT message definition -->
+  <xs:complexType name="M1_hb_t">
+    <xs:sequence>
+      <xs:element name="len" type="len_t"/>
+      <xs:element name="seq" type="seq_t"/>
+      <xs:element name="sysid" type="sysid_t"/>
+      <xs:element name="compid" type="compid_t"/>
+      <xs:element name="M1_msgid" type="M1_msgid_t"/>
+      <xs:element name="M1_hb_PL" type="hb_PL_t"
+        minOccurs="0" maxOccurs="1"
+        dfdl:occursCountKind="expression"
+        dfdl:occursCount="{ if (../len eq xs:hexBinary('09')) then 1 else 0 }" />
+      <xs:element name="checksum" type="checksum_t"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- MAVLink 2.0 HEARTBEAT message definition -->
+  <xs:complexType name="M2_hb_t">
+    <xs:sequence>
+      <xs:element name="len" type="len_t"/>
+      <xs:element name="inc_flags" type="inc_flags_t"/>
+      <xs:element name="comp_flags" type="comp_flags_t"/>
+      <xs:element name="seq" type="seq_t"/>
+      <xs:element name="sysid" type="sysid_t"/>
+      <xs:element name="compid" type="compid_t"/>
+      <xs:element name="M2_msgid" type="M2_msgid_t"/>
+      <xs:element name="M2_hb_PL_L09" type="hb_PL_t"
+        minOccurs="0" maxOccurs="1"
+        dfdl:occursCountKind="expression"
+        dfdl:occursCount="{ if (../len eq xs:hexBinary('09')) then 1 else 0 }" />
+      <xs:element name="checksum" type="checksum_t"/>
+      <xs:element name="signature" type="signature_t"
+        minOccurs="0" maxOccurs="1"
+        dfdl:occursCountKind="expression"
+        dfdl:occursCount="{ if (../inc_flags eq xs:hexBinary('01')) then 1 else 0 }" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- MAVLink 2.0 HEARTBEAT payload definitions
+       Always length 9 so same payload for both -->
+  <xs:complexType name="hb_PL_t">
+    <xs:sequence>
+      <xs:element name="hb_PL_cust" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+      <xs:element name="hb_PL_type"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="1">
+        <xs:restriction base="xs:unsignedByte">
+          <xs:minInclusive value="00"/> <!-- 0x00 -->
+          <xs:maxInclusive value="49"/> <!-- 0x31 -->
+        </xs:restriction> </xs:simpleType> </xs:element>
+      <xs:element name="hb_PL_auto"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="1">
+        <xs:restriction base="xs:unsignedByte">
+          <xs:minInclusive value="00"/> <!-- 0x00 -->
+          <xs:maxInclusive value="20"/> <!-- 0x14 -->
+        </xs:restriction> </xs:simpleType> </xs:element>
+      <xs:element name="hb_PL_base" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+      <xs:element name="hb_PL_stat"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="1">
+        <xs:restriction base="xs:unsignedByte">
+          <xs:minInclusive value="00"/> <!-- 0x00 -->
+          <xs:maxInclusive value="08"/> <!-- 0x08 -->
+        </xs:restriction> </xs:simpleType> </xs:element>
+      <xs:element name="hb_PL_mvrs" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Field types -->
+  <xs:simpleType name="stx_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary">
+      <xs:enumeration value="FE"/>
+      <xs:enumeration value="FD"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="len_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="inc_flags_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary">
+      <xs:enumeration value="00"/>
+      <xs:enumeration value="01"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="comp_flags_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="seq_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="sysid_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="compid_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="M1_msgid_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary">
+      <xs:enumeration value="00"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="M2_msgid_t" dfdl:lengthKind="explicit" dfdl:length="3">
+    <xs:restriction base="xs:hexBinary">
+      <xs:enumeration value="000000"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="checksum_t" dfdl:lengthKind="explicit" dfdl:length="2">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="signature_t" dfdl:lengthKind="explicit" dfdl:length="13">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+</xs:schema>
+

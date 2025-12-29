@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+gmr.dfdl.xsd - XML Schema for MAVLINK HEARTBEAT message
+
+8-17-2025
+
+--> 
+
+<!-- Import xml library and extensions (namespace sources) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/"
+  xmlns:dfdlx="http://www.ogf.org/dfdl/dfdl-1.0/extensions">
+
+  <xs:include schemaLocation="/org/apache/daffodil/xsd/DFDLGeneralFormat.dfdl.xsd"/>
+
+  <xs:annotation>
+    <xs:appinfo source="http://www.ogf.org/dfdl/">
+      <dfdl:format ref="GeneralFormat" representation="binary"
+        lengthUnits="bytes" byteOrder="littleEndian"/>
+      <!-- Note M2 msgID is bigEndian so is read backwards -->
+    </xs:appinfo>
+  </xs:annotation>
+
+  <xs:element name="message" type="message_t"/>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Top-level message definition -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <xs:complexType name="message_t">
+    <xs:sequence>
+      <xs:element name="stx" type="stx_t"/>
+      <xs:sequence>
+        <xs:element name="M1" type="M1_t"
+          minOccurs="0" maxOccurs="1"
+          dfdl:occursCountKind="expression"
+          dfdl:occursCount="{ if (../stx eq xs:hexBinary('FE')) then 1 else 0 }" />
+        <xs:element name="M2" type="M2_t"
+          minOccurs="0" maxOccurs="1"
+          dfdl:occursCountKind="expression"
+          dfdl:occursCount="{ if (../stx eq xs:hexBinary('FD')) then 1 else 0 }" />
+      </xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- MAVLink 1.0 message definition -->
+  <!-- Message types: HEARTBEAT (0), SYS_STATUS (1), or VFR_HUD (74) -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <xs:complexType name="M1_t">
+    <xs:sequence>
+      <xs:element name="len" type="len_t"/>
+      <xs:element name="seq" type="seq_t"/>
+      <xs:element name="sysid" type="sysid_t"/>
+      <xs:element name="compid" type="compid_t"/>
+      <xs:element name="M1_msgid" type="M1_msgid_t"/>
+
+      <xs:sequence>
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- MAVLink HEARTBEAT message payload -->
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <xs:element name="M1_hb_PL" type="hb_PL_t"
+          minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+          dfdl:occursCount="{ if (../M1_msgid eq xs:hexBinary('00')) then 1 else 0 }" />
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- MAVLink SYS_STATUS message payload -->
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <xs:element name="M1_ss_PL" type="M1_ss_PL_t"
+          minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+          dfdl:occursCount="{ if (../M1_msgid eq xs:hexBinary('01')) then 1 else 0 }" />
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- MAVLink VFR_HUD message payload -->
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <xs:element name="M1_hud_PL" type="M1_hud_PL_t"
+          minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+          dfdl:occursCount="{ if (../M1_msgid eq xs:hexBinary('4A')) then 1 else 0 }" />
+      </xs:sequence>
+
+      <xs:element name="checksum" type="checksum_t"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- MAVLink 2.0 message definition -->
+  <!-- Message types: HEARTBEAT (0), SYS_STATUS (1), or VFR_HUD (74) -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <xs:complexType name="M2_t">
+    <xs:sequence>
+      <xs:element name="len" type="len_t"/>
+      <xs:element name="inc_flags" type="inc_flags_t"/>
+      <xs:element name="comp_flags" type="comp_flags_t"/>
+      <xs:element name="seq" type="seq_t"/>
+      <xs:element name="sysid" type="sysid_t"/>
+      <xs:element name="compid" type="compid_t"/>
+      <xs:element name="M2_msgid" type="M2_msgid_t"/>
+      <xs:sequence>
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- MAVLink HEARTBEAT message payload -->
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <xs:element name="M2_hb_PL" type="hb_PL_t"
+          minOccurs="0" maxOccurs="1"
+          dfdl:occursCountKind="expression"
+          dfdl:occursCount="{ if (../M2_msgid eq xs:hexBinary('000000')) then 1 else 0 }" />
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- MAVLink SYS_STATUS message payload -->
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <xs:element name="M2_ss_PL" type="M2_ss_PL_t"
+          minOccurs="0" maxOccurs="1"
+          dfdl:occursCountKind="expression"
+          dfdl:occursCount="{ if (../M2_msgid eq xs:hexBinary('010000')) then 1 else 0 }" />
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <!-- MAVLink VFR_HUD message payload -->
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+        <xs:element name="M2_hud_PL" type="M2_hud_PL_t"
+          minOccurs="0" maxOccurs="1"
+          dfdl:occursCountKind="expression"
+          dfdl:occursCount="{ if (../M2_msgid eq xs:hexBinary('4A0000')) then 1 else 0 }" />
+      </xs:sequence>
+
+      <xs:element name="checksum" type="checksum_t"/>
+      <xs:sequence>
+        <xs:element name="signature" type="signature_t"
+          minOccurs="0" maxOccurs="1"
+          dfdl:occursCountKind="expression"
+          dfdl:occursCount="{ if (../inc_flags eq xs:hexBinary('01')) then 1 else 0 }" />
+      </xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- MAVLink HEARTBEAT (0) payload length option and definition
+       Always length 9 so reject payload otherwise for both M1 and M2 -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <xs:complexType name="hb_PL_t"> <xs:sequence>
+    <xs:element name="M2_hb_L09" type="hb_PL_L09_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('09')) then 1 else 0 }" />
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hb_PL_L09_t">
+    <xs:sequence>
+      <xs:element name="hb_PL_cust" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+      <xs:element name="hb_PL_type"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="1">
+        <xs:restriction base="xs:unsignedByte">
+          <xs:minInclusive value="00"/> <!-- 0x00 -->
+          <xs:maxInclusive value="49"/> <!-- 0x31 -->
+        </xs:restriction> </xs:simpleType> </xs:element>
+      <xs:element name="hb_PL_auto"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="1">
+        <xs:restriction base="xs:unsignedByte">
+          <xs:minInclusive value="00"/> <!-- 0x00 -->
+          <xs:maxInclusive value="20"/> <!-- 0x14 -->
+        </xs:restriction> </xs:simpleType> </xs:element>
+      <xs:element name="hb_PL_base" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+      <xs:element name="hb_PL_stat"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="1">
+        <xs:restriction base="xs:unsignedByte">
+          <xs:minInclusive value="00"/> <!-- 0x00 -->
+          <xs:maxInclusive value="08"/> <!-- 0x08 -->
+        </xs:restriction> </xs:simpleType> </xs:element>
+      <xs:element name="hb_PL_mvrs" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- MAVLink SYS_STATUS (1) payload length options
+       Always length 31 for M1, length 1-31 for M2 -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <xs:complexType name="M1_ss_PL_t"> <xs:sequence>
+    <xs:element name="M1_ss_PL_L31" type="ss_PL_L31_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('1F')) then 1 else 0 }" />
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="M2_ss_PL_t"> <xs:sequence>
+    <xs:element name="M2_ss_PL_L01" type="ss_PL_L01_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('01')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L02" type="ss_PL_L02_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('02')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L03" type="ss_PL_L03_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('03')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L04" type="ss_PL_L04_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('04')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L05" type="ss_PL_L05_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('05')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L06" type="ss_PL_L06_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('06')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L07" type="ss_PL_L07_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('07')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L08" type="ss_PL_L08_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('08')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L09" type="ss_PL_L09_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('09')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L10" type="ss_PL_L10_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0A')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L11" type="ss_PL_L11_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0B')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L12" type="ss_PL_L12_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0C')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L13" type="ss_PL_L13_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0D')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L14" type="ss_PL_L14_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0E')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L15" type="ss_PL_L15_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0F')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L16" type="ss_PL_L16_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('10')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L17" type="ss_PL_L17_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('11')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L18" type="ss_PL_L18_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('12')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L19" type="ss_PL_L19_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('13')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L20" type="ss_PL_L20_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('14')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L21" type="ss_PL_L21_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('15')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L22" type="ss_PL_L22_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('16')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L23" type="ss_PL_L23_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('17')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L24" type="ss_PL_L24_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('18')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L25" type="ss_PL_L25_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('19')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L26" type="ss_PL_L26_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('1A')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L27" type="ss_PL_L27_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('1B')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L28" type="ss_PL_L28_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('1C')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L29" type="ss_PL_L29_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('1D')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L30" type="ss_PL_L30_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('1E')) then 1 else 0 }" />
+    <xs:element name="M2_ss_PL_L31" type="ss_PL_L31_t"
+      minOccurs="0" maxOccurs="1" dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('1F')) then 1 else 0 }" />
+  </xs:sequence> </xs:complexType> 
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- MAVLink SYS_STATUS (1) payload definitions
+       Always length 31 for M1, length 1-31 for M2 -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <xs:complexType name="ss_PL_L01_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L02_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp_2b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L03_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp_3b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="3"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L04_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L05_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L06_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse_2b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L07_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse_3b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="3"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L08_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L09_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L10_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh_2b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L11_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh_3b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="3"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L12_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L13_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L14_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L15_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L16_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L17_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L18_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L19_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc_1b" type="xs:unsignedByte" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L20_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L21_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_errc_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L22_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_errc" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L23_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_errc" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt1_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L24_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_errc" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt1" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L25_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_errc" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt1" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt2_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L26_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_errc" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt1" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt2" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L27_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_errc" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt1" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt2" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt3_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L28_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_errc" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt1" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt2" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt3" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L29_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_errc" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt1" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt2" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt3" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt4_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L30_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_errc" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt1" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt2" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt3" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt4" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="ss_PL_L31_t"> <xs:sequence>
+    <xs:element name="ss_PL_ocsp" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocse" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_ocsh" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="ss_PL_load"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="1000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_vbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cbat" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_drc"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="10000"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="ss_PL_errc" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt1" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt2" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt3" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_cnt4" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+    <xs:element name="ss_PL_batr"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="1">
+      <xs:restriction base="xs:byte"> <xs:minInclusive value="-1"/> <xs:maxInclusive value="100"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+  </xs:sequence> </xs:complexType>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- MAVLink VFR_HUD (74) payload length options
+       Always length 20 for M1, length 1-20 for M2 -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <xs:complexType name="M1_hud_PL_t"> <xs:sequence>
+    <xs:element name="M1_hud_PL_L20" type="hud_PL_L20_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('14')) then 1 else 0 }" />
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="M2_hud_PL_t"> <xs:sequence>
+    <xs:element name="M2_hud_PL_L01" type="hud_PL_L01_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('01')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L02" type="hud_PL_L02_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('02')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L03" type="hud_PL_L03_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('03')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L04" type="hud_PL_L04_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('04')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L05" type="hud_PL_L05_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('05')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L06" type="hud_PL_L06_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('06')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L07" type="hud_PL_L07_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('07')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L08" type="hud_PL_L08_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('08')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L09" type="hud_PL_L09_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('09')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L10" type="hud_PL_L10_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0A')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L11" type="hud_PL_L11_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0B')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L12" type="hud_PL_L12_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0C')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L13" type="hud_PL_L13_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0D')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L14" type="hud_PL_L14_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0E')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L15" type="hud_PL_L15_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('0F')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L16" type="hud_PL_L16_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('10')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L17" type="hud_PL_L17_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('11')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L18" type="hud_PL_L18_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('12')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L19" type="hud_PL_L19_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('13')) then 1 else 0 }" />
+    <xs:element name="M2_hud_PL_L20" type="hud_PL_L20_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../len eq xs:hexBinary('14')) then 1 else 0 }" />
+  </xs:sequence> </xs:complexType>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- MAVLink VFR_HUD (74) payload definitions
+       Always length 20 for M1, length 1-20 for M2 -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <xs:complexType name="hud_PL_L01_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L02_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd_2b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L03_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd_3b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="3"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L04_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L05_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L06_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd_2b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L07_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd_3b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="3"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L08_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L09_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L10_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt_2b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L11_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt_3b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="3"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L12_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L13_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_clmb_1b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L14_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_clmb_2b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="2"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L15_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_clmb_3b" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="3"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L16_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_clmb" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L17_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_clmb" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_hdng_1b" type="xs:byte" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L18_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_clmb" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_hdng"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:short"> <xs:minInclusive value="0"/> <xs:maxInclusive value="360"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L19_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_clmb" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_hdng"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:short"> <xs:minInclusive value="0"/> <xs:maxInclusive value="360"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="hud_PL_thtl_1b" type="xs:unsignedByte" dfdl:lengthKind="explicit" dfdl:length="1"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:complexType name="hud_PL_L20_t"> <xs:sequence>
+    <xs:element name="hud_PL_aspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_gspd" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_alt" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_clmb" type="xs:hexBinary" dfdl:lengthKind="explicit" dfdl:length="4"/>
+    <xs:element name="hud_PL_hdng"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:short"> <xs:minInclusive value="0"/> <xs:maxInclusive value="360"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+    <xs:element name="hud_PL_thtl"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
+      <xs:restriction base="xs:unsignedShort"> <xs:minInclusive value="0"/> <xs:maxInclusive value="100"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
+  </xs:sequence> </xs:complexType>
+
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <!-- Header field types -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+  <xs:simpleType name="stx_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary">
+      <xs:enumeration value="FE"/>
+      <xs:enumeration value="FD"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="len_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="inc_flags_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary">
+      <xs:enumeration value="00"/>
+      <xs:enumeration value="01"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="comp_flags_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="seq_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="sysid_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="compid_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="M1_msgid_t" dfdl:lengthKind="explicit" dfdl:length="1">
+    <xs:restriction base="xs:hexBinary">
+      <xs:enumeration value="00"/>
+      <xs:enumeration value="01"/>
+      <xs:enumeration value="4A"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="M2_msgid_t" dfdl:lengthKind="explicit" dfdl:length="3">
+    <xs:restriction base="xs:hexBinary">
+      <xs:enumeration value="000000"/>
+      <xs:enumeration value="010000"/>
+      <xs:enumeration value="4A0000"/>
+    </xs:restriction> 
+  </xs:simpleType>
+
+  <xs:simpleType name="checksum_t" dfdl:lengthKind="explicit" dfdl:length="2">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="signature_t" dfdl:lengthKind="explicit" dfdl:length="13">
+    <xs:restriction base="xs:hexBinary"/>
+  </xs:simpleType>
+
+</xs:schema>
+

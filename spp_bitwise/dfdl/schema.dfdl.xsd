@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+schema.dfdl.xsd - XSD Schema for Space Packet Protocol
+
+8-7-2025
+
+--> 
+
+<!-- Import xml library and extensions (namespace sources) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/"
+  xmlns:dfdlx="http://www.ogf.org/dfdl/dfdl-1.0/extensions">
+
+  <xs:include schemaLocation="/org/apache/daffodil/xsd/DFDLGeneralFormat.dfdl.xsd"/>
+
+  <xs:annotation>
+    <xs:appinfo source="http://www.ogf.org/dfdl/">
+      <dfdl:format ref="GeneralFormat" bitOrder="mostSignificantBitFirst"
+        byteOrder="bigEndian" representation="binary" lengthUnits="bits"
+        alignmentUnits="bits" alignment="1" binaryNumberRep="binary"/>
+    </xs:appinfo>
+  </xs:annotation>
+
+  <xs:element name="spp_pkt" type="spp_pkt_t"/>
+
+  <xs:complexType name="spp_pkt_t">
+    <xs:sequence>
+      <xs:element name="prim_hdr" type="prim_hdr_t"/>
+
+      <xs:element name="sec_hdr" type="sec_hdr_t"
+        minOccurs="0" maxOccurs="1"
+        dfdl:occursCountKind="expression"
+        dfdl:occursCount="{ if (../prim_hdr/shf eq 1) then 1 else 0 }"/>
+
+      <xs:element name="udf" type="udf_t"
+        minOccurs="0" maxOccurs="1"
+        dfdl:occursCountKind="expression"
+        dfdl:occursCount="{ if (../prim_hdr/shf eq 0) then 1 else 0 }"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- 1. Packet Primary Header -->
+  <xs:complexType name="prim_hdr_t">
+    <xs:sequence>
+      <xs:element name="ver" dfdl:lengthKind="explicit" dfdl:length="3">
+        <xs:simpleType>
+          <xs:restriction base="xs:unsignedByte">
+            <xs:maxInclusive value="0"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+
+      <xs:element name="type" 
+        type="xs:unsignedByte" dfdl:lengthKind="explicit" dfdl:length="1"/>
+
+      <xs:element name="shf"
+        type="xs:unsignedByte" dfdl:lengthKind="explicit" dfdl:length="1"/>
+
+      <xs:element name="apid"
+        type="xs:unsignedShort" dfdl:lengthKind="explicit" dfdl:length="11"/>
+
+      <xs:element name="seq_fl"
+        type="xs:unsignedByte" dfdl:lengthKind="explicit" dfdl:length="2"/>
+
+      <xs:element name="seq_ct"
+        type="xs:unsignedShort" dfdl:lengthKind="explicit" dfdl:length="14"/>
+
+      <!-- Bits 32-47: Packet Data Length Provides packet data length C,
+           where C = # of data octets - 1 --> 
+      <xs:element name="len"
+        type="xs:unsignedShort" dfdl:lengthKind="explicit" dfdl:length="16"/>
+
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- 2. Packet Data Field -->
+  <!-- 2.1 Packet Secondary Header -->
+  <xs:complexType name="sec_hdr_t"> <xs:sequence>
+    <xs:element name="octet" type="xs:hexBinary"
+      dfdl:lengthKind="explicit" dfdl:length="8"
+      minOccurs="0" maxOccurs="65536"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ ../../prim_hdr/len + 1 }"/>
+  </xs:sequence> </xs:complexType>
+
+  <!-- 2.2 User Data Field -->
+  <xs:complexType name="udf_t"> <xs:sequence>
+    <xs:element name="idle_df" type="idle_df_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../prim_hdr/apid eq 2047) then 1 else 0 }"/>
+
+    <xs:element name="other_df" type="other_df_t"
+      minOccurs="0" maxOccurs="1"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../prim_hdr/apid eq 2047) then 0 else 1 }"/>
+  </xs:sequence> </xs:complexType>
+
+  <!-- Unspecified data octets -->
+  <xs:complexType name="other_df_t"> <xs:sequence>
+    <xs:element name="octet" type="xs:hexBinary"
+      dfdl:lengthKind="explicit" dfdl:length="8"
+      minOccurs="0" maxOccurs="65536"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ ../../../prim_hdr/len + 1 }"/>
+  </xs:sequence> </xs:complexType>
+
+  <!-- Example chosen value for idle packet data -->
+  <!-- Two octets 1010 1010 1010 1010 -->
+  <xs:complexType name="idle_df_t"> <xs:sequence>
+    <xs:element name="idle_data" type="idle_data_t"
+      minOccurs="0" maxOccurs="65536"
+      dfdl:occursCountKind="expression"
+      dfdl:occursCount="{ if (../../../prim_hdr/len eq 1) then 1 else 0 }"/>
+  </xs:sequence> </xs:complexType>
+
+  <xs:simpleType name="idle_data_t"
+    dfdl:lengthKind="explicit" dfdl:length="16">
+    <xs:restriction base="xs:hexBinary">
+      <xs:enumeration value="AAAA"/>
+    </xs:restriction> </xs:simpleType>
+
+</xs:schema>
