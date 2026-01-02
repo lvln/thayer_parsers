@@ -62,6 +62,23 @@ if [ -d ${DIR}/xbnf ]; then
 		echo "====="
 fi
 
+if [ -d ${DIR}/dfdl ]; then
+		pushd ./${DIR}/dfdl
+		echo "[ddl: ${DIR}/dfdl]"
+		make ${MODE} run
+		popd
+		echo "====="
+fi
+
+if [ -d ${DIR}/hmr_packrat ]; then
+		pushd ./${DIR}/hmr_packrat
+		echo "[hmr: ${DIR}/hmr_packrat]"
+		make ${MODE} run
+		popd
+		echo "====="
+fi
+
+
 if [ -d ${DIR}/ddl ]; then
 		pushd ./${DIR}/ddl
 		echo "[ddl: ${DIR}/ddl]"

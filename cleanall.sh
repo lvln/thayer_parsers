@@ -45,6 +45,7 @@ popd
 for DIR in gmr0 gmr1 usps bin0 bin1 bin2 command response fwi fwi_range \
 				 jnum jstring json junicode json.unicode \
 				 mavlink_1_msg mavlink_3_msgs mavlink_10_msgs mavlink \
+				 mavlink_1_msg_compact mavlink_3_msgs_compact \
 				 spp \
 				 J1939 url http
 do
@@ -61,7 +62,7 @@ do
 				pushd ./${DIR}/hmr
 				echo [$DIR/hmr]
 				rm -f Makefile
-				ln -s ../../Makefile.hmr ./Makefile				
+				ln -s ../../Makefile.hmr ./Makefile
 				make ${MODE} clean
 				popd
 		fi
@@ -71,6 +72,24 @@ do
 				echo [$DIR/xbnf]
 				rm -f Makefile
 				ln -s ../../Makefile.xbnf ./Makefile
+				make ${MODE} clean
+				popd
+		fi
+
+		if [ -d ./${DIR}/dfdl ] ; then
+				pushd ./${DIR}/dfdl
+				echo [$DIR/dfdl]
+				rm -f Makefile
+				ln -s ../../Makefile.dfdl ./Makefile
+				make ${MODE} clean
+				popd
+		fi
+
+		if [ -d ./${DIR}/hmr_packrat ] ; then
+				pushd ./${DIR}/hmr_packrat
+				echo [$DIR/hmr_packrat]
+				rm -f Makefile
+				ln -s ../../Makefile.hmr ./Makefile
 				make ${MODE} clean
 				popd
 		fi
