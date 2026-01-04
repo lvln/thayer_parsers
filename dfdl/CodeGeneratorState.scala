@@ -1082,6 +1082,7 @@ class CodeGeneratorState(private val root: ElementBase) {
           }
       }
   }
+
   // Returns the notation needed to access a C struct field.  We make some simplifying
   // assumptions to make generating the field access easier:
   // - the expression contains only a relative or absolute path, nothing else (e.g.,
@@ -1116,7 +1117,8 @@ class CodeGeneratorState(private val root: ElementBase) {
       val afterUpDirs = exprWithFields.split("\\.\\./").mkString
       val upDirs = exprWithFields.stripSuffix(afterUpDirs)
       // Count how many up dirs there are
-      val nUpDirs = upDirs.split('/').length + 1 // Add 1 because ../ is stripped
+      // Times 2 because of extra internal types (?) created ("_t_" vs just "_")
+      val nUpDirs = (upDirs.split('/').length)*2
       // Go up the stack that many times to get that struct's C type
       val C = structs(nUpDirs).C
       // Convert the up dirs to parents

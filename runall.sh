@@ -24,7 +24,8 @@ for DIR in gmr0 gmr1 usps bin0 bin1 bin2 command response fwi fwi_range \
 				 jnum jstring json junicode json.unicode \
 				 mavlink_1_msg mavlink_3_msgs mavlink_10_msgs mavlink \
 				 mavlink_1_msg_compact mavlink_3_msgs_compact \
-				 spp J1939 url http
+				 spp spp_bitwise \
+                 J1939 url http
 do
 		echo "[${DIR}]"
 		./run.sh ${DIR} >> ./RESULTS/run.${TODAY}
