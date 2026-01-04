@@ -11,7 +11,10 @@ parser combinator framework under development through the
 [DARPA SafeDocs](https://www.darpa.mil/program/safe-documents) program. In
 addition, an extended version of BNF -- xBNF -- is also explored that
 captures core concepts from Hammer. It is implemented as a
-preprocessor, written in BNF, implemented with Bison.
+preprocessor, written in BNF, implemented with Bison. Finally, the 
+[Apache Daffodil](https://daffodil.apache.org/) implementation of the 
+[Data Format Description Language](https://ogf.org/ogf/doku.php/standards/dfdl/dfdl.html) (DFDL)
+was also explored for parser generation.
 
 All parsers listed in this README are operational; any others in
 the repository represent works in progress. A set of test vectors is
@@ -24,7 +27,7 @@ attributes:
 * **Format.** We seek to parse, for the purpose of validation, both
 ASCII and binary files and communication protocols.
 
-* **LALR.** All grammars are Look-Ahead, Left-to-Right
+* **LALR.** Unless otherwise specified, grammars are Look-Ahead, Left-to-Right
 (LALR). Consequently, they can parsed with a single stack and need not
 involve forking in the associated automaton.
 
@@ -49,9 +52,9 @@ above attributes are present.
 This repository is an active collaboration with a number of talented
 Thayer undergraduate students: _Ellie Baker_ on **ppxml**; _Sarah
 Korb_ on unicode extensions; _Anthony_ and _Brandon Guzman_ on binary
-parsers;_Josh Meise_ on endian extensions to xBNF, the Space Packet
-Protocol (spp) and MAVLINK parsers (with and the assoicated drone
-assembly and data collections, analysis, and fuzzing).
+parsers; _Josh Meise_ on endian extensions to xBNF, the Space Packet
+Protocol (SPP) and MAVLINK parsers (with and the assoicated drone
+assembly and data collections, analysis, and fuzzing); _Ben Cavanagh_ on Daffodil/DFDL, bit-oriented SPP, and ranged value extensions to MAVLINK.
 
 We also thank our collaborators at Lockheed-Martin ATL -- Andrew
 Holmes, Chris Miller, and Chuck Winters -- for their many valuable
@@ -63,7 +66,7 @@ on combinator transformations in xBNF.
 ## License ##
 
 The software provided in this repository is open source and released
-under the standard [MIT software licence](https://mit-license.org)
+under the standard [MIT software license](https://mit-license.org)
 provided in the file LICENSE-MIT.md.
 
 The file **ppxml.c** contained in the directory **ppxml** is released
@@ -96,6 +99,14 @@ Assuming Hammer is installed in a system location
 * Copy _< hammer >/src/test_suite.h_ to _/usr/local/include/hammer/_
 
 These files are needed by **ppxml** and are not available by default.
+
+**Install Daffodil:** install [Apache Daffodil](https://daffodil.apache.org/releases/) from source to a < daffodil > directory under root. Then:
+
+* Replace _< daffodil >/daffodil-codegen-c/src/main/scala/org/apache/daffodil/codegen/c/generators/CodeGeneratorState.scala_ with the file in the _thayer_parsers/dfdl_ subdirectory
+
+* In _< daffodil >/_ run _sbt compile_ and then _sbt daffodil-cli/stage_
+
+* Run the Daffodil CLI from _< daffodil >/daffodil-cli/target/universal/stage/bin/daffodil_
 
 **Install This Repo:** clone this repo under the < root > directory.  
 
@@ -142,13 +153,15 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 #### <ins>MAVLINK parser tutorial</ins> -- a sequence of parsers that incrementally build toward a MAVLINK parser
 
 &emsp;**mavlink_N_msgs** -- multiple MAVLink parsers of increasing complexity  
+&emsp;**mavlink_N_msgs_compact** -- MAVLink parsers of increasing complexity which do not verify enumerated or ranged values  
 &emsp;**mavlink** -- MAVLink parser for Drone Traffic  as well as all MAVLink-related source files  
 
 #### <ins>Other Examples<ins>
 
 &emsp;**url** -- parser for Uniform Resource Locators as per RFC 3986  
 &emsp;**http** -- parser for Hypertext Transfer Protocol as per RFC 7230  
-&emsp;**spp** -- parser for the Space Packet Protocol headers  
+&emsp;**spp** -- byte-oriented parser for the Space Packet Protocol headers  
+&emsp;**spp_bitwise** -- bit-oriented parser for the Space Packet Protocol headers  
 
 ### Parser Subdirectories
 
@@ -156,7 +169,8 @@ Each parser directory typically contains these subdirectories:
 
 &emsp;**bison** -- the working bison version of the grammar  
 &emsp;**xbnf** -- the working xbnf version of the grammar  
-&emsp;**hmr** -- the hammer verion of the grammar  
+&emsp;**hmr** -- the hammer version of the grammar, using the LALR backend  
+&emsp;**hmr_packrat** -- the hammer version of the grammar, using the Packrat backend  
 &emsp;**tests** -- test vectors (pass.N for valid inputs; fail.N for invalid inputs)  
 &emsp;**tests.src** -- a directory for generating and installing test vectors in tests  
 
@@ -165,7 +179,7 @@ Each parser directory typically contains these subdirectories:
 &emsp;**ppxml** -- a routine to generate an xml description of a Hammer parser  
 &emsp;**utils** -- vector module used in MAVLink and Space Packet Protocol fuzzers  
 &emsp;**lib** -- compiled library  
-&emsp;**xbnf** -- the xbnf pre-processor, written in BNF for Bison  
+&emsp;**xbnf** -- the xbnf pre-processor, written in BNF for Bison    
 &emsp;**scripts** -- useful bash scripts -- copy them to ~/bin and place in your path  
 &emsp;**RESULTS** -- each time _runall.sh_ is executed, it places a results file here  
 &emsp;**bugs** -- Hammer implementation issues  
@@ -191,12 +205,19 @@ make clean -- clean the old files
 make -- make the xbnf parser  
 make run -- run it on the foo test vector files  
 
-**In foo/hmr:**  
-edit hmr.c -- implement the hammer grammar  
+**In foo/hmr or foo/hmr_packrat:**  
+edit parser.c -- implement the Hammer grammar  
 make clean -- clean out old files  
-make -- make the hammer parser to run directly  
-make run -- run hammer paser on the test vector files  
+make -- make the Hammer parser to run directly  
+make run -- run the Hammer parser on the test vector files  
 make xml -- generate xml  
+
+**In foo/dfdl:**  
+edit schema.dfdl.xsd -- implement the dfdl schema  
+make clean -- clean out old files  
+make -- generate the Daffodil C parser and compile it into an executable  
+make run -- run the Daffodil parser on the test vector files  
+make schema -- save a Daffodil parser binary which can be run with the Daffodil CLI 
 
 **In Repo Directory:**  
 Add entries to the _clearall_, _makeall_, _run_, and _runall_ scripts.  
