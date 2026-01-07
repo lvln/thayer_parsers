@@ -29,7 +29,8 @@ ASCII and binary files and communication protocols.
 
 * **LALR.** Unless otherwise specified, grammars are Look-Ahead, Left-to-Right
 (LALR). Consequently, they can parsed with a single stack and need not
-involve forking in the associated automaton.
+involve forking in the associated automaton. This does not include Hammer's
+Packrat backend and Daffodil.
 
 * **XML.** The implementation provides a complete, machine-readable
 description of the associated push-down automaton in XML allowing the
@@ -54,7 +55,8 @@ Thayer undergraduate students: _Ellie Baker_ on **ppxml**; _Sarah
 Korb_ on unicode extensions; _Anthony_ and _Brandon Guzman_ on binary
 parsers; _Josh Meise_ on endian extensions to xBNF, the Space Packet
 Protocol (SPP) and MAVLINK parsers (with and the assoicated drone
-assembly and data collections, analysis, and fuzzing); _Ben Cavanagh_ on Daffodil/DFDL, bit-oriented SPP, and ranged value extensions to MAVLINK.
+assembly and data collections, analysis, and fuzzing); _Ben Cavanagh_
+on Daffodil/DFDL, bit-oriented SPP, and ranged value extensions to MAVLINK.
 
 We also thank our collaborators at Lockheed-Martin ATL -- Andrew
 Holmes, Chris Miller, and Chuck Winters -- for their many valuable
