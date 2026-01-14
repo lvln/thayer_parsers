@@ -263,6 +263,7 @@ HParser *init_parser() {
     H_RULE(hud_PL_alt,  allhex4b);
     H_RULE(hud_PL_clmb, allhex4b);
     H_RULE(hud_PL_hdng, h_with_endianness(BYTE_LITTLE_ENDIAN, h_int_range(h_int16(), 0, 360)));
+    H_RULE(hud_PL_thtl_1b, h_int_range(h_uint8(), 0, 100));
     H_RULE(hud_PL_thtl, h_with_endianness(BYTE_LITTLE_ENDIAN, h_int_range(h_uint16(), 0, 100)));
 
     /* VFR_HUD v1/v2 Payloads */
@@ -289,7 +290,7 @@ HParser *init_parser() {
     H_RULE(v2_hud_PL_L16, h_sequence(hud_PL_aspd, hud_PL_gspd, hud_PL_alt, hud_PL_clmb, NULL));
     H_RULE(v2_hud_PL_L17, h_sequence(hud_PL_aspd, hud_PL_gspd, hud_PL_alt, hud_PL_clmb, allhex1b, NULL));
     H_RULE(v2_hud_PL_L18, h_sequence(hud_PL_aspd, hud_PL_gspd, hud_PL_alt, hud_PL_clmb, hud_PL_hdng, NULL));
-    H_RULE(v2_hud_PL_L19, h_sequence(hud_PL_aspd, hud_PL_gspd, hud_PL_alt, hud_PL_clmb, hud_PL_hdng, allhex1b, NULL));
+    H_RULE(v2_hud_PL_L19, h_sequence(hud_PL_aspd, hud_PL_gspd, hud_PL_alt, hud_PL_clmb, hud_PL_hdng, hud_PL_thtl_1b, NULL));
     H_RULE(v2_hud_PL_L20, h_sequence(hud_PL_aspd, hud_PL_gspd, hud_PL_alt, hud_PL_clmb, hud_PL_hdng, hud_PL_thtl, NULL));
 
     /* -------------------------------------------------------------- */

@@ -4,20 +4,19 @@
 make clean > /dev/null
 make &> /dev/null
 
-# Run message generators for each version & type
+# Run message generators for each version
 # HEARTBEAT
-./mav_v1_tgen 1 0 > /dev/null
-#./mav_v2_tgen 2 0 > /dev/null
-
-# SYS_STATUS
-#./mav_v1_tgen 1 1 > /dev/null
-#./mav_v2_tgen 2 1 > /dev/null
-
-# VFR_HUD
-#./mav_v1_tgen 1 74 > /dev/null
-#./mav_v2_tgen 2 74 > /dev/null
+./v1_mav_tgen 0
+./v2_mav_tgen 0
 
 # Clear out old, move everything to test directory
 rm ../tests/pass.* ../tests/fail.* &> /dev/null
-mv ./pass.* ./fail.* ../tests/ &> /dev/null
+# For-loop too because large numbers of files can
+# exceed arg list max len
+for f in ../tests/pass.* ../tests/fail.* ; do
+    rm "$f" &> /dev/null
+done
 
+for f in ./pass.* ./fail.* ; do
+    mv "$f" ../tests/ &> /dev/null
+done

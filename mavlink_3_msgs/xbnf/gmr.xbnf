@@ -258,7 +258,7 @@ v2_hud_PL_L15 : hud_PL_aspd hud_PL_gspd hud_PL_alt allhex3b ;
 v2_hud_PL_L16 : hud_PL_aspd hud_PL_gspd hud_PL_alt hud_PL_clmb ;
 v2_hud_PL_L17 : hud_PL_aspd hud_PL_gspd hud_PL_alt hud_PL_clmb allhex1b ;
 v2_hud_PL_L18 : hud_PL_aspd hud_PL_gspd hud_PL_alt hud_PL_clmb hud_PL_hdng ;
-v2_hud_PL_L19 : hud_PL_aspd hud_PL_gspd hud_PL_alt hud_PL_clmb hud_PL_hdng allhex1b ;
+v2_hud_PL_L19 : hud_PL_aspd hud_PL_gspd hud_PL_alt hud_PL_clmb hud_PL_hdng hud_PL_thtl_1b ;
 v2_hud_PL_L20 : hud_PL_aspd hud_PL_gspd hud_PL_alt hud_PL_clmb hud_PL_hdng hud_PL_thtl ;
 
 /* VFR_HUD Payload Fields */
@@ -267,6 +267,7 @@ hud_PL_gspd : allhex4b ;
 hud_PL_alt : allhex4b ;
 hud_PL_clmb : allhex4b ;
 hud_PL_hdng : [ 'little_endian(0,int16)' - 'little_endian(360,int16)' ] ;
+hud_PL_thtl_1b : [ '\x00' - '\x64' ] ;
 hud_PL_thtl : [ 'little_endian(0,uint16)' - 'little_endian(100,uint16)' ] ;
 
 /* VFR_HUD ID Fields */

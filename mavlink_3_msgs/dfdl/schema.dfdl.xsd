@@ -824,7 +824,9 @@ gmr.dfdl.xsd - XML Schema for MAVLINK HEARTBEAT message
     <xs:element name="hud_PL_hdng"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="2">
       <xs:restriction base="xs:short"> <xs:minInclusive value="0"/> <xs:maxInclusive value="360"/>
       </xs:restriction> </xs:simpleType> </xs:element>
-    <xs:element name="hud_PL_thtl_1b" type="xs:unsignedByte" dfdl:lengthKind="explicit" dfdl:length="1"/>
+    <xs:element name="hud_PL_thtl_1b"> <xs:simpleType dfdl:lengthKind="explicit" dfdl:length="1">
+      <xs:restriction base="xs:unsignedByte"> <xs:minInclusive value="0"/> <xs:maxInclusive value="100"/>
+      </xs:restriction> </xs:simpleType> </xs:element>
   </xs:sequence> </xs:complexType>
 
   <xs:complexType name="hud_PL_L20_t"> <xs:sequence>
