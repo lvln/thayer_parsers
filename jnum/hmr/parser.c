@@ -1,32 +1,33 @@
 /*
- * hmr.c -- Hammer parser for JSON numbers
+ * parser.c -- Hammer parser for JSON numbers
  *
  * Author: Stephen Taylor
  *
  *  * Aug, 31, 2020
  *
+ * Revision by Ben Cavanagh Mar 7, 2026:
+ * Reformat to increase readability for presentation, match xBNF
+ *
  */
 #include "parser.h"
 
 HParser *init_parser() {
-	HParser *json_parser;
+    HParser *jnum_parser;
 
-	/* numbers */
-	H_RULE(dot, h_ch('.'));				
-	H_RULE(minus, h_ch('-'));
-	H_RULE(plus, h_ch('+'));
-	H_RULE(zero, h_ch('0'));
-	H_RULE(digit, h_ch_range(0x30,0x39));
-	H_RULE(onenine, h_ch_range(0x31,0x39));
-	H_RULE(exp, h_choice(h_ch('E'), h_ch('e'), NULL));
-	H_RULE(jnum, h_sequence(h_optional(minus),
-													h_choice(zero,h_sequence(onenine,h_many(digit),NULL), NULL),
-													h_optional(h_sequence(dot,h_many1(digit),NULL)),
-													h_optional(h_sequence(exp,h_optional(h_choice(plus,minus,NULL)),h_many1(digit),NULL)),
-													NULL));
+    /* Terminal chars */
+    H_RULE(sign, h_choice(h_ch('+'), h_ch('-'), NULL));
+    H_RULE(onenine, h_ch_range(0x31,0x39));
+    H_RULE(digit, h_choice(h_ch('0'), onenine, NULL));
 
-	json_parser = h_sequence(jnum,h_end_p(),NULL);
+    H_RULE(digits, h_many1(digit));
 
-	return json_parser;
+    H_RULE(integer, h_sequence(h_optional(h_ch('-')), h_choice(digit, h_sequence(onenine, digits, NULL), NULL), NULL));
+    H_RULE(fraction, h_sequence(h_ch('.'), digits, NULL));
+    H_RULE(exponent, h_sequence(h_choice(h_ch('E'), h_ch('e'), NULL), h_optional(sign), digits, NULL));
+
+    H_RULE(jnum, h_sequence(integer, h_optional(fraction), h_optional(exponent), NULL));
+    jnum_parser = h_sequence(jnum, h_end_p(), NULL);
+
+    return(jnum_parser);
 }
 
