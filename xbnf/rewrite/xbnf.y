@@ -18,14 +18,14 @@ extern void free_mem(void);
 
 /* variables defined in xbnftobison.c */
 extern int linenum;         /* current line number used for error reporting */
-extern int hval;            /* hexadecimal value of ascii character */
-extern int cval;            /* holds character value */
+extern int val;            
 extern bool anybyte;
 extern bool ranging;
 
 /* variables defined in xbnf_tb.c */
 extern FILE *xout;          /* output bison file */
 extern int yylval;          /* value of token read in */
+
 
 %}
 
@@ -64,19 +64,19 @@ termval: hexval
        | charval
        ;
 
-charval: alphanumeric       { cval = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
-       | punct              { cval = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
-       | '"'                { cval = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
-       | '\\' escchar       { cval = $2; if (!ranging) fprintf(xout, "\'\\%c\'", (char)$2); }
+charval: alphanumeric       { val = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
+       | punct              { val = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
+       | '"'                { val = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
+       | '\\' escchar       { val = $2; if (!ranging) fprintf(xout, "\'\\%c\'", (char)$2); }
        ;
 
 
-hexval: '\\' 'x' { hval = 0; } hexdigit { hval = 16*hval; } hexdigit { hexout(); }
+hexval: '\\' 'x' { val = 0; } hexdigit { val = 16*val; } hexdigit { hexout(); }
       ;
 
-hexdigit: digit             { hval += $1 - '0'; }
-        | uhex              { hval += $1 - 'A' + 10; }
-        | lhex              { hval += $1 - 'a' + 10; }
+hexdigit: digit             { val += $1 - '0'; }
+        | uhex              { val += $1 - 'A' + 10; }
+        | lhex              { val += $1 - 'a' + 10; }
         ;
 
 nonterminal: symbolchars

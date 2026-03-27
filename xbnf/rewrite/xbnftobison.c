@@ -3,19 +3,18 @@
 #include <stdbool.h>
 
 #define RSIZE 2
-#define RMIN 0
-#define RMAX 1
+#define RMIN_IND 0
+#define RMAX_IND 1
 
 /* variable defined in xbnf_tb.c */
 extern FILE *xout;          /* output bison file */
 
 /* variables used externally in xbnf.y */
 int linenum;                /* current line number used for error reporting */
-int hval;                   /* hexadecimal value of ascii character */
-int cval;                   /* holds charracer value */
-int nextrange;
-int rlow;
-int rhigh;
+int val;
+int num_ranges;              /* index of next range in array */
+int rlow;                   /* low value fo range */
+int rhigh;                  /* high value of range */
 
 bool ranging;
 bool anybyte;
@@ -27,25 +26,25 @@ void init(void) {
 
     /* initialise all variables */
     linenum = 1;
-    nextrange = 0;
+    num_ranges = 0;
     ranging = false;
     anybyte = false;
 
     /* initialise r__0 for wildcard byte */
     if ((ranges = (int **)malloc(sizeof(int *))) == NULL) {
+        printf("failed to allocate memory for ranges\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if ((ranges[num_ranges] = (int *)malloc(sizeof(int)*RSIZE)) == NULL) {
         printf("failed to allocate memory for range\n");
         exit(EXIT_FAILURE);
     }
 
-    if ((ranges[nextrange] = (int *)malloc(sizeof(int)*RSIZE)) == NULL) {
-        printf("failed to allocate memory for range\n");
-        exit(EXIT_FAILURE);
-    }
+    ranges[num_ranges][RMIN_IND] = 0;
+    ranges[num_ranges][RMAX_IND] = 255;
 
-    ranges[nextrange][RMIN] = 0;
-    ranges[nextrange][RMAX] = 255;
-
-    nextrange++;
+    num_ranges++;
 
     /* write bison preamble */
     fprintf(xout, "%%{\n");
@@ -60,18 +59,18 @@ void init(void) {
 /* write hex values to file */
 void hexout(void) {
     if (!ranging) {
-        if (hval == 0) fprintf(xout, "X00");
-        else fprintf(xout, "\'\\x%02x\'", hval);
+        if (val == 0) fprintf(xout, "X00");
+        else fprintf(xout, "\'\\x%02x\'", val);
     }
 }
 
+/* free all dynamically allocated memory */
 void free_mem(void) {
     int i;
 
     /* free all memory allocated for ranges */
-    for (i = 0; i < nextrange; i++)
+    for (i = 0; i < num_ranges; i++)
         free(ranges[i]);
-
     free(ranges);
 }
 
@@ -79,58 +78,53 @@ void free_mem(void) {
 void rbegin(void) {
     rlow = -1;
     rhigh = -1;
-    cval = -1;
-    hval = -1;
+    val = -1;
     ranging = true;
 
-    if ((ranges = (int **)realloc(ranges, sizeof(int *)*(nextrange + 1))) == NULL) {
+    if ((ranges = (int **)realloc(ranges, sizeof(int *)*(num_ranges + 1))) == NULL) {
         printf("failed to allocate memory for range\n");
         exit(EXIT_FAILURE);
     }
 
-    if ((ranges[nextrange] = (int *)malloc(sizeof(int)*RSIZE)) == NULL) {
+    if ((ranges[num_ranges] = (int *)malloc(sizeof(int)*RSIZE)) == NULL) {
         printf("failed to allocate memory for range\n");
         exit(EXIT_FAILURE);
     }
 }
 
 void setrlow(void) {
-    if (hval < 0 && cval < 0) {
+    if (val < 0) {
         printf("error: line %d - invalid range start\n", linenum);
         exit(EXIT_FAILURE);
     }
 
-    if (hval >= 0) rlow=hval;
-    else rlow = cval;
-
-
-    hval = -1;
-    cval = -1;
+    rlow = val;
+    val = -1;
 }
 
 void setrhigh(void) {
-    if (hval < 0 && cval < 0) {
+    if (val < 0) {
         printf("error: line %d - invalid range end\n", linenum);
         exit(EXIT_FAILURE);
     }
 
-    if (hval >= 0) rhigh = hval;
-    else rhigh = cval;
+    rhigh = val;
 
     if (rhigh <= rlow) {
         printf("error: line %d - invalid range [%d-%d] -- low to high required\n", linenum, rlow, rhigh);
         exit(EXIT_FAILURE);
     }
 
+    /* handles case where * was not used */
     if (rlow == 0 && rhigh == 255) {
         fprintf(xout, "r__0");
         anybyte = true;
     }
     else {
-        ranges[nextrange][RMIN] = rlow;
-        ranges[nextrange][RMAX] = rhigh;
-        fprintf(xout, "r__%d", nextrange);
-        nextrange++;
+        ranges[num_ranges][RMIN_IND] = rlow;
+        ranges[num_ranges][RMAX_IND] = rhigh;
+        fprintf(xout, "r__%d", num_ranges);
+        num_ranges++;
     }
 
     ranging = false;
@@ -143,12 +137,12 @@ void addrules(void) {
     if (anybyte) i = 0;
     else i = 1;
 
-    if (anybyte || nextrange > 1)
+    if (anybyte || num_ranges > 1)
         fprintf(xout, "\n/* Range Expansions */\n");
 
-    for (; i < nextrange; i++) {
+    for (; i < num_ranges; i++) {
         fprintf(xout, "r__%d : ", i);
-        for (k = 0, j = ranges[i][RMIN]; j < ranges[i][RMAX]; k++, j++) {
+        for (k = 0, j = ranges[i][RMIN_IND]; j < ranges[i][RMAX_IND]; k++, j++) {
             if (k%8 == 0) fprintf(xout, "\n  ");
 
             if (j == 0) fprintf(xout, "X00 | ");
@@ -157,6 +151,6 @@ void addrules(void) {
 
         if (k%8 == 0) fprintf(xout, "\n  ");
 
-        fprintf(xout, "\'\\x%02x\' ;\n", (uint8_t)j);
+        fprintf(xout, "\'\\x%02x\' ;\n\n", (uint8_t)j);
     }
 }
