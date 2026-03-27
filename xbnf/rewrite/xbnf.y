@@ -48,7 +48,8 @@ rules: rule
      | rules rule
      ;
 
-rule: ws0 nonterminal ws0 ':' { fprintf(xout, ":"); } rhs ';' { fprintf(xout, ";\n\n"); }
+rule: ws0 nonterminal ws0 ':' { fprintf(xout, ":"); } rhs ';' { fprintf(xout, "\n  ;\n\n"); }
+    | ws0 comment               { fprintf(xout, "\n"); }
     ;
 
 rhs: terms ws1
@@ -137,7 +138,7 @@ commentchar: alphanumeric       { fprintf(xout, "%c", (char)$1); }
            | ','                { fprintf(xout, "%c", (char)$1); }
            | '\''               { fprintf(xout, "%c", (char)$1); }
            | '_'                { fprintf(xout, "%c", (char)$1); }
-           | wschar             /* already written to file */
+           | wschar            { fprintf(xout, "%c", (char)$1); }
            ;
 
 uchar: uhex | 'G' | 'H' | 'I' | 'J'
