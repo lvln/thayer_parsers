@@ -82,19 +82,19 @@ void rbegin(void) {
     ranging = true;
 
     if ((ranges = (int **)realloc(ranges, sizeof(int *)*(num_ranges + 1))) == NULL) {
-        printf("failed to allocate memory for range\n");
+        fprintf(stderr, "failed to allocate memory for range\n");
         exit(EXIT_FAILURE);
     }
 
     if ((ranges[num_ranges] = (int *)malloc(sizeof(int)*RSIZE)) == NULL) {
-        printf("failed to allocate memory for range\n");
+        fprintf(stderr, "failed to allocate memory for range\n");
         exit(EXIT_FAILURE);
     }
 }
 
 void setrlow(void) {
     if (val < 0) {
-        printf("error: line %d - invalid range start\n", linenum);
+        fprintf(stderr, "error: line %d - invalid range start\n", linenum);
         exit(EXIT_FAILURE);
     }
 
@@ -104,14 +104,14 @@ void setrlow(void) {
 
 void setrhigh(void) {
     if (val < 0) {
-        printf("error: line %d - invalid range end\n", linenum);
+        fprintf(stderr, "error: line %d - invalid range end\n", linenum);
         exit(EXIT_FAILURE);
     }
 
     rhigh = val;
 
     if (rhigh <= rlow) {
-        printf("error: line %d - invalid range [%d-%d] -- low to high required\n", linenum, rlow, rhigh);
+        fprintf(stderr, "error: line %d - invalid range [%d-%d] -- low to high required\n", linenum, rlow, rhigh);
         exit(EXIT_FAILURE);
     }
 
