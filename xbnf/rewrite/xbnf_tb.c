@@ -15,11 +15,11 @@
 
 extern int yylex(void);
 extern int yydebug;
-extern int linenum;
+extern int line_num;
 
 void yyerror(char *s)
 {
-	fprintf(stderr, "error: line %d - %s\n", linenum, s);
+	fprintf(stderr, "error: line %d - %s\n", line_num, s);
 }
 
 FILE* yyin;

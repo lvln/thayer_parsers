@@ -9,23 +9,25 @@ void yyerror(char *s);
 
 /* functions defined in xbnftobison.c */
 extern void init(void);
-extern void hexout(void);
-extern void rbegin(void);
-extern void setrlow(void);
-extern void setrhigh(void);
-extern void addrules(void);
+extern void hex_out(void);
+extern void set_r_low(void);
+extern void set_r_high(void);
+extern void add_rules(void);
 extern void free_mem(void);
 
+extern void e_start();
+extern void set_next_enum();
+extern void e_end();
+
 /* variables defined in xbnftobison.c */
-extern int linenum;         /* current line number used for error reporting */
-extern int val;            
-extern bool anybyte;
+extern int line_num;         /* current line number used for error reporting */
+extern int val;
+extern bool any_byte;
 extern bool ranging;
 
 /* variables defined in xbnf_tb.c */
 extern FILE *xout;          /* output bison file */
 extern int yylval;          /* value of token read in */
-
 
 %}
 
@@ -33,7 +35,7 @@ extern int yylval;          /* value of token read in */
 
 %%
 
-bnf: { init(); } rules ws0 { addrules(); free_mem(); }
+bnf: { init(); } rules ws0 { add_rules(); free_mem(); }
    ;
 
 rules: rule
@@ -71,7 +73,7 @@ charval: alphanumeric       { val = $1; if (!ranging) fprintf(xout, "\'%c\'", (c
        ;
 
 
-hexval: '\\' 'x' { val = 0; } hexdigit { val = 16*val; } hexdigit { hexout(); }
+hexval: '\\' 'x' { val = 0; } hexdigit { val = 16*val; } hexdigit { hex_out(); }
       ;
 
 hexdigit: digit             { val += $1 - '0'; }
@@ -96,12 +98,17 @@ alphanumeric: uchar
             | digit
             ;
 
-range: '[' { rbegin(); } elements ']'
-     | '*' { fprintf(xout, "r__0"); anybyte = true; }
+range: '[' { ranging = true; } elements ']'
+     | '*' { fprintf(xout, "r__0"); any_byte = true; }
      ;
 
-elements: ws0 terminal ws0 { setrlow(); } '-' ws0 terminal ws0 { setrhigh(); }
+elements: ws0 terminal ws0 { set_r_low(); } '-' ws0 terminal ws0 { set_r_high(); }
+        | enumeration { e_end(); }
         ;
+
+enumeration: ws0 terminal ws0 { e_start(); }
+           | enumeration ',' ws0 terminal ws0 { set_next_enum(); }
+           ;
 
 /* echo comments */
 comment: '/' '*' { fprintf(xout, "/*"); } commentchars '*' '/' { fprintf(xout, "*/"); }
@@ -161,7 +168,7 @@ ws1: wschar
 
 /* echo whitespace */
 wschar: ' '         { fprintf(xout, " "); }
-      | '\n'        { linenum++; fprintf(xout, "\n"); }
+      | '\n'        { line_num++; fprintf(xout, "\n"); }
       | '\t'        { fprintf(xout, "\t"); }
       | '\r'        { fprintf(xout, "\r"); }
       ;
