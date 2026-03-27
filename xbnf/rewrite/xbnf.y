@@ -15,9 +15,13 @@ extern void set_r_high(void);
 extern void add_rules(void);
 extern void free_mem(void);
 
-extern void e_start();
-extern void set_next_enum();
-extern void e_end();
+extern void e_start(void);
+extern void set_next_enum(void);
+extern void e_end(void);
+
+extern void s_begin(void);
+extern void s_add(void);
+extern void s_end(void);
 
 /* variables defined in xbnftobison.c */
 extern int line_num;         /* current line number used for error reporting */
@@ -57,7 +61,15 @@ term: terminal
     | nonterminal
     | comment
     | range
+    | string
     ;
+
+string: '"' letters '"'             { s_end(); }
+      ;
+
+letters: charval                  { s_begin(); }
+       | letters charval          { s_add(); }
+       ;
 
 terminal: '\'' termval '\''
         ;
@@ -66,12 +78,11 @@ termval: hexval
        | charval
        ;
 
-charval: alphanumeric       { val = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
-       | punct              { val = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
-       | '"'                { val = $1; if (!ranging) fprintf(xout, "\'%c\'", (char)$1); }
-       | '\\' escchar       { val = $2; if (!ranging) fprintf(xout, "\'\\%c\'", (char)$2); }
+/* NOTE: Removed whitespace rule here so strings cannot contain whitespace */
+charval: alphanumeric       { val = $1; }
+       | punct              { val = $1; }
+       | '\\' escchar       { val = $2; }
        ;
-
 
 hexval: '\\' 'x' { val = 0; } hexdigit { val = 16*val; } hexdigit { hex_out(); }
       ;

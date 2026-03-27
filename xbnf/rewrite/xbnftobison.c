@@ -27,6 +27,10 @@ int** ranges;
 int num_enums;
 enum_t* enums;
 
+char** strings;
+int num_strings;
+int num_chars;
+
 bool ranging;
 bool any_byte;
 
@@ -55,8 +59,11 @@ void init(void) {
     ranges[num_ranges][RMAX_IND] = 255;
     num_ranges++;
 
-    num_enums = 0;
     enums = NULL;
+    num_enums = 0;
+
+    strings = NULL;
+    num_strings = 0;
 
     /* write bison preamble */
     fprintf(xout, "%%{\n");
@@ -88,6 +95,10 @@ void free_mem(void) {
     for (i = 0; i < num_enums; i++)
         free(enums[i].vals);
     free(enums);
+
+    for (i = 0; i < num_strings; i++)
+        free(strings[i]);
+    free(strings);
 }
 
 void set_r_low(void) {
@@ -178,10 +189,56 @@ void e_end(void) {
         exit(EXIT_FAILURE);
     }
 
-    fprintf(xout, "e__%d", num_enums);
-
     num_enums++;
     ranging = false;
+
+    fprintf(xout, "e__%d", num_enums);
+}
+
+void s_begin(void) {
+    if (strings == NULL) {
+        if ((strings = (char**)malloc(sizeof(char*))) == NULL) {
+            fprintf(stderr, "failed to allocate memory for strings\n");
+            exit(EXIT_FAILURE);
+        }
+    } else if ((strings = (char**)realloc(strings, sizeof(char*)*(num_strings + 1))) == NULL) {
+        fprintf(stderr, "failed to allocate memory for strings\n");
+        exit(EXIT_FAILURE);
+    }
+
+    /* allocate memory for first character */
+    if ((strings[num_strings] = (char*)malloc(sizeof(char))) == NULL) {
+        fprintf(stderr, "failed to allocate memory for string\n");
+        exit(EXIT_FAILURE);
+    }
+
+    strings[num_strings][0] = val;
+    num_chars = 1;
+}
+
+void s_add(void) {
+    /* increare size of string */
+    if ((strings[num_strings] = (char*)realloc(strings[num_strings], sizeof(char)*(num_chars + 1))) == NULL) {
+        fprintf(stderr, "failed to allocate memory for string\n");
+        exit(EXIT_FAILURE);
+    }
+
+    strings[num_strings][num_chars] = val;
+    num_chars++;
+}
+
+void s_end(void) {
+
+    /* increase size of string */
+    if ((strings[num_strings] = (char*)realloc(strings[num_strings], sizeof(char)*(num_chars + 1))) == NULL) {
+        fprintf(stderr, "failed to allocate memory for string\n");
+        exit(EXIT_FAILURE);
+    }
+
+    strings[num_strings][num_chars] = '\0';
+    num_strings++;
+
+    fprintf(xout, "s__%d", num_strings);
 }
 
 void add_rules(void) {
@@ -222,6 +279,20 @@ void add_rules(void) {
             if (j%8 == 0) fprintf(xout, "\n  ");
             if (enums[i].vals[j] == 0) fprintf(xout, "X00 ;\n\n");
             else fprintf(xout, "\'\\x%02x\' ;\n\n", (uint8_t)enums[i].vals[j]);
+        }
+    }
+
+    if (num_strings > 0) {
+        fprintf(xout, "\n/* Strings */\n");
+
+        for (i = 0; i < num_strings; i++) {
+            fprintf(xout, "s__%d :\n", i);
+            j = 0;
+            while (strings[i][j] != '\0') {
+                fprintf(xout, "\'%c\' ", strings[i][j]);
+                j++;
+            }
+            fprintf(xout, ";\n\n");
         }
     }
 }
