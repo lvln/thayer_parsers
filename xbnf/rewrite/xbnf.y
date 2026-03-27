@@ -10,6 +10,7 @@ void yyerror(char *s);
 /* functions defined in xbnftobison.c */
 extern void init(void);
 extern void hex_out(void);
+extern void char_out(void);
 extern void set_r_low(void);
 extern void set_r_high(void);
 extern void add_rules(void);
@@ -22,6 +23,7 @@ extern void e_end(void);
 extern void s_begin(void);
 extern void s_add(void);
 extern void s_end(void);
+extern bool in_string;
 
 /* variables defined in xbnftobison.c */
 extern int line_num;         /* current line number used for error reporting */
@@ -46,15 +48,15 @@ rules: rule
      | rules rule
      ;
 
-rule: ws0 nonterminal ws0 ':' { fprintf(xout, ":"); } rhs ';' { fprintf(xout, ";"); }
+rule: ws0 nonterminal ws0 ':' { fprintf(xout, ":"); } rhs ';' { fprintf(xout, ";\n\n"); }
     ;
 
 rhs: terms ws1
-   | rhs '|' { fprintf(xout, "|" ); } terms ws1
+   | rhs '|' { fprintf(xout, "\n  |" ); } terms ws1
    ;
 
-terms: /* empty */
-     | terms ws1 term
+terms: /* empty */          { fprintf(xout, " "); }
+     | terms ws1 term       { fprintf(xout, " "); }
      ;
 
 term: terminal
@@ -74,17 +76,16 @@ letters: charval                  { s_begin(); }
 terminal: '\'' termval '\''
         ;
 
-termval: hexval
-       | charval
+termval: hexval                 { hex_out(); }
+       | charval                { char_out(); }
        ;
 
-/* NOTE: Removed whitespace rule here so strings cannot contain whitespace */
 charval: alphanumeric       { val = $1; }
        | punct              { val = $1; }
        | '\\' escchar       { val = $2; }
        ;
 
-hexval: '\\' 'x' { val = 0; } hexdigit { val = 16*val; } hexdigit { hex_out(); }
+hexval: '\\' 'x' { val = 0; } hexdigit { val = 16*val; } hexdigit
       ;
 
 hexdigit: digit             { val += $1 - '0'; }
@@ -95,13 +96,13 @@ hexdigit: digit             { val += $1 - '0'; }
 nonterminal: symbolchars
            ;
 
-symbolchars: symbolchar
-           | symbolchars symbolchar
+symbolchars: symbolchar                 { fprintf(xout, "%c", (char)$1); }
+           | symbolchars symbolchar     { fprintf(xout, "%c", (char)$2); }
            ;
 
-symbolchar: alphanumeric    { fprintf(xout, "%c", (char)$1); }
-          | '_'             { fprintf(xout, "_"); }
-          | '.'             { fprintf(xout, "."); }
+symbolchar: alphanumeric
+          | '_'
+          | '.'
           ;
 
 alphanumeric: uchar
@@ -178,8 +179,8 @@ ws1: wschar
    ;
 
 /* echo whitespace */
-wschar: ' '         { fprintf(xout, " "); }
-      | '\n'        { line_num++; fprintf(xout, "\n"); }
-      | '\t'        { fprintf(xout, "\t"); }
-      | '\r'        { fprintf(xout, "\r"); }
+wschar: ' '
+      | '\n'        { line_num++; }
+      | '\t'
+      | '\r'
       ;

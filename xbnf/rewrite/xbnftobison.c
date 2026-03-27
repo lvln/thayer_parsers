@@ -31,6 +31,7 @@ char** strings;
 int num_strings;
 int num_chars;
 
+bool in_string;
 bool ranging;
 bool any_byte;
 
@@ -41,6 +42,7 @@ void init(void) {
     /* initialise all variables */
     line_num = 1;
     num_ranges = 0;
+    in_string = false;
     ranging = false;
     any_byte = false;
 
@@ -81,6 +83,11 @@ void hex_out(void) {
         if (val == 0) fprintf(xout, "X00");
         else fprintf(xout, "\'\\x%02x\'", val);
     }
+}
+
+void char_out(void) {
+    if (!ranging && !in_string)
+        fprintf(xout, "\'%c\'", (char)val);
 }
 
 /* free all dynamically allocated memory */
@@ -196,6 +203,8 @@ void e_end(void) {
 }
 
 void s_begin(void) {
+    in_string = true;
+
     if (strings == NULL) {
         if ((strings = (char**)malloc(sizeof(char*))) == NULL) {
             fprintf(stderr, "failed to allocate memory for strings\n");
@@ -239,6 +248,8 @@ void s_end(void) {
     num_strings++;
 
     fprintf(xout, "s__%d", num_strings);
+
+    in_string = false;
 }
 
 void add_rules(void) {
@@ -286,7 +297,7 @@ void add_rules(void) {
         fprintf(xout, "\n/* Strings */\n");
 
         for (i = 0; i < num_strings; i++) {
-            fprintf(xout, "s__%d :\n", i);
+            fprintf(xout, "s__%d :\n  ", i);
             j = 0;
             while (strings[i][j] != '\0') {
                 fprintf(xout, "\'%c\' ", strings[i][j]);
