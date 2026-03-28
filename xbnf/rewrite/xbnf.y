@@ -25,6 +25,8 @@ extern void s_add(void);
 extern void s_end(void);
 extern bool in_string;
 
+extern char get_esc_val(char c);
+
 /* variables defined in xbnftobison.c */
 extern int line_num;         /* current line number used for error reporting */
 extern int val;
@@ -34,6 +36,7 @@ extern bool ranging;
 /* variables defined in xbnf_tb.c */
 extern FILE *xout;          /* output bison file */
 extern int yylval;          /* value of token read in */
+
 
 %}
 
@@ -83,7 +86,7 @@ termval: hexval                 { hex_out(); }
 
 charval: alphanumeric       { val = $1; }
        | punct              { val = $1; }
-       | '\\' escchar       { val = $2; }
+       | '\\' escchar       { val = get_esc_val((char)$2); }
        ;
 
 hexval: '\\' 'x' { val = 0; } hexdigit { val = 16*val; } hexdigit
@@ -157,12 +160,12 @@ uhex: 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
 lhex: 'a'| 'b' | 'c' | 'd' | 'e' | 'f'
     ;
 
-punct: ' ' | '!' | '#' | '$' | '%' | '&' | '\'' | '(' | ')' | '*' | '+'
+punct: ' ' | '!' | '#' | '$' | '%' | '&' | '~' | '(' | ')' | '*' | '+'
      | ',' | '-' | '.' | '/' | ':' | ';' | '<' | '=' | '>' | '?' | '@'
-     | '[' | ']' | '^' | '_' | '`' | '{' | '|' | '}' | '~'
+     | '[' | ']' | '^' | '_' | '`' | '{' | '|' | '}'
      ;
 
-escchar: 'b' | 'f' | 'n' | 'r' | 't' | '\"' | '\\' | '/' | 'v' | '?' | 'a' | 'e'
+escchar: 'b' | 'f' | 'n' | 'r' | 't' | '\"' | '\\' | 'e' | 'v' | '?' | 'a' | '\''
        ;
 
 digit: '0' | onenine

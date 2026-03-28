@@ -35,6 +35,49 @@ bool in_string;
 bool ranging;
 bool any_byte;
 
+static char get_esc_char(char c) {
+    switch (c) {
+        case '\b':
+            return 'b';
+            break;
+        case '\f':
+            return 'f';
+            break;
+        case '\n':
+            return 'n';
+            break;
+        case '\r':
+            return 'r';
+            break;
+        case '\t':
+            return 't';
+            break;
+        case '\\':
+            return '\\';
+            break;
+        case '\"':
+            return '\"';
+            break;
+        case (char)27:
+            return (char)27;
+            break;
+        case '\v':
+            return 'v';
+            break;
+        case '\?':
+            return '?';
+            break;
+        case '\a':
+            return 'a';
+            break;
+        case '\'':
+            return '\'';
+            break;
+        default:
+            fprintf(stderr, "unknown escaped character on line %d\n", line_num);
+            exit(EXIT_FAILURE);
+    }
+}
 
 /* initialise all variables and write bison preamble */
 void init(void) {
@@ -86,8 +129,55 @@ void hex_out(void) {
 }
 
 void char_out(void) {
-    if (!ranging && !in_string)
-        fprintf(xout, "\'%c\'", (char)val);
+    if (!ranging && !in_string) {
+        if ((val >= 7 && val <= 13) || val == 27 || val == '\'' || val == '\"' || val == '\\')
+            fprintf(xout, "\'\\%c\'", (char)val);
+        else fprintf(xout, "\'%c\'", (char)val);
+    }
+}
+
+char get_esc_val(char c) {
+    switch (c) {
+        case 'b':
+            return '\b';
+            break;
+        case 'f':
+            return '\f';
+            break;
+        case 'n':
+            return '\n';
+            break;
+        case 'r':
+            return '\r';
+            break;
+        case 't':
+            return '\t';
+            break;
+        case '\\':
+            return '\\';
+            break;
+        case '\"':
+            return '\"';
+            break;
+        case 'e':
+            return (char)27;
+            break;
+        case 'v':
+            return '\v';
+            break;
+        case '\?':
+            return '\?';
+            break;
+        case 'a':
+            return '\a';
+            break;
+        case '\'':
+            return '\'';
+            break;
+        default:
+            fprintf(stderr, "unknown escaped character on line %d\n", line_num);
+            exit(EXIT_FAILURE);
+    }
 }
 
 /* free all dynamically allocated memory */
@@ -253,7 +343,7 @@ void s_end(void) {
 }
 
 void add_rules(void) {
-    int i, j, k;
+    int i, j, k, cval;
 
     /* if a wildcard is present in grammar, start at 0-th index in ranges array */
     if (any_byte) i = 0;
@@ -293,14 +383,17 @@ void add_rules(void) {
         }
     }
 
+    /* NOTE: Escaped characters in string will not print backslash as a literal. */
     if (num_strings > 0) {
         fprintf(xout, "\n/* Strings */\n");
 
         for (i = 0; i < num_strings; i++) {
             fprintf(xout, "s__%d :\n  ", i);
             j = 0;
-            while (strings[i][j] != '\0') {
-                fprintf(xout, "\'%c\' ", strings[i][j]);
+            while ((cval = (int)strings[i][j]) != 0) {
+                if ((cval >= 7 && cval <= 13) || cval == 27 || cval == '\'' || cval == '\"' || cval == '\\')
+                    fprintf(xout, "\'\\%c\' ", get_esc_char((char)cval));
+                else fprintf(xout, "\'%c\' ", (char)cval);
                 j++;
             }
             fprintf(xout, ";\n\n");
