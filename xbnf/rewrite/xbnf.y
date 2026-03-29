@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include "types.h"
 
 /* native bison functions */
 int yylex(void);
@@ -29,7 +30,7 @@ extern char get_esc_val(char c);
 
 /* variables defined in xbnftobison.c */
 extern int line_num;         /* current line number used for error reporting */
-extern int val;
+extern val_t val;
 extern bool any_byte;
 extern bool ranging;
 
@@ -37,6 +38,7 @@ extern bool ranging;
 extern FILE *xout;          /* output bison file */
 extern int yylval;          /* value of token read in */
 
+uint8_t tval;
 
 %}
 
@@ -80,21 +82,21 @@ letters: charval                  { s_begin(); }
 terminal: '\'' termval '\''
         ;
 
-termval: hexval                 { hex_out(); }
-       | charval                { char_out(); }
+termval: hexval                 { val.val.uint8 = tval; val.t = uint8; hex_out(); }
+       | charval                { val.val.uint8 = tval; char_out(); }
        ;
 
-charval: alphanumeric       { val = $1; }
-       | punct              { val = $1; }
-       | '\\' escchar       { val = get_esc_val((char)$2); }
+charval: alphanumeric       { tval = $1; }
+       | punct              { tval = $1; }
+       | '\\' escchar       { tval = get_esc_val((char)$2); }
        ;
 
-hexval: '\\' 'x' { val = 0; } hexdigit { val = 16*val; } hexdigit
+hexval: '\\' 'x' { tval = 0; } hexdigit { tval = 16*tval; } hexdigit
       ;
 
-hexdigit: digit             { val += $1 - '0'; }
-        | uhex              { val += $1 - 'A' + 10; }
-        | lhex              { val += $1 - 'a' + 10; }
+hexdigit: digit             { tval += $1 - '0'; }
+        | uhex              { tval += $1 - 'A' + 10; }
+        | lhex              { tval += $1 - 'a' + 10; }
         ;
 
 nonterminal: symbolchars

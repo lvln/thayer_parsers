@@ -2,57 +2,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
-
-typedef enum {
-    byte,
-    uint8,
-    int8,
-    uint16_le,
-    int16_le,
-    uint32_le,
-    int32_le,
-    uint64_le,
-    int64_le,
-    uint16_be,
-    int16_be,
-    uint32_be,
-    int32_be,
-    uint64_be,
-    int64_be
-} type;
-
-typedef union {
-    uint8_t uint8;
-    int8_t int8;
-    uint16_t uint16;
-    int16_t int16;
-    uint32_t uint32;
-    int32_t int32;
-    uint64_t uint64;
-    int64_t int64;
-} data_t;
-
-typedef struct {
-    data_t val;
-    type t;
-} val_t;
-
-typedef struct {
-    int num_vals;
-    val_t* vals;
-} enum_t;
-
-typedef struct {
-    val_t min;
-    val_t max;
-} range_t;
+#include "types.h"
 
 /* variable defined in xbnf_tb.c */
 extern FILE* xout;          /* output bison file */
 
 /* variables used externally in xbnf.y */
 int line_num;                /* current line number used for error reporting */
-int val;
+val_t val;
 
 int num_ranges;              /* index of next range in array */
 val_t r_low;                   /* low value fo range */
@@ -155,16 +112,16 @@ void init(void) {
 /* write hex values to file */
 void hex_out(void) {
     if (!ranging) {
-        if (val == 0) fprintf(xout, "X00");
-        else fprintf(xout, "\'\\x%02x\'", val);
+        if (val.val.uint8 == 0) fprintf(xout, "X00");
+        else fprintf(xout, "\'\\x%02x\'", val.val.uint8);
     }
 }
 
 void char_out(void) {
     if (!ranging && !in_string) {
-        if ((val >= 7 && val <= 13) || val == 27 || val == '\'' || val == '\"' || val == '\\')
-            fprintf(xout, "\'\\%c\'", (char)val);
-        else fprintf(xout, "\'%c\'", (char)val);
+        if ((val.val.uint8 >= 7 && val.val.uint8 <= 13) || val.val.uint8 == 27 || val.val.uint8 == '\'' || val.val.uint8 == '\"' || val.val.uint8 == '\\')
+            fprintf(xout, "\'\\%c\'", (char)val.val.uint8);
+        else fprintf(xout, "\'%c\'", (char)val.val.uint8);
     }
 }
 
@@ -228,7 +185,7 @@ void free_mem(void) {
 }
 
 void set_r_low(void) {
-    if (val < 0) {
+    if (val.val.uint8 < 0) {
         fprintf(stderr, "error: line %d - invalid range start\n", line_num);
         exit(EXIT_FAILURE);
     }
@@ -239,18 +196,18 @@ void set_r_low(void) {
     }
 
     // TODO: Add in cses here for different datatypes.
-    r_low.val.uint8 = val;
+    r_low.val.uint8 = val.val.uint8;
     r_low.t = uint8;
 }
 
 void set_r_high(void) {
-    if (val < 0) {
+    if (val.val.uint8 < 0) {
         fprintf(stderr, "error: line %d - invalid range end\n", line_num);
         exit(EXIT_FAILURE);
     }
 
     // TODO: Add in cases here for different datatypes.
-    r_high.val.uint8 = val;
+    r_high.val.uint8 = val.val.uint8;
     r_high.t = uint8;
 
     if (r_high.val.uint8 <= r_low.val.uint8) {
@@ -295,7 +252,7 @@ void e_start(void) {
     }
 
     enums[num_enums].num_vals = 1;
-    enums[num_enums].vals[0].val.uint8 = val;
+    enums[num_enums].vals[0].val.uint8 = val.val.uint8;
     enums[num_enums].vals[0].t = uint8;
 }
 
@@ -307,7 +264,7 @@ void set_next_enum(void) {
     }
 
     /* add value to enumerationa array */
-    enums[num_enums].vals[enums[num_enums].num_vals].val.uint8 = val;
+    enums[num_enums].vals[enums[num_enums].num_vals].val.uint8 = val.val.uint8;
     enums[num_enums].vals[enums[num_enums].num_vals].t = uint8;
     enums[num_enums].num_vals++;
 }
@@ -343,7 +300,7 @@ void s_begin(void) {
         exit(EXIT_FAILURE);
     }
 
-    strings[num_strings][0] = val;
+    strings[num_strings][0] = val.val.uint8;
     num_chars = 1;
 }
 
@@ -354,7 +311,7 @@ void s_add(void) {
         exit(EXIT_FAILURE);
     }
 
-    strings[num_strings][num_chars] = val;
+    strings[num_strings][num_chars] = val.val.uint8;
     num_chars++;
 }
 
