@@ -3,14 +3,49 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define RSIZE 2
-#define RMIN_IND 0
-#define RMAX_IND 1
+typedef enum {
+    byte,
+    uint8,
+    int8,
+    uint16_le,
+    int16_le,
+    uint32_le,
+    int32_le,
+    uint64_le,
+    int64_le,
+    uint16_be,
+    int16_be,
+    uint32_be,
+    int32_be,
+    uint64_be,
+    int64_be
+} type;
+
+typedef union {
+    uint8_t uint8;
+    int8_t int8;
+    uint16_t uint16;
+    int16_t int16;
+    uint32_t uint32;
+    int32_t int32;
+    uint64_t uint64;
+    int64_t int64;
+} data_t;
+
+typedef struct {
+    data_t val;
+    type t;
+} val_t;
 
 typedef struct {
     int num_vals;
-    int* vals;
+    val_t* vals;
 } enum_t;
+
+typedef struct {
+    val_t min;
+    val_t max;
+} range_t;
 
 /* variable defined in xbnf_tb.c */
 extern FILE* xout;          /* output bison file */
@@ -20,9 +55,9 @@ int line_num;                /* current line number used for error reporting */
 int val;
 
 int num_ranges;              /* index of next range in array */
-int r_low;                   /* low value fo range */
-int r_high;                  /* high value of range */
-int** ranges;
+val_t r_low;                   /* low value fo range */
+val_t r_high;                  /* high value of range */
+range_t* ranges;
 
 int num_enums;
 enum_t* enums;
@@ -90,18 +125,15 @@ void init(void) {
     any_byte = false;
 
     /* initialise r__0 for wildcard byte */
-    if ((ranges = (int**)malloc(sizeof(int*))) == NULL) {
+    if ((ranges = (range_t*)malloc(sizeof(range_t))) == NULL) {
         fprintf(stderr, "failed to allocate memory for ranges\n");
         exit(EXIT_FAILURE);
     }
 
-    if ((ranges[num_ranges] = (int*)malloc(sizeof(int)*RSIZE)) == NULL) {
-        fprintf(stderr, "failed to allocate memory for range\n");
-        exit(EXIT_FAILURE);
-    }
-
-    ranges[num_ranges][RMIN_IND] = 0;
-    ranges[num_ranges][RMAX_IND] = 255;
+    ranges[num_ranges].min.val.uint8 = 0;
+    ranges[num_ranges].max.val.uint8 = 255;
+    ranges[num_ranges].min.t = uint8;
+    ranges[num_ranges].max.t = uint8;
     num_ranges++;
 
     enums = NULL;
@@ -184,9 +216,6 @@ char get_esc_val(char c) {
 void free_mem(void) {
     int i;
 
-    /* free all memory allocated for ranges */
-    for (i = 0; i < num_ranges; i++)
-        free(ranges[i]);
     free(ranges);
 
     for (i = 0; i < num_enums; i++)
@@ -204,17 +233,14 @@ void set_r_low(void) {
         exit(EXIT_FAILURE);
     }
 
-    if ((ranges = (int**)realloc(ranges, sizeof(int*)*(num_ranges + 1))) == NULL) {
+    if ((ranges = (range_t*)realloc(ranges, sizeof(range_t)*(num_ranges + 1))) == NULL) {
         fprintf(stderr, "failed to allocate memory for range\n");
         exit(EXIT_FAILURE);
     }
 
-    if ((ranges[num_ranges] = (int*)malloc(sizeof(int)*RSIZE)) == NULL) {
-        fprintf(stderr, "failed to allocate memory for range\n");
-        exit(EXIT_FAILURE);
-    }
-
-    r_low = val;
+    // TODO: Add in cses here for different datatypes.
+    r_low.val.uint8 = val;
+    r_low.t = uint8;
 }
 
 void set_r_high(void) {
@@ -223,21 +249,25 @@ void set_r_high(void) {
         exit(EXIT_FAILURE);
     }
 
-    r_high = val;
+    // TODO: Add in cases here for different datatypes.
+    r_high.val.uint8 = val;
+    r_high.t = uint8;
 
-    if (r_high <= r_low) {
-        fprintf(stderr, "error: line %d - invalid range [%d-%d] -- low to high required\n", line_num, r_low, r_high);
+    if (r_high.val.uint8 <= r_low.val.uint8) {
+        fprintf(stderr, "error: line %d - invalid range [%d-%d] -- low to high required\n", line_num, r_low.val.uint8, r_high.val.uint8);
         exit(EXIT_FAILURE);
     }
 
     /* handles case where * was not used */
-    if (r_low == 0 && r_high == 255) {
+    if (r_low.val.uint8 == 0 && r_high.val.uint8 == 255) {
         fprintf(xout, "r__0");
         any_byte = true;
     }
     else {
-        ranges[num_ranges][RMIN_IND] = r_low;
-        ranges[num_ranges][RMAX_IND] = r_high;
+        ranges[num_ranges].min.val.uint8 = r_low.val.uint8;
+        ranges[num_ranges].max.val.uint8 = r_high.val.uint8;
+        ranges[num_ranges].min.t = uint8;
+        ranges[num_ranges].max.t = uint8;
         fprintf(xout, "r__%d", num_ranges);
         num_ranges++;
     }
@@ -259,24 +289,26 @@ void e_start(void) {
     }
 
     /* add first value to enumeration */
-    if ((enums[num_enums].vals = (int*)malloc(sizeof(int))) == NULL) {
+    if ((enums[num_enums].vals = (val_t*)malloc(sizeof(val_t))) == NULL) {
         fprintf(stderr, "failed to allocate memory for enum\n");
         exit(EXIT_FAILURE);
     }
 
     enums[num_enums].num_vals = 1;
-    enums[num_enums].vals[0] = val;
+    enums[num_enums].vals[0].val.uint8 = val;
+    enums[num_enums].vals[0].t = uint8;
 }
 
 void set_next_enum(void) {
     /* grow array of values */
-    if ((enums[num_enums].vals = (int*)realloc(enums[num_enums].vals, sizeof(int)*(enums[num_enums].num_vals + 1))) == NULL) {
+    if ((enums[num_enums].vals = (val_t*)realloc(enums[num_enums].vals, sizeof(val_t)*(enums[num_enums].num_vals + 1))) == NULL) {
         fprintf(stderr, "failed to allocate memory for enum\n");
         exit(EXIT_FAILURE);
     }
 
     /* add value to enumerationa array */
-    enums[num_enums].vals[enums[num_enums].num_vals] = val;
+    enums[num_enums].vals[enums[num_enums].num_vals].val.uint8 = val;
+    enums[num_enums].vals[enums[num_enums].num_vals].t = uint8;
     enums[num_enums].num_vals++;
 }
 
@@ -354,7 +386,7 @@ void add_rules(void) {
 
     for (; i < num_ranges; i++) {
         fprintf(xout, "r__%d : ", i);
-        for (k = 0, j = ranges[i][RMIN_IND]; j < ranges[i][RMAX_IND]; k++, j++) {
+        for (k = 0, j = ranges[i].min.val.uint8; j < ranges[i].max.val.uint8; k++, j++) {
             if (k%8 == 0) fprintf(xout, "\n  ");
 
             if (j == 0) fprintf(xout, "X00 | ");
@@ -373,13 +405,13 @@ void add_rules(void) {
             for (j = 0; j < enums[i].num_vals - 1; j++) {
                 if (j%8 == 0) fprintf(xout, "\n  ");
 
-                if (enums[i].vals[j] == 0) fprintf(xout, "X00 | ");
-                else fprintf(xout, "\'\\x%02x\' | ", (uint8_t)enums[i].vals[j]);
+                if (enums[i].vals[j].val.uint8 == 0) fprintf(xout, "X00 | ");
+                else fprintf(xout, "\'\\x%02x\' | ", (uint8_t)enums[i].vals[j].val.uint8);
             }
 
             if (j%8 == 0) fprintf(xout, "\n  ");
-            if (enums[i].vals[j] == 0) fprintf(xout, "X00 ;\n\n");
-            else fprintf(xout, "\'\\x%02x\' ;\n\n", (uint8_t)enums[i].vals[j]);
+            if (enums[i].vals[j].val.uint8 == 0) fprintf(xout, "X00 ;\n\n");
+            else fprintf(xout, "\'\\x%02x\' ;\n\n", (uint8_t)enums[i].vals[j].val.uint8);
         }
     }
 
