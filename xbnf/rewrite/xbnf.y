@@ -34,6 +34,8 @@ extern val_t val;
 extern bool any_byte;
 extern bool ranging;
 
+extern bool neg;
+
 /* variables defined in xbnf_tb.c */
 extern FILE *xout;          /* output bison file */
 extern int yylval;          /* value of token read in */
@@ -72,6 +74,28 @@ term: terminal
     | string
     ;
 
+fwi: le '(' sign number ws0 ',' ws0 typele ')'              { fixed_width(); }
+   ;
+
+typele: 'u' 'i' 'n' 't' '1' '6'         { val.t = uint16_le; }
+      | 'u' 'i' 'n' 't' '3' '2'         { val.t = uint32_le; }
+      | 'u' 'i' 'n' 't' '6' '4'         { val.t = uint64_le; }
+      | 'i' 'n' 't' '1' '6'             { val.t = int16_le; }
+      | 'i' 'n' 't' '3' '2'             { val.t = int32_le; }
+      | 'i' 'n' 't' '6' '4'             { val.t = int64_le; }
+      ;
+
+sign: /* empty */                       { neg = false; }
+    | '-'                               { neg = true; }
+    ;
+
+number: digit                           { add_dig((char)$1); }
+      | number digit                    { add_dig((char)$1); }
+      ;
+
+le: 'l' 'i' 't' 't' 'l' 'e' '_' 'e' 'n' 'd' 'i' 'a' 'n'
+  ;
+
 string: '"' letters '"'             { s_end(); }
       ;
 
@@ -84,6 +108,7 @@ terminal: '\'' termval '\''
 
 termval: hexval                 { val.val.uint8 = tval; val.t = uint8; hex_out(); }
        | charval                { val.val.uint8 = tval; char_out(); }
+       | fwi
        ;
 
 charval: alphanumeric       { tval = $1; }

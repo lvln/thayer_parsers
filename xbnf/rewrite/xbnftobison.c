@@ -23,9 +23,172 @@ char** strings;
 int num_strings;
 int num_chars;
 
+char* num_str;
+int num_digs;
+
 bool in_string;
 bool ranging;
 bool any_byte;
+bool neg;
+
+static void byteify_fwi(uint8_t* byte_arr, val_t val) {
+    int size, i;
+    bool le, sig;
+    int64_t sig_int;
+    uint64_t usig_int;
+
+    switch (val.t) {
+        case uint8:
+            size = 8;
+            le = false;
+            sig = false;
+            usig_int = val.val.uint8;
+            break;
+        case int8:
+            size = 8;
+            le = false;
+            sig = true;
+            sig_int = val.val.int8;
+            break;
+        case uint16_le:
+            size = 16;
+            le = true;
+            sig = false;
+            usig_int = val.val.uint16;
+            break;
+        case int16_le:
+            size = 16;
+            le = true;
+            sig = true;
+            sig_int = val.val.int16;
+        case uint16_be:
+            size = 16;
+            le = false;
+            sig = false;
+            usig_int = val.val.uint16;
+        case int16_be:
+            size = 16;
+            le = false;
+            sig = true;
+            sig_int = val.val.int16;
+            break;
+        case uint32_le:
+            size = 32;
+            le = true;
+            sig = false;
+            usig_int = val.val.uint32;
+            break;
+        case int32_le:
+            size = 32;
+            le = true;
+            sig = true;
+            sig_int = val.val.int32;
+            break;
+        case uint32_be:
+            size = 32;
+            le = false;
+            sig = false;
+            usig_int = val.val.uint32;
+            break;
+        case int32_be:
+            size = 32;
+            le = false;
+            sig = true;
+            sig_int = val.val.int32;
+            break;
+        case uint64_le:
+            size = 64;
+            le = true;
+            sig = false;
+            usig_int = val.val.uint64;
+            break;
+        case int64_le:
+            size = 64;
+            le = true;
+            sig = true;
+            sig_int = val.val.int64;
+            break;
+        case uint64_be:
+            size = 64;
+            le = false;
+            sig = false;
+            usig_int = val.val.uint64;
+            break;
+        case int64_be:
+            size = 64;
+            le = false;
+            sig = true;
+            sig_int = val.val.int64;
+            break;
+        default:
+            fprintf(stderr, "error: line %d - unknown type\n", line_num);
+    }
+
+    for (i = 0; i < size/8; i++) {
+        if (le) {
+            if (sig) {
+                byte_arr[i] = sig_int & 0xFF;
+                sig_int >>= 8;
+            } else {
+                byte_arr[i] = usig_int & 0xFF;
+                usig_int >>= 8;
+            }
+        } else {
+            if (sig) {
+                byte_arr[i] = (sig_int >> 8*(4 - i - 1)) & 0xFF;
+                sig_int <<= 8;
+            } else {
+                byte_arr[i] = (usig_int >> 8*(4 - i - 1)) & 0xFF;
+                usig_int <<= 8;
+            }
+        }
+    }
+}
+
+static void write_fwi_val(val_t val) {
+    int size;
+    bool le;
+
+    switch (val.t) {
+        case uint8:
+        case int8:
+            size = 8;
+            break;
+        case uint16_le:
+        case int16_le:
+            size = 16;
+            le = true;
+            break;
+        case uint16_be:
+        case int16_be:
+            size = 16;
+            le = false;
+            break;
+        case uint32_le:
+        case int32_le:
+            size = 32;
+            le = true;
+            break;
+        case uint32_be:
+        case int32_be:
+            size = 32;
+            le = false;
+            break;
+        case uint64_le:
+        case int64_le:
+            size = 64;
+            le = true;
+            break;
+        case uint64_be:
+        case int64_be:
+            size = 64;
+            le = false;
+            break;
+        default:
+            fprintf(stderr, "error: line %d - unknown type\n", line_num);
+    }
+
+}
 
 static char get_esc_char(char c) {
     switch (c) {
@@ -99,6 +262,9 @@ void init(void) {
     strings = NULL;
     num_strings = 0;
 
+    num_str = NULL;
+    num_digs = 0;
+
     /* write bison preamble */
     fprintf(xout, "%%{\n");
     fprintf(xout, "\t#define YYDEBUG 1\n");
@@ -167,6 +333,13 @@ char get_esc_val(char c) {
             fprintf(stderr, "unknown escaped character on line %d\n", line_num);
             exit(EXIT_FAILURE);
     }
+}
+
+void fixed_width(void) {
+    
+    free(num_str);
+    num_digs = 0;
+    num_str = NULL;
 }
 
 /* free all dynamically allocated memory */
@@ -329,6 +502,22 @@ void s_end(void) {
     fprintf(xout, "s__%d", num_strings);
 
     in_string = false;
+}
+
+void add_dig(char dig) {
+    if (num_str == NULL) {
+        if ((num_str = (char*)malloc(sizeof(char)*2)) == NULL) {
+            fprintf(stderr, "failed to allocate memory for digit string\n");
+            exit(EXIT_FAILURE);
+        }
+    } else if ((num_str = (char*)realloc(num_str, sizeof(char)*(num_digs + 2))) == NULL) {
+        fprintf(stderr, "failed to allocate memory for digit string\n");
+        exit(EXIT_FAILURE);
+    }
+
+    num_str[num_digs] = dig;
+    num_str[num_digs + 1] = '\0';
+    num_digs++;
 }
 
 void add_rules(void) {
