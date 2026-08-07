@@ -1,3 +1,0 @@
-CHAR = 001-7F 
-	; any 7-bit US-ASCII character, 
-	; excluding NUL

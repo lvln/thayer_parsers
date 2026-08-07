@@ -1,1 +1,0 @@
-"if((xout=fopen(fn,w))==NULL) {"
