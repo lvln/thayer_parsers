@@ -7,9 +7,9 @@
 %token X00
 
 /* generate a GLR parser to handle whitespace ambiguity */
-%glr-parser
-%expect 8
-%expect-rr 4
+//%glr-parser
+//%expect 4
+//%expect-rr 4
 
 %%
 
@@ -36,7 +36,7 @@ defined_as:
           ;
 
 elements:
-        alternation star_c_wsp
+        alternation star_wsp
         ;
 
 c_wsp:
@@ -116,11 +116,11 @@ one_star_rulelist_elemt:
                        ;
 
 rulelist_elemt:
-              rule | star_c_wsp_c_nl
+              rule | star_wsp_c_nl
               ;
 
-star_c_wsp_c_nl:
-               star_c_wsp c_nl
+star_wsp_c_nl:
+               star_wsp c_nl
                ;
 
 /* rulename */
@@ -286,6 +286,10 @@ star_c_wsp:
 one_star_c_wsp:
               c_wsp | one_star_c_wsp c_wsp
               ;
+
+star_wsp:
+        /* empty */ | star_wsp WSP
+        ;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                         *
