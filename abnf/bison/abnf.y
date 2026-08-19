@@ -6,11 +6,6 @@
 
 %token X00
 
-/* generate a GLR parser to handle whitespace ambiguity */
-//%glr-parser
-//%expect 4
-//%expect-rr 4
-
 %%
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -36,7 +31,7 @@ defined_as:
           ;
 
 elements:
-        alternation star_wsp
+        alternation star_wsp                                    /* changed from star_c_wsp to star_wsp in accordance with erratum 2968 */
         ;
 
 c_wsp:
@@ -64,11 +59,11 @@ repetition:
           ;
 
 repeat:
-      one_star_digit | star_digit '*' star_digit
+      one_star_digit | '*' star_digit | one_star_digit '*' star_digit       /* expressed atypically to remove shift/reduce conflict */
       ;
 
 element:
-       group | option | char_val | num_val | prose_val
+       rulename | group | option | char_val | num_val | prose_val
        ;
 
 group:
@@ -81,7 +76,7 @@ option:
 
 char_val:
         DQUOTE star_char_val_char DQUOTE
-        ;
+;
 
 num_val:
        '%' num_val_ch
@@ -98,6 +93,79 @@ dec_val:
 hex_val:
        'x' one_star_hexdig opt_hex_val
        ;
+
+uint8:
+     'u' '8' '_' one_star_digit opt_uint8_val
+     ;
+
+int8:
+    'i' '8' '_' one_star_digit opt_int8_val
+    | 'i' '8' '_' '-' one_star_digit opt_int8_val
+    ;
+
+uint16_le:
+         'u' '1' '6' '_' 'l' 'e' '_' one_star_digit opt_uint16_val
+         ;
+
+int16_le:
+        'i' '1' '6' '_' 'l' 'e' '_' one_star_digit opt_int16_val
+        | 'i' '1' '6' '_' 'l' 'e' '_' '-' one_star_digit opt_int16_val
+        ;
+
+uint16_be:
+         'u' '1' '6' '_' 'b' 'e' '_' one_star_digit opt_uint16_val
+         ;
+
+int16_be:
+        'i' '1' '6' '_' 'b' 'e' '_' one_star_digit opt_int16_val
+        | 'i' '1' '6' '_' 'b' 'e' '_' '-' one_star_digit opt_int16_val
+        ;
+
+uint32_le:
+         'u' '3' '2' '_' 'l' 'e' '_' one_star_digit opt_uint32_val
+         ;
+
+int32_le:
+        'i' '3' '2' '_' 'l' 'e' '_' one_star_digit opt_int32_val
+        | 'i' '3' '2' '_' 'l' 'e' '_' '-' one_star_digit opt_int32_val
+        ;
+
+uint32_be:
+         'u' '3' '2' '_' 'b' 'e' '_' one_star_digit opt_uint32_val
+         ;
+
+int32_be:
+        'i' '3' '2' '_' 'b' 'e' '_' one_star_digit opt_int32_val
+        | 'i' '3' '2' '_' 'b' 'e' '_' '-' one_star_digit opt_int32_val
+        ;
+
+uint64_le:
+         'u' '6' '4' '_' 'l' 'e' '_' one_star_digit opt_uint64_val
+         ;
+
+int64_le:
+        'i' '6' '4' '_' 'l' 'e' '_' one_star_digit opt_int64_val
+        | 'i' '6' '4' '_' 'l' 'e' '_' '-' one_star_digit opt_int64_val
+        ;
+
+uint64_be:
+         'u' '6' '4' '_' 'b' 'e' '_' one_star_digit opt_uint64_val
+         ;
+
+int64_be:
+        'i' '6' '4' '_' 'b' 'e' '_' one_star_digit opt_int64_val
+        | 'i' '6' '4' '_' 'b' 'e' '_' '-' one_star_digit opt_int64_val
+        ;
+
+float_le:
+        'f' '_' 'l' 'e' '_' one_star_digit '.' one_star_digit opt_float_val
+        | 'f' '_' 'l' 'e' '_' '-' one_star_digit '.' one_star_digit opt_float_val
+        ;
+
+float_be:
+        'f' '_' 'b' 'e' '_' one_star_digit '.' one_star_digit opt_float_val
+        | 'f' '_' 'b' 'e' '_' '-' one_star_digit '.' one_star_digit opt_float_val
+        ;
 
 prose_val:
          '<' star_prose_val_char '>'
@@ -116,12 +184,12 @@ one_star_rulelist_elemt:
                        ;
 
 rulelist_elemt:
-              rule | star_wsp_c_nl
+              rule | star_wsp_c_nl                              /* changed from star_c_wsp_c_nl to star_wsp_c_nl in accordance with erratum 3076 */
               ;
 
 star_wsp_c_nl:
-               star_wsp c_nl
-               ;
+             star_wsp c_nl
+             ;
 
 /* rulename */
 
@@ -197,49 +265,242 @@ opt_repeat:
 /* num_val */
 
 num_val_ch:
-          bin_val | dec_val | hex_val
+          bin_val | dec_val | hex_val | fw_val
           ;
 
 /* bin_val */
 
 opt_bin_val:
-           /* empty */ | one_star_dot_bit | one_star_dash_bit
+           /* empty */ | one_star_dot_bit | dash_bit | one_star_comma_bit
            ;
 
 one_star_dot_bit:
                 '.' one_star_bit | one_star_dot_bit '.' one_star_bit
                 ;
 
-one_star_dash_bit:
-                 '-' one_star_bit | one_star_dash_bit '.' one_star_bit
-                 ;
+dash_bit:
+        '-' one_star_bit
+        ;
+
+one_star_comma_bit:
+                  ',' one_star_bit | one_star_comma_bit '.' one_star_bit
+                  ;
 
 /* dec_val */
 
 opt_dec_val:
-           /* empty */ | one_star_dot_digit | one_star_dash_digit
+           /* empty */ | one_star_dot_digit | dash_digit | one_star_comma_digit
            ;
 
 one_star_dot_digit:
                   '.' one_star_digit | one_star_dot_digit '.' one_star_digit
                   ;
 
-one_star_dash_digit:
-                   '-' one_star_digit | one_star_dash_digit '.' one_star_digit
-                   ;
+dash_digit:
+          '-' one_star_digit
+          ;
+
+one_star_comma_digit:
+                    ',' one_star_digit | one_star_comma_digit '.' one_star_digit
+                    ;
 
 /* hex_val */
 
 opt_hex_val:
-           /* empty */ | one_star_dot_hexdig | one_star_dash_hexdig
+           /* empty */ | one_star_dot_hexdig | dash_hexdig | one_star_comma_hexdig
            ;
 
 one_star_dot_hexdig:
                    '.' one_star_hexdig | one_star_dot_hexdig '.' one_star_hexdig
                    ;
 
-one_star_dash_hexdig:
-                    '-' one_star_hexdig | one_star_dash_hexdig '.' one_star_hexdig
+dash_hexdig:
+           '-' one_star_hexdig
+           ;
+
+one_star_comma_hexdig:
+                     ',' one_star_hexdig | one_star_comma_hexdig ',' one_star_hexdig
+                     ;
+
+/* fixed-width data types */
+
+fw_val:
+      uint8 | int8 | uint16_le | int16_le | uint16_be | int16_be
+      | uint32_le | int32_le | uint32_be | int32_be | uint64_le
+      | int64_le | uint64_be | int64_be | float_le | float_be
+      ;
+
+/* uint8 */
+
+opt_uint8_val:
+             /* empty */ | one_star_dot_uint8 | dash_uint8 | one_star_comma_uint8
+             ;
+
+one_star_dot_uint8:
+                  '.' one_star_digit | one_star_dot_uint8 '.' one_star_digit
+                  ;
+
+dash_uint8:
+          '-' one_star_digit
+          ;
+
+one_star_comma_uint8:
+                    ',' one_star_digit | one_star_comma_uint8 '.' one_star_digit
+                    ;
+
+/* int8 */
+
+opt_int8_val:
+            /* empty */ | one_star_dot_int8 | dash_int8 | one_star_comma_int8
+            ;
+
+one_star_dot_int8:
+                 '.' one_star_digit | one_star_dot_int8 '.' one_star_digit
+                 | '.' '-' one_star_digit | one_star_dot_int8 '.' '-' one_star_digit
+                 ;
+
+dash_int8:
+         '-' one_star_digit | '-' '-' one_star_digit
+         ;
+
+one_star_comma_int8:
+                   ',' one_star_digit | one_star_comma_int8 '.' one_star_digit
+                   | ',' '-' one_star_digit | one_star_comma_int8 '.' '-' one_star_digit
+                   ;
+
+/* uint16 */
+
+opt_uint16_val:
+              /* empty */ | one_star_dot_uint16 | dash_uint16 | one_star_comma_uint16
+              ;
+
+one_star_dot_uint16:
+                   '.' one_star_digit | one_star_dot_uint16 '.' one_star_digit
+                   ;
+
+dash_uint16:
+           '-' one_star_digit
+           ;
+
+one_star_comma_uint16:
+                     ',' one_star_digit | one_star_comma_uint16 '.' one_star_digit
+                     ;
+
+/* int16 */
+
+opt_int16_val:
+             /* empty */ | one_star_dot_int16 | dash_int16 | one_star_comma_int16
+             ;
+
+one_star_dot_int16:
+                 '.' one_star_digit | one_star_dot_int16 '.' one_star_digit
+                 | '.' '-' one_star_digit | one_star_dot_int16 '.' '-' one_star_digit
+                 ;
+
+dash_int16:
+          '-' one_star_digit | '-' '-' one_star_digit
+          ;
+
+one_star_comma_int16:
+                   ',' one_star_digit | one_star_comma_int16 '.' one_star_digit
+                   | ',' '-' one_star_digit | one_star_comma_int16 '.' '-' one_star_digit
+                   ;
+
+/* uint32 */
+
+opt_uint32_val:
+              /* empty */ | one_star_dot_uint32 | dash_uint32 | one_star_comma_uint32
+              ;
+
+one_star_dot_uint32:
+                   '.' one_star_digit | one_star_dot_uint32 '.' one_star_digit
+                   ;
+
+dash_uint32:
+           '-' one_star_digit
+           ;
+
+one_star_comma_uint32:
+                     ',' one_star_digit | one_star_comma_uint32 '.' one_star_digit
+                     ;
+
+/* int32 */
+
+opt_int32_val:
+             /* empty */ | one_star_dot_int32 | dash_int32 | one_star_comma_int32
+             ;
+
+one_star_dot_int32:
+                 '.' one_star_digit | one_star_dot_int32 '.' one_star_digit
+                 | '.' '-' one_star_digit | one_star_dot_int32 '.' '-' one_star_digit
+                 ;
+
+dash_int32:
+          '-' one_star_digit | '-' '-' one_star_digit
+          ;
+
+one_star_comma_int32:
+                   ',' one_star_digit | one_star_comma_int32 '.' one_star_digit
+                   | ',' '-' one_star_digit | one_star_comma_int32 '.' '-' one_star_digit
+                   ;
+
+/* uint64 */
+
+opt_uint64_val:
+              /* empty */ | one_star_dot_uint64 | dash_uint64 | one_star_comma_uint64
+              ;
+
+one_star_dot_uint64:
+                   '.' one_star_digit | one_star_dot_uint64 '.' one_star_digit
+                   ;
+
+dash_uint64:
+           '-' one_star_digit
+           ;
+
+one_star_comma_uint64:
+                     ',' one_star_digit | one_star_comma_uint64 '.' one_star_digit
+                     ;
+
+/* int64 */
+
+opt_int64_val:
+             /* empty */ | one_star_dot_int64 | dash_int64 | one_star_comma_int64
+             ;
+
+one_star_dot_int64:
+                 '.' one_star_digit | one_star_dot_int64 '.' one_star_digit
+                 | '.' '-' one_star_digit | one_star_dot_int64 '.' '-' one_star_digit
+                 ;
+
+dash_int64:
+          '-' one_star_digit | '-' '-' one_star_digit
+          ;
+
+one_star_comma_int64:
+                   ',' one_star_digit | one_star_comma_int64 '.' one_star_digit
+                   | ',' '-' one_star_digit | one_star_comma_int64 '.' '-' one_star_digit
+                   ;
+
+/* float */
+
+opt_float_val:
+             /* empty */ | one_star_dot_float | dash_float | one_star_comma_float
+             ;
+
+one_star_dot_float:
+                  '.' one_star_digit '.' one_star_digit | one_star_dot_float '.' one_star_digit '.' one_star_digit
+                  | '.' '-' one_star_digit '.' one_star_digit | one_star_dot_float '.' '-' one_star_digit '.' one_star_digit
+                  ;
+
+dash_float:
+          '-' one_star_digit '.' one_star_digit | '-' '-' one_star_digit '.' one_star_digit
+          ;
+
+one_star_comma_float:
+                    ',' one_star_digit '.' one_star_digit | one_star_comma_float ',' one_star_digit '.' one_star_digit
+                    | ',' '-' one_star_digit '.' one_star_digit | one_star_comma_float ',' '-' one_star_digit '.' one_star_digit
+
                     ;
 
 /* prose_val */
@@ -264,7 +525,7 @@ prose_val_char:
 /* repetitions of basic and shared rules */
 
 star_digit:
-          /* empty */ | one_star_digit          /* expressed atypically to remove shift/reduce conflicts */
+          /* empty */ | star_digit DIGIT
           ;
 
 one_star_digit:

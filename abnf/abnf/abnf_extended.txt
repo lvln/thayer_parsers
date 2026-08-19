@@ -1,20 +1,3 @@
-# abnf -- A BNF LALR(1) grammar for ABNF grammars
-
-**abnf** is a Bison-generated parser that validates grammars written in ABNF.
-
-## Examples
-
-The following examples demonstrate the primary differences between BNF and ABNF.
-
-BNF: rule ::= __elements__
-
-ABNF Equivalent: rule =  __elements__
-
-## ABNF Grammar Written in ABNF
-
-The following grammar contains extensions to the grammar in RFC 5234 allowing for representation of fixed-width datatypes.
-
-```
 rulelist        =  1*( rule / ( *WSP c-nl )  )
 
 rule            =  rulename defined-as elements c-nl
@@ -180,10 +163,4 @@ VCHAR           =  %x21-7E
 
 WSP             =  SP / HTAB
                 ; white space
-```
 
-* Note: Errata incorporated in grammar in accordance with accepted errata in RFC 5234.
-
-## TODO
-- Resolve ambiguities surrounding whitespace
-- Bit operations (mask and shift)

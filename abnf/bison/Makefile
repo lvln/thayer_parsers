@@ -6,7 +6,7 @@ all:				abnf
 # bison: generate abnf.tab.[ch]
 abnf.tab.o:  abnf.y
 #						bison -d -t -v --report=all -x abnf.y
-						bison -d -t -v -x abnf.y
+						bison -Wno-other -d -t -v -x abnf.y
 						gcc $(CFLAGS) -c abnf.tab.c
 
 abnf_tb.o:	abnf_tb.c

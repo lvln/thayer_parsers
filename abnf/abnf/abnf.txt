@@ -1,20 +1,3 @@
-# abnf -- A BNF LALR(1) grammar for ABNF grammars
-
-**abnf** is a Bison-generated parser that validates grammars written in ABNF.
-
-## Examples
-
-The following examples demonstrate the primary differences between BNF and ABNF.
-
-BNF: rule ::= __elements__
-
-ABNF Equivalent: rule =  __elements__
-
-## ABNF Grammar Written in ABNF
-
-The following grammar contains extensions to the grammar in RFC 5234 allowing for representation of fixed-width datatypes.
-
-```
 rulelist        =  1*( rule / ( *WSP c-nl )  )
 
 rule            =  rulename defined-as elements c-nl
@@ -56,7 +39,7 @@ char-val        =  DQUOTE *( %x20-21 / %x23-7E ) DQUOTE
                 ; quoted string of SP and VCHAR
                 ;  without DQUOTE
 
-num-val         =  "%" ( bin-val / dec-val / hex-val / fw-val )
+num-val         =  "%" ( bin-val / dec-val / hex-val )
 
 bin-val         =  "b" 1*BIT
                    [ 1*( "." 1*BIT ) / ( "-" 1*BIT ) / 1*( "," 1*BIT ) ]
@@ -68,58 +51,6 @@ dec-val         =  "d" 1*DIGIT
 
 hex-val         =  "x" 1*HEXDIG
                    [ 1*( "." 1*HEXDIG ) / ( "-" 1*HEXDIG ) / 1*( "," 1*HEXDIG ) ]
-
-fw-val          =  uint8 / int8 / uint16-le / int16-le / uint16-be / int16-be / uint32-le
-                   / int32-le / uint32-be / int32-be / uint64-le / int64-le / uint64-be / int64-be
-                   / float-le / float-be
-
-uint8           =  "u8_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
-
-int8            =  "i8_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
-
-uint16-le       =  "u16_le_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
-
-int16-le        =  "i16_le_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
-
-uint16-be       =  "u16_be_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
-
-int16-be        =  "i16_be_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
-
-uint32-le       =  "u32_le_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
-
-int32-le        =  "i32_le_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
-
-uint32-be       =  "u32_be_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
-
-int32-be        =  "i32_be_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
-
-uint64-le       =  "u64_le_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
-
-int64-le        =  "i64_le_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
-
-uint64-be       =  "u64_be_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
-
-int64-be        =  "i64_be_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
-
-float-le        =  "f_le_" [ - ] 1*DIGIT "." 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT "." 1*DIGIT ) / ( "-" [ - ] 1*DIGIT "." 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT "." 1*DIGIT ) ]
-
-float_be        =  "f_be_" [ - ] 1*DIGIT "." 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT "." 1*DIGIT ) / ( "-" [ - ] 1*DIGIT "." 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT "." 1*DIGIT ) ]
 
 prose-val       =  "<" *( %x20-3D / %x3F-7E ) ">"
                 ; bracketed string of SP and VCHAR
@@ -180,10 +111,4 @@ VCHAR           =  %x21-7E
 
 WSP             =  SP / HTAB
                 ; white space
-```
 
-* Note: Errata incorporated in grammar in accordance with accepted errata in RFC 5234.
-
-## TODO
-- Resolve ambiguities surrounding whitespace
-- Bit operations (mask and shift)
