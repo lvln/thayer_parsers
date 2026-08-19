@@ -2,17 +2,40 @@
 
 **abnf** is a Bison-generated parser that validates grammars written in ABNF.
 
+## Notes on ABNF
+- Strings are case insensitive
+- Non-terminal names are case insensitive
+- The end-of-line indicator is a carriage return followed by a line feed
+
 ## Examples
 
-The following examples demonstrate the primary differences between BNF and ABNF.
+The following examples demonstrate simple ABNF rules. The rules listed serve to demonstrate alternative means of espressing grammatical constructs and are inexhaustive.
 
-BNF: rule ::= __elements__
-
-ABNF Equivalent: rule =  __elements__
+- Accepts the string "abc"
+    - `rule = %x61 %x62 %x63`
+    - `rule = %x61.62.63`
+    - `rule = %d97 %d98 %d99`
+    - `rule = %d97.98.99`
+    - `rule = %b01100001 %b01100010 %b01100011`
+    - `rule = %b01100001.01100010.01100011`
+    - Note `rule = "abc"` is incorrect due to case insensitivity of strings
+- Accepts a 16-bit signed integer with little-endian byte order with value -123
+    - `rule = %i16_le_-123`
+    - `rule = %x7D %x00`
+- Accepts a 32-bit unsigned integer with big-endian byte order with value between 12 and 14
+    - `rule = %u32_be_12-14`
+- Accepts a floating point value with little-endian byte order with value 1.234
+    - `rule = %f_le_1.234`
+- Accepts a 3-bit value with value 0b101
+    - `rule = %b101`
+- Accepts byte with hex value 0x32 or 0x42
+    - `rule = %x32,42`
+    - `rule = %d50,66`
+    - `rule = %u8_32,42`
 
 ## ABNF Grammar Written in ABNF
 
-The following grammar contains extensions to the grammar in RFC 5234 allowing for representation of fixed-width datatypes.
+The following grammar contains extensions to the grammar in RFC 5234 allowing for representation of fixed-width datatypes and enumerations.
 
 ```
 rulelist        =  1*( rule / ( *WSP c-nl )  )

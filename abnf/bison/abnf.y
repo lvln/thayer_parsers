@@ -301,7 +301,7 @@ dash_digit:
           ;
 
 one_star_comma_digit:
-                    ',' one_star_digit | one_star_comma_digit '.' one_star_digit
+                    ',' one_star_digit | one_star_comma_digit ',' one_star_digit
                     ;
 
 /* hex_val */
@@ -345,7 +345,7 @@ dash_uint8:
           ;
 
 one_star_comma_uint8:
-                    ',' one_star_digit | one_star_comma_uint8 '.' one_star_digit
+                    ',' one_star_digit | one_star_comma_uint8 ',' one_star_digit
                     ;
 
 /* int8 */
