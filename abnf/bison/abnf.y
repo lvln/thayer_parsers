@@ -283,7 +283,7 @@ dash_bit:
         ;
 
 one_star_comma_bit:
-                  ',' one_star_bit | one_star_comma_bit '.' one_star_bit
+                  ',' one_star_bit | one_star_comma_bit ',' one_star_bit
                   ;
 
 /* dec_val */
@@ -364,8 +364,8 @@ dash_int8:
          ;
 
 one_star_comma_int8:
-                   ',' one_star_digit | one_star_comma_int8 '.' one_star_digit
-                   | ',' '-' one_star_digit | one_star_comma_int8 '.' '-' one_star_digit
+                   ',' one_star_digit | one_star_comma_int8 ',' one_star_digit
+                   | ',' '-' one_star_digit | one_star_comma_int8 ',' '-' one_star_digit
                    ;
 
 /* uint16 */
@@ -383,7 +383,7 @@ dash_uint16:
            ;
 
 one_star_comma_uint16:
-                     ',' one_star_digit | one_star_comma_uint16 '.' one_star_digit
+                     ',' one_star_digit | one_star_comma_uint16 ',' one_star_digit
                      ;
 
 /* int16 */
@@ -402,8 +402,8 @@ dash_int16:
           ;
 
 one_star_comma_int16:
-                   ',' one_star_digit | one_star_comma_int16 '.' one_star_digit
-                   | ',' '-' one_star_digit | one_star_comma_int16 '.' '-' one_star_digit
+                   ',' one_star_digit | one_star_comma_int16 ',' one_star_digit
+                   | ',' '-' one_star_digit | one_star_comma_int16 ',' '-' one_star_digit
                    ;
 
 /* uint32 */
@@ -421,7 +421,7 @@ dash_uint32:
            ;
 
 one_star_comma_uint32:
-                     ',' one_star_digit | one_star_comma_uint32 '.' one_star_digit
+                     ',' one_star_digit | one_star_comma_uint32 ',' one_star_digit
                      ;
 
 /* int32 */
@@ -440,8 +440,8 @@ dash_int32:
           ;
 
 one_star_comma_int32:
-                   ',' one_star_digit | one_star_comma_int32 '.' one_star_digit
-                   | ',' '-' one_star_digit | one_star_comma_int32 '.' '-' one_star_digit
+                   ',' one_star_digit | one_star_comma_int32 ',' one_star_digit
+                   | ',' '-' one_star_digit | one_star_comma_int32 ',' '-' one_star_digit
                    ;
 
 /* uint64 */
@@ -459,7 +459,7 @@ dash_uint64:
            ;
 
 one_star_comma_uint64:
-                     ',' one_star_digit | one_star_comma_uint64 '.' one_star_digit
+                     ',' one_star_digit | one_star_comma_uint64 ',' one_star_digit
                      ;
 
 /* int64 */
@@ -478,8 +478,8 @@ dash_int64:
           ;
 
 one_star_comma_int64:
-                   ',' one_star_digit | one_star_comma_int64 '.' one_star_digit
-                   | ',' '-' one_star_digit | one_star_comma_int64 '.' '-' one_star_digit
+                   ',' one_star_digit | one_star_comma_int64 ',' one_star_digit
+                   | ',' '-' one_star_digit | one_star_comma_int64 ',' '-' one_star_digit
                    ;
 
 /* float */
