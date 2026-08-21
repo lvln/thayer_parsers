@@ -1,3 +1,0 @@
-char-val = DQUOTE *(020-21 / 023-7E) DQUOTE 
-	; quoted string of SP and VCHAR 
-	; without DQUOTE

@@ -31,7 +31,7 @@ repeat          =  1*DIGIT / ( *DIGIT "*" *DIGIT )
 element         =  rulename / group / option /
                    char-val / num-val / prose-val
 
-group           =  "( " *c-wsp alternation *c-wsp " )"
+group           =  "(" *c-wsp alternation *c-wsp ")"
 
 option          =  "[" *c-wsp alternation *c-wsp "]"
 
