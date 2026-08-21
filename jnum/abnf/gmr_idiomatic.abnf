@@ -1,0 +1,10 @@
+number = integer fraction exponent
+
+integer = ["-"] (DIGIT / onenine 1*DIGIT)
+
+fraction = ["." 1*DIGIT]
+
+exponent = [("e"/"E") ["+"/"-"] 1*DIGITS]
+
+onenine = %x31-39
+; onenine = %c1-9

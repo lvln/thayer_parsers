@@ -1,0 +1,9 @@
+string = %x22 1*character %x22
+
+character = ALPHA / DIGIT / punct / %x5C escchar
+
+escchar = %x62 / %x66 / %x6E / %x72 / %x74 / %x22 / %x5C / "/" / %x75 HEXDIG HEXDIG HEXDIG HEXDIG
+; escchar = %cb / %cf / %cn / %cr / %ct / %c" / %c\ / %c/ / %cu HEXDIG HEXDIG HEXDIG HEXDIG
+
+punct = " " / "!" / %x23-2F / %x3A-40 / "[" / %x5D-60 / %x7B-7F
+; punct = %c  / %c! / %c#-/ / %c:-@ / %c[ / %c[-` / %c{-~ / %x7F
