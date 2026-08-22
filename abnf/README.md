@@ -35,8 +35,6 @@ The following examples demonstrate simple ABNF rules. The rules listed serve to 
 
 ## ABNF Grammar Written in ABNF
 
-The following grammar contains extensions to the grammar in RFC 5234 allowing for representation of fixed-width datatypes and enumerations.
-
 ```
 rulelist                    =  1*( rule / ( *WSP c-nl )  )
 

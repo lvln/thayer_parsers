@@ -78,46 +78,46 @@ uint8                       =  "u8" 1*DIGIT
 int8                        =  "i8" [ - ] 1*DIGIT
                                [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
 
-uint16-le                   =  "u16le" 1*DIGIT
+uint16-le                   =  "u16_le" 1*DIGIT
                                [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
 
-int16-le                    =  "i16le" [ - ] 1*DIGIT
+int16-le                    =  "i16_le" [ - ] 1*DIGIT
                                [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
 
-uint16-be                   =  "u16be" 1*DIGIT
+uint16-be                   =  "u16_be" 1*DIGIT
                                [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
 
-int16-be                    =  "i16be" [ - ] 1*DIGIT
+int16-be                    =  "i16_be" [ - ] 1*DIGIT
                                [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
 
-uint32-le                   =  "u32le" 1*DIGIT
+uint32-le                   =  "u32_le" 1*DIGIT
                                [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
 
-int32-le                    =  "i32le" [ - ] 1*DIGIT
+int32-le                    =  "i32_le" [ - ] 1*DIGIT
                                [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
 
-uint32-be                   =  "u32be" 1*DIGIT
+uint32-be                   =  "u32_be" 1*DIGIT
                                [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
 
-int32-be                    =  "i32be" [ - ] 1*DIGIT
+int32-be                    =  "i32_be" [ - ] 1*DIGIT
                                [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
 
-uint64-le                   =  "u64le" 1*DIGIT
+uint64-le                   =  "u64_le" 1*DIGIT
                                [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
 
-int64-le                    =  "i64le" [ - ] 1*DIGIT
+int64-le                    =  "i64_le" [ - ] 1*DIGIT
                                [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
 
-uint64-be                   =  "u64be" 1*DIGIT
+uint64-be                   =  "u64_be" 1*DIGIT
                                [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
 
-int64-be                    =  "i64be" [ - ] 1*DIGIT
+int64-be                    =  "i64_be" [ - ] 1*DIGIT
                                [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
 
-float-le                    =  "fle" [ - ] 1*DIGIT "." 1*DIGIT
+float-le                    =  "f_le" [ - ] 1*DIGIT "." 1*DIGIT
                                [ 1*( "." [ - ] 1*DIGIT "." 1*DIGIT ) / ( "-" [ - ] 1*DIGIT "." 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT "." 1*DIGIT ) ]
 
-float_be                    =  "fbe" [ - ] 1*DIGIT "." 1*DIGIT
+float_be                    =  "f_be" [ - ] 1*DIGIT "." 1*DIGIT
                                [ 1*( "." [ - ] 1*DIGIT "." 1*DIGIT ) / ( "-" [ - ] 1*DIGIT "." 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT "." 1*DIGIT ) ]
 
 prose-val                   =  "<" *( %x20-3D / %x3F-7E ) ">"
