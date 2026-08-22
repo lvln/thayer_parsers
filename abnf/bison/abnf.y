@@ -75,8 +75,20 @@ option:
       ;
 
 char_val:
-        DQUOTE star_char_val_char DQUOTE
+        case_insensitive_string | case_sensitive_string
         ;
+
+case_insensitive_string:
+                       opt_percent_i quoted_string
+                       ;
+
+case_sensitive_string:
+                     '%' 's' quoted_string
+                     ;
+
+quoted_string:
+             DQUOTE star_char_val_char DQUOTE
+             ;
 
 num_val:
        '%' num_val_ch
@@ -188,6 +200,12 @@ concatenation_elemt:
 opt_repeat:
           /* empty */ | repeat
           ;
+
+/* case_insensitive_string */
+
+opt_percent_i:
+             /* empty */ | '%' 'i'
+             ;
 
 /* num_val */
 
