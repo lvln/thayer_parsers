@@ -38,171 +38,126 @@ The following examples demonstrate simple ABNF rules. The rules listed serve to 
 The following grammar contains extensions to the grammar in RFC 5234 allowing for representation of fixed-width datatypes and enumerations.
 
 ```
-rulelist        =  1*( rule / ( *WSP c-nl )  )
+rulelist                    =  1*( rule / ( *WSP c-nl )  )
 
-rule            =  rulename defined-as elements c-nl
-                ; continues if next line starts
-                ;  with white space
+rule                        =  rulename defined-as elements c-nl
+                            ; continues if next line starts
+                            ;  with white space
 
-rulename        =  ALPHA *( ALPHA / DIGIT / "-" )
+rulename                    =  ALPHA *( ALPHA / DIGIT / "-" )
 
-defined-as      =  *c-wsp ( "=" / "=/" ) *c-wsp
-                ; basic rules definition and
-                ;  incremental alternatives
+defined-as                  =  *c-wsp ( "=" / "=/" ) *c-wsp
+                            ; basic rules definition and
+                            ;  incremental alternatives
 
-elements        =  alternation *WSP
+elements                    =  alternation *WSP
 
-c-wsp           =  WSP / ( c-nl WSP )
+c-wsp                       =  WSP / ( c-nl WSP )
 
-c-nl            =  comment / CRLF
-                ; comment or newline
+c-nl                        =  comment / CRLF
+                            ; comment or newline
 
-comment         =  ";" *( WSP / VCHAR ) CRLF
+comment                     =  ";" *( WSP / VCHAR ) CRLF
 
-alternation     =  concatenation
-                   *( *c-wsp "/" *c-wsp concatenation )
+alternation                 =  concatenation
+                               *( *c-wsp "/" *c-wsp concatenation )
 
-concatenation   =  repetition *( 1*c-wsp repetition )
+concatenation               =  repetition *( 1*c-wsp repetition )
 
-repetition      =  [ repeat ] element
+repetition                  =  [ repeat ] element
 
-repeat          =  1*DIGIT / ( *DIGIT "*" *DIGIT )
+repeat                      =  1*DIGIT / ( *DIGIT "*" *DIGIT )
 
-element         =  rulename / group / option /
-                   char-val / num-val / prose-val
+element                     =  rulename / group / option /
+                               char-val / num-val / prose-val
 
-group           =  "( " *c-wsp alternation *c-wsp " )"
+group                       =  "( " *c-wsp alternation *c-wsp " )"
 
-option          =  "[" *c-wsp alternation *c-wsp "]"
+option                      =  "[" *c-wsp alternation *c-wsp "]"
 
-char-val        =  DQUOTE *( %x20-21 / %x23-7E ) DQUOTE
-                ; quoted string of SP and VCHAR
-                ;  without DQUOTE
+char-val                    =  case-insensitive-string
+                               / case-sensitive-string
 
-num-val         =  "%" ( bin-val / dec-val / hex-val / fw-val )
+case-insensitive-string     =  ["%i"] quoted-string
 
-bin-val         =  "b" 1*BIT
-                   [ 1*( "." 1*BIT ) / ( "-" 1*BIT ) / 1*( "," 1*BIT ) ]
-                ; series of concatenated bit values
-                ;  or single ONEOF range
+case-sensitive-string       =  "%s" quoted-string
 
-dec-val         =  "d" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
+quoted-string               =  DQUOTE *(%x20-21 / %x23-7E) DQUOTE
+                            ; quoted string of SP and VCHAR
+                            ;  without DQUOTE
 
-hex-val         =  "x" 1*HEXDIG
-                   [ 1*( "." 1*HEXDIG ) / ( "-" 1*HEXDIG ) / 1*( "," 1*HEXDIG ) ]
+num-val                     =  "%" ( bin-val / dec-val / hex-val )
 
-fw-val          =  uint8 / int8 / uint16-le / int16-le / uint16-be / int16-be / uint32-le
-                   / int32-le / uint32-be / int32-be / uint64-le / int64-le / uint64-be / int64-be
-                   / float-le / float-be
+bin-val                     =  "b" 1*BIT
+                               [ 1*( "." 1*BIT ) / ( "-" 1*BIT ) ]
+                            ; series of concatenated bit values
+                            ;  or single ONEOF range
 
-uint8           =  "u8_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
+dec-val                     =  "d" 1*DIGIT
+                               [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) ]
 
-int8            =  "i8_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
+hex-val                     =  "x" 1*HEXDIG
+                               [ 1*( "." 1*HEXDIG ) / ( "-" 1*HEXDIG ) ]
 
-uint16-le       =  "u16_le_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
+prose-val                   =  "<" *( %x20-3D / %x3F-7E ) ">"
+                            ; bracketed string of SP and VCHAR
+                            ;  without angles
+                            ; prose description, to be used as
+                            ;  last resort
 
-int16-le        =  "i16_le_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
+ALPHA                       =  %x41-5A / %x61-7A
+                            ; A-Z / a-z
 
-uint16-be       =  "u16_be_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
+BIT                         =  "0" / "1"
 
-int16-be        =  "i16_be_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
+CHAR                        =  %x01-7F
+                            ; any 7-bit US-ASCII character,
+                            ;  excluding NUL
 
-uint32-le       =  "u32_le_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
+CR                          =  %x0D
+                            ; carriage return
 
-int32-le        =  "i32_le_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
+CRLF                        =  CR LF
+                            ; Internet standard newline
 
-uint32-be       =  "u32_be_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
+CTL                         =  %x00-1F / %x7F
+                            ; controls
 
-int32-be        =  "i32_be_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
+DIGIT                       =  %x30-39
+                            ; 0-9
 
-uint64-le       =  "u64_le_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
+DQUOTE                      =  %x22
+                            ; " (Double Quote)
 
-int64-le        =  "i64_le_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
+HEXDIG                      =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
 
-uint64-be       =  "u64_be_" 1*DIGIT
-                   [ 1*( "." 1*DIGIT ) / ( "-" 1*DIGIT ) / 1*( "," 1*DIGIT ) ]
+HTAB                        =  %x09
+                            ; horizontal tab
 
-int64-be        =  "i64_be_" [ - ] 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT ) / ( "-" [ - ] 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT ) ]
+LF                          =  %x0A
+                            ; linefeed
 
-float-le        =  "f_le_" [ - ] 1*DIGIT "." 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT "." 1*DIGIT ) / ( "-" [ - ] 1*DIGIT "." 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT "." 1*DIGIT ) ]
+LWSP                        =  *( WSP / CRLF WSP )
+                            ; Use of this linear-white-space rule
+                            ;  permits lines containing only white
+                            ;  space that are no longer legal in
+                            ;  mail headers and have caused
+                            ;  interoperability problems in other
+                            ;  contexts.
+                            ; Do not use when defining mail
+                            ;  headers and use with caution in
+                            ;  other contexts.
 
-float_be        =  "f_be_" [ - ] 1*DIGIT "." 1*DIGIT
-                   [ 1*( "." [ - ] 1*DIGIT "." 1*DIGIT ) / ( "-" [ - ] 1*DIGIT "." 1*DIGIT ) / 1*( "," [ - ] 1*DIGIT "." 1*DIGIT ) ]
+OCTET                       =  %x00-FF
+                            ; 8 bits of data
 
-prose-val       =  "<" *( %x20-3D / %x3F-7E ) ">"
-                ; bracketed string of SP and VCHAR
-                ;  without angles
-                ; prose description, to be used as
-                ;  last resort
+SP                          =  %x20
 
-ALPHA           =  %x41-5A / %x61-7A
-                ; A-Z / a-z
+VCHAR                       =  %x21-7E
+                            ; visible ( printing ) characters
 
-BIT             =  "0" / "1"
-
-CHAR            =  %x01-7F
-                ; any 7-bit US-ASCII character,
-                ;  excluding NUL
-
-CR              =  %x0D
-                ; carriage return
-
-CRLF            =  CR LF
-                ; Internet standard newline
-
-CTL             =  %x00-1F / %x7F
-                ; controls
-
-DIGIT           =  %x30-39
-                ; 0-9
-
-DQUOTE          =  %x22
-                ; " (Double Quote)
-
-HEXDIG          =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"
-
-HTAB            =  %x09
-                ; horizontal tab
-
-LF              =  %x0A
-                ; linefeed
-
-LWSP            =  *( WSP / CRLF WSP )
-                ; Use of this linear-white-space rule
-                ;  permits lines containing only white
-                ;  space that are no longer legal in
-                ;  mail headers and have caused
-                ;  interoperability problems in other
-                ;  contexts.
-                ; Do not use when defining mail
-                ;  headers and use with caution in
-                ;  other contexts.
-
-OCTET           =  %x00-FF
-                ; 8 bits of data
-
-SP              =  %x20
-
-VCHAR           =  %x21-7E
-                ; visible ( printing ) characters
-
-WSP             =  SP / HTAB
-                ; white space
+WSP                         =  SP / HTAB
+                            ; white space
 ```
 
 * Note: Errata incorporated in grammar in accordance with accepted errata in RFC 5234.
