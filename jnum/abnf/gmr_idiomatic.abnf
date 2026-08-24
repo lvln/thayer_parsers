@@ -7,4 +7,4 @@ fraction = ["." 1*DIGIT]
 exponent = [("e"/"E") ["+"/"-"] 1*DIGITS]
 
 onenine = %x31-39
-; onenine = %c1-9
+; onenine = %c'1'-'9'
