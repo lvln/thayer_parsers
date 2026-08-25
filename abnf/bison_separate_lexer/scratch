@@ -1,4 +1,0 @@
-field_1: '\x32' ;
-
-bit_field: (field_1 & '\x03') ;
-
