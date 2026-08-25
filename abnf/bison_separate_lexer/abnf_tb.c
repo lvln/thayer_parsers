@@ -1,5 +1,5 @@
 /* 
- * gmr_tb.c -- parse a file using the gmr
+ * abnf_tb.c -- parse a file using the gmr
  * 
  * Author: st
  * Created: 06-22-2020
@@ -13,50 +13,53 @@
 #include <string.h>
 #include "abnf.tab.h"
 
-
 extern int yylex(void);
+extern int yylex_destroy(void);
+extern int yyparse(void);
 extern int yydebug;
+int linenum;
 
 void yyerror(const char *s)
 {
-    fprintf(stderr, "error: %s\n", s);
+    fprintf(stderr, "error: %s on line %d\n", s, linenum);
 }
 
 FILE* yyin;
 FILE* xout;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     char fn[80];
     int arg;
 
-    if(argc==2 && strcmp(argv[1],"-h")==0) {
-        printf("usage: gmr <infile> [-d -o <outfile>]\n");
+    if (argc == 2 && strcmp(argv[1], "-h") == 0) {
+        printf("usage: abnf <infile> [-d -o <outfile>]\n");
         exit(EXIT_SUCCESS);
     }
 
-    yydebug=0;
-    strcpy(fn,"output.y");
-    for(arg=2; arg<argc; arg++) {
-        if(strcmp(argv[arg],"-d")==0)
-            yydebug=1;
-        else if (strcmp(argv[arg],"-o")==0) 
-            strcpy(fn,argv[++arg]);
+    yydebug = 0;
+    strcpy(fn, "output.y");
+    for(arg = 2; arg < argc; arg++) {
+        if (strcmp(argv[arg], "-d") == 0)
+            yydebug = 1;
+        else if (strcmp(argv[arg], "-o") == 0) 
+            strcpy(fn, argv[++arg]);
         else {
-            printf("usage: gmr <infile> [-d -o <outfile>]\n");
+            printf("usage: abnf <infile> [-d -o <outfile>]\n");
             exit(EXIT_FAILURE);
         }
     }
 
-    if((yyin = fopen(argv[1],"r"))==NULL) {
-        printf("Unable to open input file %s\n",argv[1]);
+    if ((yyin = fopen(argv[1], "r")) == NULL) {
+        printf("Unable to open input file %s\n", argv[1]);
         return EXIT_FAILURE;
     }
-    if((xout=fopen(fn,"w"))==NULL) {
-        printf("Unable to open output file %s\n",fn);
+    if ((xout=fopen(fn,"w")) == NULL) {
+        printf("Unable to open output file %s\n", fn);
         return EXIT_FAILURE;
-    }	 
+    }
 
-    if(yyparse()!=0) {
+    linenum = 1;
+    if (yyparse() != 0) {
         printf("[FAIL]\n");
         exit(EXIT_FAILURE);
     }
@@ -68,4 +71,3 @@ int main(int argc, char *argv[]) {
     //printf("[PASS]\n");
     exit(EXIT_SUCCESS);
 }
-
